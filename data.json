@@ -186,10 +186,6 @@
       "score": 1.5
     },
     {
-      "name": "Nakagawa",
-      "score": 0.5
-    },
-    {
       "name": "Masu",
       "score": 0.5
     },
@@ -204,6 +200,11 @@
     {
       "name": "Asada",
       "score": -1.5
+    },
+    {
+      "name": "Sato",
+      "score": -0.5,
+      "role": "Member"
     }
   ],
   "speakers": [
