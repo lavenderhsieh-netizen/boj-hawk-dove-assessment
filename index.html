@@ -72,6 +72,23 @@
   .foot a,.note a{color:var(--dove2)}
   #loading{text-align:center;color:var(--muted);padding:60px;font-size:14px}
   @media(max-width:860px){.grid2{grid-template-columns:1fr}}
+  /* markets */
+  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+  .mkpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;display:flex;flex-direction:column;gap:4px}
+  .mkpi .mv{font-size:22px;font-weight:700;color:var(--ink)}
+  .mkpi .ml{font-size:11.5px;color:var(--muted)}
+  .mkpi .mch{font-size:12px;font-weight:600}
+  .mch.up{color:#4cba7a}.mch.dn{color:var(--hawk2)}.mch.flat{color:var(--muted)}
+  .stale-badge{display:inline-block;font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;background:rgba(217,164,65,.18);color:var(--accent);vertical-align:middle;margin-left:6px}
+  .miss-badge{display:inline-block;font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;background:rgba(226,86,74,.18);color:var(--hawk2);vertical-align:middle;margin-left:6px}
+  /* news */
+  .news-list{display:flex;flex-direction:column;gap:10px}
+  .ni{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:13px 16px;display:flex;flex-direction:column;gap:4px}
+  .ni a{color:var(--ink);text-decoration:none;font-size:14px;font-weight:500;line-height:1.4}
+  .ni a:hover{color:var(--dove2);text-decoration:underline}
+  .ni .nm{font-size:11.5px;color:var(--muted)}
+  /* data status table */
+  .status-ok{color:#4cba7a;font-weight:700}.status-stale{color:var(--accent);font-weight:700}.status-missing{color:var(--hawk2);font-weight:700}
 </style>
 </head>
 <body>
@@ -85,6 +102,8 @@
   <button class="tab" onclick="showTab('board',this)">Board &amp; votes</button>
   <button class="tab" onclick="showTab('calendar',this)">BOJ calendar</button>
   <button class="tab" onclick="showTab('auctions',this)">Auctions &amp; fiscal</button>
+  <button class="tab" onclick="showTab('markets',this)">Markets &amp; bonds</button>
+  <button class="tab" onclick="showTab('news',this)">News</button>
   <button class="tab" onclick="showTab('method',this)">Methodology</button>
 </div>
 
@@ -157,6 +176,53 @@
         <thead><tr><th>Timing</th><th>Event</th><th>Relevance</th></tr></thead>
         <tbody id="fiscalBody"></tbody>
       </table></div>
+    </div>
+  </div>
+
+  <!-- MARKETS & BONDS -->
+  <div id="tab-markets" class="panel">
+    <div class="kpis" id="mktKpis" style="margin-bottom:20px"></div>
+    <div class="grid2">
+      <div class="card full">
+        <h2>JGB yield curve <span id="curveStatus"></span></h2>
+        <canvas id="cCurve" style="max-height:300px"></canvas>
+        <div class="note" id="curveNote"></div>
+      </div>
+      <div class="card full">
+        <h2>JGB yields over time <span id="jgbHistStatus"></span></h2>
+        <canvas id="cJgbHist" style="max-height:300px"></canvas>
+        <div class="note">2Y, 10Y, 30Y benchmark yields. Source: MOF daily publication.</div>
+      </div>
+      <div class="card">
+        <h2>USD/JPY <span id="fxStatus"></span></h2>
+        <canvas id="cFx" style="max-height:260px"></canvas>
+      </div>
+      <div class="card">
+        <h2>Nikkei 225 <span id="nkStatus"></span></h2>
+        <canvas id="cNk" style="max-height:260px"></canvas>
+      </div>
+      <div class="card full">
+        <h2>BOJ measures of underlying inflation (yoy %) <span id="inflStatus"></span></h2>
+        <canvas id="cInfl" style="max-height:300px"></canvas>
+        <div class="note" id="inflNote">Source: BOJ Research. Ex-fresh food, ex-fresh food &amp; energy, ex-food &amp; energy (2020 base year).</div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h2>Data source status</h2>
+      <div style="overflow-x:auto"><table>
+        <thead><tr><th>Source</th><th>Status</th><th>Latest data</th><th>Fetched (UTC)</th><th>Notes</th></tr></thead>
+        <tbody id="sourceStatus"></tbody>
+      </table></div>
+      <div class="note">Stale = previous fetch succeeded; current fetch failed — last good data is displayed. Missing = no data available.</div>
+    </div>
+  </div>
+
+  <!-- NEWS -->
+  <div id="tab-news" class="panel">
+    <div class="card">
+      <h2>Recent BOJ &amp; Japan macro news <span id="newsStatus"></span></h2>
+      <p class="note" style="margin-bottom:16px">Headlines from Google News for BOJ, Japan inflation, and JGB — refreshed daily. Click to read full article.</p>
+      <div class="news-list" id="newsList"></div>
     </div>
   </div>
 
@@ -339,12 +405,224 @@ function render(D) {
     <p>Summary-of-Opinions attributions are analytical inferences (the BOJ publishes them unattributed). This is an analytical assessment of central-bank communication, not investment advice.</p>`;
 }
 
+// ── Market data helpers ─────────────────────────────────────────────────────
+function staleBadge(status) {
+  if (status === 'stale') return '<span class="stale-badge">stale</span>';
+  if (status === 'missing') return '<span class="miss-badge">missing</span>';
+  return '';
+}
+
+function latestOf(hist) { return hist && hist.length ? hist[hist.length - 1] : null; }
+
+function pctChange(hist, days) {
+  if (!hist || hist.length < 2) return null;
+  const last = hist[hist.length - 1].value;
+  const idx = Math.max(0, hist.length - 1 - days);
+  const prev = hist[idx].value;
+  return ((last - prev) / Math.abs(prev)) * 100;
+}
+
+function fmtChg(val, unit) {
+  if (val == null) return '';
+  const sign = val > 0 ? '+' : '';
+  const cls = val > 0 ? 'up' : val < 0 ? 'dn' : 'flat';
+  return `<span class="mch ${cls}">${sign}${val.toFixed(unit === '%' ? 2 : 0)}${unit}</span>`;
+}
+
+function sparkLine(ctx, hist, color) {
+  const n = Math.min(hist.length, 120);
+  const slice = hist.slice(-n);
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: slice.map(p => p.date),
+      datasets: [{ data: slice.map(p => p.value), borderColor: color,
+        backgroundColor: color.replace(')', ',.08)').replace('rgb', 'rgba'),
+        fill: true, pointRadius: 0, borderWidth: 1.8, tension: 0.15 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      plugins: { legend: { display: false }, tooltip: {
+        callbacks: { title: i => i[0].label, label: i => i.raw.toFixed(2) }
+      }},
+      scales: {
+        x: { display: true, ticks: { maxTicksLimit: 6, maxRotation: 0 } },
+        y: { display: true, ticks: { maxTicksLimit: 5 } }
+      }
+    }
+  });
+}
+
+function renderMarkets(M) {
+  const src = M.sources || {};
+
+  // ── KPI row ──────────────────────────────────────────────────────────────
+  const jgb10 = M.jgb ? M.jgb.curve.yields[M.jgb.curve.tenors.indexOf('10Y')] : null;
+  const jgb2  = M.jgb ? M.jgb.curve.yields[M.jgb.curve.tenors.indexOf('2Y')]  : null;
+  const jgb30 = M.jgb ? M.jgb.curve.yields[M.jgb.curve.tenors.indexOf('30Y')] : null;
+  const fxLast = M.fx ? latestOf(M.fx.history) : null;
+  const nkLast = M.nikkei ? latestOf(M.nikkei.history) : null;
+  const crLast = M.call_rate ? latestOf(M.call_rate.history) : null;
+  const us10Last = M.us10y ? latestOf(M.us10y.history) : null;
+  const fxChg = M.fx ? pctChange(M.fx.history, 5) : null;
+  const nkChg = M.nikkei ? pctChange(M.nikkei.history, 5) : null;
+  const spread = (jgb10 != null && jgb2 != null) ? (jgb10 - jgb2) : null;
+
+  const mkpis = [
+    { v: jgb10 != null ? jgb10.toFixed(3)+'%' : '—', l: `JGB 10Y (${M.jgb?.curve?.date || '?'})`, badge: staleBadge(src.jgb?.status) },
+    { v: spread != null ? spread.toFixed(3)+'%' : '—', l: '2Y–10Y spread', badge: staleBadge(src.jgb?.status) },
+    { v: jgb30 != null ? jgb30.toFixed(3)+'%' : '—', l: 'JGB 30Y', badge: staleBadge(src.jgb?.status) },
+    { v: fxLast ? fxLast.value.toFixed(2) : '—', l: `USD/JPY (${fxLast?.date || '?'}) ${fmtChg(fxChg, '%')} 5d`, badge: staleBadge(src.fx?.status) },
+    { v: nkLast ? Math.round(nkLast.value).toLocaleString() : '—', l: `Nikkei 225 (${nkLast?.date || '?'}) ${fmtChg(nkChg, '%')} 5d`, badge: staleBadge(src.nikkei?.status) },
+    { v: crLast ? crLast.value.toFixed(3)+'%' : '—', l: `BOJ call rate (${crLast?.date || '?'})`, badge: staleBadge(src.call_rate?.status) },
+    { v: us10Last ? us10Last.value.toFixed(2)+'%' : '—', l: `US 10Y (${us10Last?.date || '?'})`, badge: staleBadge(src.us10y?.status) },
+  ];
+  document.getElementById('mktKpis').innerHTML = mkpis.map(k =>
+    `<div class="mkpi"><div class="mv">${k.v}</div><div class="ml">${k.l}${k.badge}</div></div>`
+  ).join('');
+
+  // ── JGB yield curve ───────────────────────────────────────────────────────
+  document.getElementById('curveStatus').innerHTML = staleBadge(src.jgb?.status);
+  if (M.jgb) {
+    const c = M.jgb.curve, p = M.jgb.curve_prev;
+    document.getElementById('curveNote').textContent =
+      `Current: ${c.date} · Comparison: ${p.date} (~1 month prior). Source: MOF.`;
+    new Chart(document.getElementById('cCurve'), {
+      type: 'line',
+      data: {
+        labels: c.tenors,
+        datasets: [
+          { label: c.date, data: c.yields, borderColor: '#d9a441', backgroundColor: 'rgba(217,164,65,.1)',
+            fill: true, pointRadius: 4, borderWidth: 2.5, tension: 0.2 },
+          { label: p.date, data: p.yields, borderColor: '#4a90d9', backgroundColor: 'transparent',
+            fill: false, pointRadius: 3, borderWidth: 1.8, borderDash: [4,3], tension: 0.2 }
+        ]
+      },
+      options: {
+        plugins: { legend: { position: 'top' } },
+        scales: { y: { title: { display: true, text: 'Yield (%)' },
+                        ticks: { callback: v => v.toFixed(2)+'%' } } }
+      }
+    });
+  }
+
+  // ── JGB history 2Y/10Y/30Y ────────────────────────────────────────────────
+  document.getElementById('jgbHistStatus').innerHTML = staleBadge(src.jgb?.status);
+  if (M.jgb?.history) {
+    const h = M.jgb.history.slice(-250);
+    new Chart(document.getElementById('cJgbHist'), {
+      type: 'line',
+      data: {
+        labels: h.map(p => p.date),
+        datasets: [
+          { label: '10Y', data: h.map(p => p.y10), borderColor: '#d9a441', pointRadius: 0, borderWidth: 2, tension: 0.1 },
+          { label: '2Y',  data: h.map(p => p.y2),  borderColor: '#4a90d9', pointRadius: 0, borderWidth: 1.8, tension: 0.1 },
+          { label: '30Y', data: h.map(p => p.y30), borderColor: '#e2564a', pointRadius: 0, borderWidth: 1.5, borderDash: [4,3], tension: 0.1 }
+        ]
+      },
+      options: {
+        plugins: { legend: { position: 'top' } },
+        scales: {
+          x: { ticks: { maxTicksLimit: 8, maxRotation: 0 } },
+          y: { ticks: { callback: v => v.toFixed(2)+'%' } }
+        }
+      }
+    });
+  }
+
+  // ── USD/JPY ───────────────────────────────────────────────────────────────
+  document.getElementById('fxStatus').innerHTML = staleBadge(src.fx?.status);
+  if (M.fx?.history) sparkLine(document.getElementById('cFx'), M.fx.history, 'rgb(74,144,217)');
+
+  // ── Nikkei ────────────────────────────────────────────────────────────────
+  document.getElementById('nkStatus').innerHTML = staleBadge(src.nikkei?.status);
+  if (M.nikkei?.history) sparkLine(document.getElementById('cNk'), M.nikkei.history, 'rgb(76,186,122)');
+
+  // ── Inflation ─────────────────────────────────────────────────────────────
+  document.getElementById('inflStatus').innerHTML = staleBadge(src.inflation?.status);
+  if (M.inflation) {
+    const inf = M.inflation;
+    const n = Math.min(inf.months.length, 60);
+    const months = inf.months.slice(-n);
+    new Chart(document.getElementById('cInfl'), {
+      type: 'line',
+      data: {
+        labels: months,
+        datasets: [
+          { label: 'Ex fresh food', data: inf.ex_fresh.slice(-n),
+            borderColor: '#d9a441', pointRadius: 3, borderWidth: 2.2, tension: 0.15 },
+          { label: 'Ex fresh food & energy', data: inf.ex_fresh_energy.slice(-n),
+            borderColor: '#4a90d9', pointRadius: 3, borderWidth: 2, tension: 0.15 },
+          { label: 'Ex food & energy', data: inf.ex_food_energy.slice(-n),
+            borderColor: '#b9c2d4', pointRadius: 2, borderWidth: 1.8, borderDash: [4,3], tension: 0.15 }
+        ]
+      },
+      options: {
+        plugins: { legend: { position: 'top' } },
+        scales: {
+          x: { ticks: { maxTicksLimit: 10, maxRotation: 45 } },
+          y: { title: { display: true, text: 'yoy %' },
+               ticks: { callback: v => v.toFixed(1)+'%' } }
+        }
+      }
+    });
+  }
+
+  // ── Source status table ───────────────────────────────────────────────────
+  const labels = { jgb: 'MOF JGB yields', fx: 'FRED USD/JPY',
+    nikkei: 'FRED Nikkei 225', us10y: 'FRED US 10Y', call_rate: 'FRED BOJ call rate',
+    inflation: 'BOJ core CPI xlsx', news: 'Google News RSS' };
+  document.getElementById('sourceStatus').innerHTML = Object.entries(src).map(([k, v]) => {
+    const cls = v.status === 'ok' ? 'status-ok' : v.status === 'stale' ? 'status-stale' : 'status-missing';
+    return `<tr>
+      <td>${esc(labels[k] || k)}</td>
+      <td class="${cls}">${esc(v.status)}</td>
+      <td>${esc(v.latest || '—')}</td>
+      <td>${esc((v.fetched_at || '').replace('T', ' ').replace('Z', '') || '—')}</td>
+      <td style="color:var(--muted);font-size:12px">${esc(v.error || '')}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderNews(M) {
+  const news = M.news || [];
+  document.getElementById('newsStatus').innerHTML = staleBadge(M.sources?.news?.status) +
+    (M.sources?.news?.latest ? ` <span style="color:var(--muted);font-size:11px">as of ${esc(M.sources.news.latest)}</span>` : '');
+  if (!news.length) {
+    document.getElementById('newsList').innerHTML = '<p style="color:var(--muted)">No news available.</p>';
+    return;
+  }
+  document.getElementById('newsList').innerHTML = news.map(n => {
+    const rel = n.published ? (() => {
+      const diff = Math.round((Date.now() - new Date(n.published)) / 60000);
+      if (diff < 60) return `${diff}m ago`;
+      if (diff < 1440) return `${Math.round(diff/60)}h ago`;
+      return `${Math.round(diff/1440)}d ago`;
+    })() : '';
+    return `<div class="ni">
+      <a href="${esc(n.link)}" target="_blank" rel="noopener">${esc(n.title)}</a>
+      <div class="nm">${esc(n.source)}${rel ? ' · ' + rel : ''}${n.published ? ' · ' + n.published.slice(0,10) : ''}</div>
+    </div>`;
+  }).join('');
+}
+
 // ── Load data ───────────────────────────────────────────────────────────────
 fetch('./streamlit_app/data.json?' + Date.now())
   .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
   .then(render)
   .catch(e => {
     document.getElementById('loading').textContent = 'Failed to load data.json: ' + e;
+  });
+
+fetch('./market_data.json?' + Date.now())
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(M => { renderMarkets(M); renderNews(M); })
+  .catch(e => {
+    console.warn('market_data.json unavailable:', e);
+    document.getElementById('mktKpis').innerHTML =
+      '<div style="color:var(--muted);padding:20px">Market data unavailable — will retry on next daily refresh.</div>';
+    document.getElementById('newsList').innerHTML =
+      '<div style="color:var(--muted);padding:20px">News unavailable.</div>';
   });
 </script>
 </body>
