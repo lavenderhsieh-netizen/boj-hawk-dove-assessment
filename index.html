@@ -44,7 +44,9 @@
   .sp .q{font-size:12.5px;color:var(--muted);line-height:1.55;border-left:3px solid var(--line);padding-left:10px;font-style:italic}
   .tag{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 9px;border-radius:20px;margin-left:5px;vertical-align:middle}
   .t-hawk{background:rgba(226,86,74,.18);color:var(--hawk2)}
+  .t-neutral-hawk{background:rgba(226,86,74,.09);color:var(--hawk2);opacity:.8}
   .t-dove{background:rgba(74,144,217,.18);color:var(--dove2)}
+  .t-neutral-dove{background:rgba(74,144,217,.09);color:var(--dove2);opacity:.8}
   .t-neutral{background:rgba(185,194,212,.15);color:var(--neutral)}
   /* tables */
   table{width:100%;border-collapse:collapse;font-size:12.5px}
@@ -363,7 +365,11 @@ function esc(s) {
   return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 function tagHtml(lean) {
-  const cls = lean === 'hawk' ? 't-hawk' : lean === 'dove' ? 't-dove' : 't-neutral';
+  const cls = lean === 'hawk' ? 't-hawk'
+    : lean === 'neutral-hawk' ? 't-neutral-hawk'
+    : lean === 'dove' ? 't-dove'
+    : lean === 'neutral-dove' ? 't-neutral-dove'
+    : 't-neutral';
   return `<span class="tag ${cls}">${esc(lean)}</span>`;
 }
 function chipHtml(type) {

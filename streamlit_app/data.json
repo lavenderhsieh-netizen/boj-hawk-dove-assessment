@@ -207,8 +207,8 @@
     {
       "name": "UEDA Kazuo",
       "role": "Governor",
-      "tag": "Hawkish drift",
-      "lean": "hawk",
+      "tag": "Neutral-to-hawk",
+      "lean": "neutral-hawk",
       "shift": "Patient normalizer → confident normalizer (≈ +0.5 → +1)",
       "quote": "\"The Bank... will continue to raise the policy interest rate and adjust the degree of monetary accommodation.\" — Keidanren, Dec 25, 2025. Achievement of the 2% target \"is steadily approaching.\""
     },
@@ -232,7 +232,7 @@
       "name": "HIMINO Ryozo",
       "role": "Deputy Governor",
       "tag": "Measured hawk",
-      "lean": "hawk",
+      "lean": "neutral-hawk",
       "shift": "Steady gradualist; intellectual groundwork for hikes (≈ +0.5 → +1)",
       "quote": "Mar 2026: policy \"should gradually shift to a more neutral stance through moderate policy rate hikes.\""
     },
@@ -248,7 +248,7 @@
       "name": "KOEDA Junko",
       "role": "Board Member (from Apr 2025)",
       "tag": "New normalizer",
-      "lean": "hawk",
+      "lean": "neutral-hawk",
       "shift": "Data-driven, leans hawkish from arrival (≈ +1); replaced dove Adachi",
       "quote": "\"Underlying inflation is about 2 percent\"; \"the Bank needs to proceed with interest rate normalization... to avoid creating unintended distortions.\" — Niigata, Nov 20, 2025."
     },
@@ -256,7 +256,7 @@
       "name": "MASU Kazuyuki",
       "role": "Board Member (from Jul 2025)",
       "tag": "Cautious normalizer",
-      "lean": "neutral",
+      "lean": "neutral-hawk",
       "shift": "Supports normalization, stresses caution (≈ +0.5); replaced dove Nakamura",
       "quote": "\"I am convinced that continuing with further policy interest rate hikes will be needed to complete the normalization\"... but the Bank will \"proceed cautiously.\" — Ehime, Feb 6, 2026."
     },
@@ -272,7 +272,7 @@
       "name": "SATO Ayano",
       "role": "Member",
       "tag": "New — monitoring",
-      "lean": "dove",
+      "lean": "neutral-dove",
       "shift": "Joined Jun 2026 — inaugural tone: cautious/dovish",
       "quote": "\"Inflation is not that strong by societal norms.\" / \"Need to watch for both downside risks to growth and upside risks to inflation.\" — Inaugural press conference, Jun 30, 2026"
     }
