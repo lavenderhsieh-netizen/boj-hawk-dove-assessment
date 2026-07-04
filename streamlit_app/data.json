@@ -101,15 +101,6 @@
       ]
     },
     {
-      "name": "Nakagawa",
-      "scores": [
-        0,
-        0,
-        0,
-        0.5
-      ]
-    },
-    {
       "name": "Masu",
       "scores": [
         null,
@@ -128,39 +119,21 @@
       ]
     },
     {
-      "name": "Noguchi",
-      "scores": [
-        -1.5,
-        -1,
-        -0.5,
-        null
-      ]
-    },
-    {
-      "name": "Nakamura",
-      "scores": [
-        -2,
-        -2,
-        null,
-        null
-      ]
-    },
-    {
-      "name": "Adachi",
-      "scores": [
-        -1.5,
-        null,
-        null,
-        null
-      ]
-    },
-    {
       "name": "Asada",
       "scores": [
         null,
         null,
         null,
         -1.5
+      ]
+    },
+    {
+      "name": "Sato",
+      "scores": [
+        null,
+        null,
+        null,
+        null
       ]
     }
   ],
