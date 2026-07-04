@@ -22,7 +22,7 @@
         "title": "[Webcast] - Analyst Brief - Japan: Can it re-emerge as an economic powerhouse?",
         "url": "https://go.nomuranow.com/research/japi/publication/1306114?appname=GRPUI",
         "date": "JUN 18, 2026",
-        "summary": "Japan’s economy is re-emerging through internal transformation. Super-long JGBs and theme-based Japanese equities will be attractive, while JPY strength is expected.",
+        "summary": "Japan\u2019s economy is re-emerging through internal transformation. Super-long JGBs and theme-based Japanese equities will be attractive, while JPY strength is expected.",
         "analyst": "Kyohei Morita",
         "coverage": "Japan Macro / BOJ"
       },
@@ -135,14 +135,6 @@
         "coverage": "Japan FX"
       },
       {
-        "title": "Anchor Report: Asia AI Semi & Server - Is the cycle over?",
-        "url": "https://go.nomuranow.com/research/japi/publication/1307387?appname=GRPUI",
-        "date": "JUN 29, 2026",
-        "summary": "AARON JENG, CFA, ANNE LEE, CFA, DONNIE TENG, VIVIAN YANG, ERIC CHEN, CAROL HU",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
         "title": "SDR FX Analysis - Asia as of 03 Jul 2026",
         "url": "https://go.nomuranow.com/research/japi/publication/1308118?appname=GRPUI",
         "date": "JUL 3, 2026",
@@ -181,14 +173,6 @@
         "url": "https://go.nomuranow.com/research/japi/publication/1308098?appname=GRPUI",
         "date": "JUL 3, 2026",
         "summary": "YUSUKE MIYAIRI, CFA, YUJIRO GOTO",
-        "analyst": "Masaki Kuwahara",
-        "coverage": "Japan Macro"
-      },
-      {
-        "title": "Anchor Report: Asia AI Semi & Server - Is the cycle over?",
-        "url": "https://go.nomuranow.com/research/japi/publication/1307387?appname=GRPUI",
-        "date": "JUN 29, 2026",
-        "summary": "AARON JENG, CFA, ANNE LEE, CFA, DONNIE TENG, VIVIAN YANG, ERIC CHEN, CAROL HU",
         "analyst": "Masaki Kuwahara",
         "coverage": "Japan Macro"
       },
@@ -259,7 +243,7 @@
         "coverage": "BOJ / Rates"
       },
       {
-        "title": "Japan Economic Weekly - BOJ likely to maintain a ‘hawkish hold’ on interest rates at its April MPM",
+        "title": "Japan Economic Weekly - BOJ likely to maintain a \u2018hawkish hold\u2019 on interest rates at its April MPM",
         "url": "https://go.nomuranow.com/research/japi/publication/1296041?appname=GRPUI",
         "date": "JUN 16, 2026",
         "summary": "KYOHEI MORITA, UICHIRO NOZAKI, MARI IWASHITA, YUNA MINEGISHI",
@@ -318,5 +302,5 @@
       }
     ]
   },
-  "total": 36
+  "total": 34
 }

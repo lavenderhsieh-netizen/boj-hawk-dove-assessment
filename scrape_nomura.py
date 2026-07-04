@@ -28,6 +28,14 @@ COVERAGE = {
     "Mari Iwashita":    "BOJ / Rates",
     "Uichiro Nozaki":   "Japan Macro / Fiscal",
 }
+
+# Reports whose titles contain any of these keywords are not Japan macro/rates/FX
+# and should be excluded (e.g. Asia tech/semiconductor reports that appear cross-listed)
+EXCLUDE_TITLE_KEYWORDS = [
+    "AI Semi", "Asia Semi", "semiconductor", "Asia AI",
+    "China Tech", "Korea Tech", "Taiwan", "DRAM", "NAND",
+]
+
 EVAL_JS = r"""(function() {
   const results = [];
   const seen = new Set();
@@ -155,12 +163,21 @@ def scrape_analyst(name):
         return []
 
 
+def is_relevant(report: dict) -> bool:
+    """Return False for reports that are clearly not Japan macro/rates/FX."""
+    title = report.get("title", "")
+    return not any(kw.lower() in title.lower() for kw in EXCLUDE_TITLE_KEYWORDS)
+
+
 def main():
     all_reports = {}
     for analyst in ANALYSTS:
         try:
             reports = scrape_analyst(analyst)
-            all_reports[analyst] = reports
+            filtered = [r for r in reports if is_relevant(r)]
+            if len(filtered) < len(reports):
+                print(f"    Filtered {len(reports) - len(filtered)} non-Japan report(s)")
+            all_reports[analyst] = filtered
         except Exception as e:
             print(f"    EXCEPTION: {e}")
             all_reports[analyst] = []
