@@ -106,6 +106,15 @@ def fetch_jgb(prev):
         cutoff = (datetime.now(timezone.utc) - timedelta(days=720)).strftime("%Y-%m-%d")
         all_curves = parse_mof_csv(get(MOF_HISTORICAL).text)
         curves = [c for c in all_curves if c["date"] >= cutoff] + curves
+    else:
+        # Always backfill full curves so 1-month curve comparison works
+        # (MOF_CURRENT only has a few days; full-curve history needs 28+ days)
+        target_full = (datetime.now(timezone.utc) - timedelta(days=35)).strftime("%Y-%m-%d")
+        if not any(c["date"] <= target_full and len(c["yields"]) >= 10 for c in curves):
+            cutoff = (datetime.now(timezone.utc) - timedelta(days=90)).strftime("%Y-%m-%d")
+            hist_curves = parse_mof_csv(get(MOF_HISTORICAL).text)
+            extra = [c for c in hist_curves if c["date"] >= cutoff and c["date"] < curves[0]["date"]]
+            curves = extra + curves
 
     # merge with previous history (keyed by date)
     by_date = {}
@@ -137,11 +146,18 @@ def fetch_jgb(prev):
     prev_curve_date = older[-1] if older else full[0]
     prev_curve = by_date[prev_curve_date]
 
+    # curve 1 business day before latest
+    full_before = [d for d in full if d < latest["date"]]
+    curve_1d_date = full_before[-1] if full_before else full[0]
+    curve_1d = by_date[curve_1d_date]
+
     tenor_order = ["1Y", "2Y", "3Y", "4Y", "5Y", "6Y", "7Y", "8Y", "9Y", "10Y", "15Y", "20Y", "25Y", "30Y", "40Y"]
     tenors = [t for t in tenor_order if t in latest["yields"]]
     return {
         "curve": {"date": latest["date"], "tenors": tenors,
                   "yields": [latest["yields"][t] for t in tenors]},
+        "curve_1d": {"date": curve_1d["date"], "tenors": tenors,
+                     "yields": [curve_1d["yields"].get(t) for t in tenors]},
         "curve_prev": {"date": prev_curve["date"], "tenors": tenors,
                        "yields": [prev_curve["yields"].get(t) for t in tenors]},
         "history": hist,
