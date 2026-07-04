@@ -260,21 +260,22 @@ def fetch_potential_growth(prev):
 
 
 NEWS_QUERIES = [
-    # Source-specific queries — highest-quality outlets first
+    # Japanese local wire / press — primary preference
+    'site:jiji.com BOJ OR yen OR JGB OR economy when:3d',              # Jiji Press
+    'site:nhk.or.jp/nhkworld Japan BOJ OR yen OR economy when:3d',    # NHK World
+    'site:mainichi.jp/english Japan BOJ OR yen OR JGB when:3d',       # Mainichi Shimbun
+    'site:asia.nikkei.com Japan BOJ OR yen OR JGB when:3d',           # Nikkei Asia
+    'source:kyodo_news BOJ OR yen OR Japan economy when:3d',          # Kyodo News
+    # International wires — secondary
     'site:reuters.com Japan BOJ OR yen OR JGB when:3d',
     'site:bloomberg.com Japan BOJ OR yen OR JGB when:3d',
     'site:ft.com Japan BOJ OR yen OR fiscal when:3d',
-    'site:wsj.com Japan BOJ OR yen OR JGB when:3d',
-    'site:asia.nikkei.com Japan BOJ OR yen OR JGB when:3d',
     # Broader topic queries as fallback
     '\"Bank of Japan\" OR \"BOJ\" Ueda when:3d',
     '\"JGB\" OR \"Japan government bond\" yields when:3d',
     '\"Japan inflation\" OR \"Japan CPI\" when:3d',
     'Takaichi Japan economy OR fiscal OR BOJ when:3d',
-    'Katayama Japan yen OR intervention when:3d',
-    '\"Japan defense spending\" OR \"Japan rearmament\" when:3d',
     '\"BOJ rate hike\" OR \"Bank of Japan rate\" when:3d',
-    '\"Japan yen\" intervention OR \"40-year\" when:3d',
 ]
 
 TAG_RULES = [
@@ -300,14 +301,32 @@ EXCLUDE_TITLE_WORDS = [
     "world cup", "soccer", "football match", "spacex", "south korea", "taiwan ai",
 ]
 
+BLOCKED_SOURCES = {
+    "coinmarketcap", "cointelegraph", "decrypt", "cryptoslate", "beincrypto",
+    "coindesk", "cryptonews",
+}
+
 TRUSTED_SOURCES = {
+    # Japanese local sources — highest preference
+    "jiji", "jiji press",
+    "kyodo", "kyodo news", "japan wire by kyodo",
+    "nhk", "nhk world",
+    "mainichi", "mainichi shimbun",
+    "yomiuri", "japan news",
+    "nikkei", "nikkei asia",
+    "japan times",
+    # International wires
     "bloomberg", "reuters", "financial times", "ft.com",
-    "wall street journal", "wsj", "nikkei", "nikkei asia",
+    "wall street journal", "wsj",
     "cnbc", "the economist", "barron's", "marketwatch",
-    "south china morning post", "scmp", "japan times",
+    "south china morning post", "scmp",
     "associated press", "ap", "new york times",
 }
 
+
+def is_blocked(source):
+    sl = source.lower()
+    return any(b in sl for b in BLOCKED_SOURCES)
 
 def is_trusted(source):
     sl = source.lower()
@@ -382,6 +401,8 @@ def fetch_news(prev):
                 title, src = title.rsplit(" - ", 1)
             title = title.strip()
             if not is_relevant(title):
+                continue
+            if is_blocked(src):
                 continue
             tags = tag_item(title)
             items.append({"title": title, "link": link,
