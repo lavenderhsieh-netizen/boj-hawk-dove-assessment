@@ -244,6 +244,11 @@
         <canvas id="cJgb10" style="max-height:260px"></canvas>
       </div>
       <div class="card">
+        <h2>JGB 10Y–30Y spread <span id="jgbSpreadStatus"></span></h2>
+        <canvas id="cJgbSpread" style="max-height:260px"></canvas>
+        <div class="note">30Y minus 10Y JGB yield (%). Wider spread = more term premium / steeper long end. Source: MOF daily.</div>
+      </div>
+      <div class="card">
         <h2>BOJ measures of underlying inflation (yoy %) <span id="inflStatus"></span></h2>
         <canvas id="cInfl" style="max-height:280px"></canvas>
         <div class="note" id="inflNote">Source: BOJ Research. Ex-fresh food, ex-fresh food &amp; energy, ex-food &amp; energy (2020 base year).</div>
@@ -691,10 +696,19 @@ function renderMarkets(M) {
   if (M.nikkei?.history) sparkLine(document.getElementById('cNk'), M.nikkei.history, 'rgb(76,186,122)');
 
   // ── JGB 10Y sparkline ─────────────────────────────────────────────────────
-  document.getElementById('jgb10Status').innerHTML = staleBadge(src.jgb?.status);
   if (M.jgb?.history) {
     const jgb10hist = M.jgb.history.map(p => ({ date: p.date, value: p.y10 }));
     sparkLine(document.getElementById('cJgb10'), jgb10hist, 'rgb(217,164,65)');
+    document.getElementById('jgb10Status').innerHTML = staleBadge(src.jgb?.status);
+  }
+
+  // ── JGB 10Y–30Y spread sparkline ──────────────────────────────────────────
+  if (M.jgb?.history) {
+    const spreadHist = M.jgb.history
+      .filter(p => p.y10 != null && p.y30 != null)
+      .map(p => ({ date: p.date, value: parseFloat((p.y30 - p.y10).toFixed(4)) }));
+    sparkLine(document.getElementById('cJgbSpread'), spreadHist, 'rgb(180,100,220)');
+    document.getElementById('jgbSpreadStatus').innerHTML = staleBadge(src.jgb?.status);
   }
 
   // ── Inflation ─────────────────────────────────────────────────────────────
