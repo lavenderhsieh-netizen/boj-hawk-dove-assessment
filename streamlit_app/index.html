@@ -653,18 +653,20 @@ function renderMarkets(M) {
   // ── JGB yield curve ───────────────────────────────────────────────────────
   document.getElementById('curveStatus').innerHTML = staleBadge(src.jgb?.status);
   if (M.jgb) {
-    const c = M.jgb.curve, p = M.jgb.curve_prev;
+    const c = M.jgb.curve, d1 = M.jgb.curve_1d, p = M.jgb.curve_prev;
     document.getElementById('curveNote').textContent =
-      `Current: ${c.date} · Comparison: ${p.date} (~1 month prior). Source: MOF.`;
+      `Current: ${c.date} · 1d prior: ${d1?.date ?? '—'} · 1m prior: ${p.date}. Source: MOF.`;
     new Chart(document.getElementById('cCurve'), {
       type: 'line',
       data: {
         labels: c.tenors,
         datasets: [
-          { label: c.date, data: c.yields, borderColor: '#d9a441', backgroundColor: 'rgba(217,164,65,.1)',
+          { label: `${c.date} (current)`, data: c.yields, borderColor: '#d9a441', backgroundColor: 'rgba(217,164,65,.1)',
             fill: true, pointRadius: 4, borderWidth: 2.5, tension: 0.2 },
-          { label: p.date, data: p.yields, borderColor: '#4a90d9', backgroundColor: 'transparent',
-            fill: false, pointRadius: 3, borderWidth: 1.8, borderDash: [4,3], tension: 0.2 }
+          ...(d1 ? [{ label: `${d1.date} (1d prior)`, data: d1.yields, borderColor: '#e07b54', backgroundColor: 'transparent',
+            fill: false, pointRadius: 3, borderWidth: 1.8, borderDash: [2,2], tension: 0.2 }] : []),
+          { label: `${p.date} (1m prior)`, data: p.yields, borderColor: '#4a90d9', backgroundColor: 'transparent',
+            fill: false, pointRadius: 3, borderWidth: 1.8, borderDash: [6,3], tension: 0.2 }
         ]
       },
       options: {
