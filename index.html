@@ -105,10 +105,25 @@
   @media(max-width:860px){.pc-layout{grid-template-columns:1fr}}
   /* news */
   .news-list{display:flex;flex-direction:column;gap:10px}
-  .ni{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:13px 16px;display:flex;flex-direction:column;gap:4px}
+  .ni{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:13px 16px;display:flex;flex-direction:column;gap:5px}
   .ni a{color:var(--ink);text-decoration:none;font-size:14px;font-weight:500;line-height:1.4}
   .ni a:hover{color:var(--dove2);text-decoration:underline}
   .ni .nm{font-size:11.5px;color:var(--muted)}
+  .ni .ntags{display:flex;flex-wrap:wrap;gap:4px;margin-top:2px}
+  .ntag{font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;letter-spacing:.03em;text-transform:uppercase}
+  .ntag-jgb-yield{background:#1a3a5c;color:#7fb3e8}
+  .ntag-monetary-policy{background:#3a1a1a;color:#f0876f}
+  .ntag-fiscal{background:#2a2a0e;color:#d9a441}
+  .ntag-fx-yen{background:#1a2e1a;color:#4cba7a}
+  .ntag-takaichi{background:#2a1a3a;color:#b47fe8}
+  .ntag-katayama{background:#1a2a3a;color:#6db1ff}
+  .ntag-ueda{background:#3a2a1a;color:#e8c26a}
+  .ntag-defense{background:#2e1a1a;color:#e07070}
+  /* news filter buttons */
+  .news-filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+  .nf{background:var(--card2);border:1px solid var(--line);color:var(--muted);font-size:11.5px;font-weight:600;padding:4px 11px;border-radius:20px;cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+  .nf:hover{background:var(--card);color:var(--ink)}
+  .nf.active{background:var(--ink);color:var(--bg);border-color:var(--ink)}
   /* data status table */
   .status-ok{color:#4cba7a;font-weight:700}.status-stale{color:var(--accent);font-weight:700}.status-missing{color:var(--hawk2);font-weight:700}
 </style>
@@ -228,10 +243,18 @@
         <h2>JGB 10Y yield <span id="jgb10Status"></span></h2>
         <canvas id="cJgb10" style="max-height:260px"></canvas>
       </div>
-      <div class="card full">
+      <div class="card">
         <h2>BOJ measures of underlying inflation (yoy %) <span id="inflStatus"></span></h2>
-        <canvas id="cInfl" style="max-height:300px"></canvas>
+        <canvas id="cInfl" style="max-height:280px"></canvas>
         <div class="note" id="inflNote">Source: BOJ Research. Ex-fresh food, ex-fresh food &amp; energy, ex-food &amp; energy (2020 base year).</div>
+      </div>
+      <div class="card">
+        <h2>Output gap &amp; potential growth <span id="gapStatus"></span></h2>
+        <div class="note" style="margin:0 0 6px;font-size:11px;color:var(--muted)">Output gap (quarterly, %)</div>
+        <canvas id="cOutputGap" style="max-height:140px"></canvas>
+        <div class="note" style="margin:12px 0 6px;font-size:11px;color:var(--muted)">Potential growth rate (semi-annual, y/y %)</div>
+        <canvas id="cPotGrowth" style="max-height:140px"></canvas>
+        <div class="note" id="gapNote" style="margin-top:8px">Source: BOJ Research. Output gap %; potential growth with TFP / capital / labour decomposition.</div>
       </div>
     </div>
     <div class="card" style="margin-top:16px">
@@ -247,8 +270,19 @@
   <!-- NEWS -->
   <div id="tab-news" class="panel">
     <div class="card">
-      <h2>Recent BOJ &amp; Japan macro news <span id="newsStatus"></span></h2>
-      <p class="note" style="margin-bottom:16px">Headlines from Google News for BOJ, Japan inflation, and JGB — refreshed daily. Click to read full article.</p>
+      <h2>BOJ &amp; Japan macro news <span id="newsStatus"></span></h2>
+      <p class="note" style="margin-bottom:14px">Focused coverage: JGB &amp; yields · monetary policy · fiscal risks · FX &amp; yen intervention · Takaichi · Katayama · Ueda · defense spending. Refreshed daily.</p>
+      <div class="news-filters" id="newsFilters">
+        <button class="nf active" data-tag="all">All</button>
+        <button class="nf" data-tag="jgb-yield">JGB &amp; Yields</button>
+        <button class="nf" data-tag="monetary-policy">Monetary Policy</button>
+        <button class="nf" data-tag="fiscal">Fiscal</button>
+        <button class="nf" data-tag="fx-yen">FX &amp; Yen</button>
+        <button class="nf" data-tag="takaichi">Takaichi</button>
+        <button class="nf" data-tag="katayama">Katayama</button>
+        <button class="nf" data-tag="ueda">Ueda</button>
+        <button class="nf" data-tag="defense">Defense</button>
+      </div>
       <div class="news-list" id="newsList"></div>
     </div>
   </div>
@@ -688,10 +722,82 @@ function renderMarkets(M) {
     });
   }
 
+  // ── Output gap & potential growth ─────────────────────────────────────────
+  document.getElementById('gapStatus').innerHTML = staleBadge(src.potential_growth?.status);
+  if (M.potential_growth) {
+    const pg = M.potential_growth;
+
+    // Output gap line chart
+    new Chart(document.getElementById('cOutputGap'), {
+      type: 'line',
+      data: {
+        labels: pg.output_gap.map(d => d.date),
+        datasets: [{
+          label: 'Output gap',
+          data: pg.output_gap.map(d => d.value),
+          borderColor: '#d9a441',
+          backgroundColor: ctx => {
+            const g = ctx.chart.ctx.createLinearGradient(0, 0, 0, 140);
+            g.addColorStop(0, 'rgba(217,164,65,0.25)');
+            g.addColorStop(1, 'rgba(217,164,65,0)');
+            return g;
+          },
+          fill: true,
+          pointRadius: 2,
+          borderWidth: 2,
+          tension: 0.2
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { ticks: { maxTicksLimit: 8, maxRotation: 30, font: { size: 10 } } },
+          y: {
+            ticks: { callback: v => v.toFixed(1)+'%', font: { size: 10 } },
+            grid: { color: 'rgba(255,255,255,0.06)' }
+          }
+        }
+      }
+    });
+
+    // Potential growth stacked bar decomposition
+    const pr = pg.potential_rate;
+    new Chart(document.getElementById('cPotGrowth'), {
+      type: 'bar',
+      data: {
+        labels: pr.map(d => d.date),
+        datasets: [
+          { label: 'TFP', data: pr.map(d => d.tfp),
+            backgroundColor: 'rgba(74,144,217,0.75)', stack: 'decomp' },
+          { label: 'Capital', data: pr.map(d => d.capital),
+            backgroundColor: 'rgba(122,204,140,0.75)', stack: 'decomp' },
+          { label: 'Hours', data: pr.map(d => d.hours),
+            backgroundColor: 'rgba(217,164,65,0.75)', stack: 'decomp' },
+          { label: 'Employed', data: pr.map(d => d.employed),
+            backgroundColor: 'rgba(185,120,200,0.75)', stack: 'decomp' },
+          { label: 'Potential growth', data: pr.map(d => d.value),
+            type: 'line', borderColor: '#ffffff', borderWidth: 2,
+            pointRadius: 2, tension: 0.2, fill: false, order: 0 }
+        ]
+      },
+      options: {
+        plugins: { legend: { position: 'top', labels: { font: { size: 10 }, boxWidth: 10 } } },
+        scales: {
+          x: { stacked: true, ticks: { maxTicksLimit: 8, maxRotation: 30, font: { size: 10 } } },
+          y: {
+            stacked: false,
+            ticks: { callback: v => v.toFixed(2)+'%', font: { size: 10 } },
+            grid: { color: 'rgba(255,255,255,0.06)' }
+          }
+        }
+      }
+    });
+  }
+
   // ── Source status table ───────────────────────────────────────────────────
   const labels = { jgb: 'MOF JGB yields', fx: 'FRED USD/JPY',
     nikkei: 'FRED Nikkei 225', us10y: 'FRED US 10Y', call_rate: 'FRED BOJ call rate',
-    inflation: 'BOJ core CPI xlsx', news: 'Google News RSS' };
+    inflation: 'BOJ core CPI xlsx', potential_growth: 'BOJ output gap / potential growth', news: 'Google News RSS' };
   document.getElementById('sourceStatus').innerHTML = Object.entries(src).map(([k, v]) => {
     const cls = v.status === 'ok' ? 'status-ok' : v.status === 'stale' ? 'status-stale' : 'status-missing';
     return `<tr>
@@ -704,24 +810,52 @@ function renderMarkets(M) {
   }).join('');
 }
 
+const TAG_LABELS = {
+  'jgb-yield': 'JGB & Yields', 'monetary-policy': 'Monetary Policy',
+  'fiscal': 'Fiscal', 'fx-yen': 'FX & Yen',
+  'takaichi': 'Takaichi', 'katayama': 'Katayama',
+  'ueda': 'Ueda', 'defense': 'Defense'
+};
+
+let _allNews = [];
+
 function renderNews(M) {
-  const news = M.news || [];
+  _allNews = M.news || [];
   document.getElementById('newsStatus').innerHTML = staleBadge(M.sources?.news?.status) +
     (M.sources?.news?.latest ? ` <span style="color:var(--muted);font-size:11px">as of ${esc(M.sources.news.latest)}</span>` : '');
-  if (!news.length) {
-    document.getElementById('newsList').innerHTML = '<p style="color:var(--muted)">No news available.</p>';
+
+  document.querySelectorAll('.nf').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.nf').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      paintNews(this.dataset.tag);
+    });
+  });
+
+  paintNews('all');
+}
+
+function paintNews(activeTag) {
+  const list = document.getElementById('newsList');
+  const items = activeTag === 'all' ? _allNews : _allNews.filter(n => (n.tags || []).includes(activeTag));
+  if (!items.length) {
+    list.innerHTML = '<p style="color:var(--muted)">No articles for this filter.</p>';
     return;
   }
-  document.getElementById('newsList').innerHTML = news.map(n => {
+  list.innerHTML = items.map(n => {
     const rel = n.published ? (() => {
       const diff = Math.round((Date.now() - new Date(n.published)) / 60000);
       if (diff < 60) return `${diff}m ago`;
       if (diff < 1440) return `${Math.round(diff/60)}h ago`;
       return `${Math.round(diff/1440)}d ago`;
     })() : '';
-    return `<div class="ni">
+    const tags = (n.tags || []).map(t =>
+      `<span class="ntag ntag-${esc(t)}">${esc(TAG_LABELS[t] || t)}</span>`
+    ).join('');
+    return `<div class="ni" data-tags="${esc((n.tags||[]).join(' '))}">
       <a href="${esc(n.link)}" target="_blank" rel="noopener">${esc(n.title)}</a>
       <div class="nm">${esc(n.source)}${rel ? ' · ' + rel : ''}${n.published ? ' · ' + n.published.slice(0,10) : ''}</div>
+      ${tags ? `<div class="ntags">${tags}</div>` : ''}
     </div>`;
   }).join('');
 }

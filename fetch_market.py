@@ -36,6 +36,7 @@ FRED_KEY = os.environ.get("FRED_API_KEY", "")
 MOF_CURRENT = "https://www.mof.go.jp/english/policy/jgbs/reference/interest_rate/jgbcme.csv"
 MOF_HISTORICAL = "https://www.mof.go.jp/english/policy/jgbs/reference/interest_rate/historical/jgbcme_all.csv"
 BOJ_CPI = "https://www.boj.or.jp/en/research/research_data/cpi/cpirev.xlsx"
+BOJ_GAP = "https://www.boj.or.jp/en/research/research_data/gap/gap.xlsx"
 
 HISTORY_DAYS = 400          # trading days kept for line charts
 CURVE_HISTORY_DAYS = 90     # daily full curves kept for curve comparison
@@ -193,11 +194,147 @@ def fetch_inflation(prev):
             "ex_fresh_energy": ex_fresh_energy, "ex_food_energy": ex_food_energy}
 
 
+def fetch_potential_growth(prev):
+    import openpyxl
+    r = get(BOJ_GAP)
+    wb = openpyxl.load_workbook(io.BytesIO(r.content), data_only=True)
+
+    # data1: quarterly output gap
+    ws1 = wb["data1"]
+    gap_rows = []
+    for row in ws1.iter_rows(min_row=6, values_only=True):
+        period, val = row[0], row[1]
+        if not isinstance(period, str) or not isinstance(val, (int, float)):
+            continue
+        gap_rows.append({"date": period, "value": round(val, 3)})
+    gap_rows = gap_rows[-24:]  # last 6 years of quarters
+    check(len(gap_rows) > 4, "output gap: too few rows")
+
+    # data2: semi-annual potential growth rate with decomposition
+    ws2 = wb["data2"]
+    pg_rows = []
+    for row in ws2.iter_rows(min_row=6, values_only=True):
+        period, rate, tfp, capital, hours, employed = row[0], row[1], row[2], row[3], row[4], row[5]
+        if not isinstance(period, str) or not isinstance(rate, (int, float)):
+            continue
+        label = period.split(":")[0].strip()  # e.g. "2025.2"
+        pg_rows.append({
+            "date": label,
+            "value": round(rate, 3),
+            "tfp": round(tfp, 3) if isinstance(tfp, (int, float)) else None,
+            "capital": round(capital, 3) if isinstance(capital, (int, float)) else None,
+            "hours": round(hours, 3) if isinstance(hours, (int, float)) else None,
+            "employed": round(employed, 3) if isinstance(employed, (int, float)) else None,
+        })
+    pg_rows = pg_rows[-20:]  # last ~10 years semi-annual
+    check(len(pg_rows) > 4, "potential growth: too few rows")
+
+    latest_gap = gap_rows[-1]["value"] if gap_rows else None
+    latest_pot = pg_rows[-1]["value"] if pg_rows else None
+    latest_date = pg_rows[-1]["date"] if pg_rows else None
+    check(latest_pot is not None, "potential growth: no latest value")
+
+    return {
+        "output_gap": gap_rows,
+        "potential_rate": pg_rows,
+        "latest_gap": latest_gap,
+        "latest_pot": latest_pot,
+        "latest_date": latest_date,
+    }
+
+
 NEWS_QUERIES = [
-    '"Bank of Japan" OR "BOJ" when:7d',
-    '"Japan inflation" OR "Japan CPI" when:7d',
-    '"JGB" OR "Japan government bond" yields when:7d',
+    # Source-specific queries — highest-quality outlets first
+    'site:reuters.com Japan BOJ OR yen OR JGB when:3d',
+    'site:bloomberg.com Japan BOJ OR yen OR JGB when:3d',
+    'site:ft.com Japan BOJ OR yen OR fiscal when:3d',
+    'site:wsj.com Japan BOJ OR yen OR JGB when:3d',
+    'site:asia.nikkei.com Japan BOJ OR yen OR JGB when:3d',
+    # Broader topic queries as fallback
+    '\"Bank of Japan\" OR \"BOJ\" Ueda when:3d',
+    '\"JGB\" OR \"Japan government bond\" yields when:3d',
+    '\"Japan inflation\" OR \"Japan CPI\" when:3d',
+    'Takaichi Japan economy OR fiscal OR BOJ when:3d',
+    'Katayama Japan yen OR intervention when:3d',
+    '\"Japan defense spending\" OR \"Japan rearmament\" when:3d',
+    '\"BOJ rate hike\" OR \"Bank of Japan rate\" when:3d',
+    '\"Japan yen\" intervention OR \"40-year\" when:3d',
 ]
+
+TAG_RULES = [
+    ("jgb-yield",       ["jgb", "government bond", "bond yield", "10-year jgb", "30-year jgb",
+                         "yield curve", "jgb auction", "coupon", "bond market", "yields rise",
+                         "yields fall", "benchmark yield"]),
+    ("monetary-policy", ["bank of japan", "boj", "rate hike", "policy rate", "monetary policy",
+                         "rate decision", "quantitative easing", "qe", "rate cut", "underlying inflation",
+                         "price stability"]),
+    ("fiscal",          ["fiscal", "budget", "national debt", "debt-to-gdp", "deficit", "fiscal spending",
+                         "investment blueprint", "economic blueprint", "tax revenue", "gdp growth target"]),
+    ("fx-yen",          ["yen", "fx intervention", "forex", "currency intervention", "exchange rate",
+                         "dollar/yen", "usd/jpy", "40-year low", "yen weakness", "yen slide"]),
+    ("takaichi",        ["takaichi"]),
+    ("katayama",        ["katayama"]),
+    ("ueda",            ["ueda"]),
+    ("defense",         ["defense spending", "defence spending", "military spending", "rearmament",
+                         "defense budget", "2% gdp", "security spending"]),
+]
+
+EXCLUDE_TITLE_WORDS = [
+    "ukraine", "russia", "missile assault", "crypto briefing", "bitcoin", "nba",
+    "world cup", "soccer", "football match", "spacex", "south korea", "taiwan ai",
+]
+
+TRUSTED_SOURCES = {
+    "bloomberg", "reuters", "financial times", "ft.com",
+    "wall street journal", "wsj", "nikkei", "nikkei asia",
+    "cnbc", "the economist", "barron's", "marketwatch",
+    "south china morning post", "scmp", "japan times",
+    "associated press", "ap", "new york times",
+}
+
+
+def is_trusted(source):
+    sl = source.lower()
+    return any(t in sl for t in TRUSTED_SOURCES)
+
+
+REQUIRED_WORDS = [
+    "japan", "boj", "jgb", "yen", "nikkei", "takaichi", "katayama", "ueda",
+    "bank of japan", "japanese", "tokyo",
+]
+
+
+def tag_item(title):
+    tl = title.lower()
+    tags = []
+    for tag, keywords in TAG_RULES:
+        if any(kw in tl for kw in keywords):
+            tags.append(tag)
+    return tags
+
+
+def is_relevant(title):
+    tl = title.lower()
+    if any(ex in tl for ex in EXCLUDE_TITLE_WORDS):
+        return False
+    # Tier 1: specific monetary/financial keyword — always relevant
+    FINANCIAL = [
+        "boj", "bank of japan", "jgb", "yen", "takaichi", "katayama", "ueda",
+        "rate hike", "rate cut", "monetary policy", "policy rate", "inflation",
+        "bond yield", "fiscal", "government bond", "currency intervention",
+        "fx intervention", "quantitative", "nikkei 225", "10-year", "30-year",
+        "40-year", "yield curve", "bond market", "interest rate",
+    ]
+    if any(kw in tl for kw in FINANCIAL):
+        return True
+    # Tier 2: Japan/Tokyo + at least one economy/market word
+    JAPAN_WORDS = ["japan", "japanese", "tokyo"]
+    ECONOMY_WORDS = ["economy", "economic", "finance", "financial", "market",
+                     "rate", "bond", "currency", "gdp", "budget", "debt",
+                     "trade", "export", "import", "wage", "price", "growth"]
+    if any(j in tl for j in JAPAN_WORDS) and any(e in tl for e in ECONOMY_WORDS):
+        return True
+    return False
 
 
 def fetch_news(prev):
@@ -227,11 +364,27 @@ def fetch_news(prev):
                 pub_iso = None
             if not src and " - " in title:
                 title, src = title.rsplit(" - ", 1)
-            items.append({"title": title.strip(), "link": link,
-                          "source": src or "Google News", "published": pub_iso})
+            title = title.strip()
+            if not is_relevant(title):
+                continue
+            tags = tag_item(title)
+            items.append({"title": title, "link": link,
+                          "source": src or "Google News", "published": pub_iso,
+                          "tags": tags})
     items = [i for i in items if i["published"]]
+    # Drop articles older than yesterday midnight UTC — keeps today + yesterday, excludes anything older
+    cutoff = (datetime.now(timezone.utc) - timedelta(days=1)).replace(
+        hour=0, minute=0, second=0, microsecond=0
+    ).strftime("%Y-%m-%dT%H:%M:%SZ")
+    items = [i for i in items if i["published"] >= cutoff]
     items.sort(key=lambda i: i["published"], reverse=True)
-    items = items[:25]
+    # Prefer trusted sources; fill with others only if fewer than 10 trusted items
+    trusted = [i for i in items if is_trusted(i["source"])]
+    others  = [i for i in items if not is_trusted(i["source"])]
+    if len(trusted) >= 10:
+        items = trusted[:30]
+    else:
+        items = (trusted + others)[:30]
     check(len(items) >= 3, f"news: only {len(items)} items")
     return items
 
@@ -239,13 +392,14 @@ def fetch_news(prev):
 # ── Orchestration with last-good fallback ────────────────────────────────────
 
 SOURCES = {
-    "jgb":       lambda prev: fetch_jgb(prev),
-    "fx":        lambda prev: fetch_fred_single("DEXJPUS", 50, 300, "USD/JPY"),
-    "nikkei":    lambda prev: fetch_fred_single("NIKKEI225", 5000, 200000, "Nikkei"),
-    "us10y":     lambda prev: fetch_fred_single("DGS10", 0, 20, "US 10Y"),
-    "call_rate": fetch_call_rate,
-    "inflation": fetch_inflation,
-    "news":      fetch_news,
+    "jgb":              lambda prev: fetch_jgb(prev),
+    "fx":               lambda prev: fetch_fred_single("DEXJPUS", 50, 300, "USD/JPY"),
+    "nikkei":           lambda prev: fetch_fred_single("NIKKEI225", 5000, 200000, "Nikkei"),
+    "us10y":            lambda prev: fetch_fred_single("DGS10", 0, 20, "US 10Y"),
+    "call_rate":        fetch_call_rate,
+    "inflation":        fetch_inflation,
+    "potential_growth": fetch_potential_growth,
+    "news":             fetch_news,
 }
 
 
@@ -255,6 +409,8 @@ def latest_date_of(key, section):
             return section["curve"]["date"]
         if key == "inflation":
             return section["months"][-1]
+        if key == "potential_growth":
+            return section["latest_date"]
         if key == "news":
             return section[0]["published"][:10]
         return section["history"][-1]["date"]
