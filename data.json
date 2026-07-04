@@ -384,6 +384,36 @@
   ],
   "timeline": [
     {
+      "date": "Apr 4, 2013",
+      "kind": "event",
+      "text": "Kuroda launches QQE (\"bazooka\"): 2% inflation target, JGB purchases doubled to ¥50tn/yr, monetary base targeted to double in 2 years."
+    },
+    {
+      "date": "Jan 29, 2016",
+      "kind": "dove",
+      "text": "NIRP introduced: BOJ adopts −0.1% policy rate on excess reserves — first negative rate in BOJ history."
+    },
+    {
+      "date": "Sep 21, 2016",
+      "kind": "event",
+      "text": "YCC introduced: BOJ targets 10-year JGB yield at ~0% alongside −0.1% short rate; marks shift from quantity- to rate-based QE."
+    },
+    {
+      "date": "Dec 20, 2022",
+      "kind": "event",
+      "text": "YCC band shock-widened from ±0.25% to ±0.5%: surprise move under Kuroda, widely seen as de facto tightening; 10Y yield surges."
+    },
+    {
+      "date": "Jul 28, 2023",
+      "kind": "event",
+      "text": "YCC upper limit raised to 1.0% (reference point, not hard cap): Ueda's first major tweak; 10Y yield allowed to drift toward 1%."
+    },
+    {
+      "date": "Mar 19, 2024",
+      "kind": "hike",
+      "text": "Historic pivot: NIRP ended (rate +0→0.1%), YCC formally scrapped, ETF new purchases halted — first rate hike since 2007 and end of 8 years of negative rates."
+    },
+    {
       "date": "Jul 31, 2024",
       "kind": "hike",
       "text": "Rate raised to 0.25%; JGB purchase-reduction plan announced."
