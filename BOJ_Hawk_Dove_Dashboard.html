@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BOJ Hawk–Dove Dashboard | July 2024 – June 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0f1522; --card:#171f31; --card2:#1c2740; --ink:#e8edf7; --muted:#93a1bd;
+    --hawk:#e2564a; --hawk2:#f0876f; --dove:#4a90d9; --dove2:#7fb3e8; --neutral:#b9c2d4;
+    --accent:#d9a441; --line:#2a3752;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);padding:28px 4vw 60px}
+  h1{font-size:26px;font-weight:700;letter-spacing:.3px}
+  h2{font-size:17px;font-weight:600;margin-bottom:14px;color:var(--ink)}
+  .sub{color:var(--muted);font-size:13.5px;margin-top:6px;max-width:900px;line-height:1.5}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:24px 0}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+  .kpi .v{font-size:24px;font-weight:700;color:var(--accent)}
+  .kpi .l{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.4}
+  .grid{display:grid;grid-template-columns:1.2fr 1fr;gap:16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
+  .full{grid-column:1/-1}
+  canvas{max-height:340px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+  .sp{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:15px 16px}
+  .sp .name{font-weight:700;font-size:14.5px}
+  .sp .role{font-size:11.5px;color:var(--muted);margin:2px 0 8px}
+  .tag{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 9px;border-radius:20px;margin-left:6px;vertical-align:middle}
+  .t-hawk{background:rgba(226,86,74,.18);color:var(--hawk2)}
+  .t-dove{background:rgba(74,144,217,.18);color:var(--dove2)}
+  .t-neutral{background:rgba(185,194,212,.15);color:var(--neutral)}
+  .sp .shift{font-size:12px;color:var(--accent);margin-bottom:7px}
+  .sp .q{font-size:12.5px;color:var(--muted);line-height:1.55;border-left:3px solid var(--line);padding-left:10px;font-style:italic}
+  table.board{width:100%;border-collapse:collapse;font-size:12.5px}
+  table.board th{background:var(--card2);color:var(--muted);text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px;padding:8px 10px;border-bottom:2px solid var(--line)}
+  table.board td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45}
+  table.board tr.gone td{opacity:.55}
+  .dh{color:var(--hawk2);font-weight:700}.dd{color:var(--dove2);font-weight:700}.dn{color:var(--muted)}
+  .chip{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px}
+  .c-mpm{background:rgba(217,164,65,.2);color:var(--accent)}
+  .c-out{background:rgba(226,86,74,.18);color:var(--hawk2)}
+  .c-opi{background:rgba(74,144,217,.18);color:var(--dove2)}
+  .c-min{background:rgba(185,194,212,.15);color:var(--neutral)}
+  tr.next td{background:rgba(217,164,65,.08)}
+  tr.next td:first-child{border-left:3px solid var(--accent)}
+  .tl{position:relative;margin-left:8px;padding-left:22px;border-left:2px solid var(--line)}
+  .ev{position:relative;padding:0 0 16px 0}
+  .ev:before{content:"";position:absolute;left:-28px;top:4px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+  .ev.hike:before{background:var(--hawk)}
+  .ev.dove:before{background:var(--dove)}
+  .ev .d{font-size:11.5px;color:var(--accent);font-weight:700}
+  .ev .t{font-size:13px;line-height:1.5;color:var(--ink)}
+  .foot{margin-top:26px;color:var(--muted);font-size:11.5px;line-height:1.7;max-width:1000px}
+  .foot a{color:var(--dove2)}
+  .legendnote{font-size:11.5px;color:var(--muted);margin-top:8px}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<h1>Bank of Japan — Hawk–Dove Assessment</h1>
+<div class="sub">Speeches and reports from the BOJ website, July 2024 – June 2026. Tone scored from −2 (strongly dovish) to +2 (strongly hawkish) per speaker per half-year, based on each speaker's own policy language in official speeches, MPM proposals/dissents, and Outlook Report framing.</div>
+<div style="margin-top:12px"><a href="BOJ_Auction_Calendar.html" style="color:var(--dove2);font-size:13px;text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:7px 14px;background:var(--card)">JGB Auction Calendar →</a></div>
+
+<div class="kpis">
+  <div class="kpi"><div class="v">1.00%</div><div class="l">Policy rate after June 16, 2026 hike — highest since 1995</div></div>
+  <div class="kpi"><div class="v">4 hikes</div><div class="l">Since exit from easing (Mar 2024): Jul '24, Jan '25, Dec '25, Jun '26</div></div>
+  <div class="kpi"><div class="v">Jul 30–31</div><div class="l">Next MPM (2026) — decision Jul 31, with a new Outlook Report; first vote for Sato, first Outlook at 1.00%</div></div>
+  <div class="kpi"><div class="v">Hawkish</div><div class="l">Net board drift: dovish dissenters replaced; doves now accept gradual hikes</div></div>
+  <div class="kpi"><div class="v">1 dissent</div><div class="l">Asada (PM Takaichi's first pick) voted to hold in June 2026 — a new dovish pole</div></div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h2>Policy rate path (uncollateralized overnight call rate, %)</h2>
+    <canvas id="rate"></canvas>
+  </div>
+  <div class="card">
+    <h2>Current spectrum (latest observed tone)</h2>
+    <canvas id="spectrum"></canvas>
+    <div class="legendnote">Red = hawkish, blue = dovish. Nakagawa left the board end-June 2026 (succeeded by Sato).</div>
+  </div>
+  <div class="card full">
+    <h2>Tone by speaker over time (−2 dove … +2 hawk)</h2>
+    <canvas id="tone" style="max-height:400px"></canvas>
+    <div class="legendnote">Gaps = no speech in period or not yet on the board. Nakamura (to Jun '25) and Adachi (to Mar '25) departed; Koeda, Masu, and Asada joined.</div>
+  </div>
+</div>
+
+<div class="card full" style="margin-top:16px">
+  <h2>Key speakers — how their tone changed</h2>
+  <div class="cards">
+    <div class="sp">
+      <div class="name">UEDA Kazuo <span class="tag t-hawk">Hawkish drift</span></div>
+      <div class="role">Governor</div>
+      <div class="shift">Patient normalizer → confident normalizer (≈ +0.5 → +1)</div>
+      <div class="q">"The Bank... will continue to raise the policy interest rate and adjust the degree of monetary accommodation." — Keidanren, Dec 25, 2025, a week after ending the 11-month tariff pause. Achievement of the 2% target "is steadily approaching."</div>
+    </div>
+    <div class="sp">
+      <div class="name">TAMURA Naoki <span class="tag t-hawk">Strong hawk</span></div>
+      <div class="role">Policy Board Member</div>
+      <div class="shift">Consistently the board's most hawkish voice (≈ +2 throughout)</div>
+      <div class="q">"It is quite possible that, as early as this spring, the price stability target... can be judged to have been achieved"; hike impact so far "extremely limited"; neutral rate "at least around 1 percent." — Kanagawa, Feb 13, 2026. Has since argued for moving toward a ~2% neutral.</div>
+    </div>
+    <div class="sp">
+      <div class="name">TAKATA Hajime <span class="tag t-hawk">Escalating hawk</span></div>
+      <div class="role">Policy Board Member</div>
+      <div class="shift">"Gear shift" advocate → proposed 1.0% hike at Jan 2026 MPM (≈ +1.5 → +2)</div>
+      <div class="q">"At the January 2026 MPM, I proposed that the Bank raise the policy interest rate to 1.0 percent as a further gear shift"; urged "communication that assumes that the price stability target is almost achieved." — Kyoto, Feb 26, 2026.</div>
+    </div>
+    <div class="sp">
+      <div class="name">HIMINO Ryozo <span class="tag t-hawk">Measured hawk</span></div>
+      <div class="role">Deputy Governor</div>
+      <div class="shift">Steady gradualist; intellectual groundwork for hikes (≈ +0.5 → +1)</div>
+      <div class="q">Jan 2025: "An Economy with Positive Interest Rates" preceded the Jan hike. Mar 2026: policy "should gradually shift to a more neutral stance through moderate policy rate hikes."</div>
+    </div>
+    <div class="sp">
+      <div class="name">UCHIDA Shinichi <span class="tag t-neutral">Dove → neutral</span></div>
+      <div class="role">Deputy Governor</div>
+      <div class="shift">Aug 2024 market-calmer → on-consensus (≈ −1 → 0)</div>
+      <div class="q">After the Aug 2024 market rout, pledged not to hike amid instability — the board's dovish anchor. By Jul 2025 (Kochi): standard guidance to keep raising rates if the outlook is realized. Fronted the June 2026 presser during Ueda's hospitalization.</div>
+    </div>
+    <div class="sp">
+      <div class="name">NOGUCHI Asahi <span class="tag t-dove">Softening dove</span></div>
+      <div class="role">Policy Board Member</div>
+      <div class="shift">Reflationist dove → reluctant gradualist (≈ −1.5 → −0.5)</div>
+      <div class="q">"The most realistic approach... is to conduct policy interest rate hikes incrementally"; a pace that is "too slow... increases the risk of destabilizing economic activity and prices." — Oita, Nov 27, 2025. A notable concession from the board's leading dove.</div>
+    </div>
+    <div class="sp">
+      <div class="name">NAKAGAWA Junko <span class="tag t-neutral">Centrist, late hawkish tilt</span></div>
+      <div class="role">Policy Board Member (term ended Jun 2026)</div>
+      <div class="shift">On-consensus throughout → reportedly called for a hike in Apr 2026 (≈ 0 → +0.5)</div>
+      <div class="q">"The Bank will continue to raise the policy interest rate... in response to improvement in economic and price developments." — Okayama, Nov 10, 2025. Succeeded by Sato from July 2026.</div>
+    </div>
+    <div class="sp">
+      <div class="name">KOEDA Junko <span class="tag t-hawk">New normalizer</span></div>
+      <div class="role">Policy Board Member (from Apr 2025, replaced dove Adachi)</div>
+      <div class="shift">Data-driven, leans hawkish from arrival (≈ +1)</div>
+      <div class="q">"Underlying inflation is about 2 percent"; "the Bank needs to proceed with interest rate normalization... to avoid creating unintended distortions." — Niigata, Nov 20, 2025.</div>
+    </div>
+    <div class="sp">
+      <div class="name">MASU Kazuyuki <span class="tag t-neutral">Cautious normalizer</span></div>
+      <div class="role">Policy Board Member (from mid-2025, replaced dove Nakamura)</div>
+      <div class="shift">Supports normalization, stresses caution (≈ +0.5)</div>
+      <div class="q">"I am convinced that continuing with further policy interest rate hikes will be needed to complete the normalization"... but "the Bank will therefore proceed cautiously with rate hikes." — Ehime, Feb 6, 2026.</div>
+    </div>
+    <div class="sp">
+      <div class="name">ASADA Toichiro <span class="tag t-dove">New dove</span></div>
+      <div class="role">Policy Board Member (2026; PM Takaichi's first BOJ pick)</div>
+      <div class="shift">Sole dissenter at the June 2026 hike (≈ −1.5)</div>
+      <div class="q">Voted to hold at 0.75% at only his second meeting, citing downside risks to production and employment — the clearest new dovish counterweight on the board.</div>
+    </div>
+    <div class="sp">
+      <div class="name">Departed doves <span class="tag t-dove">Board turnover</span></div>
+      <div class="role">NAKAMURA Toyoaki (to Jun 2025) · ADACHI Seiji (to Mar 2025)</div>
+      <div class="shift">Their exits shifted the board's center of gravity hawkish</div>
+      <div class="q">Nakamura repeatedly warned against premature tightening; Adachi urged patience. Their seats went to Masu and Koeda, both of whom back continued normalization.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card full" style="margin-top:16px">
+  <h2>Policy Board: tenure &amp; voting record (dissents, Jul 2024 – Jun 2026)</h2>
+  <table class="board">
+    <thead><tr><th>Member</th><th>Role</th><th>Tenure</th><th>Dissents</th><th>Voting record in window</th><th>Leaning</th></tr></thead>
+    <tbody>
+      <tr><td><b>UEDA Kazuo</b></td><td>Governor</td><td>Apr 2023 – Apr 2028</td><td class="dn">0</td><td>Chairman; in the majority at all meetings. Absent (hospitalized) for the Jun 2026 vote.</td><td><span class="tag t-hawk">Hawkish drift</span></td></tr>
+      <tr><td><b>HIMINO Ryozo</b></td><td>Deputy Governor</td><td>Mar 2023 – Mar 2028</td><td class="dn">0</td><td>Voted with the majority throughout.</td><td><span class="tag t-hawk">Measured hawk</span></td></tr>
+      <tr><td><b>UCHIDA Shinichi</b></td><td>Deputy Governor</td><td>Mar 2023 – Mar 2028</td><td class="dn">0</td><td>Voted with the majority throughout; fronted Jun 2026 presser.</td><td><span class="tag t-neutral">Neutral</span></td></tr>
+      <tr><td><b>TAMURA Naoki</b></td><td>Board Member</td><td>Jul 2022 – Jul 2027</td><td class="dh">4 hawkish</td><td>Dec 2024: proposed 0.5% · Jun 2025: opposed slowing the JGB taper · Sep &amp; Oct 2025: proposed 0.75%.</td><td><span class="tag t-hawk">Strong hawk</span></td></tr>
+      <tr><td><b>TAKATA Hajime</b></td><td>Board Member</td><td>Jul 2022 – Jul 2027</td><td class="dh">3 hawkish</td><td>Sep &amp; Oct 2025: proposed 0.75% · Jan 2026: proposed 1.0%.</td><td><span class="tag t-hawk">Escalating hawk</span></td></tr>
+      <tr><td><b>KOEDA Junko</b></td><td>Board Member</td><td>Apr 2025 – Mar 2030</td><td class="dn">0</td><td>Voted with the majority since joining.</td><td><span class="tag t-hawk">New normalizer</span></td></tr>
+      <tr><td><b>MASU Kazuyuki</b></td><td>Board Member</td><td>Jul 2025 – Jun 2030</td><td class="dn">0</td><td>Voted with the majority since joining.</td><td><span class="tag t-neutral">Cautious normalizer</span></td></tr>
+      <tr><td><b>ASADA Toichiro</b></td><td>Board Member</td><td>Apr 2026 – Mar 2031</td><td class="dd">1 dovish</td><td>Jun 2026: sole dissent against the hike to 1.00% (preferred hold), at his second meeting.</td><td><span class="tag t-dove">New dove</span></td></tr>
+      <tr><td><b>SATO Ayano</b></td><td>Board Member</td><td>Jun 2026 – Jun 2031</td><td class="dn">—</td><td>Joined end-June 2026 (replaced Nakagawa); no votes yet in window. Reported reflationist lean.</td><td><span class="tag t-dove">Expected dovish</span></td></tr>
+      <tr class="gone"><td><b>NAKAGAWA Junko</b></td><td>Board Member (departed)</td><td>Jun 2021 – Jun 2026</td><td class="dn">0</td><td>No formal dissents; reportedly urged a hike at the Apr 2026 hold.</td><td><span class="tag t-neutral">Centrist</span></td></tr>
+      <tr class="gone"><td><b>NOGUCHI Asahi</b></td><td>Board Member (departed)</td><td>Apr 2021 – Mar 2026</td><td class="dd">1 dovish</td><td>Jul 2024: dissented against the hike to 0.25%.</td><td><span class="tag t-dove">Softening dove</span></td></tr>
+      <tr class="gone"><td><b>NAKAMURA Toyoaki</b></td><td>Board Member (departed)</td><td>Jul 2020 – Jun 2025</td><td class="dd">2 dovish</td><td>Jul 2024: dissented against the hike to 0.25% · Jan 2025: dissented against the hike to 0.5%.</td><td><span class="tag t-dove">Dove</span></td></tr>
+      <tr class="gone"><td><b>ADACHI Seiji</b></td><td>Board Member (departed)</td><td>Mar 2020 – Mar 2025</td><td class="dn">0</td><td>Dovish rhetoric but voted with the majority in window.</td><td><span class="tag t-dove">Dove</span></td></tr>
+    </tbody>
+  </table>
+  <div class="legendnote">Dissent counts cover MPM votes July 2024 – June 2026 only (rate decisions plus the June 2025 JGB-taper vote). December 2025's hike to 0.75% was unanimous. Greyed rows = departed members.</div>
+</div>
+
+<div class="card full" style="margin-top:16px">
+  <h2>2026 calendar: MPMs &amp; key releases (remainder of year)</h2>
+  <table class="board">
+    <thead><tr><th>Date</th><th>Event</th><th>Relates to</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr class="next"><td><b>Jul 30–31 (Thu–Fri)</b></td><td><span class="chip c-mpm">MPM</span> Monetary Policy Meeting — decision Jul 31</td><td>—</td><td>Next meeting. First vote for Sato Ayano; first meeting with the rate at 1.00%.</td></tr>
+      <tr class="next"><td><b>Jul 31 (Fri)</b></td><td><span class="chip c-out">Outlook Report</span> The Bank's View</td><td>Jul MPM</td><td>Released immediately after the MPM; full text 2pm next business day. New GDP/CPI forecasts.</td></tr>
+      <tr><td>Aug 5 (Wed)</td><td><span class="chip c-min">Minutes</span></td><td>Jun 15–16 MPM</td><td>Full record of the 7–1 hike to 1.00%, incl. Asada's dissent. 8:50am JST.</td></tr>
+      <tr><td>Aug 10 (Mon)</td><td><span class="chip c-opi">Summary of Opinions</span></td><td>Jul MPM</td><td>Unattributed member opinions; 8:50am JST.</td></tr>
+      <tr><td>Sep 17–18 (Thu–Fri)</td><td><span class="chip c-mpm">MPM</span> Monetary Policy Meeting — decision Sep 18</td><td>—</td><td>No Outlook Report at this meeting.</td></tr>
+      <tr><td>Sep 28 (Mon)</td><td><span class="chip c-min">Minutes</span></td><td>Jul MPM</td><td>8:50am JST.</td></tr>
+      <tr><td>Oct 1 (Thu)</td><td><span class="chip c-opi">Summary of Opinions</span></td><td>Sep MPM</td><td>8:50am JST.</td></tr>
+      <tr><td>Oct 29–30 (Thu–Fri)</td><td><span class="chip c-mpm">MPM</span> Monetary Policy Meeting — decision Oct 30</td><td>—</td><td>With Outlook Report (Oct 30).</td></tr>
+      <tr><td>Nov 5 (Thu)</td><td><span class="chip c-min">Minutes</span></td><td>Sep MPM</td><td>8:50am JST.</td></tr>
+      <tr><td>Nov 10 (Tue)</td><td><span class="chip c-opi">Summary of Opinions</span></td><td>Oct MPM</td><td>8:50am JST.</td></tr>
+      <tr><td>Dec 17–18 (Thu–Fri)</td><td><span class="chip c-mpm">MPM</span> Monetary Policy Meeting — decision Dec 18</td><td>—</td><td>Final meeting of 2026; no Outlook Report.</td></tr>
+      <tr><td>Dec 23 (Wed)</td><td><span class="chip c-min">Minutes</span></td><td>Oct MPM</td><td>8:50am JST.</td></tr>
+      <tr><td>Dec 28 (Mon)</td><td><span class="chip c-opi">Summary of Opinions</span></td><td>Dec MPM</td><td>8:50am JST.</td></tr>
+    </tbody>
+  </table>
+  <div class="legendnote">Source: <a href="https://www.boj.or.jp/en/mopo/mpmsche_minu/index.htm" style="color:var(--dove2)">BOJ Monetary Policy Meetings schedule</a>. Outlook Reports accompany the Jan / Apr / Jul / Oct meetings. The Jun 15–16 Summary of Opinions was released Jun 24 (<a href="https://www.boj.or.jp/en/mopo/mpmsche_minu/opinion_2026/opi260616.pdf" style="color:var(--dove2)">PDF</a>).</div>
+</div>
+
+<div class="grid" style="margin-top:16px">
+  <div class="card full">
+    <h2>Timeline of key events</h2>
+    <div class="tl">
+      <div class="ev hike"><div class="d">Jul 31, 2024</div><div class="t">Rate raised to 0.25%; JGB purchase-reduction plan announced.</div></div>
+      <div class="ev dove"><div class="d">Aug 5–7, 2024</div><div class="t">Global market rout; Deputy Governor Uchida calms markets — no hikes while markets are unstable.</div></div>
+      <div class="ev hike"><div class="d">Jan 24, 2025</div><div class="t">Rate raised to 0.5% (highest since 2008), after Himino's and Ueda's signaling.</div></div>
+      <div class="ev"><div class="d">Apr 2025</div><div class="t">US tariff shock: Outlook Report cuts FY25 growth forecast from 1.1% to 0.5%; hiking cycle pauses.</div></div>
+      <div class="ev"><div class="d">Jun–Sep 2025</div><div class="t">JGB taper extended at gentler pace from Apr 2026; ETF/J-REIT sales decided (Sep). Jul: Japan–US trade agreement reduces uncertainty.</div></div>
+      <div class="ev"><div class="d">Sep &amp; Oct 2025</div><div class="t">Holds, but Tamura and Takata dissent at both meetings, proposing 0.75% — the hawks force the debate.</div></div>
+      <div class="ev"><div class="d">Oct 2025</div><div class="t">Takaichi government takes office; Oct Outlook: FY25 CPI 2.7%, FY26 1.8%, FY27 2.0%.</div></div>
+      <div class="ev hike"><div class="d">Dec 19, 2025</div><div class="t">Rate raised to 0.75% (unanimous) — first hike in 11 months; 10-year JGB yield tops 2%.</div></div>
+      <div class="ev"><div class="d">Jan 2026</div><div class="t">Hold, but Takata proposes going to 1.0%. Jan Outlook restores pre-tariff forecasts.</div></div>
+      <div class="ev"><div class="d">Apr 28, 2026</div><div class="t">Hold at 0.75% amid Iran-war worries; inflation forecast raised. Nakagawa reportedly calls for a hike.</div></div>
+      <div class="ev hike"><div class="d">Jun 16, 2026</div><div class="t">Rate raised to 1.00% (7–1; Asada dissents), highest since Sep 1995, amid yen weakness and large FX intervention. Uchida fronts the press conference with Ueda hospitalized.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="foot">
+  <b>Method.</b> Scores are qualitative judgments (−2 strong dove … +2 strong hawk) assigned per half-year from each speaker's official BOJ speeches (boj.or.jp "Speeches and Statements", 2024–2026 listings), MPM proposals and dissents cited in those speeches, and Outlook Report framing; corroborated with press coverage for events after the latest speeches. Primary sources include: Tamura (Feb 13, 2026, Kanagawa), Takata (Feb 26, 2026, Kyoto), Ueda (Dec 25, 2025, Keidanren), Noguchi (Nov 27, 2025, Oita), Nakagawa (Nov 10, 2025, Okayama), Koeda (Nov 20, 2025, Niigata), Masu (Feb 6, 2026, Ehime), Himino (Mar 2, 2026, Wakayama), Uchida (Jul 23, 2025, Kochi). News: CNBC (Dec 19, 2025; Jun 16, 2026), Japan Times (Jun 2026), Bloomberg (Jun 21, 2026); voting records from BOJ policy statements and press reports (Reuters/Investing.com on Sep–Oct 2025 dissents; investingLive Dec 29, 2025 on the unanimous December vote; Nippon.com/JIJI Apr 1, 2026 on Asada's appointment). Tenure dates per BOJ Policy Board announcements. This is an analytical assessment, not investment advice.
+</div>
+
+<script>
+const periods = ["H2 2024","H1 2025","H2 2025","H1 2026"];
+const speakers = [
+  {n:"Tamura",  c:"#e2564a", d:[2,2,1.5,2]},
+  {n:"Takata",  c:"#f0876f", d:[1.5,1.5,1.5,2]},
+  {n:"Ueda",    c:"#d9a441", d:[0.5,0.5,1,1]},
+  {n:"Himino",  c:"#e8c26a", d:[0.5,1,0.5,1]},
+  {n:"Koeda",   c:"#c97b4a", d:[null,null,1,1]},
+  {n:"Nakagawa",c:"#b9c2d4", d:[0,0,0,0.5]},
+  {n:"Masu",    c:"#8fa3c0", d:[null,null,null,0.5]},
+  {n:"Uchida",  c:"#7fb3e8", d:[-1,0,0,null]},
+  {n:"Noguchi", c:"#4a90d9", d:[-1.5,-1,-0.5,null]},
+  {n:"Nakamura",c:"#3568a8", d:[-2,-2,null,null]},
+  {n:"Adachi",  c:"#2c507e", d:[-1.5,null,null,null]},
+  {n:"Asada",   c:"#6db1ff", d:[null,null,null,-1.5]},
+];
+Chart.defaults.color = "#93a1bd";
+Chart.defaults.borderColor = "#2a3752";
+Chart.defaults.font.family = "'Segoe UI', system-ui, sans-serif";
+
+new Chart(document.getElementById('rate'), {
+  type:'line',
+  data:{labels:["Jul '24","Aug '24","Jan '25","Apr '25","Jul '25","Oct '25","Dec '25","Jan '26","Apr '26","Jun '26"],
+    datasets:[{label:"Policy rate", data:[0.25,0.25,0.5,0.5,0.5,0.5,0.75,0.75,0.75,1.0],
+      stepped:true, borderColor:"#d9a441", backgroundColor:"rgba(217,164,65,.12)", fill:true, pointRadius:4, borderWidth:2.5}]},
+  options:{plugins:{legend:{display:false}}, scales:{y:{min:0,max:1.2,ticks:{callback:v=>v+"%"}}}}
+});
+
+new Chart(document.getElementById('spectrum'), {
+  type:'bar',
+  data:{labels:["Tamura","Takata","Ueda","Himino","Koeda","Nakagawa","Masu","Uchida","Noguchi","Asada"],
+    datasets:[{data:[2,2,1,1,1,0.5,0.5,0,-0.5,-1.5],
+      backgroundColor:v=>{const x=v.raw; return x>0?"rgba(226,86,74,.75)":(x<0?"rgba(74,144,217,.75)":"rgba(185,194,212,.6)")},
+      borderRadius:4}]},
+  options:{indexAxis:'y', plugins:{legend:{display:false}}, scales:{x:{min:-2,max:2,title:{display:true,text:"← dove   |   hawk →"}}}}
+});
+
+new Chart(document.getElementById('tone'), {
+  type:'line',
+  data:{labels:periods, datasets:speakers.map(s=>({label:s.n,data:s.d,borderColor:s.c,backgroundColor:s.c,spanGaps:false,pointRadius:4,borderWidth:2,tension:.25}))},
+  options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:14}}},
+    scales:{y:{min:-2.3,max:2.3,ticks:{stepSize:1},title:{display:true,text:"−2 dove … +2 hawk"}}}}
+});
+</script>
+</body>
+</html>
