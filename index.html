@@ -624,14 +624,15 @@ function renderMarkets(M) {
   const fxChg = M.fx ? pctChange(M.fx.history, 5) : null;
   const nkChg = M.nikkei ? pctChange(M.nikkei.history, 5) : null;
   const spread = (jgb10 != null && jgb2 != null) ? (jgb10 - jgb2) : null;
+  const spread1030 = (jgb10 != null && jgb30 != null) ? (jgb30 - jgb10) : null;
 
   const mkpis = [
     { v: jgb10 != null ? jgb10.toFixed(3)+'%' : '—', l: `JGB 10Y (${M.jgb?.curve?.date || '?'})`, badge: staleBadge(src.jgb?.status) },
     { v: spread != null ? spread.toFixed(3)+'%' : '—', l: '2Y–10Y spread', badge: staleBadge(src.jgb?.status) },
     { v: jgb30 != null ? jgb30.toFixed(3)+'%' : '—', l: 'JGB 30Y', badge: staleBadge(src.jgb?.status) },
+    { v: spread1030 != null ? spread1030.toFixed(3)+'%' : '—', l: 'JGB 10Y–30Y spread', badge: staleBadge(src.jgb?.status) },
     { v: fxLast ? fxLast.value.toFixed(2) : '—', l: `USD/JPY (${fxLast?.date || '?'}) ${fmtChg(fxChg, '%')} 5d`, badge: staleBadge(src.fx?.status) },
     { v: nkLast ? Math.round(nkLast.value).toLocaleString() : '—', l: `Nikkei 225 (${nkLast?.date || '?'}) ${fmtChg(nkChg, '%')} 5d`, badge: staleBadge(src.nikkei?.status) },
-    { v: crLast ? crLast.value.toFixed(3)+'%' : '—', l: `BOJ call rate (${crLast?.date || '?'})`, badge: staleBadge(src.call_rate?.status) },
     { v: us10Last ? us10Last.value.toFixed(2)+'%' : '—', l: `US 10Y (${us10Last?.date || '?'})`, badge: staleBadge(src.us10y?.status) },
   ];
   document.getElementById('mktKpis').innerHTML = mkpis.map(k =>
