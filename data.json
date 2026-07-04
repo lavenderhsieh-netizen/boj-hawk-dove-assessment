@@ -245,22 +245,6 @@
       "quote": "After the Aug 2024 rout, pledged no hikes amid market instability. Fronted the June 2026 presser during Ueda's hospitalization."
     },
     {
-      "name": "NOGUCHI Asahi",
-      "role": "Board Member (term ended Mar 2026)",
-      "tag": "Softening dove",
-      "lean": "dove",
-      "shift": "Reflationist dove → reluctant gradualist (≈ −1.5 → −0.5)",
-      "quote": "\"The most realistic approach... is to conduct policy interest rate hikes incrementally\"; a pace that is \"too slow... increases the risk of destabilizing economic activity and prices.\" — Oita, Nov 27, 2025."
-    },
-    {
-      "name": "NAKAGAWA Junko",
-      "role": "Board Member (term ended Jun 2026)",
-      "tag": "Centrist, late hawk tilt",
-      "lean": "neutral",
-      "shift": "On-consensus throughout → reportedly called for a hike in Apr 2026 (≈ 0 → +0.5)",
-      "quote": "\"The Bank will continue to raise the policy interest rate... in response to improvement in economic and price developments.\" — Okayama, Nov 10, 2025. Succeeded by Sato Ayano."
-    },
-    {
       "name": "KOEDA Junko",
       "role": "Board Member (from Apr 2025)",
       "tag": "New normalizer",
@@ -283,6 +267,14 @@
       "lean": "dove",
       "shift": "Sole dissenter at the June 2026 hike (≈ −1.5)",
       "quote": "Voted to hold at 0.75% at his second meeting, citing downside risks to production and employment."
+    },
+    {
+      "name": "SATO Ayano",
+      "role": "Member",
+      "tag": "New — monitoring",
+      "lean": "dove",
+      "shift": "Joined Jun 2026 — inaugural tone: cautious/dovish",
+      "quote": "\"Inflation is not that strong by societal norms.\" / \"Need to watch for both downside risks to growth and upside risks to inflation.\" — Inaugural press conference, Jun 30, 2026"
     }
   ],
   "board": [
