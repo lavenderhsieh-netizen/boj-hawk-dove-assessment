@@ -663,8 +663,8 @@ function renderMarkets(M) {
         datasets: [
           { label: `${c.date} (current)`, data: c.yields, borderColor: '#d9a441', backgroundColor: 'rgba(217,164,65,.1)',
             fill: true, pointRadius: 4, borderWidth: 2.5, tension: 0.2 },
-          ...(d1 ? [{ label: `${d1.date} (1d prior)`, data: d1.yields, borderColor: '#e07b54', backgroundColor: 'transparent',
-            fill: false, pointRadius: 3, borderWidth: 1.8, borderDash: [2,2], tension: 0.2 }] : []),
+          ...(d1 ? [{ label: `${d1.date} (1d prior)`, data: d1.yields, borderColor: '#ff3d71', backgroundColor: 'transparent',
+            fill: false, pointRadius: 4, borderWidth: 2.5, borderDash: [6,3], tension: 0.2 }] : []),
           { label: `${p.date} (1m prior)`, data: p.yields, borderColor: '#4a90d9', backgroundColor: 'transparent',
             fill: false, pointRadius: 3, borderWidth: 1.8, borderDash: [6,3], tension: 0.2 }
         ]
