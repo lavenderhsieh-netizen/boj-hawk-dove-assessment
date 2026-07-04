@@ -490,14 +490,17 @@ function render(D) {
     ];
     const field = document.getElementById('sp2dField');
     const XMIN=-2, XMAX=2, YMIN=-2, YMAX=2;
+    const PAD = 16; // % padding so edge members aren't clipped
     const borderFor = y =>
       y >= 1.5 ? 'var(--hawk)' :
       y >= 0.5 ? 'var(--hawk2)' :
       y >= -0.5 ? 'var(--neutral)' :
       y >= -1.0 ? 'var(--dove2)' : 'var(--dove)';
     members2d.forEach(m => {
-      const px = ((m.x - XMIN) / (XMAX - XMIN) * 100).toFixed(2) + '%';
-      const py = ((YMAX - m.y) / (YMAX - YMIN) * 100).toFixed(2) + '%';
+      const rawX = (m.x - XMIN) / (XMAX - XMIN);
+      const rawY = (YMAX - m.y) / (YMAX - YMIN);
+      const px = (PAD + rawX * (100 - 2*PAD)).toFixed(2) + '%';
+      const py = (PAD + rawY * (100 - 2*PAD)).toFixed(2) + '%';
       const div = document.createElement('div');
       div.className = 'sp2d-member';
       div.style.left = px;
