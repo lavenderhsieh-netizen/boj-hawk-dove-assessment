@@ -48,19 +48,6 @@
   .t-dove{background:rgba(74,144,217,.18);color:var(--dove2)}
   .t-neutral-dove{background:rgba(74,144,217,.09);color:var(--dove2);opacity:.8}
   .t-neutral{background:rgba(185,194,212,.15);color:var(--neutral)}
-  /* 2D photo spectrum */
-  .sp2d-wrap{position:relative;width:100%;padding-bottom:62%;background:var(--card2);border-radius:10px;overflow:hidden;margin-bottom:6px}
-  .sp2d-axis-y{position:absolute;left:0;top:0;bottom:0;width:48px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;padding:10px 4px;font-size:10px;font-weight:700;color:var(--muted);z-index:2;pointer-events:none}
-  .sp2d-axis-x{position:absolute;left:48px;right:0;bottom:0;height:32px;display:flex;justify-content:space-between;align-items:center;padding:0 40px;font-size:10px;font-weight:700;color:var(--muted);z-index:2;pointer-events:none}
-  .sp2d-field{position:absolute;left:48px;right:0;top:0;bottom:32px}
-  .sp2d-line-h{position:absolute;left:0;right:0;top:50%;border-top:1px dashed rgba(185,194,212,.25);pointer-events:none}
-  .sp2d-line-v{position:absolute;top:0;bottom:0;left:50%;border-left:1px dashed rgba(185,194,212,.25);pointer-events:none}
-  .sp2d-member{position:absolute;transform:translate(-50%,-50%);text-align:center;cursor:default;z-index:3}
-  .sp2d-member img{display:block;width:96px;height:96px;border-radius:50%;object-fit:cover;margin:0 auto;border:3px solid var(--neutral);box-shadow:0 2px 8px rgba(0,0,0,.35)}
-  .sp2d-member .sp2d-name{font-size:9.5px;font-weight:700;color:var(--muted);margin-top:3px;white-space:nowrap;text-shadow:0 1px 3px rgba(0,0,0,.6)}
-  .sp2d-member:hover img{transform:scale(1.12);transition:.15s}
-  .sp2d-lbl-hawk{position:absolute;top:6px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:800;color:var(--hawk2);letter-spacing:1.5px;pointer-events:none}
-  .sp2d-lbl-dove{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:800;color:var(--dove2);letter-spacing:1.5px;pointer-events:none}
   /* tables */
   table{width:100%;border-collapse:collapse;font-size:12.5px}
   th{background:var(--card2);color:var(--muted);text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px;padding:8px 10px;border-bottom:2px solid var(--line)}
@@ -195,25 +182,6 @@
 
   <!-- BOARD -->
   <div id="tab-board" class="panel">
-    <div class="card">
-      <h2>Policy Board: hawk ↔ dove scatter</h2>
-      <div class="sp2d-wrap" id="sp2dWrap">
-        <div class="sp2d-axis-y">
-          <span style="color:var(--hawk2)">▲ HAWK</span>
-          <span>0</span>
-          <span style="color:var(--dove2)">▼ DOVE</span>
-        </div>
-        <div class="sp2d-field" id="sp2dField">
-          <div class="sp2d-line-h"></div>
-          <div class="sp2d-line-v"></div>
-        </div>
-        <div class="sp2d-axis-x">
-          <span>← Inflation focus</span>
-          <span>Financial stability →</span>
-        </div>
-      </div>
-      <div class="note" style="margin-top:4px">Y-axis: hawk-dove score (−2 … +2). X-axis: qualitative assessment of primary policy priority — inflation normalisation vs. financial stability caution. Source: BOJ speeches, dissent records. Photos: Bank of Japan.</div>
-    </div>
     <div class="card">
       <h2>Policy Board: tenure &amp; voting record</h2>
       <div style="overflow-x:auto"><table id="boardTable">
@@ -473,43 +441,6 @@ function render(D) {
       scales: { y: { min: -2.3, max: 2.3, ticks: { stepSize: 1 }, title: { display: true, text: '−2 dove … +2 hawk' } } }
     }
   });
-
-  // 2D photo spectrum
-  (function() {
-    // x = inflation focus (-2) ↔ financial stability (+2), y = hawk-dove score
-    const members2d = [
-      { name:"Tamura",  photo:"tamura",  y: 2.0,  x:-1.5 },
-      { name:"Takata",  photo:"takata",  y: 2.0,  x:-0.5 },
-      { name:"Koeda",   photo:"koeda",   y: 1.5,  x: 1.0 },
-      { name:"Ueda",    photo:"ueda",    y: 1.0,  x:-0.5 },
-      { name:"Himino",  photo:"himino",  y: 1.0,  x: 0.5 },
-      { name:"Masu",    photo:"masu",    y: 0.5,  x: 1.0 },
-      { name:"Uchida",  photo:"uchida",  y: 0.0,  x: 0.7 },
-      { name:"Sato",    photo:"sato",    y:-0.5,  x:-0.5 },
-      { name:"Asada",   photo:"asada",   y:-1.5,  x:-1.2 },
-    ];
-    const field = document.getElementById('sp2dField');
-    const XMIN=-2, XMAX=2, YMIN=-2, YMAX=2;
-    const PAD = 16; // % padding so edge members aren't clipped
-    const borderFor = y =>
-      y >= 1.5 ? 'var(--hawk)' :
-      y >= 0.5 ? 'var(--hawk2)' :
-      y >= -0.5 ? 'var(--neutral)' :
-      y >= -1.0 ? 'var(--dove2)' : 'var(--dove)';
-    members2d.forEach(m => {
-      const rawX = (m.x - XMIN) / (XMAX - XMIN);
-      const rawY = (YMAX - m.y) / (YMAX - YMIN);
-      const px = (PAD + rawX * (100 - 2*PAD)).toFixed(2) + '%';
-      const py = (PAD + rawY * (100 - 2*PAD)).toFixed(2) + '%';
-      const div = document.createElement('div');
-      div.className = 'sp2d-member';
-      div.style.left = px;
-      div.style.top  = py;
-      div.title = `${m.name} | hawk-dove: ${m.y > 0 ? '+' : ''}${m.y}`;
-      div.innerHTML = `<img src="photos/${m.photo}.jpg" style="border-color:${borderFor(m.y)}" alt="${m.name}"><div class="sp2d-name">${m.name}</div>`;
-      field.appendChild(div);
-    });
-  })();
 
   // Speaker cards
   document.getElementById('speakers').innerHTML = D.speakers.map(s => `
