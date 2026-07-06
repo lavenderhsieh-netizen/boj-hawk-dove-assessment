@@ -34,6 +34,8 @@ COVERAGE = {
 EXCLUDE_TITLE_KEYWORDS = [
     "AI Semi", "Asia Semi", "semiconductor", "Asia AI",
     "China Tech", "Korea Tech", "Taiwan", "DRAM", "NAND",
+    "Global Autos", "Notice of change in analyst",
+    "Japan Research Pack", "crude oil", "naphtha",
 ]
 
 EVAL_JS = r"""(function() {
@@ -110,21 +112,23 @@ def scrape_analyst(name):
             time.sleep(0.5)
             snap = snapshot()
 
-    # Expand Analyst filter section
-    m = re.search(r'sectionheader "Analyst".*?ref=(e\d+)', snap)
+    # The Analyst filter section is expanded by default on page load.
+    # Do NOT click the sectionheader — that collapses it. Just use the searchbox directly.
+    m = re.search(r'(?:searchbox|textbox)[^"]*"Analyst name[^"]*".*?ref=(e\d+)', snap)
     if not m:
-        print(f"    WARNING: no analyst filter found")
+        # Section may be collapsed — click header once to expand, then re-snapshot
+        mh = re.search(r'sectionheader "Analyst".*?ref=(e\d+)', snap)
+        if mh:
+            ab("click", f"@{mh.group(1)}")
+            time.sleep(0.8)
+            snap = snapshot()
+            m = re.search(r'(?:searchbox|textbox)[^"]*"Analyst name[^"]*".*?ref=(e\d+)', snap)
+    if not m:
+        print(f"    WARNING: no analyst search box found")
         return []
-    ab("click", f"@{m.group(1)}")
-    time.sleep(0.8)
+    ab("fill", f"@{m.group(1)}", name)
+    time.sleep(1.5)
     snap = snapshot()
-
-    # Fill analyst name search
-    m = re.search(r'Analyst name.*?ref=(e\d+)', snap)
-    if m:
-        ab("fill", f"@{m.group(1)}", name)
-        time.sleep(1.5)
-        snap = snapshot()
 
     # Click the generic analyst name option
     pattern = rf'generic "{re.escape(name)}".*?ref=(e\d+)'
