@@ -112,27 +112,39 @@ def scrape_analyst(name):
             time.sleep(0.5)
             snap = snapshot()
 
-    # The Analyst filter section is expanded by default on page load.
-    # Do NOT click the sectionheader — that collapses it. Just use the searchbox directly.
-    m = re.search(r'(?:searchbox|textbox)[^"]*"Analyst name[^"]*".*?ref=(e\d+)', snap)
+    # Wait for the Analyst filter searchbox (up to 12s — cold start takes longer)
+    searchbox_pat = r'(?:searchbox|textbox)[^"]*"Analyst name[^"]*".*?ref=(e\d+)'
+    m = re.search(searchbox_pat, snap)
+    for _ in range(4):
+        if m:
+            break
+        time.sleep(3)
+        snap = snapshot()
+        m = re.search(searchbox_pat, snap)
     if not m:
-        # Section may be collapsed — click header once to expand, then re-snapshot
+        # Section may be collapsed — click header once to expand, then retry
         mh = re.search(r'sectionheader "Analyst".*?ref=(e\d+)', snap)
         if mh:
             ab("click", f"@{mh.group(1)}")
-            time.sleep(0.8)
+            time.sleep(1.5)
             snap = snapshot()
-            m = re.search(r'(?:searchbox|textbox)[^"]*"Analyst name[^"]*".*?ref=(e\d+)', snap)
+            m = re.search(searchbox_pat, snap)
     if not m:
         print(f"    WARNING: no analyst search box found")
         return []
     ab("fill", f"@{m.group(1)}", name)
-    time.sleep(1.5)
+    time.sleep(2.5)
     snap = snapshot()
 
-    # Click the generic analyst name option
+    # Click the generic analyst name option (retry up to 3x for slow dropdowns)
     pattern = rf'generic "{re.escape(name)}".*?ref=(e\d+)'
     m = re.search(pattern, snap)
+    for _ in range(3):
+        if m:
+            break
+        time.sleep(2)
+        snap = snapshot()
+        m = re.search(pattern, snap)
     if not m:
         # Fallback: any line with the analyst name
         for line in snap.splitlines():
