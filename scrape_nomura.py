@@ -288,7 +288,19 @@ def main():
             # Sort by date descending so latest reports appear first in the UI
             deduped.sort(key=lambda r: parse_date_key(r.get("date", "")), reverse=True)
 
-            if deduped:
+            # Quality gate: if the analyst filter silently failed, Nomura returns
+            # unfiltered homepage content — many reports will be non-Japan noise.
+            # If >60% of raw results were irrelevant, treat it as a filter failure
+            # and fall back to existing data rather than saving junk.
+            raw_count = len(reports)
+            pass_rate = len(filtered) / raw_count if raw_count else 1.0
+            filter_failed = raw_count >= 3 and pass_rate < 0.4
+
+            if filter_failed:
+                kept = existing.get(analyst, [])
+                all_reports[analyst] = kept
+                print(f"    QUALITY GATE: {len(filtered)}/{raw_count} passed ({pass_rate:.0%}) — likely filter failure, kept {len(kept)} existing reports")
+            elif deduped:
                 all_reports[analyst] = deduped
             else:
                 # Keep existing data rather than blanking on scrape failure
