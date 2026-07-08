@@ -29,13 +29,37 @@ COVERAGE = {
     "Uichiro Nozaki":   "Japan Macro / Fiscal",
 }
 
-# Reports whose titles contain any of these keywords are not Japan macro/rates/FX
-# and should be excluded (e.g. Asia tech/semiconductor reports that appear cross-listed)
+# Reports whose titles contain any of these keywords are clearly not Japan macro/rates/FX
 EXCLUDE_TITLE_KEYWORDS = [
+    # Tech/semi
     "AI Semi", "Asia Semi", "semiconductor", "Asia AI",
-    "China Tech", "Korea Tech", "Taiwan", "DRAM", "NAND",
-    "Global Autos", "Notice of change in analyst",
-    "Japan Research Pack", "crude oil", "naphtha",
+    "China Tech", "Korea Tech", "DRAM", "NAND",
+    # Autos/energy
+    "Global Autos", "crude oil", "naphtha",
+    # Admin noise
+    "Notice of change in analyst", "Japan Research Pack",
+    # Non-Japan geographies
+    "India", " HK)", "(HK)", "Hong Kong", "Taiwan",
+    "Korea", "China", "France", "Germany", "Europe",
+    "Singapore", "Indonesia", "Philippines", "Thailand",
+    "Vietnam", "Malaysia", "Mexico", "Brazil", "Middle East",
+    "Africa", "Australia", "UK)", "(UK)", "United Kingdom",
+    "ASEAN", "EM ", " EM)", "Asia ex",
+    # Equity/sector research clearly unrelated to Japan macro
+    "Quick Note -", "pharma", "Pharma", "insurance", "Insurance",
+    "AMC", "electric vehicle", "Sinobio", "AstraZeneca",
+    "Ather Energy",
+]
+
+# For macro-focused analysts, titles must contain at least one Japan-related keyword
+# (Goto/Shishido are FX/rates so they're allowed broader global macro context)
+JAPAN_MACRO_ANALYSTS = {
+    "Kyohei Morita", "Masaki Kuwahara", "Mari Iwashita", "Uichiro Nozaki"
+}
+JAPAN_KEYWORDS = [
+    "Japan", "BOJ", "Bank of Japan", "JGB", "JPY", "Yen", "yen",
+    "Nikkei", "Tokyo", "Abenomics", "Kishida", "Takaichi", "Ueda",
+    "monetary policy", "Fiscal Insight", "BOJ Watch",
 ]
 
 EVAL_JS = r"""(function() {
@@ -213,7 +237,14 @@ def parse_date_key(date_str: str):
 def is_relevant(report: dict) -> bool:
     """Return False for reports that are clearly not Japan macro/rates/FX."""
     title = report.get("title", "")
-    return not any(kw.lower() in title.lower() for kw in EXCLUDE_TITLE_KEYWORDS)
+    analyst = report.get("analyst", "")
+    if any(kw.lower() in title.lower() for kw in EXCLUDE_TITLE_KEYWORDS):
+        return False
+    # For Japan macro analysts, require at least one Japan-related keyword in the title
+    if analyst in JAPAN_MACRO_ANALYSTS:
+        if not any(kw.lower() in title.lower() for kw in JAPAN_KEYWORDS):
+            return False
+    return True
 
 
 def load_existing() -> dict:
