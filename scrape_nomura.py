@@ -175,31 +175,39 @@ def scrape_analyst(name):
         print(f"    WARNING: no analyst search box found")
         return []
     ab("fill", f"@{m.group(1)}", name)
-    time.sleep(3)
-    snap = snapshot()
+    time.sleep(2.5)
 
-    # Click the generic analyst name option (retry up to 5x for slow dropdowns)
-    pattern = rf'generic "{re.escape(name)}".*?ref=(e\d+)'
-    m = re.search(pattern, snap)
+    # Use JS to click the analyst suggestion — snapshot ref matching is unreliable
+    # because the dropdown item appears as unlabelled `generic [ref=eN] clickable`
+    js_click = (
+        "(function(name){"
+        "const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);"
+        "let node;"
+        "while(node=walker.nextNode()){"
+        "if(node.nodeValue&&node.nodeValue.trim()===name){"
+        "let el=node.parentElement;"
+        "while(el&&el!==document.body){"
+        "if(el.onclick||el.getAttribute('onclick')||el.style.cursor==='pointer'){"
+        "el.click();return 'clicked:'+el.tagName;"
+        "}"
+        "el=el.parentElement;"
+        "}"
+        "}"
+        "}"
+        "return 'not found';"
+        f"}})(\"{name}\")"
+    )
+    # Retry up to 5x for slow dropdowns
+    clicked = False
     for _ in range(5):
-        if m:
+        result = ab("eval", js_click, timeout=8)
+        if "clicked" in str(result):
+            clicked = True
             break
-        time.sleep(2.5)
-        snap = snapshot()
-        m = re.search(pattern, snap)
-    if not m:
-        # Fallback: any line with the analyst name
-        for line in snap.splitlines():
-            if name in line and 'sectionheader' not in line and 'searchbox' not in line:
-                m2 = re.search(r'ref=(e\d+)', line)
-                if m2:
-                    ab("click", f"@{m2.group(1)}")
-                    break
-        else:
-            print(f"    WARNING: no option found for {name}")
-            return []
-    else:
-        ab("click", f"@{m.group(1)}")
+        time.sleep(2)
+    if not clicked:
+        print(f"    WARNING: could not click suggestion for {name}")
+        return []
 
     time.sleep(3.5)
 
