@@ -323,7 +323,12 @@ TRUSTED_SOURCES = {
     "cnbc", "the economist", "barron's", "marketwatch",
     "south china morning post", "scmp",
     "associated press", "ap", "new york times",
+    # Forex/macro news (person-specific coverage)
+    "fxstreet",
 }
+
+# Person tags that must appear in the feed when an article exists
+PERSON_TAGS = {"kiuchi", "ueda", "takaichi", "katayama"}
 
 
 def is_blocked(source):
@@ -417,6 +422,7 @@ def fetch_news(prev):
     ).strftime("%Y-%m-%dT%H:%M:%SZ")
     items = [i for i in items if i["published"] >= cutoff]
     items.sort(key=lambda i: i["published"], reverse=True)
+    all_candidates = list(items)  # keep full pool for person guarantee
     # Prefer trusted sources; fill with others only if fewer than 10 trusted items
     trusted = [i for i in items if is_trusted(i["source"])]
     others  = [i for i in items if not is_trusted(i["source"])]
@@ -424,6 +430,17 @@ def fetch_news(prev):
         items = trusted[:30]
     else:
         items = (trusted + others)[:30]
+    # Person guarantee — ensure at least 1 article per tracked official appears
+    selected_links = {i["link"] for i in items}
+    final_tags = {t for i in items for t in i.get("tags", [])}
+    for person in PERSON_TAGS:
+        if person not in final_tags:
+            for candidate in all_candidates:
+                if person in candidate.get("tags", []) and candidate["link"] not in selected_links:
+                    items.append(candidate)
+                    selected_links.add(candidate["link"])
+                    break
+    items.sort(key=lambda i: i["published"], reverse=True)
     check(len(items) >= 3, f"news: only {len(items)} items")
     return items
 
