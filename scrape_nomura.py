@@ -271,8 +271,6 @@ def load_existing() -> dict:
 def main():
     existing = load_existing()
     all_reports = {}
-    # Track seen URLs to prevent the same report appearing under multiple analysts
-    seen_urls: set[str] = set()
 
     for analyst in ANALYSTS:
         try:
@@ -281,19 +279,8 @@ def main():
             if len(filtered) < len(reports):
                 print(f"    Filtered {len(reports) - len(filtered)} non-Japan report(s)")
 
-            # Deduplicate: remove any report whose URL already appeared under a prior analyst
-            deduped = []
-            for r in filtered:
-                url = r.get("url", "")
-                if url and url in seen_urls:
-                    continue
-                deduped.append(r)
-                if url:
-                    seen_urls.add(url)
-            if len(deduped) < len(filtered):
-                print(f"    Deduped {len(filtered) - len(deduped)} cross-analyst duplicate(s)")
-
             # Sort by date descending so latest reports appear first in the UI
+            deduped = filtered
             deduped.sort(key=lambda r: parse_date_key(r.get("date", "")), reverse=True)
 
             # Quality gate: if the analyst filter silently failed, Nomura returns
