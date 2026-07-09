@@ -120,6 +120,7 @@
   .ntag-takaichi{background:#2a1a3a;color:#b47fe8}
   .ntag-katayama{background:#1a2a3a;color:#6db1ff}
   .ntag-ueda{background:#3a2a1a;color:#e8c26a}
+  .ntag-kiuchi{background:#1a3a2a;color:#5ed4a0}
   .ntag-defense{background:#2e1a1a;color:#e07070}
   /* news filter buttons */
   .news-filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
@@ -284,7 +285,7 @@
   <div id="tab-news" class="panel">
     <div class="card">
       <h2>BOJ &amp; Japan macro news <span id="newsStatus"></span></h2>
-      <p class="note" style="margin-bottom:14px">Focused coverage: JGB &amp; yields · monetary policy · fiscal risks · FX &amp; yen intervention · Takaichi · Katayama · Ueda · defense spending. Refreshed daily.</p>
+      <p class="note" style="margin-bottom:14px">Focused coverage: JGB &amp; yields · monetary policy · fiscal risks · FX &amp; yen intervention · Takaichi · Katayama · Ueda · Kiuchi (ex-BOJ/NRI) · defense spending. Refreshed daily.</p>
       <div class="news-filters" id="newsFilters">
         <button class="nf active" data-tag="all">All</button>
         <button class="nf" data-tag="jgb-yield">JGB &amp; Yields</button>
@@ -294,6 +295,7 @@
         <button class="nf" data-tag="takaichi">Takaichi</button>
         <button class="nf" data-tag="katayama">Katayama</button>
         <button class="nf" data-tag="ueda">Ueda</button>
+        <button class="nf" data-tag="kiuchi">Kiuchi</button>
         <button class="nf" data-tag="defense">Defense</button>
       </div>
       <div class="news-list" id="newsList"></div>
@@ -875,7 +877,7 @@ const TAG_LABELS = {
   'jgb-yield': 'JGB & Yields', 'monetary-policy': 'Monetary Policy',
   'fiscal': 'Fiscal', 'fx-yen': 'FX & Yen',
   'takaichi': 'Takaichi', 'katayama': 'Katayama',
-  'ueda': 'Ueda', 'defense': 'Defense'
+  'ueda': 'Ueda', 'kiuchi': 'Kiuchi', 'defense': 'Defense'
 };
 
 let _allNews = [];

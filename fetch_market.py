@@ -275,6 +275,7 @@ NEWS_QUERIES = [
     '\"JGB\" OR \"Japan government bond\" yields when:3d',
     '\"Japan inflation\" OR \"Japan CPI\" when:3d',
     'Takaichi Japan economy OR fiscal OR BOJ when:3d',
+    '"Takahide Kiuchi" OR "Kiuchi" BOJ OR NRI OR Japan economy when:7d',  # Kiuchi (ex-BOJ, now NRI)
     '\"BOJ rate hike\" OR \"Bank of Japan rate\" when:3d',
 ]
 
@@ -292,6 +293,7 @@ TAG_RULES = [
     ("takaichi",        ["takaichi"]),
     ("katayama",        ["katayama"]),
     ("ueda",            ["ueda"]),
+    ("kiuchi",          ["kiuchi"]),
     ("defense",         ["defense spending", "defence spending", "military spending", "rearmament",
                          "defense budget", "2% gdp", "security spending"]),
 ]
@@ -335,7 +337,7 @@ def is_trusted(source):
 
 REQUIRED_WORDS = [
     "japan", "boj", "jgb", "yen", "nikkei", "takaichi", "katayama", "ueda",
-    "bank of japan", "japanese", "tokyo",
+    "bank of japan", "japanese", "tokyo", "kiuchi",
 ]
 
 
@@ -409,8 +411,8 @@ def fetch_news(prev):
                           "source": src or "Google News", "published": pub_iso,
                           "tags": tags})
     items = [i for i in items if i["published"]]
-    # Drop articles older than yesterday midnight UTC — keeps today + yesterday, excludes anything older
-    cutoff = (datetime.now(timezone.utc) - timedelta(days=1)).replace(
+    # Drop articles older than 2 days back midnight UTC — handles holiday gaps (e.g. US 4th July)
+    cutoff = (datetime.now(timezone.utc) - timedelta(days=2)).replace(
         hour=0, minute=0, second=0, microsecond=0
     ).strftime("%Y-%m-%dT%H:%M:%SZ")
     items = [i for i in items if i["published"] >= cutoff]
