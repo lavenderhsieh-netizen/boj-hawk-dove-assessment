@@ -416,13 +416,18 @@ def fetch_news(prev):
                           "source": src or "Google News", "published": pub_iso,
                           "tags": tags})
     items = [i for i in items if i["published"]]
-    # Drop articles older than 2 days back midnight UTC — handles holiday gaps (e.g. US 4th July)
-    cutoff = (datetime.now(timezone.utc) - timedelta(days=2)).replace(
+    items.sort(key=lambda i: i["published"], reverse=True)
+    # Person guarantee pool: keep 7-day window so named officials stay visible
+    # even when no new quotes appear for a few days (e.g. between BOJ meetings)
+    cutoff_7d = (datetime.now(timezone.utc) - timedelta(days=7)).replace(
         hour=0, minute=0, second=0, microsecond=0
     ).strftime("%Y-%m-%dT%H:%M:%SZ")
-    items = [i for i in items if i["published"] >= cutoff]
-    items.sort(key=lambda i: i["published"], reverse=True)
-    all_candidates = list(items)  # keep full pool for person guarantee
+    person_pool = [i for i in items if i["published"] >= cutoff_7d]
+    # Main feed: drop articles older than 2 days back midnight UTC
+    cutoff_2d = (datetime.now(timezone.utc) - timedelta(days=2)).replace(
+        hour=0, minute=0, second=0, microsecond=0
+    ).strftime("%Y-%m-%dT%H:%M:%SZ")
+    items = [i for i in items if i["published"] >= cutoff_2d]
     # Prefer trusted sources; fill with others only if fewer than 10 trusted items
     trusted = [i for i in items if is_trusted(i["source"])]
     others  = [i for i in items if not is_trusted(i["source"])]
@@ -431,11 +436,12 @@ def fetch_news(prev):
     else:
         items = (trusted + others)[:30]
     # Person guarantee — ensure at least 1 article per tracked official appears
+    # pulls from the wider 7-day pool so officials stay visible between speeches
     selected_links = {i["link"] for i in items}
     final_tags = {t for i in items for t in i.get("tags", [])}
     for person in PERSON_TAGS:
         if person not in final_tags:
-            for candidate in all_candidates:
+            for candidate in person_pool:
                 if person in candidate.get("tags", []) and candidate["link"] not in selected_links:
                     items.append(candidate)
                     selected_links.add(candidate["link"])
