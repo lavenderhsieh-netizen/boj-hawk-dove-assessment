@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-07-04",
+  "as_of": "2026-07-13",
   "kpis": [
     {
       "value": "1.00%",
@@ -147,16 +147,16 @@
       "score": 2
     },
     {
+      "name": "Koeda",
+      "score": 1.5
+    },
+    {
       "name": "Ueda",
       "score": 1
     },
     {
       "name": "Himino",
       "score": 1
-    },
-    {
-      "name": "Koeda",
-      "score": 1.5
     },
     {
       "name": "Masu",
@@ -167,13 +167,13 @@
       "score": 0
     },
     {
-      "name": "Asada",
-      "score": -1.5
-    },
-    {
       "name": "Sato",
       "score": -0.5,
       "role": "Member"
+    },
+    {
+      "name": "Asada",
+      "score": -1.5
     }
   ],
   "speakers": [
@@ -239,7 +239,7 @@
       "tag": "New dove",
       "lean": "dove",
       "shift": "Sole dissenter at the June 2026 hike (≈ −1.5)",
-      "quote": "Voted to hold at 0.75% at his second meeting, citing downside risks to production and employment."
+      "quote": "Needs demand-driven inflation before backing another rate hike (Reuters exclusive, Jul 7 2026). Sole dissenter at the June 2026 hike — voted to hold at 0.75%, citing downside risks to production and employment."
     },
     {
       "name": "SATO Ayano",
@@ -327,7 +327,7 @@
       "tenure": "Apr 2026 – Mar 2031",
       "dissents": "1 dovish",
       "kind": "dove",
-      "record": "Jun 2026: sole dissent against the hike to 1.00% (preferred hold), at his second meeting.",
+      "record": "Jun 2026: sole dissent against the hike to 1.00% (preferred hold). Jul 2026: told Reuters he needs to see demand-driven inflation before he would support another rate increase.",
       "lean": "Dovish, reflationist-leaning",
       "active": true
     },
