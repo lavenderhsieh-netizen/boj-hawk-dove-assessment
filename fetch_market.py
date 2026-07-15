@@ -277,25 +277,47 @@ NEWS_QUERIES = [
     'Takaichi Japan economy OR fiscal OR BOJ when:3d',
     '"Takahide Kiuchi" OR "Kiuchi" BOJ OR NRI OR Japan economy when:7d',  # Kiuchi (ex-BOJ, now NRI)
     '\"BOJ rate hike\" OR \"Bank of Japan rate\" when:3d',
+    'GPIF Japan pension fund when:7d',
+]
+
+# Japanese-language queries — surface local-press stories western media misses.
+# Fetched with a JP/ja locale so Google News returns Japanese-language items.
+JA_NEWS_QUERIES = [
+    "日銀 金融政策 政策金利 when:5d",
+    "日銀 利上げ 植田総裁 when:5d",
+    "長期金利 国債 利回り when:5d",
+    "超長期国債 入札 債券市場 when:7d",
+    "円安 為替 ドル円 介入 when:5d",
+    "日本 物価 消費者物価 インフレ when:5d",
+    "高市 経済 財政 予算 when:7d",
+    "木内登英 日本経済 金利 when:14d",
+    "GPIF 年金 運用 国内債券 when:14d",
+    "日経平均 株価 when:5d",
 ]
 
 TAG_RULES = [
     ("jgb-yield",       ["jgb", "government bond", "bond yield", "10-year jgb", "30-year jgb",
                          "yield curve", "jgb auction", "coupon", "bond market", "yields rise",
-                         "yields fall", "benchmark yield"]),
+                         "yields fall", "benchmark yield",
+                         "国債", "長期金利", "利回り", "10年債", "30年債", "超長期", "債券"]),
     ("monetary-policy", ["bank of japan", "boj", "rate hike", "policy rate", "monetary policy",
                          "rate decision", "quantitative easing", "qe", "rate cut", "underlying inflation",
-                         "price stability"]),
+                         "price stability",
+                         "日銀", "日本銀行", "政策金利", "利上げ", "利下げ", "金融政策", "金融緩和"]),
     ("fiscal",          ["fiscal", "budget", "national debt", "debt-to-gdp", "deficit", "fiscal spending",
-                         "investment blueprint", "economic blueprint", "tax revenue", "gdp growth target"]),
+                         "investment blueprint", "economic blueprint", "tax revenue", "gdp growth target",
+                         "財政", "予算", "国債発行", "財政赤字", "歳出"]),
     ("fx-yen",          ["yen", "fx intervention", "forex", "currency intervention", "exchange rate",
-                         "dollar/yen", "usd/jpy", "40-year low", "yen weakness", "yen slide"]),
-    ("takaichi",        ["takaichi"]),
-    ("katayama",        ["katayama"]),
-    ("ueda",            ["ueda"]),
-    ("kiuchi",          ["kiuchi"]),
+                         "dollar/yen", "usd/jpy", "40-year low", "yen weakness", "yen slide",
+                         "円安", "為替", "ドル円", "為替介入", "円相場"]),
+    ("takaichi",        ["takaichi", "高市"]),
+    ("katayama",        ["katayama", "片山"]),
+    ("ueda",            ["ueda", "植田"]),
+    ("kiuchi",          ["kiuchi", "木内"]),
     ("defense",         ["defense spending", "defence spending", "military spending", "rearmament",
-                         "defense budget", "2% gdp", "security spending"]),
+                         "defense budget", "2% gdp", "security spending", "防衛費", "防衛予算"]),
+    ("gpif",            ["gpif", "government pension investment fund", "japan pension",
+                         "年金積立金", "ＧＰＩＦ", "年金運用"]),
 ]
 
 EXCLUDE_TITLE_WORDS = [
@@ -325,6 +347,13 @@ TRUSTED_SOURCES = {
     "associated press", "ap", "new york times",
     # Forex/macro news (person-specific coverage)
     "fxstreet",
+    # English forms of Japanese outlets (post-translation trust matching)
+    "asahi", "sankei", "toyo keizai", "diamond", "tv tokyo", "jiji press",
+    "kyodo news",
+    # Japanese-language publishers (names as Google News reports them)
+    "時事通信", "共同通信", "日本経済新聞", "日経", "朝日新聞", "毎日新聞",
+    "読売新聞", "産経新聞", "ロイター", "ブルームバーグ", "東洋経済",
+    "ダイヤモンド", "ロイター通信", "テレビ東京", "日経ビジネス",
 }
 
 # Person tags that must appear in the feed when an article exists
@@ -366,6 +395,12 @@ def is_relevant(title):
         "bond yield", "fiscal", "government bond", "currency intervention",
         "fx intervention", "quantitative", "nikkei 225", "10-year", "30-year",
         "40-year", "yield curve", "bond market", "interest rate",
+        "gpif", "government pension investment fund",
+        # Japanese-language monetary/market keywords
+        "日銀", "日本銀行", "政策金利", "利上げ", "利下げ", "金融政策", "金融緩和",
+        "国債", "長期金利", "利回り", "超長期", "債券", "円安", "為替", "ドル円",
+        "為替介入", "物価", "消費者物価", "インフレ", "財政", "予算", "高市",
+        "植田", "木内", "年金積立金", "ＧＰＩＦ", "日経平均", "防衛費",
     ]
     if any(kw in tl for kw in FINANCIAL):
         return True
@@ -379,11 +414,66 @@ def is_relevant(title):
     return False
 
 
+# ── translation (Japanese → English) ─────────────────────────────────────────
+# The dashboard is read in English, so Japanese-language headlines are machine-
+# translated to English at fetch time. Original Japanese is preserved in title_ja.
+
+_JP = re.compile(r"[぀-ヿ一-鿿ｦ-ﾟ]")
+
+# Clean English display names for the major Japanese outlets. Anything not
+# listed and still containing Japanese is machine-translated as a fallback.
+JA_SOURCE_NAMES = {
+    "時事通信": "Jiji Press", "共同通信": "Kyodo News", "日本経済新聞": "Nikkei",
+    "日経": "Nikkei", "日経ビジネス": "Nikkei Business", "朝日新聞": "Asahi Shimbun",
+    "毎日新聞": "Mainichi Shimbun", "読売新聞": "Yomiuri Shimbun",
+    "産経新聞": "Sankei Shimbun", "ロイター": "Reuters", "ロイター通信": "Reuters",
+    "ブルームバーグ": "Bloomberg", "東洋経済": "Toyo Keizai",
+    "ダイヤモンド": "Diamond", "テレビ東京": "TV Tokyo", "ＮＨＫ": "NHK",
+}
+
+_ja_tx_cache = {}
+
+
+def translate_ja(text):
+    """Machine-translate Japanese text to English (Google gtx endpoint, cached).
+
+    Returns the original text unchanged on any failure so the feed never breaks.
+    """
+    if not text or not _JP.search(text):
+        return text
+    if text in _ja_tx_cache:
+        return _ja_tx_cache[text]
+    try:
+        url = (
+            "https://translate.googleapis.com/translate_a/single"
+            "?client=gtx&sl=ja&tl=en&dt=t&q=" + requests.utils.quote(text)
+        )
+        r = requests.get(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=20)
+        data = r.json()
+        out = "".join(seg[0] for seg in data[0] if seg and seg[0]).strip()
+        result = out or text
+    except Exception:
+        result = text
+    _ja_tx_cache[text] = result
+    return result
+
+
+def english_source_ja(source):
+    """Map a Japanese publisher name to a clean English one (translate if unmapped)."""
+    if source in JA_SOURCE_NAMES:
+        return JA_SOURCE_NAMES[source]
+    if _JP.search(source):
+        return translate_ja(source)
+    return source
+
+
 def fetch_news(prev):
     items, seen = [], set()
-    for q in NEWS_QUERIES:
+    query_sets = ([(q, "&hl=en-US&gl=US&ceid=US:en") for q in NEWS_QUERIES]
+                  + [(q, "&hl=ja&gl=JP&ceid=JP:ja") for q in JA_NEWS_QUERIES])
+    for q, locale in query_sets:
         url = ("https://news.google.com/rss/search?q=" + requests.utils.quote(q)
-               + "&hl=en-US&gl=US&ceid=US:en")
+               + locale)
         try:
             root = ET.fromstring(get(url).content)
         except Exception:
@@ -412,9 +502,14 @@ def fetch_news(prev):
             if is_blocked(src):
                 continue
             tags = tag_item(title)
-            items.append({"title": title, "link": link,
-                          "source": src or "Google News", "published": pub_iso,
-                          "tags": tags})
+            title_ja = title
+            title_en = translate_ja(title)
+            src_en = english_source_ja(src) if src else "Google News"
+            item = {"title": title_en, "link": link,
+                    "source": src_en, "published": pub_iso, "tags": tags}
+            if title_en != title_ja:
+                item["title_ja"] = title_ja
+            items.append(item)
     items = [i for i in items if i["published"]]
     items.sort(key=lambda i: i["published"], reverse=True)
     # Person guarantee pool: keep 7-day window so named officials stay visible
