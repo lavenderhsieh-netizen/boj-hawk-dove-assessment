@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-07-17T16:11:49Z",
+  "scraped_at": "2026-07-18T16:06:31Z",
   "analysts": [
     "Kyohei Morita",
     "Tomoaki Shishido",
@@ -119,9 +119,17 @@
     ],
     "Yujiro Goto": [
       {
-        "title": "Key focus and themes - US inflation focus and strong local FX themes",
-        "url": "https://go.nomuranow.com/research/japi/publication/1308920?appname=GRPUI",
-        "date": "JUL 10, 2026",
+        "title": "Key focus and themes - Leaning towards but not diving into the softer USD camp; our key trades",
+        "url": "https://go.nomuranow.com/research/japi/publication/1309859?appname=GRPUI",
+        "date": "JUL 17, 2026",
+        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, MANTHAN SHINGALA more...",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
+        "title": "JPY Weekly - Holding ground",
+        "url": "https://go.nomuranow.com/research/japi/publication/1309876?appname=GRPUI",
+        "date": "JUL 17, 2026",
         "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, MANTHAN SHINGALA more...",
         "analyst": "Yujiro Goto",
         "coverage": "Japan FX"
@@ -129,7 +137,7 @@
       {
         "title": "JPY Intraday Comment - USD/JPY remains elevated in the 162 range despite the downside surprise in US PPI",
         "url": "https://go.nomuranow.com/research/japi/publication/1309594?appname=GRPUI",
-        "date": "JUL 10, 2026",
+        "date": "JUL 17, 2026",
         "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, MANTHAN SHINGALA more...",
         "analyst": "Yujiro Goto",
         "coverage": "Japan FX"
@@ -137,7 +145,7 @@
       {
         "title": "JPY Intraday Comment - Debate over consumption tax cut set to face difficulties",
         "url": "https://go.nomuranow.com/research/japi/publication/1309407?appname=GRPUI",
-        "date": "JUL 10, 2026",
+        "date": "JUL 17, 2026",
         "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, MANTHAN SHINGALA more...",
         "analyst": "Yujiro Goto",
         "coverage": "Japan FX"
@@ -145,7 +153,7 @@
       {
         "title": "JPY Intraday Comment - A big “unknown”",
         "url": "https://go.nomuranow.com/research/japi/publication/1309252?appname=GRPUI",
-        "date": "JUL 10, 2026",
+        "date": "JUL 17, 2026",
         "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, MANTHAN SHINGALA more...",
         "analyst": "Yujiro Goto",
         "coverage": "Japan FX"
@@ -153,14 +161,14 @@
       {
         "title": "JPY Intraday Comment - USD/JPY has been volatile amid expectations over the GPIF",
         "url": "https://go.nomuranow.com/research/japi/publication/1309103?appname=GRPUI",
-        "date": "JUL 10, 2026",
+        "date": "JUL 17, 2026",
         "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, MANTHAN SHINGALA more...",
         "analyst": "Yujiro Goto",
         "coverage": "Japan FX"
       },
       {
-        "title": "JPY Weekly - Out-of-the-blue remarks on the GPIF",
-        "url": "https://go.nomuranow.com/research/japi/publication/1308936?appname=GRPUI",
+        "title": "Key focus and themes - US inflation focus and strong local FX themes",
+        "url": "https://go.nomuranow.com/research/japi/publication/1308920?appname=GRPUI",
         "date": "JUL 10, 2026",
         "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, MANTHAN SHINGALA more...",
         "analyst": "Yujiro Goto",
@@ -171,14 +179,6 @@
         "url": "https://go.nomuranow.com/research/japi/publication/1308527?appname=GRPUI",
         "date": "JUL 8, 2026",
         "summary": "YUJIRO GOTO, YUSUKE MIYAIRI, CFA, TOMOKI HIDESHIMA, YUKI KODERA, NAOKAZU KOSHIMIZU",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
-        "title": "Key focus and themes - Leaning towards but not diving into the softer USD camp; our key trades",
-        "url": "https://go.nomuranow.com/research/japi/publication/1309859?appname=GRPUI",
-        "date": "",
-        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, MANTHAN SHINGALA more...",
         "analyst": "Yujiro Goto",
         "coverage": "Japan FX"
       }

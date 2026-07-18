@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-07-17",
+  "as_of": "2026-07-18",
   "kpis": [
     {
       "value": "1.00%",
@@ -49,10 +49,12 @@
     ]
   },
   "periods": [
-    "H2 2024",
-    "H1 2025",
-    "H2 2025",
-    "H1 2026"
+    "Feb 26",
+    "Mar 26",
+    "Apr 26",
+    "May 26",
+    "Jun 26",
+    "Jul 26"
   ],
   "tone": [
     {
@@ -60,16 +62,20 @@
       "scores": [
         2,
         2,
-        1.5,
+        2,
+        2,
+        2,
         2
       ]
     },
     {
       "name": "Takata",
       "scores": [
-        1.5,
-        1.5,
-        1.5,
+        2,
+        2,
+        2,
+        2,
+        2,
         2
       ]
     },
@@ -78,6 +84,8 @@
       "scores": [
         0.5,
         0.5,
+        0.5,
+        0.75,
         1,
         1
       ]
@@ -86,36 +94,44 @@
       "name": "Himino",
       "scores": [
         0.5,
-        1,
         0.5,
+        0.5,
+        0.75,
+        1,
         1
       ]
     },
     {
       "name": "Koeda",
       "scores": [
-        null,
-        null,
         1,
-        1
+        1,
+        1,
+        1.5,
+        1.5,
+        1.5
       ]
     },
     {
       "name": "Masu",
       "scores": [
-        null,
-        null,
-        null,
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5,
         0.5
       ]
     },
     {
       "name": "Uchida",
       "scores": [
-        -1,
         0,
         0,
-        null
+        0,
+        0,
+        0,
+        0
       ]
     },
     {
@@ -123,7 +139,9 @@
       "scores": [
         null,
         null,
-        null,
+        -0.5,
+        -1,
+        -1.5,
         -1.5
       ]
     },
@@ -133,7 +151,9 @@
         null,
         null,
         null,
-        null
+        null,
+        -0.5,
+        -0.5
       ]
     }
   ],
@@ -647,6 +667,11 @@
       "date": "Jan 2026",
       "kind": "event",
       "text": "Hold, but Takata proposes going to 1.0%. Jan Outlook restores pre-tariff forecasts."
+    },
+    {
+      "date": "Jan 23, 2026",
+      "kind": "event",
+      "text": "US–Japan rate check (yen): after the BOJ held at 0.75%, an unusual rate check by the NY Fed — echoed by finance officials in Tokyo — spiked the yen ~1.7% to ¥155.6, its biggest one-day jump since Aug and the year's strongest level. First sign of possible coordinated US–Japan action to defend the yen; ¥160 seen as the red line. MOF data (Jan 30) confirmed no actual intervention followed — verbal/rate-check warnings only."
     },
     {
       "date": "Apr 28, 2026",
