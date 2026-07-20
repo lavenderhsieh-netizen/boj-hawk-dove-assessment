@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-07-19T16:05:11Z",
+  "scraped_at": "2026-07-20T16:07:59Z",
   "analysts": [
     "Kyohei Morita",
     "Tomoaki Shishido",
@@ -18,6 +18,14 @@
   },
   "reports": {
     "Kyohei Morita": [
+      {
+        "title": "Japan Economic Weekly - What has and has not been decided at the National Council",
+        "url": "https://go.nomuranow.com/research/japi/publication/1309978?appname=GRPUI",
+        "date": "JUL 14, 2026",
+        "summary": "AICHI AMEMIYA, GEORGE BUCKLEY, TING LU, KYOHEI MORITA, EUBEN PARACUELLES, ROB SUBBARAMAN, SONAL VARMA",
+        "analyst": "Kyohei Morita",
+        "coverage": "Japan Macro / BOJ"
+      },
       {
         "title": "Japan Economic Weekly - Fiscal management timeline for 2026",
         "url": "https://go.nomuranow.com/research/japi/publication/1309303?appname=GRPUI",
@@ -209,16 +217,16 @@
         "coverage": "Japan Macro"
       },
       {
-        "title": "Yen Rates Daily Monitor - 16 Jul 2026",
-        "url": "https://go.nomuranow.com/research/japi/publication/1309597?appname=GRPUI",
-        "date": "JUL 16, 2026",
+        "title": "Japan: 2026 Q1 second preliminary GDP estimates - We revise economic outlook in light of second set of preliminary GDP estimates",
+        "url": "https://go.nomuranow.com/research/japi/publication/1304496?appname=GRPUI",
+        "date": "JUN 8, 2026",
         "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, YUNA MINEGISHI",
         "analyst": "Masaki Kuwahara",
         "coverage": "Japan Macro"
       },
       {
-        "title": "Japan: 2026 Q1 second preliminary GDP estimates - We revise economic outlook in light of second set of preliminary GDP estimates",
-        "url": "https://go.nomuranow.com/research/japi/publication/1304496?appname=GRPUI",
+        "title": "Japan Economic Weekly - What has and has not been decided at the National Council",
+        "url": "https://go.nomuranow.com/research/japi/publication/1309978?appname=GRPUI",
         "date": "JUN 8, 2026",
         "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, YUNA MINEGISHI",
         "analyst": "Masaki Kuwahara",
@@ -301,6 +309,14 @@
     ],
     "Uichiro Nozaki": [
       {
+        "title": "Japan Economic Weekly - What has and has not been decided at the National Council",
+        "url": "https://go.nomuranow.com/research/japi/publication/1309978?appname=GRPUI",
+        "date": "JUL 14, 2026",
+        "summary": "AICHI AMEMIYA, GEORGE BUCKLEY, TING LU, KYOHEI MORITA, EUBEN PARACUELLES, ROB SUBBARAMAN, SONAL VARMA",
+        "analyst": "Uichiro Nozaki",
+        "coverage": "Japan Macro / Fiscal"
+      },
+      {
         "title": "Japan Economic Weekly - Fiscal management timeline for 2026",
         "url": "https://go.nomuranow.com/research/japi/publication/1309303?appname=GRPUI",
         "date": "JUL 14, 2026",
@@ -333,14 +349,6 @@
         "coverage": "Japan Macro / Fiscal"
       },
       {
-        "title": "Japan Economic Weekly - Examining the near-term outlook for consumption tax cuts and the Basic Policy",
-        "url": "https://go.nomuranow.com/research/japi/publication/1308496?appname=GRPUI",
-        "date": "JUL 14, 2026",
-        "summary": "AICHI AMEMIYA, GEORGE BUCKLEY, TING LU, KYOHEI MORITA, EUBEN PARACUELLES, ROB SUBBARAMAN, SONAL VARMA",
-        "analyst": "Uichiro Nozaki",
-        "coverage": "Japan Macro / Fiscal"
-      },
-      {
         "title": "BOJ Watch - Outcome of the BOJ's June Monetary Policy Meeting",
         "url": "https://go.nomuranow.com/research/japi/publication/1305820?appname=GRPUI",
         "date": "JUN 16, 2026",
@@ -358,5 +366,5 @@
       }
     ]
   },
-  "total": 41
+  "total": 42
 }
