@@ -742,6 +742,14 @@
       "next": false
     },
     {
+      "date": "Oct 1 (Thu)",
+      "event": "Tankan — September 2026 Survey",
+      "type": "Tankan",
+      "relates": "Oct MPM",
+      "notes": "Quarterly enterprise business-sentiment survey; 8:50am JST. Key input into the Oct 29–30 MPM & Outlook Report.",
+      "next": false
+    },
+    {
       "date": "Oct 29–30 (Thu–Fri)",
       "event": "MPM — decision Oct 30",
       "type": "MPM",
@@ -763,6 +771,14 @@
       "type": "Opinions",
       "relates": "Oct MPM",
       "notes": "8:50am JST.",
+      "next": false
+    },
+    {
+      "date": "~Dec 14 (Mon)",
+      "event": "Tankan — December 2026 Survey",
+      "type": "Tankan",
+      "relates": "Dec MPM",
+      "notes": "BOJ has not yet scheduled the exact date; typical mid-Dec slot (Dec 13 in '23 & '24, Dec 15 in '25). Lands just before the Dec 17–18 MPM.",
       "next": false
     },
     {
@@ -1084,5 +1100,208 @@
       "note": "Ueda absent (hospitalised). Presser fronted by Uchida.",
       "file": "2026-06-16.md"
     }
-  ]
+  ],
+  "forecasts": {
+    "as_of": "April 2026 Outlook Report",
+    "decided": "Decided at the MPM held April 27–28, 2026 (full text released April 30).",
+    "next": "Next update: July 2026 Outlook Report, released with the Jul 30–31 MPM decision.",
+    "source": "Bank of Japan, \"Outlook for Economic Activity and Prices\" (April 2026), Appendix — forecasts of the Policy Board members.",
+    "note": "y/y % change. Bracketed figures are the medians of the nine Policy Board members' forecasts (point estimates); ranges show the forecasts of the majority of members. Japanese fiscal years run Apr–Mar. FY2025 CPI figures are treated by the Bank as effectively actual.",
+    "table": [
+      {
+        "fy": "FY2025",
+        "actual": true,
+        "gdp": {
+          "cur": 1.0,
+          "prev": 0.9,
+          "range": "+1.0"
+        },
+        "cpi": {
+          "cur": 2.7,
+          "prev": 2.7,
+          "range": "+2.7"
+        },
+        "core": {
+          "cur": 3.0,
+          "prev": 3.0,
+          "range": "+3.0"
+        }
+      },
+      {
+        "fy": "FY2026",
+        "actual": false,
+        "gdp": {
+          "cur": 0.5,
+          "prev": 1.0,
+          "range": "+0.4 to +0.7"
+        },
+        "cpi": {
+          "cur": 2.8,
+          "prev": 1.9,
+          "range": "+2.8 to +3.0"
+        },
+        "core": {
+          "cur": 2.6,
+          "prev": 2.2,
+          "range": "+2.5 to +2.7"
+        }
+      },
+      {
+        "fy": "FY2027",
+        "actual": false,
+        "gdp": {
+          "cur": 0.7,
+          "prev": 0.8,
+          "range": "+0.6 to +0.8"
+        },
+        "cpi": {
+          "cur": 2.3,
+          "prev": 2.0,
+          "range": "+2.3 to +2.4"
+        },
+        "core": {
+          "cur": 2.6,
+          "prev": 2.1,
+          "range": "+2.6 to +2.7"
+        }
+      },
+      {
+        "fy": "FY2028",
+        "actual": false,
+        "gdp": {
+          "cur": 0.8,
+          "prev": null,
+          "range": "+0.7 to +0.8"
+        },
+        "cpi": {
+          "cur": 2.0,
+          "prev": null,
+          "range": "+2.0 to +2.2"
+        },
+        "core": {
+          "cur": 2.2,
+          "prev": null,
+          "range": "+2.1 to +2.4"
+        }
+      }
+    ],
+    "risk": {
+      "prices": "Skewed to the upside, particularly for FY2026 — crude-oil / Middle East pass-through into energy and goods, continued wage-to-price pass-through, and medium- to long-term inflation expectations near 2%.",
+      "activity": "Skewed to the downside — higher crude-oil prices weigh on corporate profits and real income via the terms of trade; partly cushioned by high corporate profits, solid wage gains, and government energy-relief measures.",
+      "target_timing": "Underlying CPI inflation is seen reaching a level generally consistent with the 2% price-stability target between H2 FY2026 and FY2027.",
+      "forward": "The April revision was driven mainly by the Middle East crude-oil shock. For the July 2026 Outlook, MNI has reported the BOJ is likely to nudge its FY2026 GDP median up (toward ~0.5–0.8%) on stronger AI-related demand."
+    },
+    "history": {
+      "reports": [
+        "Jan 2025",
+        "Apr 2025",
+        "Jul 2025",
+        "Oct 2025",
+        "Jan 2026",
+        "Apr 2026"
+      ],
+      "gdp": {
+        "FY2025": [
+          1.1,
+          0.5,
+          0.6,
+          0.7,
+          0.9,
+          1.0
+        ],
+        "FY2026": [
+          1.0,
+          0.7,
+          0.7,
+          0.7,
+          1.0,
+          0.5
+        ],
+        "FY2027": [
+          null,
+          1.0,
+          1.0,
+          1.0,
+          0.8,
+          0.7
+        ],
+        "FY2028": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          0.8
+        ]
+      },
+      "cpi": {
+        "FY2025": [
+          2.4,
+          2.2,
+          2.7,
+          2.7,
+          2.7,
+          2.7
+        ],
+        "FY2026": [
+          2.0,
+          1.7,
+          1.8,
+          1.8,
+          1.9,
+          2.8
+        ],
+        "FY2027": [
+          null,
+          1.9,
+          2.0,
+          2.0,
+          2.0,
+          2.3
+        ],
+        "FY2028": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          2.0
+        ]
+      },
+      "core": {
+        "FY2025": [
+          null,
+          null,
+          null,
+          2.8,
+          3.0,
+          3.0
+        ],
+        "FY2026": [
+          null,
+          null,
+          null,
+          2.0,
+          2.2,
+          2.6
+        ],
+        "FY2027": [
+          null,
+          null,
+          null,
+          2.0,
+          2.1,
+          2.6
+        ],
+        "FY2028": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          2.2
+        ]
+      }
+    }
+  }
 }

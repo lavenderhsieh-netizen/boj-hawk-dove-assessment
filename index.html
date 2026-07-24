@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BOJ Hawk–Dove Dashboard</title>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Japan Macro Monitoring</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <style>
@@ -15,6 +18,8 @@
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);padding:28px 4vw 60px}
   h1{font-size:26px;font-weight:700;letter-spacing:.3px}
+  .hdr{display:flex;align-items:center;gap:14px}
+  .flag{height:42px;width:auto;border-radius:5px;border:1px solid var(--line);flex-shrink:0}
   h2{font-size:17px;font-weight:600;margin-bottom:14px;color:var(--ink)}
   .sub{color:var(--muted);font-size:13.5px;margin-top:6px;max-width:900px;line-height:1.5}
   .asof{font-size:11.5px;color:var(--muted);margin-top:8px}
@@ -35,13 +40,50 @@
   .card.full{grid-column:1/-1}
   canvas{max-height:340px}
   .note{font-size:11.5px;color:var(--muted);margin-top:8px;line-height:1.5}
+  #tab-nisa .kpi .d{font-size:11.5px;margin-top:5px;font-weight:600}
+  #tab-nisa .d.up{color:#4cba7a} #tab-nisa .d.flat{color:var(--muted)}
+  #tab-approval .kpi .d{font-size:11.5px;margin-top:5px;font-weight:600}
+  #tab-approval .d.up{color:#4cba7a} #tab-approval .d.down{color:var(--hawk2)} #tab-approval .d.flat{color:var(--muted)}
+  #tab-approval .pdot{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:7px;vertical-align:middle}
+  #tab-approval td.num{text-align:right;font-variant-numeric:tabular-nums}
+  .npill{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 9px;border-radius:20px;background:rgba(217,164,65,.16);color:var(--accent)}
+  /* forecasts tab */
+  #tab-forecasts th.fc-sub{font-size:11px;font-weight:600;color:var(--muted)}
+  #tab-forecasts .fc-hdr{font-weight:400;color:var(--muted);font-size:10px}
+  #tab-forecasts td{vertical-align:middle}
+  #tab-forecasts td.fc-num{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;font-size:13.5px;color:var(--ink)}
+  #tab-forecasts .fc-rng{font-size:10.5px;color:var(--muted);font-weight:400;display:block;margin-top:2px}
+  #tab-forecasts td.fc-rev{text-align:center;font-variant-numeric:tabular-nums;font-weight:600;font-size:12px}
+  #tab-forecasts .fy-actual td:first-child::after{content:" · actual";font-size:10px;color:var(--muted);font-weight:400}
+  #tab-forecasts tr.fy-next td{background:rgba(217,164,65,.06)}
+  .rev-up{color:#e2564a} .rev-down{color:#4a90d9} .rev-flat{color:var(--muted)}
+  .fc-risk{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:6px}
+  .fc-riskcard{border:1px solid var(--line);border-radius:10px;padding:14px 16px;border-left-width:3px}
+  .fc-riskcard.fc-up{border-left-color:#e2564a} .fc-riskcard.fc-down{border-left-color:#4a90d9} .fc-riskcard.fc-neu{border-left-color:#d9a441}
+  .fc-rl{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700;margin-bottom:6px}
+  .fc-up .fc-rl::after{content:" ▲ upside";color:#e2564a} .fc-down .fc-rl::after{content:" ▼ downside";color:#4a90d9}
+  .fc-rv{font-size:12.5px;line-height:1.5;color:var(--ink)}
   /* speaker cards */
   .spcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
-  .sp{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:15px 16px}
+  .sp{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:15px 16px;cursor:pointer;user-select:none;transition:border-color .15s}
+  .sp:hover{border-color:var(--accent)}
+  .sp.open{border-color:var(--accent)}
+  .sp-hd{display:flex;justify-content:space-between;align-items:flex-start}
+  .sp-chev{font-size:15px;color:var(--muted);transition:transform .2s;flex-shrink:0;margin-left:6px;margin-top:2px}
+  .sp.open .sp-chev{transform:rotate(180deg);color:var(--accent)}
   .sp .name{font-weight:700;font-size:14.5px}
   .sp .role{font-size:11.5px;color:var(--muted);margin:2px 0 8px}
   .sp .shift{font-size:12px;color:var(--accent);margin-bottom:7px}
   .sp .q{font-size:12.5px;color:var(--muted);line-height:1.55;border-left:3px solid var(--line);padding-left:10px;font-style:italic}
+  .sp-rmks{margin-top:12px;border-top:1px solid var(--line);padding-top:10px;display:none}
+  .sp.open .sp-rmks{display:block}
+  .rmk-tbl{width:100%;border-collapse:collapse;font-size:11.5px}
+  .rmk-tbl th{text-align:left;color:var(--muted);font-weight:600;padding:4px 8px;border-bottom:1px solid var(--line);font-size:11px}
+  .rmk-tbl td{padding:6px 8px;vertical-align:top;border-bottom:1px dotted var(--line);line-height:1.5}
+  .rmk-tbl tr:last-child td{border-bottom:none}
+  .rmk-tbl .rmk-date{white-space:nowrap;color:var(--accent);font-size:10.5px;font-weight:600;width:80px}
+  .rmk-tbl .rmk-src{color:var(--muted);font-size:10.5px;width:130px;font-style:italic}
+  .rmk-no-data{color:var(--muted);font-size:12px;font-style:italic;padding:6px 0}
   .tag{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 9px;border-radius:20px;margin-left:5px;vertical-align:middle}
   .t-hawk{background:rgba(226,86,74,.18);color:var(--hawk2)}
   .t-neutral-hawk{background:rgba(226,86,74,.09);color:var(--hawk2);opacity:.8}
@@ -62,6 +104,7 @@
   .c-out{background:rgba(226,86,74,.18);color:var(--hawk2)}
   .c-opi{background:rgba(74,144,217,.18);color:var(--dove2)}
   .c-min{background:rgba(185,194,212,.15);color:var(--neutral)}
+  .c-tan{background:rgba(88,186,140,.18);color:#58ba8c}
   /* timeline */
   .tl{margin-left:8px;padding-left:22px;border-left:2px solid var(--line)}
   .ev{position:relative;padding:0 0 16px}
@@ -104,6 +147,29 @@
   .pc-transcript hr{border:none;border-top:1px solid var(--line);margin:14px 0}
   .pc-transcript blockquote{border-left:3px solid var(--line);padding-left:12px;color:var(--muted);font-style:italic}
   .pc-transcript ul,.pc-transcript ol{padding-left:22px;margin-bottom:10px;color:var(--muted)}
+  /* Q&A accordion (clickable questions) */
+  .qa-preamble{margin-bottom:18px}
+  .qa-section{margin-top:.25rem}
+  .qa-count-bar{font-size:12px;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+  .qa-count-bar b{background:rgba(217,164,65,.15);color:var(--accent);font-weight:700;border-radius:4px;padding:1px 8px}
+  .qa-item{border:1px solid var(--line);border-radius:8px;margin-bottom:7px;overflow:hidden;transition:border-color .15s;background:var(--card2)}
+  .qa-item:hover{border-color:rgba(217,164,65,.45)}
+  .qa-header{display:flex;justify-content:space-between;align-items:flex-start;padding:11px 14px;cursor:pointer;user-select:none}
+  .qa-header.open{border-bottom:1px solid var(--line);background:rgba(217,164,65,.07)}
+  .qa-meta{flex:1;min-width:0}
+  .qa-num{font-size:10px;font-weight:700;letter-spacing:.07em;color:var(--accent);text-transform:uppercase;margin-bottom:3px}
+  .qa-title{font-size:13px;font-weight:600;color:var(--ink);line-height:1.45}
+  .qa-toggle{color:var(--muted);font-size:12px;flex-shrink:0;margin-left:12px;padding-top:2px;transition:transform .2s}
+  .qa-toggle.open{transform:rotate(180deg)}
+  .qa-body{padding:14px;background:rgba(0,0,0,.18);display:none;border-top:1px solid var(--line)}
+  .qa-body.open{display:block}
+  .qa-q-label{font-size:10px;font-weight:700;letter-spacing:.07em;color:var(--muted);text-transform:uppercase;margin-bottom:5px}
+  .qa-q-text{font-size:13px;font-style:italic;color:var(--ink);margin-bottom:14px;line-height:1.55;padding-left:10px;border-left:2px solid var(--line)}
+  .qa-a-label{font-size:10px;font-weight:700;letter-spacing:.07em;color:var(--hawk2);text-transform:uppercase;margin-bottom:6px}
+  .qa-a-text p{font-size:13px;line-height:1.72;color:var(--muted);margin-bottom:9px}
+  .qa-a-text p:last-child{margin-bottom:0}
+  .qa-a-text strong{color:var(--ink)}
+  .qa-expand-all{font-size:12px;color:var(--dove2);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;margin-left:auto}
   @media(max-width:860px){.pc-layout{grid-template-columns:1fr}}
   /* news */
   .news-list{display:flex;flex-direction:column;gap:10px}
@@ -129,12 +195,28 @@
   .nf.active{background:var(--ink);color:var(--bg);border-color:var(--ink)}
   /* data status table */
   .status-ok{color:#4cba7a;font-weight:700}.status-stale{color:var(--accent);font-weight:700}.status-missing{color:var(--hawk2);font-weight:700}
+
+  /* board remarks expansion */
+  .bname{color:var(--accent);font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:5px;background:none;border:1px solid rgba(217,164,65,0.35);border-radius:3px;padding:2px 6px;font-family:inherit;font-size:inherit;text-align:left;white-space:nowrap}
+  .bname:hover{background:rgba(217,164,65,0.12);border-color:var(--accent)}
+  .bchev{font-size:11px;display:inline-block;color:var(--accent)}
+  .brow-hidden { display:none }
+  .brow-hidden.open { display:table-row }
+  .bd-remarks{padding:8px 14px 12px;background:rgba(255,255,255,0.03);border-left:3px solid var(--accent)}
+  .bd-remarks table{width:100%;font-size:12px;border-collapse:collapse;margin-top:6px}
+  .bd-remarks th{color:var(--muted);font-weight:600;text-align:left;padding:3px 8px 3px 0;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .bd-remarks td{padding:4px 8px 4px 0;color:var(--fg);vertical-align:top;border-bottom:1px solid rgba(255,255,255,0.04)}
+  .bd-remarks td:first-child{white-space:nowrap;color:var(--muted);min-width:90px}
+  .bd-remarks td:nth-child(2){white-space:nowrap;min-width:160px}
+  .no-remarks{color:var(--muted);font-size:12px;padding:6px 0}
 </style>
 </head>
 <body>
 
-<h1>Bank of Japan — Hawk–Dove Assessment</h1>
-<p class="sub">Speeches and reports from the BOJ website. Tone scored −2 (strongly dovish) … +2 (strongly hawkish) per speaker per half-year, based on official speeches, MPM proposals/dissents, and Outlook Report framing.</p>
+<div class="hdr">
+  <img class="flag" src="./japan-flag.png" alt="Japan">
+  <h1>Japan Macro Monitoring</h1>
+</div>
 <p class="asof" id="asof"></p>
 
 <div class="tabs">
@@ -143,9 +225,11 @@
   <button class="tab" onclick="showTab('calendar',this)">BOJ calendar</button>
   <button class="tab" onclick="showTab('auctions',this)">Auctions &amp; fiscal</button>
   <button class="tab" onclick="showTab('markets',this)">Markets &amp; bonds</button>
+  <button class="tab" onclick="showTab('forecasts',this)">Forecasts</button>
   <button class="tab" onclick="showTab('news',this)">News</button>
   <button class="tab" onclick="showTab('pressconferences',this)">Press conferences</button>
-  <button class="tab" onclick="showTab('research',this)">Nomura research</button>
+  <button class="tab" onclick="showTab('nisa',this)">NISA</button>
+  <button class="tab" onclick="showTab('approval',this)">Approval ratings</button>
   <button class="tab" onclick="showTab('method',this)">Methodology</button>
 </div>
 
@@ -185,6 +269,7 @@
   <div id="tab-board" class="panel">
     <div class="card">
       <h2>Policy Board: tenure &amp; voting record</h2>
+      <p style="font-size:12px;color:var(--accent);margin:0 0 8px">▶ Click a member name to expand their remarks</p>
       <div style="overflow-x:auto"><table id="boardTable">
         <thead><tr><th>Member</th><th>Role</th><th>Tenure</th><th>Dissents</th><th>Voting record in window</th><th>Leaning</th></tr></thead>
         <tbody id="boardBody"></tbody>
@@ -201,7 +286,7 @@
         <thead><tr><th>Date</th><th>Type</th><th>Event</th><th>Relates to</th><th>Notes</th></tr></thead>
         <tbody id="calBody"></tbody>
       </table></div>
-      <div class="note">Source: <a href="https://www.boj.or.jp/en/mopo/mpmsche_minu/index.htm" target="_blank">BOJ Monetary Policy Meetings schedule</a>. Outlook Reports accompany Jan / Apr / Jul / Oct meetings.</div>
+      <div class="note">Sources: <a href="https://www.boj.or.jp/en/mopo/mpmsche_minu/index.htm" target="_blank">BOJ Monetary Policy Meetings schedule</a> · <a href="https://www.boj.or.jp/en/statistics/tk/index.htm" target="_blank">BOJ Tankan release schedule</a>. Outlook Reports accompany Jan / Apr / Jul / Oct meetings; the Tankan (quarterly enterprise survey) is released ~Apr 1 / Jul 1 / Oct 1 / mid-Dec.</div>
     </div>
   </div>
 
@@ -281,11 +366,76 @@
     </div>
   </div>
 
+  <!-- FORECASTS -->
+  <div id="tab-forecasts" class="panel">
+    <div class="card">
+      <h2>BOJ Outlook Report — Policy Board forecasts <span id="fcAsOf" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <p class="sub" id="fcDecided"></p>
+      <div style="overflow-x:auto;margin-top:14px"><table id="fcTable">
+        <thead>
+          <tr>
+            <th rowspan="2" style="vertical-align:bottom">Fiscal year</th>
+            <th colspan="2">Real GDP</th>
+            <th colspan="2">CPI <span style="font-weight:400;color:var(--muted)">(less fresh food)</span></th>
+            <th colspan="2">CPI <span style="font-weight:400;color:var(--muted)">(less fresh food &amp; energy)</span></th>
+          </tr>
+          <tr>
+            <th class="fc-sub">Apr 2026 median <span class="fc-hdr">(range)</span></th><th class="fc-sub">vs Jan</th>
+            <th class="fc-sub">Apr 2026 median <span class="fc-hdr">(range)</span></th><th class="fc-sub">vs Jan</th>
+            <th class="fc-sub">Apr 2026 median <span class="fc-hdr">(range)</span></th><th class="fc-sub">vs Jan</th>
+          </tr>
+        </thead>
+        <tbody id="fcBody"></tbody>
+      </table></div>
+      <div class="note" id="fcNote"></div>
+      <div class="note" id="fcSource" style="margin-top:4px"></div>
+    </div>
+
+    <div class="card">
+      <h2>Risk-balance assessment (April 2026)</h2>
+      <div class="fc-risk">
+        <div class="fc-riskcard fc-up">
+          <div class="fc-rl">Prices</div>
+          <div class="fc-rv" id="fcRiskPrices"></div>
+        </div>
+        <div class="fc-riskcard fc-down">
+          <div class="fc-rl">Economic activity</div>
+          <div class="fc-rv" id="fcRiskActivity"></div>
+        </div>
+        <div class="fc-riskcard fc-neu">
+          <div class="fc-rl">Timing of 2% target</div>
+          <div class="fc-rv" id="fcRiskTiming"></div>
+        </div>
+      </div>
+      <div class="note" id="fcForward" style="margin-top:12px"></div>
+    </div>
+
+    <div class="card">
+      <h2>Forecast revision history — median across successive Outlook Reports</h2>
+      <p class="sub">How the Policy Board's median forecast for each fiscal year has been revised, report by report (Jan 2025 → Apr 2026). The April 2026 jump in CPI reflects the Middle East crude-oil shock.</p>
+      <div class="grid2" style="margin-top:14px">
+        <div class="card" style="margin:0">
+          <h2 style="font-size:14px">Real GDP (y/y %)</h2>
+          <canvas id="cFcGdp" style="max-height:260px"></canvas>
+        </div>
+        <div class="card" style="margin:0">
+          <h2 style="font-size:14px">CPI — less fresh food (y/y %)</h2>
+          <canvas id="cFcCpi" style="max-height:260px"></canvas>
+        </div>
+        <div class="card full" style="margin:0">
+          <h2 style="font-size:14px">CPI — less fresh food &amp; energy (y/y %)</h2>
+          <canvas id="cFcCore" style="max-height:260px"></canvas>
+          <div class="note">Core-core series is only published from the Oct 2025 Outlook Report onward.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- NEWS -->
   <div id="tab-news" class="panel">
     <div class="card">
       <h2>BOJ &amp; Japan macro news <span id="newsStatus"></span></h2>
-      <p class="note" style="margin-bottom:14px">Focused coverage: JGB &amp; yields · monetary policy · fiscal risks · FX &amp; yen intervention · Takaichi · Katayama · Ueda · Kiuchi · defense spending. Refreshed daily.</p>
+      <p class="note" style="margin-bottom:14px">Focused coverage: JGB &amp; yields · monetary policy · fiscal risks · FX &amp; yen intervention · Takaichi · Katayama · Ueda · Kiuchi · defense spending · GPIF. Refreshed daily.</p>
       <div class="news-filters" id="newsFilters">
         <button class="nf active" data-tag="all">All</button>
         <button class="nf" data-tag="jgb-yield">JGB &amp; Yields</button>
@@ -297,6 +447,7 @@
         <button class="nf" data-tag="ueda">Ueda</button>
         <button class="nf" data-tag="kiuchi">Kiuchi</button>
         <button class="nf" data-tag="defense">Defense</button>
+        <button class="nf" data-tag="gpif">GPIF</button>
       </div>
       <div class="news-list" id="newsList"></div>
     </div>
@@ -325,13 +476,82 @@
     </div>
   </div>
 
-  <!-- NOMURA RESEARCH -->
-  <div id="tab-research" class="panel">
-    <div class="card">
-      <h2>Nomura research — Japan team <span id="nomuraStatus" style="font-size:12px;font-weight:400;color:var(--muted)"></span></h2>
-      <p class="note" style="margin-bottom:18px">Latest reports from: Kyohei Morita (Macro/BOJ) · Tomoaki Shishido (Rates) · Yujiro Goto (FX) · Masaki Kuwahara (Macro) · Mari Iwashita (BOJ/Rates) · Uichiro Nozaki (Macro/Fiscal). Refreshed daily.</p>
-      <div id="nomuraAnalystTabs" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px"></div>
-      <div id="nomuraReports"></div>
+
+  <!-- NISA -->
+  <div id="tab-nisa" class="panel">
+    <div class="sub" style="margin-bottom:16px">Household investment under the 少額投資非課税制度. Two layers: the <b>FSA whole-market headline</b> (official, quarterly, all institutions) and the <b>JSDA 10-firm survey</b> (timely monthly pulse + asset allocation). <span id="nisaAsof" style="color:var(--muted)"></span></div>
+    <div class="kpis" id="nisaKpis"></div>
+    <div class="grid2">
+      <div class="card">
+        <h2>Cumulative purchase — whole market (FSA)</h2>
+        <div class="note">Official headline. Cumulative buys across all institutions, ¥ trillion.</div>
+        <canvas id="nisaCumChart"></canvas>
+      </div>
+      <div class="card">
+        <h2>Accounts — whole market (FSA)</h2>
+        <div class="note">Total NISA accounts, millions.</div>
+        <canvas id="nisaAcctChart"></canvas>
+      </div>
+    </div>
+    <div class="card full">
+      <h2>10-firm monthly gross buys <span class="npill">timely</span></h2>
+      <div class="note">Top-10 securities firms (JSDA), ¥ trillion/month. Note the <b>January spike</b> each year as investors front-load the annual quota, then the fade through spring.</div>
+      <canvas id="nisaMonChart"></canvas>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h2>Quota split (2026 Q1)</h2>
+        <div class="note">Growth quota (成長投資枠) vs tsumitate quota (つみたて投資枠), share of buys.</div>
+        <canvas id="nisaQuotaChart"></canvas>
+      </div>
+      <div class="card">
+        <h2>Within the growth quota</h2>
+        <div class="note">Single stocks vs investment funds.</div>
+        <canvas id="nisaWithinChart"></canvas>
+      </div>
+    </div>
+    <div class="card full">
+      <h2>Progress vs target &amp; asset tilt</h2>
+      <div id="nisaTargetBox" class="note"></div>
+      <div id="nisaAllocBox" class="note" style="margin-top:10px"></div>
+    </div>
+    <div class="card full">
+      <h2>Sources &amp; publish cadence</h2>
+      <table id="nisaSrcTable"></table>
+      <div class="note" id="nisaSrcNote"></div>
+    </div>
+  </div>
+
+  <!-- APPROVAL RATINGS -->
+  <div id="tab-approval" class="panel">
+    <div class="sub" style="margin-bottom:16px">Public opinion on the <b>Takaichi cabinet</b> and party support — the political backdrop to fiscal and monetary policy. A weakening cabinet raises the odds of stimulus / softer fiscal consolidation; support for opposition parties (esp. those pushing tax cuts or bigger spending) shapes the JGB supply outlook. <span id="apvAsof" style="color:var(--muted)"></span></div>
+    <div class="kpis" id="apvKpis"></div>
+    <div class="card full">
+      <h2>Cabinet approval vs disapproval <span class="npill" id="apvSeriesPill">monthly</span></h2>
+      <div class="note" id="apvSeriesNote"></div>
+      <canvas id="apvTrendChart"></canvas>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h2>Party support — latest poll</h2>
+        <div class="note" id="apvPartyNote"></div>
+        <canvas id="apvPartyChart"></canvas>
+      </div>
+      <div class="card">
+        <h2>Net approval (approve − disapprove)</h2>
+        <div class="note">Above zero = net positive. The single cleanest read on political capital.</div>
+        <canvas id="apvNetChart"></canvas>
+      </div>
+    </div>
+    <div class="card full">
+      <h2>Latest poll — full breakdown</h2>
+      <table id="apvPartyTable"></table>
+      <div class="note" id="apvContext"></div>
+    </div>
+    <div class="card full">
+      <h2>Sources</h2>
+      <table id="apvSrcTable"></table>
+      <div class="note">Japanese pollsters (NHK, Jiji, Kyodo, and the major dailies) publish monthly; figures are hand-updated from their releases. Approval methodology differs by pollster, so levels are not directly comparable across houses — the trend within one house is the signal.</div>
     </div>
   </div>
 
@@ -354,6 +574,7 @@ function showTab(id, btn) {
   btn.classList.add('active');
 }
 
+
 // ── Chart defaults ──────────────────────────────────────────────────────────
 Chart.defaults.color = '#93a1bd';
 Chart.defaults.borderColor = '#2a3752';
@@ -366,6 +587,85 @@ const PALETTE = ['#e2564a','#f0876f','#d9a441','#e8c26a','#c97b4a','#b9c2d4',
 function esc(s) {
   return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
+
+/* Clickable Q&A accordion for press-conference transcripts */
+function renderPCMarkdown(md) {
+  const marker = '## Q&A Transcript';
+  const idx = md.indexOf(marker);
+  // Strip the H1 title + Decision/Vote/Presider metadata (already shown in the meta card)
+  const stripMeta = t => t
+    .replace(/^#[^\n]*\n/, '')
+    .replace(/^\*\*(Decision|Vote|Presider):\*\*[^\n]*\n/gm, '')
+    .replace(/^\s*---\s*$/m, '')
+    .trim();
+
+  if (idx === -1) {
+    // No Q&A section — render whole doc as before
+    return marked.parse(stripMeta(md));
+  }
+
+  const preamble = stripMeta(md.slice(0, idx));
+  const qaContent = md.slice(idx + marker.length);
+  const preambleHtml = preamble ? `<div class="qa-preamble">${marked.parse(preamble)}</div>` : '';
+
+  const blocks = qaContent.split(/\n---\n/).map(b => b.trim()).filter(b => b.length > 4);
+  const items = blocks.map((block, i) => {
+    const titleMatch = block.match(/^###\s+Q(\d+)\.\s+([\s\S]+?)(?=\n\s*\n|\n\*\*|$)/m);
+    if (!titleMatch) return null;
+    const num = titleMatch[1];
+    const title = titleMatch[2].trim().replace(/\s+/g, ' ');
+    const qMatch = block.match(/\*\*Q:\*\*\s*([\s\S]*?)(?=\n\s*\*\*A:\*\*)/);
+    const aMatch = block.match(/\*\*A:\*\*\s*([\s\S]+)/);
+    const question = qMatch ? qMatch[1].trim().replace(/\s+/g, ' ') : '';
+    const answerHtml = marked.parse((aMatch ? aMatch[1] : block).trim());
+    return { num, title, question, answerHtml };
+  }).filter(Boolean);
+
+  const rows = items.map(qa => `
+    <div class="qa-item">
+      <div class="qa-header" onclick="toggleQA(this)">
+        <div class="qa-meta">
+          <div class="qa-num">Q${qa.num}</div>
+          <div class="qa-title">${esc(qa.title)}</div>
+        </div>
+        <div class="qa-toggle">▼</div>
+      </div>
+      <div class="qa-body">
+        ${qa.question ? `<div class="qa-q-label">Question</div><div class="qa-q-text">${esc(qa.question)}</div>` : ''}
+        <div class="qa-a-label">BOJ response</div>
+        <div class="qa-a-text">${qa.answerHtml}</div>
+      </div>
+    </div>`).join('');
+
+  return `${preambleHtml}
+    <div class="qa-section">
+      <div class="qa-count-bar"><b>${items.length}</b> questions
+        <a class="qa-expand-all" onclick="toggleAllQA(this)">expand all</a>
+      </div>
+      ${rows}
+    </div>`;
+}
+
+function toggleQA(header) {
+  const body = header.nextElementSibling;
+  const toggle = header.querySelector('.qa-toggle');
+  const open = body.classList.contains('open');
+  body.classList.toggle('open', !open);
+  header.classList.toggle('open', !open);
+  toggle.classList.toggle('open', !open);
+}
+
+function toggleAllQA(link) {
+  const section = link.closest('.qa-section');
+  const items = section.querySelectorAll('.qa-item');
+  const anyOpen = [...items].some(i => i.querySelector('.qa-body').classList.contains('open'));
+  items.forEach(item => {
+    item.querySelector('.qa-body').classList.toggle('open', !anyOpen);
+    item.querySelector('.qa-header').classList.toggle('open', !anyOpen);
+    item.querySelector('.qa-toggle').classList.toggle('open', !anyOpen);
+  });
+  link.textContent = anyOpen ? 'expand all' : 'collapse all';
+}
 function tagHtml(lean) {
   const cls = lean === 'hawk' ? 't-hawk'
     : lean === 'neutral-hawk' ? 't-neutral-hawk'
@@ -375,9 +675,18 @@ function tagHtml(lean) {
   return `<span class="tag ${cls}">${esc(lean)}</span>`;
 }
 function chipHtml(type) {
-  const map = {MPM:'c-mpm',Outlook:'c-out',Opinions:'c-opi',Minutes:'c-min'};
+  const map = {MPM:'c-mpm',Outlook:'c-out',Opinions:'c-opi',Minutes:'c-min',Tankan:'c-tan'};
   return `<span class="chip ${map[type]||'c-min'}">${esc(type)}</span>`;
 }
+
+// ── Board remarks toggle ─────────────────────────────────────────────────────
+window.toggleBoardRemarks = function(btn, rid) {
+  var row = document.getElementById(rid);
+  if (!row) { alert('row not found: ' + rid); return; }
+  var open = row.style.display === 'table-row';
+  row.style.display = open ? 'none' : 'table-row';
+  btn.querySelector('.bchev').textContent = open ? '▶' : '▼';
+};
 
 // ── Render ──────────────────────────────────────────────────────────────────
 function render(D) {
@@ -444,14 +753,37 @@ function render(D) {
     }
   });
 
+  var _tn = document.getElementById('toneNote');
+  if (_tn) _tn.textContent = 'Monthly, Feb–Jul 2026. Each member holds their assessed tone and steps only where a dated remark shifts it; single-remark members show as flat, and a line begins the month a member first has on-record evidence.';
+
   // Speaker cards
-  document.getElementById('speakers').innerHTML = D.speakers.map(s => `
-    <div class="sp">
-      <div class="name">${esc(s.name)}${tagHtml(s.lean)}</div>
-      <div class="role">${esc(s.role)}</div>
+  function toggleSp(el) { el.classList.toggle('open'); }
+  document.getElementById('speakers').innerHTML = D.speakers.map(s => {
+    const rmkRows = (s.remarks && s.remarks.length)
+      ? s.remarks.map(r => `<tr>
+          <td class="rmk-date">${esc(r.date)}</td>
+          <td class="rmk-src">${esc(r.source)}</td>
+          <td>${esc(r.comment)}</td>
+        </tr>`).join('')
+      : `<tr><td colspan="3" class="rmk-no-data">No remarks recorded yet.</td></tr>`;
+    return `<div class="sp" onclick="toggleSp(this)">
+      <div class="sp-hd">
+        <div>
+          <div class="name">${esc(s.name)}${tagHtml(s.lean)}</div>
+          <div class="role">${esc(s.role)}</div>
+        </div>
+        <span class="sp-chev">▾</span>
+      </div>
       <div class="shift">${esc(s.shift)}</div>
       <div class="q">${esc(s.quote)}</div>
-    </div>`).join('');
+      <div class="sp-rmks">
+        <table class="rmk-tbl">
+          <thead><tr><th>Date</th><th>Source / Occasion</th><th>Key Comment</th></tr></thead>
+          <tbody>${rmkRows}</tbody>
+        </table>
+      </div>
+    </div>`;
+  }).join('');
 
   // Timeline
   document.getElementById('timeline').innerHTML = D.timeline.map(e => `
@@ -461,15 +793,28 @@ function render(D) {
     </div>`).join('');
 
   // Board table
-  document.getElementById('boardBody').innerHTML = D.board.map(m => {
+  const speakerMap = {};
+  (D.speakers || []).forEach(s => { speakerMap[s.name] = s.remarks || []; });
+
+  document.getElementById('boardBody').innerHTML = D.board.map((m, i) => {
     const hd = m.kind === 'hawk' ? 'dh' : m.kind === 'dove' ? 'dd' : 'dn';
+    const rid = 'bremark-' + i;
+    const remarks = speakerMap[m.member] || [];
+    const remarksHtml = remarks.length
+      ? `<table><thead><tr><th>Date</th><th>Source / Occasion</th><th>Key Comment</th></tr></thead><tbody>
+          ${remarks.map(r => `<tr><td>${esc(r.date)}</td><td>${esc(r.source)}</td><td>${esc(r.comment)}</td></tr>`).join('')}
+         </tbody></table>`
+      : `<p class="no-remarks">No remarks on record.</p>`;
     return `<tr class="${m.active ? '' : 'gone'}">
-      <td><b>${esc(m.member)}</b></td>
+      <td><button class="bname" onclick="toggleBoardRemarks(this,'${rid}')"><span class="bchev">▶</span> <b>${esc(m.member)}</b></button></td>
       <td>${esc(m.role)}</td>
       <td>${esc(m.tenure)}</td>
       <td class="${hd}">${esc(m.dissents)}</td>
       <td>${esc(m.record)}</td>
       <td><span class="tag ${m.kind==='hawk'?'t-hawk':m.kind==='dove'?'t-dove':'t-neutral'}">${esc(m.lean)}</span></td>
+    </tr>
+    <tr id="${rid}" class="${m.active ? '' : 'gone'}" style="display:none">
+      <td colspan="6"><div class="bd-remarks">${remarksHtml}</div></td>
     </tr>`;
   }).join('');
 
@@ -533,15 +878,7 @@ function render(D) {
     pcTranscript.innerHTML = '<p style="color:var(--muted)">Loading transcript…</p>';
     fetch('./press_conferences/' + pc.file + '?' + Date.now())
       .then(r => { if (!r.ok) throw new Error(r.status); return r.text(); })
-      .then(md => {
-        // Strip first H1 title line and metadata block
-        const cleaned = md.replace(/^#[^\n]+\n/, '').replace(/\*\*(Decision|Vote|Presider):\*\*[^\n]+\n/g, '').replace(/^---\s*\n/m, '').trim();
-        const bolded = cleaned
-          .replace(/\*Q&A\*\s*/g, '')
-          .replace(/^\*(Q\d+\..+)\*$/mg, '**$1**')
-          .replace(/^\*\*Q:\*\* (.+)$/mg, '**Q: $1**');
-        pcTranscript.innerHTML = marked.parse(bolded);
-      })
+      .then(md => { pcTranscript.innerHTML = renderPCMarkdown(md); })
       .catch(e => { pcTranscript.innerHTML = `<p style="color:var(--hawk2)">Could not load transcript: ${esc(e.message)}</p>`; });
   }
 
@@ -579,6 +916,8 @@ function render(D) {
     <p><b>Press:</b> CNBC (Dec 19, 2025; Jun 16, 2026), The Japan Times (Jun 2026), Bloomberg (Jun 21, 2026), Reuters (Sep–Oct 2025 dissents), Nippon.com/JIJI (Asada appointment).</p>
     <br>
     <p>Summary-of-Opinions attributions are analytical inferences (the BOJ publishes them unattributed). This is an analytical assessment of central-bank communication, not investment advice.</p>`;
+
+  renderForecasts(D);
 }
 
 // ── Market data helpers ─────────────────────────────────────────────────────
@@ -627,6 +966,69 @@ function sparkLine(ctx, hist, color) {
       }
     }
   });
+}
+
+// ── Forecasts tab ────────────────────────────────────────────────────────────
+function renderForecasts(D) {
+  const F = D.forecasts;
+  if (!F) return;
+
+  document.getElementById('fcAsOf').textContent = '· ' + F.as_of;
+  document.getElementById('fcDecided').textContent = F.decided;
+  document.getElementById('fcNote').textContent = F.note;
+  document.getElementById('fcSource').textContent = 'Source: ' + F.source;
+
+  // Revision cell: current − previous median, with directional colour/arrow.
+  const revCell = (cur, prev) => {
+    if (prev == null || cur == null) return '<td class="fc-rev rev-flat">—</td>';
+    const d = +(cur - prev).toFixed(1);
+    if (Math.abs(d) < 0.05) return '<td class="fc-rev rev-flat">▬ 0.0</td>';
+    const cls = d > 0 ? 'rev-up' : 'rev-down';
+    const arr = d > 0 ? '▲' : '▼';
+    return `<td class="fc-rev ${cls}">${arr} ${d > 0 ? '+' : ''}${d.toFixed(1)}</td>`;
+  };
+  const valCell = m => `<td class="fc-num">${m.cur == null ? '—' : (m.cur > 0 ? '+' : '') + m.cur.toFixed(1)}` +
+    `<span class="fc-rng">${esc(m.range || '')}</span></td>`;
+
+  document.getElementById('fcBody').innerHTML = F.table.map(r => `
+    <tr class="${r.actual ? 'fy-actual' : ''}${r.fy === 'FY2026' ? ' fy-next' : ''}">
+      <td><b>${esc(r.fy)}</b></td>
+      ${valCell(r.gdp)}${revCell(r.gdp.cur, r.gdp.prev)}
+      ${valCell(r.cpi)}${revCell(r.cpi.cur, r.cpi.prev)}
+      ${valCell(r.core)}${revCell(r.core.cur, r.core.prev)}
+    </tr>`).join('');
+
+  document.getElementById('fcRiskPrices').textContent = F.risk.prices;
+  document.getElementById('fcRiskActivity').textContent = F.risk.activity;
+  document.getElementById('fcRiskTiming').textContent = F.risk.target_timing;
+  document.getElementById('fcForward').textContent = F.risk.forward;
+
+  // Revision-history charts: x = report date, one line per fiscal year.
+  const H = F.history;
+  const FY_COLORS = { FY2025: '#b9c2d4', FY2026: '#e2564a', FY2027: '#d9a441', FY2028: '#7fb3e8' };
+  const mkHist = (canvasId, series) => {
+    const datasets = Object.keys(series).map(fy => ({
+      label: fy,
+      data: series[fy],
+      borderColor: FY_COLORS[fy] || '#8fa3c0',
+      backgroundColor: FY_COLORS[fy] || '#8fa3c0',
+      spanGaps: true, pointRadius: 3, borderWidth: 2, tension: 0.2
+    }));
+    new Chart(document.getElementById(canvasId), {
+      type: 'line',
+      data: { labels: H.reports, datasets },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: true, labels: { boxWidth: 12, font: { size: 11 } } },
+          tooltip: { callbacks: { label: i => i.dataset.label + ': ' + (i.raw == null ? '—' : (i.raw > 0 ? '+' : '') + i.raw.toFixed(1) + '%') } } },
+        scales: { x: { grid: { color: '#2a3752' }, ticks: { font: { size: 10 } } },
+          y: { grid: { color: '#2a3752' }, ticks: { callback: v => v + '%', font: { size: 11 } } } }
+      }
+    });
+  };
+  mkHist('cFcGdp', H.gdp);
+  mkHist('cFcCpi', H.cpi);
+  mkHist('cFcCore', H.core);
 }
 
 function renderMarkets(M) {
@@ -942,76 +1344,150 @@ fetch('./market_data.json?' + Date.now())
       '<div style="color:var(--muted);padding:20px">News unavailable.</div>';
   });
 
-// ── NOMURA RESEARCH ──────────────────────────────────────────────────────────
-function renderNomura(N) {
-  const ANALYSTS = N.analysts || [];
-  const REPORTS  = N.reports  || {};
-  const when = N.scraped_at ? new Date(N.scraped_at).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '';
-  document.getElementById('nomuraStatus').textContent = when ? '· as of ' + when : '';
+// ── NISA tab ────────────────────────────────────────────────────────────────
+(function(){
+  const YEN = "¥";
+  const mn = ["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const fmtD = s => { const [y,m]=s.split("-"); return m ? `${mn[+m]} ${y.slice(2)}` : y; };
+  const last = a => a[a.length-1];
+  const pct = x => (x*100).toFixed(0)+"%";
+  const GRID={color:"#2a3752"}, TICK={color:"#93a1bd",font:{size:11}};
+  const baseOpts = yl => ({responsive:true,plugins:{legend:{display:false}},
+    scales:{x:{grid:GRID,ticks:TICK},y:{grid:GRID,ticks:TICK,title:{display:!!yl,text:yl,color:"#93a1bd"}}}});
 
-  let activeAnalyst = ANALYSTS[0];
+  fetch('./nisa_data.json?' + Date.now())
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(D => {
+      document.getElementById('nisaAsof').textContent = "· data as of " + D.meta.as_of;
+      const wm = D.whole_market_fsa;
+      const cum = wm.cumulative_purchase_jpy_tn.series;
+      const acc = wm.accounts_10k.series;
+      const cumL = last(cum), accL = last(acc);
+      const mon = D.ten_firms_jsda.monthly_purchase_jpy_100m.series;
+      const monL = last(mon);
+      const alloc = D.ten_firms_jsda.latest_allocation_2026Q1;
+      const yoyCum = ((cumL.value/cum.find(d=>d.date==="2024-12").value-1)*100).toFixed(0);
+      const yoyAcc = ((accL.value/acc.find(d=>d.date==="2024-12").value-1)*100).toFixed(0);
 
-  const tabBar = document.getElementById('nomuraAnalystTabs');
-  const container = document.getElementById('nomuraReports');
+      document.getElementById('nisaKpis').innerHTML = `
+        <div class="kpi"><div class="v">${YEN}${cumL.value} tn</div><div class="l">Cumulative buys, whole market</div><div class="d up">+${yoyCum}% YoY · ${fmtD(cumL.date)}</div></div>
+        <div class="kpi"><div class="v">${(accL.value/100).toFixed(2)} mn</div><div class="l">NISA accounts, whole market</div><div class="d up">+${yoyAcc}% YoY · ${fmtD(accL.date)}</div></div>
+        <div class="kpi"><div class="v">${YEN}${(monL.value/10000).toFixed(2)} tn</div><div class="l">10-firm monthly buys</div><div class="d flat">${fmtD(monL.date)}</div></div>
+        <div class="kpi"><div class="v">${pct(alloc.growth_quota_share)}</div><div class="l">Growth-quota share of buys</div><div class="d flat">2026 Q1</div></div>
+        <div class="kpi"><div class="v">${pct(alloc.domestic_stock_share_of_total)}</div><div class="l">Into domestic stocks</div><div class="d flat">2026 Q1</div></div>`;
 
-  function renderCards(analyst) {
-    activeAnalyst = analyst;
-    // Update tab highlights
-    tabBar.querySelectorAll('button').forEach(b => {
-      b.style.background = b.dataset.analyst === analyst ? 'var(--accent)' : 'var(--surface2)';
-      b.style.color = b.dataset.analyst === analyst ? '#fff' : 'var(--muted)';
+      new Chart(document.getElementById('nisaCumChart'),{type:"line",data:{labels:cum.map(d=>fmtD(d.date)),
+        datasets:[{data:cum.map(d=>d.value),borderColor:"#d9a441",backgroundColor:"rgba(217,164,65,.12)",fill:true,tension:.25,pointRadius:2}]},options:baseOpts("¥ tn")});
+      new Chart(document.getElementById('nisaAcctChart'),{type:"line",data:{labels:acc.map(d=>fmtD(d.date)),
+        datasets:[{data:acc.map(d=>d.value/100),borderColor:"#4a90d9",backgroundColor:"rgba(74,144,217,.12)",fill:true,tension:.25,pointRadius:2}]},options:baseOpts("mn accounts")});
+
+      const jan = d => d.date.endsWith("-01");
+      new Chart(document.getElementById('nisaMonChart'),{type:"bar",data:{labels:mon.map(d=>fmtD(d.date)),
+        datasets:[{data:mon.map(d=>d.value/10000),backgroundColor:mon.map(d=>jan(d)?"#e2564a":"#4a7fc0"),borderRadius:3}]},options:baseOpts("¥ tn/mo")});
+
+      new Chart(document.getElementById('nisaQuotaChart'),{type:"doughnut",data:{labels:["Growth quota","Tsumitate quota"],
+        datasets:[{data:[alloc.growth_quota_share,alloc.tsumitate_quota_share],backgroundColor:["#e2564a","#4a90d9"],borderColor:"#171f31",borderWidth:2}]},
+        options:{responsive:true,plugins:{legend:{labels:{color:"#e8edf7"}}}}});
+      new Chart(document.getElementById('nisaWithinChart'),{type:"doughnut",data:{labels:["Single stocks","Funds"],
+        datasets:[{data:[alloc.within_growth_quota.stocks,alloc.within_growth_quota.funds],backgroundColor:["#d9a441","#7fb3e8"],borderColor:"#171f31",borderWidth:2}]},
+        options:{responsive:true,plugins:{legend:{labels:{color:"#e8edf7"}}}}});
+
+      const t = wm.govt_target;
+      document.getElementById('nisaTargetBox').innerHTML =
+        `Government target: <b>${YEN}${t.cumulative_purchase_jpy_tn} tn</b> cumulative buys and <b>${(t.accounts_10k/100).toFixed(0)} mn</b> accounts by <b>${fmtD(t.by)}</b>. `+
+        `The ${YEN}${t.cumulative_purchase_jpy_tn} tn target was <b>already cleared in Mar-2025</b> — the story now is momentum, not the target. `+
+        `Current cumulative buys of ${YEN}${cumL.value} tn are <b>${(cumL.value/t.cumulative_purchase_jpy_tn*100).toFixed(0)}%</b> of target.`;
+      document.getElementById('nisaAllocBox').innerHTML =
+        `In 2026 Q1, <b>${pct(alloc.growth_quota_share)}</b> of buys ran through the growth quota vs <b>${pct(alloc.tsumitate_quota_share)}</b> tsumitate. `+
+        `<b>${pct(alloc.domestic_stock_share_of_total)}</b> of all buys went into <b>domestic stocks</b>; within the growth quota the split is <b>${pct(alloc.within_growth_quota.stocks)} single stocks / ${pct(alloc.within_growth_quota.funds)} funds</b>. `+
+        `The foreign-fund portion is the channel behind the persistent NISA→overseas-equity USDJPY bid.`;
+
+      let rows = "<tr><th>Source</th><th>Cadence</th><th>Role</th></tr>";
+      D.sources.forEach(s => { rows += `<tr><td><a href="${s.url}" target="_blank">${s.name}</a></td><td>${s.cadence}</td><td>${s.role||""}</td></tr>`; });
+      document.getElementById('nisaSrcTable').innerHTML = rows;
+      document.getElementById('nisaSrcNote').innerHTML =
+        "FSA and JSDA publish as PDF (not API). The JSDA 10-firm monthly pulse refreshes on the 18th; the FSA whole-market headline is hand-updated around quarter-end.";
+    })
+    .catch(e => {
+      console.warn('nisa_data.json unavailable:', e);
+      document.getElementById('nisaKpis').innerHTML =
+        '<div style="color:var(--muted);padding:20px">NISA data unavailable.</div>';
     });
+})();
 
-    const reports = REPORTS[analyst] || [];
-    if (!reports.length) {
-      container.innerHTML = '<div style="color:var(--muted);padding:20px">No reports available.</div>';
-      return;
-    }
+// ── Approval ratings tab ────────────────────────────────────────────────────
+(function(){
+  const mn = ["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const fmtM = s => { const [y,m]=s.split("-"); return `${mn[+m]} '${y.slice(2)}`; };
+  const GRID={color:"#2a3752"}, TICK={color:"#93a1bd",font:{size:11}};
 
-    container.innerHTML = reports.map(r => {
-      const date = r.date || '';
-      const summary = r.summary || '';
-      const url = r.url || '#';
-      return `<div style="border:1px solid var(--line);border-radius:8px;padding:16px 18px;margin-bottom:12px;background:var(--surface2)">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
-          <a href="${url}" target="_blank" rel="noopener"
-             style="font-size:14px;font-weight:600;color:var(--ink);text-decoration:none;flex:1;min-width:0;line-height:1.45">
-            ${r.title}
-          </a>
-          <span style="font-size:11.5px;color:var(--muted);white-space:nowrap;padding-top:2px">${date}</span>
-        </div>
-        ${summary ? `<p style="font-size:12.5px;color:var(--muted);margin:8px 0 0;line-height:1.6">${summary}</p>` : ''}
-      </div>`;
-    }).join('');
-  }
+  fetch('./approval_data.json?' + Date.now())
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(D => {
+      const c = D.cabinet, s = c.series;
+      const L = s[s.length-1], P = s.length>1 ? s[s.length-2] : L;
+      const net = L.approve - L.disapprove, netPrev = P.approve - P.disapprove;
+      const dNet = net - netPrev;
+      const parties = D.parties.items.slice().sort((a,b)=>b.support-a.support);
+      const ldp = parties.find(p=>p.name_en==="LDP");
+      const opp = parties.find(p=>p.name_en!=="LDP" && p.name_en!=="Komeito" && !/no party|unaffiliated|none/i.test(p.name_en));
+      const dApp = L.approve - P.approve, dDis = L.disapprove - P.disapprove;
+      const arrow = v => v>0?"▲":v<0?"▼":"■";
+      const cls = v => v>0?"up":v<0?"down":"flat";
 
-  // Build analyst tab buttons
-  tabBar.innerHTML = ANALYSTS.map(a => {
-    const cov = (N.coverage||{})[a] || '';
-    return `<button data-analyst="${a}"
-      onclick="(function(btn,a){
-        document.getElementById('nomuraAnalystTabs').querySelectorAll('button').forEach(b=>{b.style.background='var(--surface2)';b.style.color='var(--muted)';});
-        btn.style.background='var(--accent)'; btn.style.color='#fff';
-        window._nomuraRender(a);
-      })(this,'${a}')"
-      style="padding:6px 13px;border-radius:20px;border:none;cursor:pointer;font-size:12px;
-             background:var(--surface2);color:var(--muted);font-family:inherit;transition:all .15s">
-      ${a}<br><span style="font-size:10px;opacity:.7">${cov}</span>
-    </button>`;
-  }).join('');
+      document.getElementById('apvAsof').textContent = "· latest: " + c.pollster + " " + fmtM(c.latest_month);
+      document.getElementById('apvSeriesPill').textContent = c.pollster + " monthly";
+      document.getElementById('apvSeriesNote').textContent = c.series_source || "";
 
-  window._nomuraRender = renderCards;
-  renderCards(ANALYSTS[0]);
-}
+      document.getElementById('apvKpis').innerHTML = `
+        <div class="kpi"><div class="v">${L.approve}%</div><div class="l">Cabinet approval</div><div class="d ${cls(dApp)}">${arrow(dApp)} ${Math.abs(dApp).toFixed(0)}pt vs prev · ${fmtM(L.month)}</div></div>
+        <div class="kpi"><div class="v">${L.disapprove}%</div><div class="l">Cabinet disapproval</div><div class="d ${cls(-dDis)}">${arrow(dDis)} ${Math.abs(dDis).toFixed(0)}pt vs prev</div></div>
+        <div class="kpi"><div class="v">${net>0?"+":""}${net}pt</div><div class="l">Net approval</div><div class="d ${cls(dNet)}">${arrow(dNet)} ${Math.abs(dNet).toFixed(0)}pt vs prev</div></div>
+        ${ldp?`<div class="kpi"><div class="v">${ldp.support}%</div><div class="l">Ruling LDP support</div><div class="d flat">${D.parties.pollster} · ${D.parties.survey_date}</div></div>`:""}
+        ${opp?`<div class="kpi"><div class="v">${opp.support}%</div><div class="l">Top opposition — ${opp.name_en}</div><div class="d flat">${opp.name_ja||""}</div></div>`:""}`;
 
-fetch('./nomura_reports.json?' + Date.now())
-  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
-  .then(N => renderNomura(N))
-  .catch(e => {
-    console.warn('nomura_reports.json unavailable:', e);
-    document.getElementById('nomuraReports').innerHTML =
-      '<div style="color:var(--muted);padding:20px">Nomura research unavailable — will retry on next daily refresh.</div>';
-  });
+      // Approval vs disapproval trend
+      new Chart(document.getElementById('apvTrendChart'),{type:"line",
+        data:{labels:s.map(d=>fmtM(d.month)),datasets:[
+          {label:"Approve",data:s.map(d=>d.approve),borderColor:"#4cba7a",backgroundColor:"rgba(76,186,122,.10)",fill:true,tension:.25,pointRadius:2},
+          {label:"Disapprove",data:s.map(d=>d.disapprove),borderColor:"#e2564a",backgroundColor:"rgba(226,86,74,.08)",fill:true,tension:.25,pointRadius:2}]},
+        options:{responsive:true,plugins:{legend:{labels:{color:"#e8edf7",boxWidth:12}}},
+          scales:{x:{grid:GRID,ticks:TICK},y:{grid:GRID,ticks:TICK,title:{display:true,text:"%",color:"#93a1bd"}}}}});
+
+      // Party support horizontal bar
+      new Chart(document.getElementById('apvPartyChart'),{type:"bar",
+        data:{labels:parties.map(p=>p.name_en),datasets:[{data:parties.map(p=>p.support),
+          backgroundColor:parties.map(p=>p.color||"#8fa3c0"),borderRadius:3}]},
+        options:{indexAxis:"y",responsive:true,plugins:{legend:{display:false},
+          tooltip:{callbacks:{label:ctx=>` ${ctx.raw}%`}}},
+          scales:{x:{grid:GRID,ticks:{...TICK,callback:v=>v+"%"}},y:{grid:{display:false},ticks:TICK}}}});
+
+      // Net approval area
+      const netSeries = s.map(d=>d.approve-d.disapprove);
+      new Chart(document.getElementById('apvNetChart'),{type:"line",
+        data:{labels:s.map(d=>fmtM(d.month)),datasets:[{data:netSeries,
+          borderColor:"#d9a441",backgroundColor:"rgba(217,164,65,.12)",fill:true,tension:.25,pointRadius:2}]},
+        options:{responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.raw>0?"+":""}${ctx.raw}pt`}}},
+          scales:{x:{grid:GRID,ticks:TICK},y:{grid:GRID,ticks:{...TICK,callback:v=>(v>0?"+":"")+v}}}}});
+
+      // Party table
+      let rows = "<tr><th>Party</th><th style='text-align:right'>Support</th></tr>";
+      parties.forEach(p => { rows += `<tr><td><span class="pdot" style="background:${p.color||"#8fa3c0"}"></span>${esc(p.name_en)}${p.name_ja?` <span style="color:var(--muted)">${esc(p.name_ja)}</span>`:""}</td><td class="num">${p.support}%</td></tr>`; });
+      document.getElementById('apvPartyTable').innerHTML = rows;
+      document.getElementById('apvPartyNote').textContent = `${D.parties.pollster} · surveyed ${D.parties.survey_date}`;
+      if (D.notes) document.getElementById('apvContext').innerHTML = D.notes;
+
+      let src = "<tr><th>Source</th><th>Cadence</th><th>Role</th></tr>";
+      (D.sources||[]).forEach(x => { src += `<tr><td>${x.url?`<a href="${x.url}" target="_blank">${esc(x.name)}</a>`:esc(x.name)}</td><td>${esc(x.cadence||"")}</td><td>${esc(x.role||"")}</td></tr>`; });
+      document.getElementById('apvSrcTable').innerHTML = src;
+    })
+    .catch(e => {
+      console.warn('approval_data.json unavailable:', e);
+      document.getElementById('apvKpis').innerHTML =
+        '<div style="color:var(--muted);padding:20px">Approval data unavailable.</div>';
+    });
+})();
+
 </script>
 </body>
 </html>
