@@ -419,15 +419,15 @@
       <div class="fc-charts">
         <div class="card" style="margin:0">
           <h2 style="font-size:14px">Real GDP (y/y %)</h2>
-          <canvas id="cFcGdp" style="max-height:300px"></canvas>
+          <canvas id="cFcGdp" style="height:420px"></canvas>
         </div>
         <div class="card" style="margin:0">
           <h2 style="font-size:14px">CPI — less fresh food (y/y %)</h2>
-          <canvas id="cFcCpi" style="max-height:300px"></canvas>
+          <canvas id="cFcCpi" style="height:420px"></canvas>
         </div>
         <div class="card" style="margin:0">
           <h2 style="font-size:14px">CPI — less fresh food &amp; energy (y/y %)</h2>
-          <canvas id="cFcCore" style="max-height:300px"></canvas>
+          <canvas id="cFcCore" style="height:420px"></canvas>
         </div>
       </div>
       <div class="note" style="margin-top:10px">Markers: ● FY2026 · ▲ FY2027 · ■ FY2028. Values are the medians of the Policy Board members' forecasts. Source: BOJ Outlook Report appendices (Oct 2024 – Apr 2026).</div>
@@ -1037,6 +1037,7 @@ function renderForecasts(D) {
       plugins: [ChartDataLabels],
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         layout: { padding: { top: 14, right: 8, left: 4 } },
         plugins: {
           legend: { display: true, labels: { boxWidth: 8, usePointStyle: true, font: { size: 11 } } },
