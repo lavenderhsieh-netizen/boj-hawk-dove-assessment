@@ -1,0 +1,166 @@
+{
+  "generated_at": "2026-07-24",
+  "cabinet": {
+    "pollster": "Jiji Press",
+    "latest_month": "2026-07",
+    "series_source": "Jiji Press monthly Public Opinion Poll (personal-interview, ~1,150 respondents nationwide, aged 18+).",
+    "series": [
+      {
+        "month": "2025-11",
+        "approve": 63.8,
+        "disapprove": 10.8
+      },
+      {
+        "month": "2025-12",
+        "approve": 59.9,
+        "disapprove": 13.6
+      },
+      {
+        "month": "2026-01",
+        "approve": 61.0,
+        "disapprove": 15.1
+      },
+      {
+        "month": "2026-02",
+        "approve": 63.8,
+        "disapprove": 18.4
+      },
+      {
+        "month": "2026-03",
+        "approve": 59.3,
+        "disapprove": 20.3
+      },
+      {
+        "month": "2026-04",
+        "approve": 59.1,
+        "disapprove": 19.2
+      },
+      {
+        "month": "2026-05",
+        "approve": 59.4,
+        "disapprove": 19.7
+      },
+      {
+        "month": "2026-06",
+        "approve": 54.3,
+        "disapprove": 22.2
+      },
+      {
+        "month": "2026-07",
+        "approve": 49.0,
+        "disapprove": 25.2
+      }
+    ]
+  },
+  "parties": {
+    "pollster": "Jiji Press",
+    "survey_date": "10–13 Jul 2026",
+    "items": [
+      {
+        "name_en": "LDP",
+        "name_ja": "自民党",
+        "support": 20.8,
+        "color": "#d94a4a"
+      },
+      {
+        "name_en": "CRA",
+        "name_ja": "中道改革連合",
+        "support": 5.8,
+        "color": "#4cba7a"
+      },
+      {
+        "name_en": "Sanseito",
+        "name_ja": "参政党",
+        "support": 2.5,
+        "color": "#e8912d"
+      },
+      {
+        "name_en": "JIP (Ishin)",
+        "name_ja": "日本維新の会",
+        "support": 2.3,
+        "color": "#2aa198"
+      },
+      {
+        "name_en": "DPFP",
+        "name_ja": "国民民主党",
+        "support": 1.6,
+        "color": "#d9a441"
+      },
+      {
+        "name_en": "JCP",
+        "name_ja": "共産党",
+        "support": 1.4,
+        "color": "#b5322f"
+      },
+      {
+        "name_en": "Mirai",
+        "name_ja": "みらい",
+        "support": 1.2,
+        "color": "#6db1ff"
+      },
+      {
+        "name_en": "Reiwa",
+        "name_ja": "れいわ新選組",
+        "support": 0.4,
+        "color": "#d16ba5"
+      },
+      {
+        "name_en": "CPJ",
+        "name_ja": "日本保守党",
+        "support": 0.4,
+        "color": "#3f6fb0"
+      },
+      {
+        "name_en": "SDP",
+        "name_ja": "社民党",
+        "support": 0.4,
+        "color": "#7fb3e8"
+      },
+      {
+        "name_en": "No party affiliation",
+        "name_ja": "支持なし",
+        "support": 59.5,
+        "color": "#6b7688"
+      }
+    ]
+  },
+  "notes": "Jiji cabinet approval fell below 50% (<b>49.0%</b>) in July 2026 for the first time since PM Takaichi took office in Oct 2025 — a fourth straight monthly decline, with disapproval up to 25.2%. The LDP–JIP (Ishin) coalition's push to force through key bills (including a secondary-capital law) plus the cost-of-living and energy squeeze are eroding support. <b>Market read:</b> a weakening cabinet raises the odds of additional fiscal stimulus / slower consolidation (JGB-supply negative) and gives the government more incentive to lean against a weak yen — a backdrop that keeps pressure on the BOJ's normalisation path. Other pollsters run higher or lower by level (JNN/Yomiuri highest, Mainichi lowest — Mainichi's July reading was 41%), but all show the same downtrend; Jiji is used here as a single consistent monthly series.",
+  "sources": [
+    {
+      "name": "Jiji Press — 時事世論調査",
+      "url": "https://www.jiji.com/jc/v7?id=2025jijiyoron",
+      "cadence": "monthly",
+      "role": "Headline series (cabinet + party support)"
+    },
+    {
+      "name": "NHK 政治意識月例調査",
+      "url": "https://www.nhk.or.jp/senkyo/shijiritsu/",
+      "cadence": "monthly",
+      "role": "Cross-check"
+    },
+    {
+      "name": "Nikkei / TV Tokyo",
+      "url": "https://www.nikkei.com/",
+      "cadence": "monthly",
+      "role": "Cross-check"
+    },
+    {
+      "name": "Asahi Shimbun",
+      "url": "https://www.asahi.com/",
+      "cadence": "monthly",
+      "role": "Cross-check"
+    },
+    {
+      "name": "Mainichi Shimbun",
+      "url": "https://mainichi.jp/",
+      "cadence": "monthly",
+      "role": "Cross-check (lowest level)"
+    },
+    {
+      "name": "Kyodo News",
+      "url": "https://english.kyodonews.net/",
+      "cadence": "monthly",
+      "role": "Cross-check"
+    }
+  ]
+}
