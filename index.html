@@ -8,6 +8,7 @@
 <meta http-equiv="Expires" content="0">
 <title>Japan Macro Monitoring</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <style>
   :root{
@@ -63,6 +64,8 @@
   .fc-rl{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700;margin-bottom:6px}
   .fc-up .fc-rl::after{content:" ▲ upside";color:#e2564a} .fc-down .fc-rl::after{content:" ▼ downside";color:#4a90d9}
   .fc-rv{font-size:12.5px;line-height:1.5;color:var(--ink)}
+  .fc-charts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
+  @media(max-width:900px){.fc-charts{grid-template-columns:1fr}}
   /* speaker cards */
   .spcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
   .sp{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:15px 16px;cursor:pointer;user-select:none;transition:border-color .15s}
@@ -412,22 +415,22 @@
 
     <div class="card">
       <h2>Forecast revision history — median across successive Outlook Reports</h2>
-      <p class="sub">How the Policy Board's median forecast for each fiscal year has been revised, report by report (Jan 2025 → Apr 2026). The April 2026 jump in CPI reflects the Middle East crude-oil shock.</p>
-      <div class="grid2" style="margin-top:14px">
+      <p class="sub">How the Policy Board's median forecast for each fiscal year (FY2026–FY2028) has been revised, report by report (Oct 2024 → Apr 2026). The April 2026 jump in CPI reflects the Middle East crude-oil shock.</p>
+      <div class="fc-charts">
         <div class="card" style="margin:0">
           <h2 style="font-size:14px">Real GDP (y/y %)</h2>
-          <canvas id="cFcGdp" style="max-height:260px"></canvas>
+          <canvas id="cFcGdp" style="max-height:300px"></canvas>
         </div>
         <div class="card" style="margin:0">
           <h2 style="font-size:14px">CPI — less fresh food (y/y %)</h2>
-          <canvas id="cFcCpi" style="max-height:260px"></canvas>
+          <canvas id="cFcCpi" style="max-height:300px"></canvas>
         </div>
-        <div class="card full" style="margin:0">
+        <div class="card" style="margin:0">
           <h2 style="font-size:14px">CPI — less fresh food &amp; energy (y/y %)</h2>
-          <canvas id="cFcCore" style="max-height:260px"></canvas>
-          <div class="note">Core-core series is only published from the Oct 2025 Outlook Report onward.</div>
+          <canvas id="cFcCore" style="max-height:300px"></canvas>
         </div>
       </div>
+      <div class="note" style="margin-top:10px">Markers: ● FY2026 · ▲ FY2027 · ■ FY2028. Values are the medians of the Policy Board members' forecasts. Source: BOJ Outlook Report appendices (Oct 2024 – Apr 2026).</div>
     </div>
   </div>
 
@@ -1003,26 +1006,47 @@ function renderForecasts(D) {
   document.getElementById('fcRiskTiming').textContent = F.risk.target_timing;
   document.getElementById('fcForward').textContent = F.risk.forward;
 
-  // Revision-history charts: x = report date, one line per fiscal year.
+  // Revision-history charts: x = report date, one line per fiscal year (Morgan-Stanley style).
   const H = F.history;
-  const FY_COLORS = { FY2025: '#b9c2d4', FY2026: '#e2564a', FY2027: '#d9a441', FY2028: '#7fb3e8' };
+  // Plot the forward-looking fiscal years (FY2025 is effectively settled); distinct marker per FY.
+  const FY_STYLE = {
+    FY2026: { color: '#e2564a', pt: 'circle',  align: 'top'    },
+    FY2027: { color: '#d9a441', pt: 'triangle', align: 'bottom' },
+    FY2028: { color: '#7fb3e8', pt: 'rect',     align: 'top'    },
+  };
   const mkHist = (canvasId, series) => {
-    const datasets = Object.keys(series).map(fy => ({
-      label: fy,
-      data: series[fy],
-      borderColor: FY_COLORS[fy] || '#8fa3c0',
-      backgroundColor: FY_COLORS[fy] || '#8fa3c0',
-      spanGaps: true, pointRadius: 3, borderWidth: 2, tension: 0.2
-    }));
+    const datasets = Object.keys(FY_STYLE)
+      .filter(fy => series[fy])
+      .map(fy => {
+        const s = FY_STYLE[fy];
+        return {
+          label: fy, data: series[fy],
+          borderColor: s.color, backgroundColor: s.color,
+          pointStyle: s.pt, pointRadius: 3.5, pointHoverRadius: 6,
+          spanGaps: true, borderWidth: 2, tension: 0.2,
+          datalabels: {
+            color: s.color, align: s.align, anchor: 'center', offset: 4,
+            font: { size: 10, weight: '600' },
+            formatter: v => v == null ? null : v.toFixed(1)
+          }
+        };
+      });
     new Chart(document.getElementById(canvasId), {
       type: 'line',
       data: { labels: H.reports, datasets },
+      plugins: [ChartDataLabels],
       options: {
         responsive: true,
-        plugins: { legend: { display: true, labels: { boxWidth: 12, font: { size: 11 } } },
-          tooltip: { callbacks: { label: i => i.dataset.label + ': ' + (i.raw == null ? '—' : (i.raw > 0 ? '+' : '') + i.raw.toFixed(1) + '%') } } },
-        scales: { x: { grid: { color: '#2a3752' }, ticks: { font: { size: 10 } } },
-          y: { grid: { color: '#2a3752' }, ticks: { callback: v => v + '%', font: { size: 11 } } } }
+        layout: { padding: { top: 14, right: 8, left: 4 } },
+        plugins: {
+          legend: { display: true, labels: { boxWidth: 8, usePointStyle: true, font: { size: 11 } } },
+          datalabels: { display: 'auto', clamp: true },
+          tooltip: { callbacks: { label: i => i.dataset.label + ': ' + (i.raw == null ? '—' : (i.raw > 0 ? '+' : '') + i.raw.toFixed(1) + '%') } }
+        },
+        scales: {
+          x: { grid: { color: '#2a3752' }, ticks: { font: { size: 9.5 }, maxRotation: 45, minRotation: 45 } },
+          y: { grid: { color: '#2a3752' }, ticks: { callback: v => v + '%', font: { size: 11 } } }
+        }
       }
     });
   };
