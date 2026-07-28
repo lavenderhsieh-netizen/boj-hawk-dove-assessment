@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-07-27T16:08:20Z",
+  "scraped_at": "2026-07-28T16:05:52Z",
   "analysts": [
     "Kyohei Morita",
     "Tomoaki Shishido",
@@ -53,6 +53,22 @@
     ],
     "Tomoaki Shishido": [
       {
+        "title": "Yen Rates Daily Monitor - 28 Jul 2026",
+        "url": "https://go.nomuranow.com/research/japi/publication/1311287?appname=GRPUI",
+        "date": "JUL 28, 2026",
+        "summary": "TOMOAKI SHISHIDO, YUJIRO GOTO, TOMOCHIKA KITAOKA",
+        "analyst": "Tomoaki Shishido",
+        "coverage": "Japan Rates"
+      },
+      {
+        "title": "Yen RV Analytics - 28 Jul 2026",
+        "url": "https://go.nomuranow.com/research/japi/publication/1311273?appname=GRPUI",
+        "date": "JUL 28, 2026",
+        "summary": "TOMOAKI SHISHIDO, YUJIRO GOTO, TOMOCHIKA KITAOKA",
+        "analyst": "Tomoaki Shishido",
+        "coverage": "Japan Rates"
+      },
+      {
         "title": "Yen RV Analytics - 27 Jul 2026",
         "url": "https://go.nomuranow.com/research/japi/publication/1311074?appname=GRPUI",
         "date": "JUL 27, 2026",
@@ -79,22 +95,6 @@
       {
         "title": "Japan Inflation Monitor (July) - Rising concerns over price pass-throughs this summer",
         "url": "https://go.nomuranow.com/research/japi/publication/1310891?appname=GRPUI",
-        "date": "JUL 24, 2026",
-        "summary": "TOMOAKI SHISHIDO, YUJIRO GOTO, TOMOCHIKA KITAOKA",
-        "analyst": "Tomoaki Shishido",
-        "coverage": "Japan Rates"
-      },
-      {
-        "title": "Yen RV Analytics - 24 Jul 2026",
-        "url": "https://go.nomuranow.com/research/japi/publication/1310784?appname=GRPUI",
-        "date": "JUL 24, 2026",
-        "summary": "TOMOAKI SHISHIDO, YUJIRO GOTO, TOMOCHIKA KITAOKA",
-        "analyst": "Tomoaki Shishido",
-        "coverage": "Japan Rates"
-      },
-      {
-        "title": "Yen Rates Daily Monitor - 24 Jul 2026",
-        "url": "https://go.nomuranow.com/research/japi/publication/1310772?appname=GRPUI",
         "date": "JUL 24, 2026",
         "summary": "TOMOAKI SHISHIDO, YUJIRO GOTO, TOMOCHIKA KITAOKA",
         "analyst": "Tomoaki Shishido",
@@ -135,6 +135,14 @@
         "coverage": "Japan FX"
       },
       {
+        "title": "JPY Intraday Comment - Markets focus on tax cut financing while USD/JPY stays elevated",
+        "url": "https://go.nomuranow.com/research/japi/publication/1311257?appname=GRPUI",
+        "date": "JUL 24, 2026",
+        "summary": "TOMOAKI SHISHIDO, YUJIRO GOTO, TOMOCHIKA KITAOKA",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
         "title": "JPY Intraday Comment - Shorts getting covered",
         "url": "https://go.nomuranow.com/research/japi/publication/1311085?appname=GRPUI",
         "date": "JUL 24, 2026",
@@ -167,14 +175,6 @@
         "coverage": "Japan FX"
       },
       {
-        "title": "Japan Rates Insights - Assessing the impact of including government bonds in NISA",
-        "url": "https://go.nomuranow.com/research/japi/publication/1310523?appname=GRPUI",
-        "date": "JUL 24, 2026",
-        "summary": "TOMOAKI SHISHIDO, YUJIRO GOTO, TOMOCHIKA KITAOKA",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
         "title": "Key focus and themes - Leaning towards but not diving into the softer USD camp; our key trades",
         "url": "https://go.nomuranow.com/research/japi/publication/1309859?appname=GRPUI",
         "date": "JUL 17, 2026",
@@ -184,6 +184,22 @@
       }
     ],
     "Masaki Kuwahara": [
+      {
+        "title": "Yen Rates Daily Monitor - 28 Jul 2026",
+        "url": "https://go.nomuranow.com/research/japi/publication/1311287?appname=GRPUI",
+        "date": "JUL 28, 2026",
+        "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, YUNA MINEGISHI",
+        "analyst": "Masaki Kuwahara",
+        "coverage": "Japan Macro"
+      },
+      {
+        "title": "Yen RV Analytics - 28 Jul 2026",
+        "url": "https://go.nomuranow.com/research/japi/publication/1311273?appname=GRPUI",
+        "date": "JUL 28, 2026",
+        "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, YUNA MINEGISHI",
+        "analyst": "Masaki Kuwahara",
+        "coverage": "Japan Macro"
+      },
       {
         "title": "Yen RV Analytics - 27 Jul 2026",
         "url": "https://go.nomuranow.com/research/japi/publication/1311074?appname=GRPUI",
@@ -196,22 +212,6 @@
         "title": "Yen Rates Daily Monitor - 27 Jul 2026",
         "url": "https://go.nomuranow.com/research/japi/publication/1311030?appname=GRPUI",
         "date": "JUL 27, 2026",
-        "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, YUNA MINEGISHI",
-        "analyst": "Masaki Kuwahara",
-        "coverage": "Japan Macro"
-      },
-      {
-        "title": "Yen RV Analytics - 24 Jul 2026",
-        "url": "https://go.nomuranow.com/research/japi/publication/1310784?appname=GRPUI",
-        "date": "JUL 24, 2026",
-        "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, YUNA MINEGISHI",
-        "analyst": "Masaki Kuwahara",
-        "coverage": "Japan Macro"
-      },
-      {
-        "title": "Yen Rates Daily Monitor - 24 Jul 2026",
-        "url": "https://go.nomuranow.com/research/japi/publication/1310772?appname=GRPUI",
-        "date": "JUL 24, 2026",
         "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, YUNA MINEGISHI",
         "analyst": "Masaki Kuwahara",
         "coverage": "Japan Macro"
