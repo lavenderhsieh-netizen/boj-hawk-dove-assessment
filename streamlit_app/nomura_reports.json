@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-07-31T16:06:50Z",
+  "scraped_at": "2026-08-01T16:05:29Z",
   "analysts": [
     "Kyohei Morita",
     "Tomoaki Shishido",
@@ -19,17 +19,17 @@
   "reports": {
     "Kyohei Morita": [
       {
-        "title": "BOJ Watch - July Monetary Policy Meeting preview",
-        "url": "https://go.nomuranow.com/research/japi/publication/1310387?appname=GRPUI",
-        "date": "JUL 22, 2026",
-        "summary": "KYOHEI MORITA, UICHIRO NOZAKI, MARI IWASHITA, YUNA MINEGISHI",
+        "title": "BOJ Watch - Our new main scenario pictures a rate hike in October; still little home-grown inflationary momentum",
+        "url": "https://go.nomuranow.com/research/japi/publication/1312468?appname=GRPUI",
+        "date": "JUL 31, 2026",
+        "summary": "KYOHEI MORITA, UICHIRO NOZAKI, YUNA MINEGISHI, MARI IWASHITA",
         "analyst": "Kyohei Morita",
         "coverage": "Japan Macro / BOJ"
       },
       {
         "title": "[Webcast] - MacroBrew@Nomura - Japan : Beyond the BOJ decision – Macro & Market Implications",
         "url": "https://go.nomuranow.com/research/japi/publication/1312663?appname=GRPUI",
-        "date": "JUL 22, 2026",
+        "date": "JUL 31, 2026",
         "summary": "KYOHEI MORITA, UICHIRO NOZAKI, YUNA MINEGISHI, MARI IWASHITA",
         "analyst": "Kyohei Morita",
         "coverage": "Japan Macro / BOJ"
@@ -37,7 +37,7 @@
       {
         "title": "Japan industrial production: June 2026 - Ongoing rise in SPE output, buoyed by AI boom",
         "url": "https://go.nomuranow.com/research/japi/publication/1312406?appname=GRPUI",
-        "date": "JUL 22, 2026",
+        "date": "JUL 31, 2026",
         "summary": "KYOHEI MORITA, UICHIRO NOZAKI, YUNA MINEGISHI, MARI IWASHITA",
         "analyst": "Kyohei Morita",
         "coverage": "Japan Macro / BOJ"
@@ -45,16 +45,16 @@
       {
         "title": "Japan: Forecasts for 2026 Q2 first preliminary GDP estimates - We forecast a real GDP growth estimate of +2.2% q-q annualized",
         "url": "https://go.nomuranow.com/research/japi/publication/1312367?appname=GRPUI",
-        "date": "JUL 22, 2026",
+        "date": "JUL 31, 2026",
         "summary": "KYOHEI MORITA, UICHIRO NOZAKI, YUNA MINEGISHI, MARI IWASHITA",
         "analyst": "Kyohei Morita",
         "coverage": "Japan Macro / BOJ"
       },
       {
-        "title": "BOJ Watch - Our new main scenario pictures a rate hike in October; still little home-grown inflationary momentum",
-        "url": "https://go.nomuranow.com/research/japi/publication/1312468?appname=GRPUI",
-        "date": "",
-        "summary": "KYOHEI MORITA, UICHIRO NOZAKI, YUNA MINEGISHI, MARI IWASHITA",
+        "title": "BOJ Watch - July Monetary Policy Meeting preview",
+        "url": "https://go.nomuranow.com/research/japi/publication/1310387?appname=GRPUI",
+        "date": "JUL 22, 2026",
+        "summary": "KYOHEI MORITA, UICHIRO NOZAKI, MARI IWASHITA, YUNA MINEGISHI",
         "analyst": "Kyohei Morita",
         "coverage": "Japan Macro / BOJ"
       }
@@ -127,6 +127,54 @@
     ],
     "Yujiro Goto": [
       {
+        "title": "Key focus and themes - Less USD supportive factors; higher convictions on long CNH and short IDR",
+        "url": "https://go.nomuranow.com/research/japi/publication/1312580?appname=GRPUI",
+        "date": "JUL 31, 2026",
+        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, MANTHAN SHINGALA more...",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
+        "title": "JPY Weekly - Intervention paved the way for a live September BOJ policy meeting",
+        "url": "https://go.nomuranow.com/research/japi/publication/1312691?appname=GRPUI",
+        "date": "JUL 31, 2026",
+        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, MANTHAN SHINGALA more...",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
+        "title": "[Webcast] - MacroBrew@Nomura - Japan : Beyond the BOJ decision – Macro & Market Implications",
+        "url": "https://go.nomuranow.com/research/japi/publication/1312663?appname=GRPUI",
+        "date": "JUL 31, 2026",
+        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, MANTHAN SHINGALA more...",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
+        "title": "Strategy Trade - *New* Open tactical long EUR/JPY",
+        "url": "https://go.nomuranow.com/research/japi/publication/1312552?appname=GRPUI",
+        "date": "JUL 31, 2026",
+        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, MANTHAN SHINGALA more...",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
+        "title": "First Insights - JPY: BOJ continues to see inflation risks as skewed to the upside",
+        "url": "https://go.nomuranow.com/research/japi/publication/1312360?appname=GRPUI",
+        "date": "JUL 31, 2026",
+        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, MANTHAN SHINGALA more...",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
+        "title": "JPY Intraday Comment - BOJ meeting in focus after USD weakens on FOMC decision",
+        "url": "https://go.nomuranow.com/research/japi/publication/1311954?appname=GRPUI",
+        "date": "JUL 31, 2026",
+        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, MANTHAN SHINGALA more...",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
         "title": "Japan Macro Report - Steps taken by Takaichi administration and market reaction/assessment",
         "url": "https://go.nomuranow.com/research/japi/publication/1310892?appname=GRPUI",
         "date": "JUL 24, 2026",
@@ -138,54 +186,6 @@
         "title": "Key focus and themes - Our trades in the big week ahead",
         "url": "https://go.nomuranow.com/research/japi/publication/1310870?appname=GRPUI",
         "date": "JUL 24, 2026",
-        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, MANTHAN SHINGALA more...",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
-        "title": "[Webcast] - MacroBrew@Nomura - Japan : Beyond the BOJ decision – Macro & Market Implications",
-        "url": "https://go.nomuranow.com/research/japi/publication/1312663?appname=GRPUI",
-        "date": "JUL 24, 2026",
-        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, MANTHAN SHINGALA more...",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
-        "title": "Strategy Trade - *New* Open tactical long EUR/JPY",
-        "url": "https://go.nomuranow.com/research/japi/publication/1312552?appname=GRPUI",
-        "date": "JUL 24, 2026",
-        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, MANTHAN SHINGALA more...",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
-        "title": "First Insights - JPY: BOJ continues to see inflation risks as skewed to the upside",
-        "url": "https://go.nomuranow.com/research/japi/publication/1312360?appname=GRPUI",
-        "date": "JUL 24, 2026",
-        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, MANTHAN SHINGALA more...",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
-        "title": "JPY Intraday Comment - BOJ meeting in focus after USD weakens on FOMC decision",
-        "url": "https://go.nomuranow.com/research/japi/publication/1311954?appname=GRPUI",
-        "date": "JUL 24, 2026",
-        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, MANTHAN SHINGALA more...",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
-        "title": "JPY Intraday Comment - Assessing the channels through which earthquakes affect the JPY",
-        "url": "https://go.nomuranow.com/research/japi/publication/1311603?appname=GRPUI",
-        "date": "JUL 24, 2026",
-        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, MANTHAN SHINGALA more...",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
-        "title": "Key focus and themes - Less USD supportive factors; higher convictions on long CNH and short IDR",
-        "url": "https://go.nomuranow.com/research/japi/publication/1312580?appname=GRPUI",
-        "date": "",
         "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, MANTHAN SHINGALA more...",
         "analyst": "Yujiro Goto",
         "coverage": "Japan FX"
@@ -243,17 +243,17 @@
     ],
     "Mari Iwashita": [
       {
-        "title": "BOJ Watch - July Monetary Policy Meeting preview",
-        "url": "https://go.nomuranow.com/research/japi/publication/1310387?appname=GRPUI",
-        "date": "JUL 22, 2026",
-        "summary": "KYOHEI MORITA, UICHIRO NOZAKI, MARI IWASHITA, YUNA MINEGISHI",
+        "title": "BOJ Watch - Our new main scenario pictures a rate hike in October; still little home-grown inflationary momentum",
+        "url": "https://go.nomuranow.com/research/japi/publication/1312468?appname=GRPUI",
+        "date": "JUL 31, 2026",
+        "summary": "KYOHEI MORITA, UICHIRO NOZAKI, YUNA MINEGISHI, MARI IWASHITA",
         "analyst": "Mari Iwashita",
         "coverage": "BOJ / Rates"
       },
       {
         "title": "Japan Economic Weekly - Focusing on comments about pace of rate hikes and BOJ independence at Governor Ueda's press conference",
         "url": "https://go.nomuranow.com/research/japi/publication/1310893?appname=GRPUI",
-        "date": "JUL 22, 2026",
+        "date": "JUL 31, 2026",
         "summary": "KYOHEI MORITA, UICHIRO NOZAKI, YUNA MINEGISHI, MARI IWASHITA",
         "analyst": "Mari Iwashita",
         "coverage": "BOJ / Rates"
@@ -261,7 +261,7 @@
       {
         "title": "Japan Economic Weekly - Our scenarios for the next rate hike following a hike in June",
         "url": "https://go.nomuranow.com/research/japi/publication/1305696?appname=GRPUI",
-        "date": "JUL 22, 2026",
+        "date": "JUL 31, 2026",
         "summary": "KYOHEI MORITA, UICHIRO NOZAKI, YUNA MINEGISHI, MARI IWASHITA",
         "analyst": "Mari Iwashita",
         "coverage": "BOJ / Rates"
@@ -269,7 +269,7 @@
       {
         "title": "BOJ Watch - June Monetary Policy Meeting preview",
         "url": "https://go.nomuranow.com/research/japi/publication/1304920?appname=GRPUI",
-        "date": "JUL 22, 2026",
+        "date": "JUL 31, 2026",
         "summary": "KYOHEI MORITA, UICHIRO NOZAKI, YUNA MINEGISHI, MARI IWASHITA",
         "analyst": "Mari Iwashita",
         "coverage": "BOJ / Rates"
@@ -277,7 +277,7 @@
       {
         "title": "BOJ Watch - We still expect BOJ to hike rates in June, based on Governor Ueda's speech",
         "url": "https://go.nomuranow.com/research/japi/publication/1303910?appname=GRPUI",
-        "date": "JUL 22, 2026",
+        "date": "JUL 31, 2026",
         "summary": "KYOHEI MORITA, UICHIRO NOZAKI, YUNA MINEGISHI, MARI IWASHITA",
         "analyst": "Mari Iwashita",
         "coverage": "BOJ / Rates"
@@ -285,8 +285,16 @@
       {
         "title": "BOJ Watch - (1) \"Hawkish\" rate hold; (2) further rate hikes in sight, including in June",
         "url": "https://go.nomuranow.com/research/japi/publication/1296330?appname=GRPUI",
-        "date": "JUL 22, 2026",
+        "date": "JUL 31, 2026",
         "summary": "KYOHEI MORITA, UICHIRO NOZAKI, YUNA MINEGISHI, MARI IWASHITA",
+        "analyst": "Mari Iwashita",
+        "coverage": "BOJ / Rates"
+      },
+      {
+        "title": "BOJ Watch - July Monetary Policy Meeting preview",
+        "url": "https://go.nomuranow.com/research/japi/publication/1310387?appname=GRPUI",
+        "date": "JUL 22, 2026",
+        "summary": "KYOHEI MORITA, UICHIRO NOZAKI, MARI IWASHITA, YUNA MINEGISHI",
         "analyst": "Mari Iwashita",
         "coverage": "BOJ / Rates"
       },
@@ -297,29 +305,21 @@
         "summary": "KYOHEI MORITA, UICHIRO NOZAKI, MARI IWASHITA, YUNA MINEGISHI",
         "analyst": "Mari Iwashita",
         "coverage": "BOJ / Rates"
-      },
-      {
-        "title": "BOJ Watch - Our new main scenario pictures a rate hike in October; still little home-grown inflationary momentum",
-        "url": "https://go.nomuranow.com/research/japi/publication/1312468?appname=GRPUI",
-        "date": "",
-        "summary": "KYOHEI MORITA, UICHIRO NOZAKI, YUNA MINEGISHI, MARI IWASHITA",
-        "analyst": "Mari Iwashita",
-        "coverage": "BOJ / Rates"
       }
     ],
     "Uichiro Nozaki": [
       {
-        "title": "BOJ Watch - July Monetary Policy Meeting preview",
-        "url": "https://go.nomuranow.com/research/japi/publication/1310387?appname=GRPUI",
-        "date": "JUL 22, 2026",
-        "summary": "KYOHEI MORITA, UICHIRO NOZAKI, MARI IWASHITA, YUNA MINEGISHI",
+        "title": "BOJ Watch - Our new main scenario pictures a rate hike in October; still little home-grown inflationary momentum",
+        "url": "https://go.nomuranow.com/research/japi/publication/1312468?appname=GRPUI",
+        "date": "JUL 31, 2026",
+        "summary": "KYOHEI MORITA, UICHIRO NOZAKI, YUNA MINEGISHI, MARI IWASHITA",
         "analyst": "Uichiro Nozaki",
         "coverage": "Japan Macro / Fiscal"
       },
       {
         "title": "Japan: Forecasts for 2026 Q2 first preliminary GDP estimates - We forecast a real GDP growth estimate of +2.2% q-q annualized",
         "url": "https://go.nomuranow.com/research/japi/publication/1312367?appname=GRPUI",
-        "date": "JUL 22, 2026",
+        "date": "JUL 31, 2026",
         "summary": "KYOHEI MORITA, UICHIRO NOZAKI, YUNA MINEGISHI, MARI IWASHITA",
         "analyst": "Uichiro Nozaki",
         "coverage": "Japan Macro / Fiscal"
@@ -327,7 +327,7 @@
       {
         "title": "Japan: FY26 Minimum wage hikes - Weighted national average increase of ¥55, second largest ever after record high in FY25",
         "url": "https://go.nomuranow.com/research/japi/publication/1311920?appname=GRPUI",
-        "date": "JUL 22, 2026",
+        "date": "JUL 31, 2026",
         "summary": "KYOHEI MORITA, UICHIRO NOZAKI, YUNA MINEGISHI, MARI IWASHITA",
         "analyst": "Uichiro Nozaki",
         "coverage": "Japan Macro / Fiscal"
@@ -335,7 +335,7 @@
       {
         "title": "Japan Economic Weekly - Focusing on comments about pace of rate hikes and BOJ independence at Governor Ueda's press conference",
         "url": "https://go.nomuranow.com/research/japi/publication/1310893?appname=GRPUI",
-        "date": "JUL 22, 2026",
+        "date": "JUL 31, 2026",
         "summary": "KYOHEI MORITA, UICHIRO NOZAKI, YUNA MINEGISHI, MARI IWASHITA",
         "analyst": "Uichiro Nozaki",
         "coverage": "Japan Macro / Fiscal"
@@ -343,16 +343,16 @@
       {
         "title": "Japan Inflation Monitor (July) - Rising concerns over price pass-throughs this summer",
         "url": "https://go.nomuranow.com/research/japi/publication/1310891?appname=GRPUI",
-        "date": "JUL 22, 2026",
+        "date": "JUL 31, 2026",
         "summary": "KYOHEI MORITA, UICHIRO NOZAKI, YUNA MINEGISHI, MARI IWASHITA",
         "analyst": "Uichiro Nozaki",
         "coverage": "Japan Macro / Fiscal"
       },
       {
-        "title": "BOJ Watch - Our new main scenario pictures a rate hike in October; still little home-grown inflationary momentum",
-        "url": "https://go.nomuranow.com/research/japi/publication/1312468?appname=GRPUI",
-        "date": "",
-        "summary": "KYOHEI MORITA, UICHIRO NOZAKI, YUNA MINEGISHI, MARI IWASHITA",
+        "title": "BOJ Watch - July Monetary Policy Meeting preview",
+        "url": "https://go.nomuranow.com/research/japi/publication/1310387?appname=GRPUI",
+        "date": "JUL 22, 2026",
+        "summary": "KYOHEI MORITA, UICHIRO NOZAKI, MARI IWASHITA, YUNA MINEGISHI",
         "analyst": "Uichiro Nozaki",
         "coverage": "Japan Macro / Fiscal"
       }
