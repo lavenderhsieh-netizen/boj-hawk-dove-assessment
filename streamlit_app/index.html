@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>BOJ Hawk–Dove Dashboard</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -37,14 +40,30 @@
   .note{font-size:11.5px;color:var(--muted);margin-top:8px;line-height:1.5}
   /* speaker cards */
   .spcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
-  .sp{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:15px 16px}
+  .sp{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:15px 16px;cursor:pointer;user-select:none;transition:border-color .15s}
+  .sp:hover{border-color:var(--accent)}
+  .sp.open{border-color:var(--accent)}
+  .sp-hd{display:flex;justify-content:space-between;align-items:flex-start}
+  .sp-chev{font-size:15px;color:var(--muted);transition:transform .2s;flex-shrink:0;margin-left:6px;margin-top:2px}
+  .sp.open .sp-chev{transform:rotate(180deg);color:var(--accent)}
   .sp .name{font-weight:700;font-size:14.5px}
   .sp .role{font-size:11.5px;color:var(--muted);margin:2px 0 8px}
   .sp .shift{font-size:12px;color:var(--accent);margin-bottom:7px}
   .sp .q{font-size:12.5px;color:var(--muted);line-height:1.55;border-left:3px solid var(--line);padding-left:10px;font-style:italic}
+  .sp-rmks{margin-top:12px;border-top:1px solid var(--line);padding-top:10px;display:none}
+  .sp.open .sp-rmks{display:block}
+  .rmk-tbl{width:100%;border-collapse:collapse;font-size:11.5px}
+  .rmk-tbl th{text-align:left;color:var(--muted);font-weight:600;padding:4px 8px;border-bottom:1px solid var(--line);font-size:11px}
+  .rmk-tbl td{padding:6px 8px;vertical-align:top;border-bottom:1px dotted var(--line);line-height:1.5}
+  .rmk-tbl tr:last-child td{border-bottom:none}
+  .rmk-tbl .rmk-date{white-space:nowrap;color:var(--accent);font-size:10.5px;font-weight:600;width:80px}
+  .rmk-tbl .rmk-src{color:var(--muted);font-size:10.5px;width:130px;font-style:italic}
+  .rmk-no-data{color:var(--muted);font-size:12px;font-style:italic;padding:6px 0}
   .tag{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 9px;border-radius:20px;margin-left:5px;vertical-align:middle}
   .t-hawk{background:rgba(226,86,74,.18);color:var(--hawk2)}
+  .t-neutral-hawk{background:rgba(226,86,74,.09);color:var(--hawk2);opacity:.8}
   .t-dove{background:rgba(74,144,217,.18);color:var(--dove2)}
+  .t-neutral-dove{background:rgba(74,144,217,.09);color:var(--dove2);opacity:.8}
   .t-neutral{background:rgba(185,194,212,.15);color:var(--neutral)}
   /* tables */
   table{width:100%;border-collapse:collapse;font-size:12.5px}
@@ -118,6 +137,7 @@
   .ntag-takaichi{background:#2a1a3a;color:#b47fe8}
   .ntag-katayama{background:#1a2a3a;color:#6db1ff}
   .ntag-ueda{background:#3a2a1a;color:#e8c26a}
+  .ntag-kiuchi{background:#1a3a2a;color:#5ed4a0}
   .ntag-defense{background:#2e1a1a;color:#e07070}
   /* news filter buttons */
   .news-filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
@@ -126,6 +146,20 @@
   .nf.active{background:var(--ink);color:var(--bg);border-color:var(--ink)}
   /* data status table */
   .status-ok{color:#4cba7a;font-weight:700}.status-stale{color:var(--accent);font-weight:700}.status-missing{color:var(--hawk2);font-weight:700}
+
+  /* board remarks expansion */
+  .bname{color:var(--accent);font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:5px;background:none;border:1px solid rgba(217,164,65,0.35);border-radius:3px;padding:2px 6px;font-family:inherit;font-size:inherit;text-align:left;white-space:nowrap}
+  .bname:hover{background:rgba(217,164,65,0.12);border-color:var(--accent)}
+  .bchev{font-size:11px;display:inline-block;color:var(--accent)}
+  .brow-hidden { display:none }
+  .brow-hidden.open { display:table-row }
+  .bd-remarks{padding:8px 14px 12px;background:rgba(255,255,255,0.03);border-left:3px solid var(--accent)}
+  .bd-remarks table{width:100%;font-size:12px;border-collapse:collapse;margin-top:6px}
+  .bd-remarks th{color:var(--muted);font-weight:600;text-align:left;padding:3px 8px 3px 0;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .bd-remarks td{padding:4px 8px 4px 0;color:var(--fg);vertical-align:top;border-bottom:1px solid rgba(255,255,255,0.04)}
+  .bd-remarks td:first-child{white-space:nowrap;color:var(--muted);min-width:90px}
+  .bd-remarks td:nth-child(2){white-space:nowrap;min-width:160px}
+  .no-remarks{color:var(--muted);font-size:12px;padding:6px 0}
 </style>
 </head>
 <body>
@@ -142,7 +176,6 @@
   <button class="tab" onclick="showTab('markets',this)">Markets &amp; bonds</button>
   <button class="tab" onclick="showTab('news',this)">News</button>
   <button class="tab" onclick="showTab('pressconferences',this)">Press conferences</button>
-  <button class="tab" onclick="showTab('research',this)">Nomura research</button>
   <button class="tab" onclick="showTab('method',this)">Methodology</button>
 </div>
 
@@ -182,6 +215,7 @@
   <div id="tab-board" class="panel">
     <div class="card">
       <h2>Policy Board: tenure &amp; voting record</h2>
+      <p style="font-size:12px;color:var(--accent);margin:0 0 8px">▶ Click a member name to expand their remarks</p>
       <div style="overflow-x:auto"><table id="boardTable">
         <thead><tr><th>Member</th><th>Role</th><th>Tenure</th><th>Dissents</th><th>Voting record in window</th><th>Leaning</th></tr></thead>
         <tbody id="boardBody"></tbody>
@@ -282,7 +316,7 @@
   <div id="tab-news" class="panel">
     <div class="card">
       <h2>BOJ &amp; Japan macro news <span id="newsStatus"></span></h2>
-      <p class="note" style="margin-bottom:14px">Focused coverage: JGB &amp; yields · monetary policy · fiscal risks · FX &amp; yen intervention · Takaichi · Katayama · Ueda · defense spending. Refreshed daily.</p>
+      <p class="note" style="margin-bottom:14px">Focused coverage: JGB &amp; yields · monetary policy · fiscal risks · FX &amp; yen intervention · Takaichi · Katayama · Ueda · Kiuchi · defense spending · GPIF. Refreshed daily.</p>
       <div class="news-filters" id="newsFilters">
         <button class="nf active" data-tag="all">All</button>
         <button class="nf" data-tag="jgb-yield">JGB &amp; Yields</button>
@@ -292,7 +326,9 @@
         <button class="nf" data-tag="takaichi">Takaichi</button>
         <button class="nf" data-tag="katayama">Katayama</button>
         <button class="nf" data-tag="ueda">Ueda</button>
+        <button class="nf" data-tag="kiuchi">Kiuchi</button>
         <button class="nf" data-tag="defense">Defense</button>
+        <button class="nf" data-tag="gpif">GPIF</button>
       </div>
       <div class="news-list" id="newsList"></div>
     </div>
@@ -321,15 +357,6 @@
     </div>
   </div>
 
-  <!-- NOMURA RESEARCH -->
-  <div id="tab-research" class="panel">
-    <div class="card">
-      <h2>Nomura research — Japan team <span id="nomuraStatus" style="font-size:12px;font-weight:400;color:var(--muted)"></span></h2>
-      <p class="note" style="margin-bottom:18px">Latest reports from: Kyohei Morita (Macro/BOJ) · Tomoaki Shishido (Rates) · Yujiro Goto (FX) · Masaki Kuwahara (Macro) · Mari Iwashita (BOJ/Rates) · Uichiro Nozaki (Macro/Fiscal). Refreshed daily.</p>
-      <div id="nomuraAnalystTabs" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px"></div>
-      <div id="nomuraReports"></div>
-    </div>
-  </div>
 
   <!-- METHODOLOGY -->
   <div id="tab-method" class="panel">
@@ -350,6 +377,7 @@ function showTab(id, btn) {
   btn.classList.add('active');
 }
 
+
 // ── Chart defaults ──────────────────────────────────────────────────────────
 Chart.defaults.color = '#93a1bd';
 Chart.defaults.borderColor = '#2a3752';
@@ -363,13 +391,26 @@ function esc(s) {
   return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 function tagHtml(lean) {
-  const cls = lean === 'hawk' ? 't-hawk' : lean === 'dove' ? 't-dove' : 't-neutral';
+  const cls = lean === 'hawk' ? 't-hawk'
+    : lean === 'neutral-hawk' ? 't-neutral-hawk'
+    : lean === 'dove' ? 't-dove'
+    : lean === 'neutral-dove' ? 't-neutral-dove'
+    : 't-neutral';
   return `<span class="tag ${cls}">${esc(lean)}</span>`;
 }
 function chipHtml(type) {
   const map = {MPM:'c-mpm',Outlook:'c-out',Opinions:'c-opi',Minutes:'c-min'};
   return `<span class="chip ${map[type]||'c-min'}">${esc(type)}</span>`;
 }
+
+// ── Board remarks toggle ─────────────────────────────────────────────────────
+window.toggleBoardRemarks = function(btn, rid) {
+  var row = document.getElementById(rid);
+  if (!row) { alert('row not found: ' + rid); return; }
+  var open = row.style.display === 'table-row';
+  row.style.display = open ? 'none' : 'table-row';
+  btn.querySelector('.bchev').textContent = open ? '▶' : '▼';
+};
 
 // ── Render ──────────────────────────────────────────────────────────────────
 function render(D) {
@@ -432,18 +473,38 @@ function render(D) {
     },
     options: {
       plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 14 } } },
-      scales: { y: { min: -2.3, max: 2.3, ticks: { stepSize: 1 }, title: { display: true, text: '−2 dove … +2 hawk' } } }
+      scales: { y: { min: -2.5, max: 2.5, ticks: { stepSize: 1 }, title: { display: true, text: '−2 dove … +2 hawk' } } }
     }
   });
 
   // Speaker cards
-  document.getElementById('speakers').innerHTML = D.speakers.map(s => `
-    <div class="sp">
-      <div class="name">${esc(s.name)}${tagHtml(s.lean)}</div>
-      <div class="role">${esc(s.role)}</div>
+  function toggleSp(el) { el.classList.toggle('open'); }
+  document.getElementById('speakers').innerHTML = D.speakers.map(s => {
+    const rmkRows = (s.remarks && s.remarks.length)
+      ? s.remarks.map(r => `<tr>
+          <td class="rmk-date">${esc(r.date)}</td>
+          <td class="rmk-src">${esc(r.source)}</td>
+          <td>${esc(r.comment)}</td>
+        </tr>`).join('')
+      : `<tr><td colspan="3" class="rmk-no-data">No remarks recorded yet.</td></tr>`;
+    return `<div class="sp" onclick="toggleSp(this)">
+      <div class="sp-hd">
+        <div>
+          <div class="name">${esc(s.name)}${tagHtml(s.lean)}</div>
+          <div class="role">${esc(s.role)}</div>
+        </div>
+        <span class="sp-chev">▾</span>
+      </div>
       <div class="shift">${esc(s.shift)}</div>
       <div class="q">${esc(s.quote)}</div>
-    </div>`).join('');
+      <div class="sp-rmks">
+        <table class="rmk-tbl">
+          <thead><tr><th>Date</th><th>Source / Occasion</th><th>Key Comment</th></tr></thead>
+          <tbody>${rmkRows}</tbody>
+        </table>
+      </div>
+    </div>`;
+  }).join('');
 
   // Timeline
   document.getElementById('timeline').innerHTML = D.timeline.map(e => `
@@ -453,15 +514,28 @@ function render(D) {
     </div>`).join('');
 
   // Board table
-  document.getElementById('boardBody').innerHTML = D.board.map(m => {
+  const speakerMap = {};
+  (D.speakers || []).forEach(s => { speakerMap[s.name] = s.remarks || []; });
+
+  document.getElementById('boardBody').innerHTML = D.board.map((m, i) => {
     const hd = m.kind === 'hawk' ? 'dh' : m.kind === 'dove' ? 'dd' : 'dn';
+    const rid = 'bremark-' + i;
+    const remarks = speakerMap[m.member] || [];
+    const remarksHtml = remarks.length
+      ? `<table><thead><tr><th>Date</th><th>Source / Occasion</th><th>Key Comment</th></tr></thead><tbody>
+          ${remarks.map(r => `<tr><td>${esc(r.date)}</td><td>${esc(r.source)}</td><td>${esc(r.comment)}</td></tr>`).join('')}
+         </tbody></table>`
+      : `<p class="no-remarks">No remarks on record.</p>`;
     return `<tr class="${m.active ? '' : 'gone'}">
-      <td><b>${esc(m.member)}</b></td>
+      <td><button class="bname" onclick="toggleBoardRemarks(this,'${rid}')"><span class="bchev">▶</span> <b>${esc(m.member)}</b></button></td>
       <td>${esc(m.role)}</td>
       <td>${esc(m.tenure)}</td>
       <td class="${hd}">${esc(m.dissents)}</td>
       <td>${esc(m.record)}</td>
       <td><span class="tag ${m.kind==='hawk'?'t-hawk':m.kind==='dove'?'t-dove':'t-neutral'}">${esc(m.lean)}</span></td>
+    </tr>
+    <tr id="${rid}" class="${m.active ? '' : 'gone'}" style="display:none">
+      <td colspan="6"><div class="bd-remarks">${remarksHtml}</div></td>
     </tr>`;
   }).join('');
 
@@ -869,7 +943,7 @@ const TAG_LABELS = {
   'jgb-yield': 'JGB & Yields', 'monetary-policy': 'Monetary Policy',
   'fiscal': 'Fiscal', 'fx-yen': 'FX & Yen',
   'takaichi': 'Takaichi', 'katayama': 'Katayama',
-  'ueda': 'Ueda', 'defense': 'Defense'
+  'ueda': 'Ueda', 'kiuchi': 'Kiuchi', 'defense': 'Defense'
 };
 
 let _allNews = [];
@@ -934,76 +1008,6 @@ fetch('./market_data.json?' + Date.now())
       '<div style="color:var(--muted);padding:20px">News unavailable.</div>';
   });
 
-// ── NOMURA RESEARCH ──────────────────────────────────────────────────────────
-function renderNomura(N) {
-  const ANALYSTS = N.analysts || [];
-  const REPORTS  = N.reports  || {};
-  const when = N.scraped_at ? new Date(N.scraped_at).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '';
-  document.getElementById('nomuraStatus').textContent = when ? '· as of ' + when : '';
-
-  let activeAnalyst = ANALYSTS[0];
-
-  const tabBar = document.getElementById('nomuraAnalystTabs');
-  const container = document.getElementById('nomuraReports');
-
-  function renderCards(analyst) {
-    activeAnalyst = analyst;
-    // Update tab highlights
-    tabBar.querySelectorAll('button').forEach(b => {
-      b.style.background = b.dataset.analyst === analyst ? 'var(--accent)' : 'var(--surface2)';
-      b.style.color = b.dataset.analyst === analyst ? '#fff' : 'var(--muted)';
-    });
-
-    const reports = REPORTS[analyst] || [];
-    if (!reports.length) {
-      container.innerHTML = '<div style="color:var(--muted);padding:20px">No reports available.</div>';
-      return;
-    }
-
-    container.innerHTML = reports.map(r => {
-      const date = r.date || '';
-      const summary = r.summary || '';
-      const url = r.url || '#';
-      return `<div style="border:1px solid var(--line);border-radius:8px;padding:16px 18px;margin-bottom:12px;background:var(--surface2)">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
-          <a href="${url}" target="_blank" rel="noopener"
-             style="font-size:14px;font-weight:600;color:var(--ink);text-decoration:none;flex:1;min-width:0;line-height:1.45">
-            ${r.title}
-          </a>
-          <span style="font-size:11.5px;color:var(--muted);white-space:nowrap;padding-top:2px">${date}</span>
-        </div>
-        ${summary ? `<p style="font-size:12.5px;color:var(--muted);margin:8px 0 0;line-height:1.6">${summary}</p>` : ''}
-      </div>`;
-    }).join('');
-  }
-
-  // Build analyst tab buttons
-  tabBar.innerHTML = ANALYSTS.map(a => {
-    const cov = (N.coverage||{})[a] || '';
-    return `<button data-analyst="${a}"
-      onclick="(function(btn,a){
-        document.getElementById('nomuraAnalystTabs').querySelectorAll('button').forEach(b=>{b.style.background='var(--surface2)';b.style.color='var(--muted)';});
-        btn.style.background='var(--accent)'; btn.style.color='#fff';
-        window._nomuraRender(a);
-      })(this,'${a}')"
-      style="padding:6px 13px;border-radius:20px;border:none;cursor:pointer;font-size:12px;
-             background:var(--surface2);color:var(--muted);font-family:inherit;transition:all .15s">
-      ${a}<br><span style="font-size:10px;opacity:.7">${cov}</span>
-    </button>`;
-  }).join('');
-
-  window._nomuraRender = renderCards;
-  renderCards(ANALYSTS[0]);
-}
-
-fetch('./nomura_reports.json?' + Date.now())
-  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
-  .then(N => renderNomura(N))
-  .catch(e => {
-    console.warn('nomura_reports.json unavailable:', e);
-    document.getElementById('nomuraReports').innerHTML =
-      '<div style="color:var(--muted);padding:20px">Nomura research unavailable — will retry on next daily refresh.</div>';
-  });
 </script>
 </body>
 </html>

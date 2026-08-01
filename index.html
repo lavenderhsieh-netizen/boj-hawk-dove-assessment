@@ -49,20 +49,31 @@
   #tab-approval td.num{text-align:right;font-variant-numeric:tabular-nums}
   .npill{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 9px;border-radius:20px;background:rgba(217,164,65,.16);color:var(--accent)}
   /* forecasts tab */
-  #tab-forecasts th.fc-sub{font-size:11px;font-weight:600;color:var(--muted)}
-  #tab-forecasts .fc-hdr{font-weight:400;color:var(--muted);font-size:10px}
-  #tab-forecasts td{vertical-align:middle}
-  #tab-forecasts td.fc-num{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;font-size:13.5px;color:var(--ink)}
-  #tab-forecasts .fc-rng{font-size:10.5px;color:var(--muted);font-weight:400;display:block;margin-top:2px}
-  #tab-forecasts td.fc-rev{text-align:center;font-variant-numeric:tabular-nums;font-weight:600;font-size:12px}
-  #tab-forecasts .fy-actual td:first-child::after{content:" · actual";font-size:10px;color:var(--muted);font-weight:400}
+  #fcTable{table-layout:fixed;width:100%}
+  #fcTable th,#fcTable td{padding:9px 12px;text-align:center}
+  #fcTable th[rowspan]{text-align:left;vertical-align:bottom}
+  #fcTable tbody td:first-child{text-align:left}
+  #tab-forecasts th{font-size:13.5px}
+  #tab-forecasts th.fc-sub{font-size:13px;font-weight:600;color:var(--muted)}
+  #tab-forecasts .fc-hdr{font-weight:400;color:var(--muted);font-size:11px}
+  #tab-forecasts td{vertical-align:middle;font-size:17px}
+  #tab-forecasts td.fc-num{font-variant-numeric:tabular-nums;font-weight:700;font-size:17px;color:var(--ink)}
+  #tab-forecasts .fc-rng{font-size:12.5px;color:var(--muted);font-weight:400;display:block;margin-top:3px}
+  #tab-forecasts td.fc-rev{font-variant-numeric:tabular-nums;font-weight:600;font-size:15px}
+  #tab-forecasts .fy-actual td:first-child::after{content:" · actual";font-size:11px;color:var(--muted);font-weight:400}
   #tab-forecasts tr.fy-next td{background:rgba(217,164,65,.06)}
+  #tab-forecasts td.fc-num.fc-apr{color:var(--muted);font-weight:600}
+  #fcTable .gcol-end{border-right:2px solid rgba(255,255,255,.30)}
+  #fcTable th.grp{font-size:12.5px;font-weight:700;letter-spacing:.09em;color:var(--accent)}
+  #tab-forecasts .fc-drev{display:block;margin-top:4px;font-variant-numeric:tabular-nums;font-weight:700;font-size:13.5px}
   .rev-up{color:#e2564a} .rev-down{color:#4a90d9} .rev-flat{color:var(--muted)}
+  .fc-period{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);margin:16px 0 8px}
+  .fc-period:first-child{margin-top:4px}
   .fc-risk{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:6px}
   .fc-riskcard{border:1px solid var(--line);border-radius:10px;padding:14px 16px;border-left-width:3px}
-  .fc-riskcard.fc-up{border-left-color:#e2564a} .fc-riskcard.fc-down{border-left-color:#4a90d9} .fc-riskcard.fc-neu{border-left-color:#d9a441}
+  .fc-riskcard.fc-up{border-left-color:#e2564a} .fc-riskcard.fc-down{border-left-color:#4a90d9} .fc-riskcard.fc-neu{border-left-color:#d9a441} .fc-riskcard.fc-bal{border-left-color:#4cba7a}
   .fc-rl{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700;margin-bottom:6px}
-  .fc-up .fc-rl::after{content:" ▲ upside";color:#e2564a} .fc-down .fc-rl::after{content:" ▼ downside";color:#4a90d9}
+  .fc-up .fc-rl::after{content:" ▲ upside";color:#e2564a} .fc-down .fc-rl::after{content:" ▼ downside";color:#4a90d9} .fc-bal .fc-rl::after{content:" ● balanced";color:#4cba7a}
   .fc-rv{font-size:12.5px;line-height:1.5;color:var(--ink)}
   .fc-charts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
   @media(max-width:900px){.fc-charts{grid-template-columns:1fr}}
@@ -108,6 +119,7 @@
   .c-opi{background:rgba(74,144,217,.18);color:var(--dove2)}
   .c-min{background:rgba(185,194,212,.15);color:var(--neutral)}
   .c-tan{background:rgba(88,186,140,.18);color:#58ba8c}
+  .c-term{background:rgba(160,120,220,.20);color:#b79ae8}
   /* timeline */
   .tl{margin-left:8px;padding-left:22px;border-left:2px solid var(--line)}
   .ev{position:relative;padding:0 0 16px}
@@ -225,14 +237,14 @@
 <div class="tabs">
   <button class="tab active" onclick="showTab('dashboard',this)">Dashboard</button>
   <button class="tab" onclick="showTab('board',this)">Board &amp; votes</button>
+  <button class="tab" onclick="showTab('forecasts',this)">Forecasts</button>
+  <button class="tab" onclick="showTab('pressconferences',this)">Press conferences</button>
   <button class="tab" onclick="showTab('calendar',this)">BOJ calendar</button>
   <button class="tab" onclick="showTab('auctions',this)">Auctions &amp; fiscal</button>
-  <button class="tab" onclick="showTab('markets',this)">Markets &amp; bonds</button>
-  <button class="tab" onclick="showTab('forecasts',this)">Forecasts</button>
   <button class="tab" onclick="showTab('news',this)">News</button>
-  <button class="tab" onclick="showTab('pressconferences',this)">Press conferences</button>
+  <button class="tab" onclick="showTab('markets',this)">Markets &amp; bonds</button>
   <button class="tab" onclick="showTab('nisa',this)" style="display:none" data-hidden="redesign">NISA</button>
-  <button class="tab" onclick="showTab('approval',this)">Approval ratings</button>
+  <button class="tab" onclick="showTab('approval',this)" style="display:none" data-hidden="rework">Approval ratings</button>
   <button class="tab" onclick="showTab('method',this)">Methodology</button>
 </div>
 
@@ -284,11 +296,12 @@
   <!-- BOJ CALENDAR -->
   <div id="tab-calendar" class="panel">
     <div class="card">
-      <h2>2026 calendar: MPMs &amp; key releases</h2>
+      <h2>2026–2027 calendar: MPMs &amp; key releases</h2>
       <div style="overflow-x:auto"><table>
         <thead><tr><th>Date</th><th>Type</th><th>Event</th><th>Relates to</th><th>Notes</th></tr></thead>
         <tbody id="calBody"></tbody>
       </table></div>
+      <div class="note" style="margin-top:10px"><b style="color:#b79ae8">Board term expiries</b> (member eligible to vote through the last MPM before this date): Tamura &amp; Takata <b>23 Jul 2027</b> · Uchida &amp; Himino (Dep. Gov) 19 Mar 2028 · Ueda (Gov) 8 Apr 2028 · Koeda 25 Mar 2030 · Masu 30 Jun 2030 · Asada 31 Mar 2031 · Sato 29 Jun 2031. Full appointment dates on the Board &amp; votes tab.</div>
       <div class="note">Sources: <a href="https://www.boj.or.jp/en/mopo/mpmsche_minu/index.htm" target="_blank">BOJ Monetary Policy Meetings schedule</a> · <a href="https://www.boj.or.jp/en/statistics/tk/index.htm" target="_blank">BOJ Tankan release schedule</a>. Outlook Reports accompany Jan / Apr / Jul / Oct meetings; the Tankan (quarterly enterprise survey) is released ~Apr 1 / Jul 1 / Oct 1 / mid-Dec.</div>
     </div>
   </div>
@@ -375,17 +388,24 @@
       <h2>BOJ Outlook Report — Policy Board forecasts <span id="fcAsOf" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
       <p class="sub" id="fcDecided"></p>
       <div style="overflow-x:auto;margin-top:14px"><table id="fcTable">
+        <colgroup>
+          <col style="width:16%"><col><col><col><col><col><col>
+        </colgroup>
         <thead>
           <tr>
-            <th rowspan="2" style="vertical-align:bottom">Fiscal year</th>
-            <th colspan="2">Real GDP</th>
-            <th colspan="2">CPI <span style="font-weight:400;color:var(--muted)">(less fresh food)</span></th>
-            <th colspan="2">CPI <span style="font-weight:400;color:var(--muted)">(less fresh food &amp; energy)</span></th>
+            <th rowspan="3" style="vertical-align:bottom">Fiscal year</th>
+            <th colspan="2" class="grp gcol-end">Growth</th>
+            <th colspan="4" class="grp">Inflation</th>
           </tr>
           <tr>
-            <th class="fc-sub">Apr 2026 median <span class="fc-hdr">(range)</span></th><th class="fc-sub">vs Jan</th>
-            <th class="fc-sub">Apr 2026 median <span class="fc-hdr">(range)</span></th><th class="fc-sub">vs Jan</th>
-            <th class="fc-sub">Apr 2026 median <span class="fc-hdr">(range)</span></th><th class="fc-sub">vs Jan</th>
+            <th colspan="2" class="gcol-end">Real GDP</th>
+            <th colspan="2" class="gcol-end">Core inflation <span style="font-weight:400;color:var(--muted)">(CPI less fresh food)</span></th>
+            <th colspan="2">Core-core inflation <span style="font-weight:400;color:var(--muted)">(CPI less fresh food &amp; energy)</span></th>
+          </tr>
+          <tr>
+            <th class="fc-sub">Jul 2026 <span class="fc-hdr">· Δ vs Apr</span></th><th class="fc-sub gcol-end">Apr 2026 <span class="fc-hdr">· Δ vs Jan</span></th>
+            <th class="fc-sub">Jul 2026 <span class="fc-hdr">· Δ vs Apr</span></th><th class="fc-sub gcol-end">Apr 2026 <span class="fc-hdr">· Δ vs Jan</span></th>
+            <th class="fc-sub">Jul 2026 <span class="fc-hdr">· Δ vs Apr</span></th><th class="fc-sub">Apr 2026 <span class="fc-hdr">· Δ vs Jan</span></th>
           </tr>
         </thead>
         <tbody id="fcBody"></tbody>
@@ -395,27 +415,14 @@
     </div>
 
     <div class="card">
-      <h2>Risk-balance assessment (April 2026)</h2>
-      <div class="fc-risk">
-        <div class="fc-riskcard fc-up">
-          <div class="fc-rl">Prices</div>
-          <div class="fc-rv" id="fcRiskPrices"></div>
-        </div>
-        <div class="fc-riskcard fc-down">
-          <div class="fc-rl">Economic activity</div>
-          <div class="fc-rv" id="fcRiskActivity"></div>
-        </div>
-        <div class="fc-riskcard fc-neu">
-          <div class="fc-rl">Timing of 2% target</div>
-          <div class="fc-rv" id="fcRiskTiming"></div>
-        </div>
-      </div>
+      <h2>Risk-balance assessment — July 2026 vs April 2026</h2>
+      <div id="fcRiskWrap"></div>
       <div class="note" id="fcForward" style="margin-top:12px"></div>
     </div>
 
     <div class="card">
       <h2>Forecast revision history — median across successive Outlook Reports</h2>
-      <p class="sub">How the Policy Board's median forecast for each fiscal year (FY2026–FY2028) has been revised, report by report (Oct 2024 → Apr 2026). The April 2026 jump in CPI reflects the Middle East crude-oil shock.</p>
+      <p class="sub">How the Policy Board's median forecast for each fiscal year (FY2026–FY2028) has been revised, report by report (Oct 2024 → Jul 2026). The April 2026 jump in CPI reflects the Middle East crude-oil shock; July trims FY2026 CPI on the government's summer energy subsidies.</p>
       <div class="fc-charts">
         <div class="card" style="margin:0">
           <h2 style="font-size:14px">Real GDP (y/y %)</h2>
@@ -430,7 +437,7 @@
           <div style="position:relative;height:300px"><canvas id="cFcCore"></canvas></div>
         </div>
       </div>
-      <div class="note" style="margin-top:10px">Markers: ● FY2026 · ▲ FY2027 · ■ FY2028. Values are the medians of the Policy Board members' forecasts. Source: BOJ Outlook Report appendices (Oct 2024 – Apr 2026).</div>
+      <div class="note" style="margin-top:10px">Markers: ● FY2026 · ▲ FY2027 · ■ FY2028. Values are the medians of the Policy Board members' forecasts. Source: BOJ Outlook Report appendices (Oct 2024 – Jul 2026).</div>
     </div>
   </div>
 
@@ -678,7 +685,7 @@ function tagHtml(lean) {
   return `<span class="tag ${cls}">${esc(lean)}</span>`;
 }
 function chipHtml(type) {
-  const map = {MPM:'c-mpm',Outlook:'c-out',Opinions:'c-opi',Minutes:'c-min',Tankan:'c-tan'};
+  const map = {MPM:'c-mpm',Outlook:'c-out',Opinions:'c-opi',Minutes:'c-min',Tankan:'c-tan',Term:'c-term'};
   return `<span class="chip ${map[type]||'c-min'}">${esc(type)}</span>`;
 }
 
@@ -734,7 +741,7 @@ function render(D) {
     options: {
       indexAxis: 'y',
       plugins: { legend: { display: false } },
-      scales: { x: { min: -2, max: 2, title: { display: true, text: '← dove   |   hawk →' } } }
+      scales: { x: { min: -2.5, max: 2.5, title: { display: true, text: '← dove   |   hawk →' } } }
     }
   });
 
@@ -752,7 +759,7 @@ function render(D) {
     },
     options: {
       plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 14 } } },
-      scales: { y: { min: -2.3, max: 2.3, ticks: { stepSize: 1 }, title: { display: true, text: '−2 dove … +2 hawk' } } }
+      scales: { y: { min: -2.5, max: 2.5, ticks: { stepSize: 1 }, title: { display: true, text: '−2 dove … +2 hawk' } } }
     }
   });
 
@@ -822,14 +829,22 @@ function render(D) {
   }).join('');
 
   // Calendar
-  document.getElementById('calBody').innerHTML = D.mpm_calendar.map(e => `
+  let calShownYear = 2026;
+  document.getElementById('calBody').innerHTML = D.mpm_calendar.map(e => {
+    let divider = '';
+    if (e._yr === '2027' && calShownYear !== 2027) {
+      calShownYear = 2027;
+      divider = `<tr><td colspan="5" style="background:var(--card);font-weight:700;letter-spacing:.04em;color:var(--muted);font-size:11px;padding:8px 10px">2027 SCHEDULED MPMs</td></tr>`;
+    }
+    return divider + `
     <tr class="${e.next ? 'next' : ''}">
       <td><b>${esc(e.date)}</b>${e.next ? ' <span style="color:var(--accent);font-size:10px">◀ next</span>' : ''}</td>
       <td>${chipHtml(e.type)}</td>
       <td>${esc(e.event)}</td>
       <td>${esc(e.relates)}</td>
       <td>${esc(e.notes)}</td>
-    </tr>`).join('');
+    </tr>`;
+  }).join('');
 
   // Auctions
   const auc = document.getElementById('auctionSections');
@@ -981,29 +996,41 @@ function renderForecasts(D) {
   document.getElementById('fcNote').textContent = F.note;
   document.getElementById('fcSource').textContent = 'Source: ' + F.source;
 
-  // Revision cell: current − previous median, with directional colour/arrow.
-  const revCell = (cur, prev) => {
-    if (prev == null || cur == null) return '<td class="fc-rev rev-flat">—</td>';
-    const d = +(cur - prev).toFixed(1);
-    if (Math.abs(d) < 0.05) return '<td class="fc-rev rev-flat">▬ 0.0</td>';
-    const cls = d > 0 ? 'rev-up' : 'rev-down';
-    const arr = d > 0 ? '▲' : '▼';
-    return `<td class="fc-rev ${cls}">${arr} ${d > 0 ? '+' : ''}${d.toFixed(1)}</td>`;
+  // Median → signed string; in-cell revision (delta vs prior report) with arrow/colour.
+  const num = v => v == null ? '—' : (v > 0 ? '+' : '') + v.toFixed(1);
+  const drev = d => {
+    if (d == null) return '<span class="fc-drev rev-flat">—</span>';
+    const x = +d.toFixed(1);
+    if (Math.abs(x) < 0.05) return '<span class="fc-drev rev-flat">▬ 0.0</span>';
+    const up = x > 0;
+    return `<span class="fc-drev ${up ? 'rev-up' : 'rev-down'}">${up ? '▲' : '▼'} ${up ? '+' : '−'}${Math.abs(x).toFixed(1)}</span>`;
   };
-  const valCell = m => `<td class="fc-num">${m.cur == null ? '—' : (m.cur > 0 ? '+' : '') + m.cur.toFixed(1)}` +
-    `<span class="fc-rng">${esc(m.range || '')}</span></td>`;
+  // Two cells per metric: July (median + range + Δ vs Apr) and April (median + range + Δ vs Jan).
+  // endDiv adds the vertical divider that separates the growth block from the inflation block.
+  const metricCells = (m, endDiv) => {
+    const dJA = (m.jul == null || m.apr == null) ? null : m.jul - m.apr;
+    const dAJ = (m.apr == null || m.jan == null) ? null : m.apr - m.jan;
+    return `<td class="fc-num fc-jul">${num(m.jul)}<span class="fc-rng">${esc(m.jul_r || '')}</span>${drev(dJA)}</td>` +
+           `<td class="fc-num fc-apr${endDiv ? ' gcol-end' : ''}">${num(m.apr)}<span class="fc-rng">${esc(m.apr_r || '')}</span>${drev(dAJ)}</td>`;
+  };
 
   document.getElementById('fcBody').innerHTML = F.table.map(r => `
-    <tr class="${r.actual ? 'fy-actual' : ''}${r.fy === 'FY2026' ? ' fy-next' : ''}">
+    <tr class="${r.fy === 'FY2026' ? 'fy-next' : ''}">
       <td><b>${esc(r.fy)}</b></td>
-      ${valCell(r.gdp)}${revCell(r.gdp.cur, r.gdp.prev)}
-      ${valCell(r.cpi)}${revCell(r.cpi.cur, r.cpi.prev)}
-      ${valCell(r.core)}${revCell(r.core.cur, r.core.prev)}
+      ${metricCells(r.gdp, true)}${metricCells(r.cpi, true)}${metricCells(r.core)}
     </tr>`).join('');
 
-  document.getElementById('fcRiskPrices').textContent = F.risk.prices;
-  document.getElementById('fcRiskActivity').textContent = F.risk.activity;
-  document.getElementById('fcRiskTiming').textContent = F.risk.target_timing;
+  // Risk-balance: July and April side by side; card colour encodes direction (upside/downside/balanced).
+  const riskCard = (label, dir, text) => {
+    const cls = dir === 'up' ? 'fc-up' : dir === 'down' ? 'fc-down' : dir === 'bal' ? 'fc-bal' : 'fc-neu';
+    return `<div class="fc-riskcard ${cls}"><div class="fc-rl">${label}</div><div class="fc-rv">${esc(text)}</div></div>`;
+  };
+  const riskGroup = (title, r) => `<div class="fc-period">${title}</div><div class="fc-risk">` +
+    riskCard('Prices', r.prices_dir, r.prices) +
+    riskCard('Economic activity', r.activity_dir, r.activity) +
+    riskCard('Timing of 2% target', 'neu', r.target_timing) + `</div>`;
+  document.getElementById('fcRiskWrap').innerHTML =
+    riskGroup('July 2026', F.risk.jul) + riskGroup('April 2026', F.risk.apr);
   document.getElementById('fcForward').textContent = F.risk.forward;
 
   // Revision-history charts: x = report date, one line per fiscal year (Morgan-Stanley style).

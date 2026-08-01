@@ -22,8 +22,8 @@ cols = st.columns(len(DATA["kpis"]))
 for c, k in zip(cols, DATA["kpis"]):
     c.metric(label=k["label"][:60] + ("…" if len(k["label"]) > 60 else ""), value=k["value"], help=k["label"])
 
-tab_dash, tab_board, tab_cal, tab_auction, tab_method = st.tabs(
-    ["Dashboard", "Board & votes", "BOJ calendar", "Auctions & fiscal", "Methodology"]
+tab_dash, tab_board, tab_cal, tab_auction, tab_pc, tab_method = st.tabs(
+    ["Dashboard", "Board & votes", "BOJ calendar", "Auctions & fiscal", "Press conferences", "Methodology"]
 )
 
 with tab_dash:
@@ -60,7 +60,7 @@ with tab_dash:
                                  name=s["name"], line={"color": palette[i % len(palette)], "width": 2},
                                  connectgaps=False))
     fig.update_layout(height=420, margin=dict(l=10, r=10, t=10, b=10),
-                      yaxis=dict(range=[-2.3, 2.3], title="−2 dove … +2 hawk"),
+                      yaxis=dict(range=[-2.5, 2.5], title="−2 dove … +2 hawk"),
                       legend=dict(orientation="h", yanchor="bottom", y=-0.35))
     st.plotly_chart(fig, use_container_width=True)
     st.caption("Gaps = no speech in period or not on the board. Nakamura (to Jun '25) and Adachi (to Mar '25) "
@@ -118,6 +118,81 @@ with tab_auction:
     show.columns = ["Timing", "Event", "Relevance", ""]
     st.dataframe(show, use_container_width=True, hide_index=True, height=430)
     st.caption("Japan's fiscal year runs April–March. ★ = nearest / most market-sensitive items.")
+
+with tab_pc:
+    PC_DIR = Path(__file__).parent.parent / "press_conferences"
+    pcs = DATA.get("press_conferences", [])
+
+    DECISION_COLORS = {
+        "hike": HAWK,
+        "hold": NEUTRAL,
+    }
+
+    st.subheader("MPM press conference scripts")
+    st.caption(
+        "Clean Q&A transcripts from BOJ Monetary Policy Meetings. "
+        "Source: press conference scripts forwarded to zoxiaohan23@gmail.com. "
+        "All transcripts are in English."
+    )
+
+    col_meta, col_viewer = st.columns([1, 2.2])
+
+    with col_meta:
+        st.markdown("**Select meeting**")
+        options = {pc["display"]: pc for pc in reversed(pcs)}
+        selected_label = st.radio(
+            "MPM", list(options.keys()), label_visibility="collapsed"
+        )
+        pc = options[selected_label]
+
+        kind = "hike" if "hike" in pc["decision"].lower() else "hold"
+        color = DECISION_COLORS[kind]
+        badge = "🔺 HIKE" if kind == "hike" else "⬜ HOLD"
+
+        st.markdown(
+            f"""
+<div style="border:1px solid {color}33; border-left:4px solid {color}; border-radius:6px; padding:12px 14px; margin-top:8px">
+<div style="font-size:0.75rem; color:#8a93a6; text-transform:uppercase; letter-spacing:.05em">Decision</div>
+<div style="font-size:1.1rem; font-weight:700; color:{color}; margin:2px 0 6px">{badge} — {pc['decision']}</div>
+<div style="font-size:0.8rem; color:#8a93a6">Vote</div>
+<div style="font-size:0.9rem; margin-bottom:6px">{pc['vote']}</div>
+<div style="font-size:0.8rem; color:#8a93a6">Presider</div>
+<div style="font-size:0.9rem">{pc['presider']}</div>
+</div>
+""",
+            unsafe_allow_html=True,
+        )
+        if pc.get("note"):
+            st.warning(pc["note"])
+
+    with col_viewer:
+        pc_path = PC_DIR / pc["file"]
+        if pc_path.exists():
+            content = pc_path.read_text(encoding="utf-8")
+            lines = content.split("\n")
+            # Skip the first H1 title (already shown in sidebar)
+            body_lines = [l for l in lines if not l.startswith("# BOJ Press")]
+            body = "\n".join(body_lines).strip()
+            # Strip the metadata block at top (Decision / Vote / Presider lines)
+            body = body.lstrip("-").strip()
+            st.markdown(body, unsafe_allow_html=False)
+        else:
+            st.info("Transcript file not found.")
+
+    st.divider()
+    st.subheader("All MPMs at a glance")
+    summary_rows = []
+    for p in pcs:
+        k = "hike" if "hike" in p["decision"].lower() else "hold"
+        summary_rows.append({
+            "Meeting": p["display"],
+            "Decision": p["decision"],
+            "Vote": p["vote"],
+            "Presider": p["presider"],
+            "Notes": p.get("note", ""),
+        })
+    st.dataframe(pd.DataFrame(summary_rows), use_container_width=True, hide_index=True)
+
 
 with tab_method:
     st.subheader("Method & sources")

@@ -272,7 +272,7 @@ new Chart(document.getElementById('tone'), {
   type:'line',
   data:{labels:periods, datasets:speakers.map(s=>({label:s.n,data:s.d,borderColor:s.c,backgroundColor:s.c,spanGaps:false,pointRadius:4,borderWidth:2,tension:.25}))},
   options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:14}}},
-    scales:{y:{min:-2.3,max:2.3,ticks:{stepSize:1},title:{display:true,text:"−2 dove … +2 hawk"}}}}
+    scales:{y:{min:-2.5,max:2.5,ticks:{stepSize:1},title:{display:true,text:"−2 dove … +2 hawk"}}}}
 });
 </script>
 </body>
