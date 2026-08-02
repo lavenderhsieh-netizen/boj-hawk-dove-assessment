@@ -501,6 +501,11 @@
       <div class="sub">Non-residents' monthly net purchase of Japanese long-term bonds (¥bn), stacked by country — who's providing the foreign bid for JGBs. The white line is the whole-market total. Note the UK is inflated by custodial/booking-centre flows. Source: MoF Balance of Payments, Portfolio Investment Liabilities country breakdown (monthly).</div>
       <canvas id="cBopInbound" style="max-height:360px;margin-top:12px"></canvas>
     </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>Where Japan buys foreign sovereign bonds — by destination <span id="bopOutStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">Residents' monthly net purchase of foreign sovereign bonds (¥bn), stacked by destination country — where the yen outflow is going. The white line is the total across all countries. Source: MoF Balance of Payments, Portfolio Investment Assets — country breakdown of sovereign bonds (monthly).</div>
+      <canvas id="cBopOutbound" style="max-height:360px;margin-top:12px"></canvas>
+    </div>
   </div>
 
   <!-- FORECASTS -->
@@ -1861,37 +1866,39 @@ fetch('./mof_flows.json?' + Date.now())
   })
   .catch(e => { console.warn('mof_flows.json unavailable:', e); });
 
-// Inbound: foreign net buying of Japanese LT bonds by country (MoF BOP)
-const XB_CTRY={china:'#e2564a', us:'#5aa0e6', uk:'#d9a441', germany:'#4cba7a', france:'#b79ae8', others:'rgba(124,136,160,0.55)'};
+// MoF BOP: securities flows by country (inbound = foreign→JGBs; outbound = Japan→foreign sovereigns)
+const XB_CTRY={china:'#e2564a', us:'#5aa0e6', uk:'#d9a441', germany:'#4cba7a', france:'#b79ae8', australia:'#e08fb0', others:'rgba(124,136,160,0.55)'};
+function bopChart(cvId, statusId, B, sec){
+  const cv=document.getElementById(cvId); if(!cv||!B[sec]) return;
+  const D=B[sec], S=D.series, lab=D.labels, mn=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const datasets=D.order.map(k=>({type:'bar', label:lab[k], data:S[k],
+    backgroundColor:XB_CTRY[k]||'#8a94ad', borderColor:XB_CTRY[k]||'#8a94ad', borderWidth:0, stack:'c',
+    categoryPercentage:0.9, barPercentage:0.98, order:3}));
+  datasets.push({type:'line', label:'Whole-market total', data:S.total,
+    borderColor:'#eef2f9', backgroundColor:'#eef2f9', borderWidth:2, pointRadius:0, pointHoverRadius:3, tension:0.12, order:0, clip:false});
+  new Chart(cv, {data:{labels:B.months, datasets},
+    options:{responsive:true, maintainAspectRatio:false, interaction:{mode:'index', intersect:false},
+      plugins:{legend:{position:'top', align:'start', labels:{boxWidth:11, boxHeight:11, padding:9, font:{size:10.5}, color:'#c7d0e0'}},
+        tooltip:{callbacks:{
+          title:it=>{const t=B.months[it[0].dataIndex]; const [y,m]=t.split('-'); return mn[+m]+' '+y;},
+          label:c=>c.dataset.label+': '+(c.parsed.y==null?'–':(c.parsed.y>=0?'+':'')+c.parsed.y.toFixed(0)+'bn')}}},
+      scales:{
+        y:{stacked:true, title:{display:true, text:'¥bn, net buying', color:'#93a1bd'},
+           grid:{color:x=>x.tick.value===0?'#7688a8':'#243149', lineWidth:x=>x.tick.value===0?1.3:1},
+           border:{color:'#2a3752'}, ticks:{color:'#93a1bd', callback:v=>(v>0?'+':'')+v}},
+        x:{stacked:true, grid:{display:false}, border:{color:'#2a3752'},
+           ticks:{autoSkip:false, maxRotation:0, color:'#7e8aa3', font:{size:9},
+             callback:(v,i)=>{const p=B.months[i].split('-'); const mi=+p[1]; const L='JFMAMJJASOND'[mi-1];
+               if(mi===1||i===0) return [L, "'"+p[0].slice(2)]; return (mi%2===1)?L:'';}}}
+      }
+    }
+  });
+  const el=document.getElementById(statusId); if(el && B.meta) el.textContent='· data to '+B.meta.as_of;
+}
 fetch('./mof_bop.json?' + Date.now())
   .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
-  .then(B => {
-    const cv=document.getElementById('cBopInbound'); if(!cv) return;
-    const S=B.inbound.series, lab=B.inbound.labels, mn=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-    const datasets=B.inbound.order.map(k=>({type:'bar', label:lab[k], data:S[k],
-      backgroundColor:XB_CTRY[k], borderColor:XB_CTRY[k], borderWidth:0, stack:'c',
-      categoryPercentage:0.9, barPercentage:0.98, order:3}));
-    datasets.push({type:'line', label:'Whole-market total', data:S.total,
-      borderColor:'#eef2f9', backgroundColor:'#eef2f9', borderWidth:2, pointRadius:0, pointHoverRadius:3, tension:0.12, order:0, clip:false});
-    new Chart(cv, {data:{labels:B.months, datasets},
-      options:{responsive:true, maintainAspectRatio:false, interaction:{mode:'index', intersect:false},
-        plugins:{legend:{position:'top', align:'start', labels:{boxWidth:11, boxHeight:11, padding:9, font:{size:10.5}, color:'#c7d0e0'}},
-          tooltip:{callbacks:{
-            title:it=>{const t=B.months[it[0].dataIndex]; const [y,m]=t.split('-'); return mn[+m]+' '+y;},
-            label:c=>c.dataset.label+': '+(c.parsed.y==null?'–':(c.parsed.y>=0?'+':'')+c.parsed.y.toFixed(0)+'bn')}}},
-        scales:{
-          y:{stacked:true, title:{display:true, text:'¥bn, net buying', color:'#93a1bd'},
-             grid:{color:x=>x.tick.value===0?'#7688a8':'#243149', lineWidth:x=>x.tick.value===0?1.3:1},
-             border:{color:'#2a3752'}, ticks:{color:'#93a1bd', callback:v=>(v>0?'+':'')+v}},
-          x:{stacked:true, grid:{display:false}, border:{color:'#2a3752'},
-             ticks:{autoSkip:false, maxRotation:0, color:'#7e8aa3', font:{size:9},
-               callback:(v,i)=>{const p=B.months[i].split('-'); const mi=+p[1]; const L='JFMAMJJASOND'[mi-1];
-                 if(mi===1||i===0) return [L, "'"+p[0].slice(2)]; return (mi%2===1)?L:'';}}}
-        }
-      }
-    });
-    const el=document.getElementById('bopInStatus'); if(el && B.meta) el.textContent='· data to '+B.meta.as_of;
-  })
+  .then(B => { bopChart('cBopInbound','bopInStatus', B, 'inbound');
+               bopChart('cBopOutbound','bopOutStatus', B, 'outbound_sov'); })
   .catch(e => { console.warn('mof_bop.json unavailable:', e); });
 
 // ── NISA tab ────────────────────────────────────────────────────────────────
