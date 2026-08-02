@@ -413,7 +413,7 @@
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>JGB net buying by player — who is the marginal buyer</h2>
-      <div class="sub">Monthly JGB net buying, ¥tn, stacked by investor type. Bars above zero = net buying, below = net selling; the white line is the whole-market total. Buckets reconcile exactly to the JSDA 合計 row; the tiniest investors are folded into an “Others (minor)” residual. Source: JSDA 公社債投資家別売買高, outright basis.</div>
+      <div class="sub">Monthly JGB net buying, ¥tn. Coloured bars are the identifiable real-money and foreign buyers; the muted grey bar is the residual net supply (bond dealers + JSDA その他 + minor holders) that clears the market. Bars above zero = net buying, below = net selling; the bright white line is the whole-market total (合計). Everything reconciles exactly to the JSDA 合計 row — coloured buyers + grey residual = total. Source: JSDA 公社債投資家別売買高, outright basis.</div>
       <div style="display:flex;gap:6px;margin:12px 0 2px">
         <button class="tab active" id="slPmExt"  style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setSlMeasure('extbills',this)">All JGBs ex-T-bills</button>
         <button class="tab" id="slPmSl" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setSlMeasure('superlong',this)">Super-long &gt;10y only</button>
@@ -1494,28 +1494,58 @@ function renderSlPlayers(canvasId){
   const cv = document.getElementById(canvasId); const P = _slPlayers;
   if(!cv || !P) return;
   const mn=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-  const lbl = t => { const [y,m]=t.split('-'); return mn[+m]+" '"+y.slice(2); };
   const M = P[_slMeasure];               // {playerkey:[...], total:[...]}
-  const datasets = P.order.map(k=>({
-    type:'bar', label:P.labels[k], data:M[k],
-    backgroundColor:P.colors[k], borderColor:P.colors[k], borderWidth:0, stack:'net', order:2 }));
-  datasets.push({ type:'line', label:'Whole-market total', data:M.total,
-    borderColor:'#e8edf7', backgroundColor:'#e8edf7', borderWidth:1.8,
-    pointRadius:0, pointHoverRadius:3, tension:0.2, order:0 });
+  const n = P.months.length;
+  // Curated identifiable buyers — distinct, well-separated palette.
+  const show = [
+    ['foreign', 'Foreigners',                 '#e2564a'],
+    ['trust',   'Trust banks (pension)',       '#2f7ed8'],
+    ['life',    'Life & non-life insurers',    '#e0a83a'],
+    ['regional','Regional banks',              '#3ea56d'],
+    ['agri',    'Agri co-ops (Norinchukin)',   '#9b7fe0'],
+    ['invtrust','Investment trusts',           '#e58fb5'],
+  ];
+  // Residual net supply = whole-market total − identifiable buyers
+  //  (= bond dealers + JSDA その他 + minor holders). Keeps exact reconciliation to 合計.
+  const resid = [];
+  for(let i=0;i<n;i++){
+    const t = M.total[i];
+    if(t==null){ resid.push(null); continue; }
+    let s=0, ok=true;
+    show.forEach(([k])=>{ const v = M[k] ? M[k][i] : null; if(v==null) ok=false; else s+=v; });
+    resid.push(ok ? +(t - s).toFixed(3) : null);
+  }
+  const barCfg = { type:'bar', borderWidth:0, stack:'net',
+    categoryPercentage:0.9, barPercentage:0.98 };
+  const datasets = show.map(([k,lab,col])=>({
+    ...barCfg, label:lab, data:M[k], backgroundColor:col, borderColor:col, order:3 }));
+  datasets.push({ ...barCfg, label:'Dealers & JSDA その他 (net supply)', data:resid,
+    backgroundColor:'rgba(124,136,160,0.34)', borderColor:'rgba(124,136,160,0.34)', order:4 });
+  datasets.push({ type:'line', label:'Whole-market total (合計)', data:M.total,
+    borderColor:'#ffffff', backgroundColor:'#ffffff', borderWidth:2.4,
+    pointRadius:0, pointHoverRadius:3.5, tension:0.15, order:0, clip:false });
   if(_slChartObj){ _slChartObj.destroy(); _slChartObj=null; }
-  _slChartObj = new Chart(cv, { data:{ labels:P.months.map(lbl), datasets },
+  _slChartObj = new Chart(cv, { data:{ labels:P.months, datasets },
     options:{ responsive:true, maintainAspectRatio:false,
       interaction:{mode:'index', intersect:false},
       plugins:{
-        legend:{position:'bottom', labels:{boxWidth:10, padding:9, font:{size:10.5}}},
-        tooltip:{callbacks:{label:c=>c.dataset.label+': '+(c.parsed.y==null?'–':(c.parsed.y>=0?'+':'')+c.parsed.y.toFixed(2)+'tn')}}
+        legend:{position:'bottom', labels:{boxWidth:10, boxHeight:10, padding:9, font:{size:10.5}, color:'#c7d0e0'}},
+        tooltip:{ callbacks:{
+          title:items=>{ const t=P.months[items[0].dataIndex]; const [y,m]=t.split('-'); return mn[+m]+' '+y; },
+          label:c=>c.dataset.label+': '+(c.parsed.y==null?'–':(c.parsed.y>=0?'+':'')+c.parsed.y.toFixed(2)+'tn') } }
       },
       scales:{
-        y:{ stacked:true, title:{display:true, text:'¥tn, net buying'},
-            grid:{color:ctx=>ctx.tick.value===0?'#7688a8':'#2a3752'},
-            ticks:{callback:v=>(v>0?'+':'')+v} },
+        y:{ stacked:true, title:{display:true, text:'¥tn, net buying', color:'#93a1bd'},
+            grid:{color:ctx=>ctx.tick.value===0?'#8195b5':'#243149',
+                  lineWidth:ctx=>ctx.tick.value===0?1.4:1},
+            ticks:{color:'#93a1bd', callback:v=>(v>0?'+':'')+v} },
         x:{ stacked:true, grid:{display:false},
-            ticks:{maxRotation:0, autoSkip:true, maxTicksLimit:14, font:{size:10}} }
+            ticks:{ autoSkip:false, maxRotation:0, color:'#7e8aa3', font:{size:9.5},
+              callback:(val,idx)=>{ const p=P.months[idx].split('-'); const mi=+p[1];
+                const L='JFMAMJJASOND'[mi-1];
+                if(mi===1 || idx===0) return [L, "'"+p[0].slice(2)];
+                return (mi%2===1)?L:''; } }
+        }
       }
     }
   });
