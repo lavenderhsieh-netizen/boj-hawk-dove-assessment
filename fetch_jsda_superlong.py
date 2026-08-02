@@ -60,11 +60,13 @@ OTHERS = ("others", "Others (minor)", "#55617a")
 # Superlong tenor buckets (+ a Total-excl-T-bills line). JGB tenor columns on the
 # (K)一般差引 sheet: 超長期 (>10y), 利付長期 (long), 利付中期 (medium), 国庫短期証券等 (T-bills).
 TENOR_PLAYERS = [
-    # jp-prefix     key        label
-    ("信託銀行",    "trust",   "Trust banks (pension funds)"),
-    ("生保・損保",  "life",    "Insurance companies"),
-    ("都市銀行",    "mega",    "City (mega) banks"),
-    ("外国人",      "foreign", "Foreigners"),
+    # jp-prefix        key        label
+    ("信託銀行",       "trust",    "Trust banks (pension funds)"),
+    ("生保・損保",     "life",     "Insurance companies"),
+    ("都市銀行",       "mega",     "City (mega) banks"),
+    ("外国人",         "foreign",  "Foreigners"),
+    ("地方銀行",       "regional", "Regional banks"),
+    ("農林系金融機関", "agri",     "Agri co-ops (Norinchukin)"),
 ]
 TENOR_BUCKETS = {  # output key -> (display label, color)
     "medium":   ("Medium-Term",     "#4cba7a"),
@@ -231,7 +233,7 @@ def build_tenor(all_months):
     players["others"] = {"medium": omed, "long": olng, "superlong": osup, "total": otot}
     labels = {p[1]: p[2] for p in TENOR_PLAYERS}
     labels["others"] = "Others (all remaining investors)"
-    order = ["mega", "trust", "foreign", "life", "others"]
+    order = ["mega", "trust", "foreign", "life", "regional", "agri", "others"]
     return {
         "months": months,
         "order": order,

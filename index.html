@@ -427,6 +427,8 @@
         <div class="mbcard"><h3 id="tenTitle_trust"></h3><canvas id="cTen_trust"></canvas></div>
         <div class="mbcard"><h3 id="tenTitle_foreign"></h3><canvas id="cTen_foreign"></canvas></div>
         <div class="mbcard"><h3 id="tenTitle_life"></h3><canvas id="cTen_life"></canvas></div>
+        <div class="mbcard"><h3 id="tenTitle_regional"></h3><canvas id="cTen_regional"></canvas></div>
+        <div class="mbcard"><h3 id="tenTitle_agri"></h3><canvas id="cTen_agri"></canvas></div>
         <div class="mbcard" style="grid-column:1 / -1"><h3 id="tenTitle_others"></h3><canvas id="cTen_others" style="max-height:300px"></canvas></div>
       </div>
     </div>
@@ -1647,7 +1649,7 @@ fetch('./superlong_data.json?' + Date.now())
       const sf=document.getElementById('slfStatus');
       if(sf && SL.meta && SL.meta.as_of) sf.textContent='· data to '+SL.meta.as_of; }
     if(SL.byplayer_tenor){ const T=SL.byplayer_tenor;
-      ['mega','trust','foreign','life','others'].forEach(k=>tenorChart('cTen_'+k,'tenTitle_'+k, T, k));
+      (T.order||['mega','trust','foreign','life','regional','agri','others']).forEach(k=>tenorChart('cTen_'+k,'tenTitle_'+k, T, k));
       const st=document.getElementById('tenStatus');
       if(st && SL.meta && SL.meta.as_of) st.textContent='· data to '+SL.meta.as_of;
     }
