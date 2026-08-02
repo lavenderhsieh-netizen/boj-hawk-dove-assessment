@@ -37,6 +37,24 @@ TARGETS = {
 }
 MONTHS = ["Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec","Jan","Feb","Mar"]
 
+# ── "by player" flow chart (matches Macrobond "Japan Bond Flows") ──────────────
+# Named investor buckets (matched by JP-label prefix); everything else folds into
+# an "others" residual so each month reconciles exactly to the 合計 (Total) row.
+# order = stacking order; the residual "others" is appended last in the chart.
+PLAYERS = [
+    # jp-prefix        key         label                        color
+    ("都市銀行",       "mega",     "City (mega) banks",         "#4cba7a"),
+    ("地方銀行",       "regional", "Regional banks",            "#3fb8a0"),
+    ("信託銀行",       "trust",    "Trust banks (pension)",     "#4a90d9"),
+    ("農林系金融機関", "agri",     "Agri co-ops (Norinchukin)", "#b79ae8"),
+    ("生保・損保",     "life",     "Life & non-life insurers",  "#d9a441"),
+    ("投資信託",       "invtrust", "Investment trusts",         "#e08fb0"),
+    ("外国人",         "foreign",  "Foreigners",                "#e2564a"),
+    ("債券ディーラー", "dealer",   "Bond dealers",              "#8a94ad"),
+    ("その他",         "othcat",   "Other (JSDA その他)",       "#cf8a5a"),  # exact-match; big dealer-offset line
+]
+OTHERS = ("others", "Others (minor)", "#55617a")
+
 def get(url, timeout=90, retries=4, sleep=8):
     last = None
     for i in range(retries):
@@ -77,11 +95,84 @@ def parse_fy(path, fy):
             out[key][idx] = round(-r[cho] / 10000.0, 3)   # net buying, ¥tn
     return out
 
+def parse_players(path):
+    """Per-investor monthly net buying, two measures: all-JGBs-ex-T-bills and
+    super-long (>10Y). Returns {month_tag -> {playerkey|'total' -> {'ext','sl'}}}.
+    month_tag is 'YYYY-MM'. Net buying = purchases − sales = −(差引), ¥tn."""
+    import openpyxl
+    wb = openpyxl.load_workbook(path, read_only=True, data_only=True)
+    sheet = next((s for s in wb.sheetnames if "一般差引" in s and "証券" not in s), None)
+    if not sheet:
+        raise RuntimeError(f"no 一般差引 sheet in {path}")
+    rows = [list(r) for r in wb[sheet].iter_rows(values_only=True)]
+    # locate columns: 国債 total (jgb), 超長期 (sl), 国庫短期証券等 (tbills)
+    jgb = sl = tb = None
+    for r in rows[:6]:
+        for i, c in enumerate(r):
+            v = norm(c)
+            if v.startswith("超長期") and sl is None: sl = i
+            if "国庫短期証券" in v and tb is None: tb = i
+            if v.startswith("国債") and "Government" in v and jgb is None: jgb = i
+    if None in (jgb, sl, tb):
+        raise RuntimeError(f"missing JGB columns in {path} (jgb={jgb},sl={sl},tb={tb})")
+    def playerkey(inv):
+        if inv == "その他": return "othcat"           # exact — not その他金融機関/その他法人
+        for pre, key, *_ in PLAYERS:
+            if key == "othcat": continue               # handled above by exact match
+            if inv.startswith(pre): return key
+        return OTHERS[0]
+    out = {}
+    for r in rows:
+        ym, inv = norm(r[0]), norm(r[1])
+        parts = ym.split("/")
+        if len(parts) < 2 or not inv: continue
+        try: y, m = int(parts[0]), int(parts[1])
+        except ValueError: continue
+        tag = f"{y}-{m:02d}"
+        jv, sv, tv = r[jgb], r[sl], r[tb]
+        if not isinstance(jv, (int, float)): continue
+        ext = -(jv - (tv if isinstance(tv, (int, float)) else 0)) / 10000.0
+        slv = -(sv / 10000.0) if isinstance(sv, (int, float)) else None
+        bucket = "total" if inv.startswith("合計") else playerkey(inv)
+        d = out.setdefault(tag, {})
+        cur = d.setdefault(bucket, {"ext": 0.0, "sl": 0.0})
+        cur["ext"] += ext
+        if slv is not None: cur["sl"] += slv
+    return out
+
+def build_players(all_months):
+    """all_months: dict month_tag -> {bucket -> {'ext','sl'}} merged across FYs.
+    Produces chronological arrays per player + total + others residual."""
+    months = sorted(all_months)
+    keys = [p[1] for p in PLAYERS]
+    ext = {k: [] for k in keys + ["others", "total"]}
+    slg = {k: [] for k in keys + ["others", "total"]}
+    for t in months:
+        d = all_months[t]
+        tot_e = d.get("total", {}).get("ext")
+        tot_s = d.get("total", {}).get("sl")
+        named_e = named_s = 0.0
+        for k in keys:
+            e = d.get(k, {}).get("ext", 0.0); s = d.get(k, {}).get("sl", 0.0)
+            ext[k].append(round(e, 3)); slg[k].append(round(s, 3))
+            named_e += e; named_s += s
+        # residual others = total − named (keeps the stack summing to 合計)
+        ext["others"].append(round((tot_e - named_e), 3) if tot_e is not None else None)
+        slg["others"].append(round((tot_s - named_s), 3) if tot_s is not None else None)
+        ext["total"].append(round(tot_e, 3) if tot_e is not None else None)
+        slg["total"].append(round(tot_s, 3) if tot_s is not None else None)
+    order = keys + ["others"]
+    labels = {p[1]: p[2] for p in PLAYERS}; labels["others"] = OTHERS[1]
+    colors = {p[1]: p[3] for p in PLAYERS}; colors["others"] = OTHERS[2]
+    return {"months": months, "order": order, "labels": labels, "colors": colors,
+            "extbills": ext, "superlong": slg}
+
 def main():
     socket.setdefaulttimeout(120)
     series = {k: {"label": lbl, "fy": {}} for k, (kk, lbl) in
               [(v[0], v) for v in TARGETS.values()]}
     latest_month = None
+    players_raw = {}
     for fy, fname in FY_FILES.items():
         path = os.path.join(SRC, fname)
         try:
@@ -107,10 +198,16 @@ def main():
                         tag = f"{yy}-{mm:02d}"
                         if latest_month is None or tag > latest_month:
                             latest_month = tag
+            try:
+                players_raw.update(parse_players(path))
+            except Exception as e:
+                print(f"FY{fy}: players parse failed: {e}")
             print(f"FY{fy}: parsed {fname}  (foreign Apr={series['foreign']['fy'][str(fy)][0]})")
             time.sleep(6)
         except Exception as e:
             print(f"FY{fy}: FAILED {fname}: {e}")
+
+    players = build_players(players_raw) if players_raw else None
 
     doc = {
         "meta": {
@@ -123,6 +220,7 @@ def main():
         },
         "months": MONTHS,
         "series": series,
+        "players": players,
     }
     for dest in (os.path.join(HERE, "superlong_data.json"),
                  os.path.join(HERE, "streamlit_app", "superlong_data.json")):

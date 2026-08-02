@@ -141,6 +141,8 @@
   .mkpi .mch{font-size:12px;font-weight:600}
   .mch.up{color:#4cba7a}.mch.dn{color:var(--hawk2)}.mch.flat{color:var(--muted)}
   .stale-badge{display:inline-block;font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;background:rgba(217,164,65,.18);color:var(--accent);vertical-align:middle;margin-left:6px}
+  #slPmExt,#slPmSl{border-bottom-width:1px!important;margin-bottom:0}
+  #slPmExt.active,#slPmSl.active{border-color:var(--accent)!important;background:rgba(217,164,65,.16);color:var(--accent);font-weight:600}
   .miss-badge{display:inline-block;font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;background:rgba(226,86,74,.18);color:var(--hawk2);vertical-align:middle;margin-left:6px}
   /* press conferences */
   .pc-meetings{display:flex;flex-direction:column;gap:6px;min-width:200px}
@@ -410,9 +412,13 @@
       <div class="note" id="slNote">Net buying = purchases − sales, outright (ex-repo). Lifers/trust banks are the domestic bid; foreigners set the marginal price at the super-long.</div>
     </div>
     <div class="card full" style="margin-top:16px">
-      <h2>Super-long JGB net buying by player — who is the marginal buyer</h2>
-      <div class="sub">Monthly super-long (over-10-year) JGB net buying, ¥tn, stacked by investor type. Bars above zero = net buying, below = net selling. The black line is the tracked total (the four investors below). Source: JSDA 公社債投資家別売買高, outright basis.</div>
-      <canvas id="cSlPlayers" style="max-height:360px;margin-top:12px"></canvas>
+      <h2>JGB net buying by player — who is the marginal buyer</h2>
+      <div class="sub">Monthly JGB net buying, ¥tn, stacked by investor type. Bars above zero = net buying, below = net selling; the white line is the whole-market total. Buckets reconcile exactly to the JSDA 合計 row; the tiniest investors are folded into an “Others (minor)” residual. Source: JSDA 公社債投資家別売買高, outright basis.</div>
+      <div style="display:flex;gap:6px;margin:12px 0 2px">
+        <button class="tab active" id="slPmExt"  style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setSlMeasure('extbills',this)">All JGBs ex-T-bills</button>
+        <button class="tab" id="slPmSl" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setSlMeasure('superlong',this)">Super-long &gt;10y only</button>
+      </div>
+      <canvas id="cSlPlayers" style="max-height:380px;margin-top:8px"></canvas>
     </div>
   </div>
 
@@ -1468,42 +1474,40 @@ function slChart(canvasId, capId, s, months){
       'FY'+latest+' latest ('+months[li]+'): '+(v>=0?'+':'')+v.toFixed(2)+'tn net '+(v>=0?'buying':'selling');
   }
 }
-function slPlayersChart(canvasId, series){
-  const cv = document.getElementById(canvasId);
-  if(!cv || !series) return;
-  // players to stack, in draw order, with colors
-  const PLAYERS = [
-    ['life',    'Life & non-life insurers', '#d9a441'],
-    ['trust',   'Trust banks (pension)',    '#4a90d9'],
-    ['mega',    'City (mega) banks',        '#4cba7a'],
-    ['foreign', 'Foreigners',               '#e2564a'],
-  ];
-  // rebuild a chronological monthly timeline from the per-FY seasonal arrays.
-  // FY array index i (Apr=0..Mar=11) -> month mm=((i+3)%12)+1, year=fy+(mm<=3?1:0)
-  const tags = new Set();
-  PLAYERS.forEach(([k])=>{ const fy=(series[k]||{}).fy||{};
-    Object.keys(fy).forEach(y=>{ fy[y].forEach((v,i)=>{ if(v!=null){
-      const mm=((i+3)%12)+1, yy=(+y)+(mm<=3?1:0); tags.add(yy+'-'+String(mm).padStart(2,'0')); }});});});
-  const months = [...tags].sort();
-  const val = (k,tag)=>{ const [yy,mm]=tag.split('-').map(Number);
-    const fy = mm<=3 ? yy-1 : yy; const idx=(mm-4+12)%12;
-    const arr=((series[k]||{}).fy||{})[String(fy)]; return arr&&arr[idx]!=null?arr[idx]:null; };
+let _slPlayers = null, _slChartObj = null, _slMeasure = 'extbills';
+function slPlayersChart(canvasId, players){
+  if(!players) return;
+  _slPlayers = players;
+  renderSlPlayers(canvasId);
+  // sync toggle button active state
+  const on = _slMeasure==='extbills' ? 'slPmExt' : 'slPmSl';
+  ['slPmExt','slPmSl'].forEach(id=>{ const b=document.getElementById(id);
+    if(b) b.classList.toggle('active', id===on); });
+}
+function setSlMeasure(m, btn){
+  _slMeasure = m;
+  document.querySelectorAll('#slPmExt,#slPmSl').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  renderSlPlayers('cSlPlayers');
+}
+function renderSlPlayers(canvasId){
+  const cv = document.getElementById(canvasId); const P = _slPlayers;
+  if(!cv || !P) return;
   const mn=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   const lbl = t => { const [y,m]=t.split('-'); return mn[+m]+" '"+y.slice(2); };
-  const datasets = PLAYERS.map(([k,name,col])=>({
-    type:'bar', label:name, data:months.map(t=>val(k,t)),
-    backgroundColor:col, borderColor:col, borderWidth:0, stack:'net', order:2 }));
-  // tracked-total line = sum of the four players
-  const total = months.map(t=>{ let s=null; PLAYERS.forEach(([k])=>{ const v=val(k,t);
-    if(v!=null){ s=(s==null?0:s)+v; } }); return s==null?null:+s.toFixed(3); });
-  datasets.push({ type:'line', label:'Tracked total (4 investors)', data:total,
+  const M = P[_slMeasure];               // {playerkey:[...], total:[...]}
+  const datasets = P.order.map(k=>({
+    type:'bar', label:P.labels[k], data:M[k],
+    backgroundColor:P.colors[k], borderColor:P.colors[k], borderWidth:0, stack:'net', order:2 }));
+  datasets.push({ type:'line', label:'Whole-market total', data:M.total,
     borderColor:'#e8edf7', backgroundColor:'#e8edf7', borderWidth:1.8,
     pointRadius:0, pointHoverRadius:3, tension:0.2, order:0 });
-  new Chart(cv, { data:{ labels:months.map(lbl), datasets },
+  if(_slChartObj){ _slChartObj.destroy(); _slChartObj=null; }
+  _slChartObj = new Chart(cv, { data:{ labels:P.months.map(lbl), datasets },
     options:{ responsive:true, maintainAspectRatio:false,
       interaction:{mode:'index', intersect:false},
       plugins:{
-        legend:{position:'bottom', labels:{boxWidth:10, padding:10, font:{size:11}}},
+        legend:{position:'bottom', labels:{boxWidth:10, padding:9, font:{size:10.5}}},
         tooltip:{callbacks:{label:c=>c.dataset.label+': '+(c.parsed.y==null?'–':(c.parsed.y>=0?'+':'')+c.parsed.y.toFixed(2)+'tn')}}
       },
       scales:{
@@ -1523,7 +1527,7 @@ fetch('./superlong_data.json?' + Date.now())
     slChart('cSlLife','slCapLife', SL.series.life, m);
     slChart('cSlTrust','slCapTrust', SL.series.trust, m);
     slChart('cSlForeign','slCapForeign', SL.series.foreign, m);
-    slPlayersChart('cSlPlayers', SL.series);
+    slPlayersChart('cSlPlayers', SL.players);
     const el = document.getElementById('slStatus');
     if(el) el.textContent = SL.meta && SL.meta.as_of ? '· data to '+SL.meta.as_of : '';
   })
