@@ -1258,11 +1258,17 @@ function renderMarkets(M) {
         labels: months,
         datasets: [
           { label: 'Ex fresh food', data: inf.ex_fresh.slice(-n),
-            borderColor: '#d9a441', pointRadius: 3, borderWidth: 2.2, tension: 0.15 },
+            borderColor: '#d9a441', pointRadius: 2, borderWidth: 2.2, tension: 0.15 },
           { label: 'Ex fresh food & energy', data: inf.ex_fresh_energy.slice(-n),
-            borderColor: '#4a90d9', pointRadius: 3, borderWidth: 2, tension: 0.15 },
+            borderColor: '#4a90d9', pointRadius: 2, borderWidth: 2, tension: 0.15 },
           { label: 'Ex food & energy', data: inf.ex_food_energy.slice(-n),
-            borderColor: '#b9c2d4', pointRadius: 2, borderWidth: 1.8, borderDash: [4,3], tension: 0.15 }
+            borderColor: '#b9c2d4', pointRadius: 0, borderWidth: 1.6, borderDash: [4,3], tension: 0.15 },
+          { label: 'Trimmed mean', data: (inf.trimmed_mean||[]).slice(-n),
+            borderColor: '#4cba7a', pointRadius: 0, borderWidth: 2, tension: 0.15 },
+          { label: 'Weighted median', data: (inf.weighted_median||[]).slice(-n),
+            borderColor: '#e2564a', pointRadius: 0, borderWidth: 2, tension: 0.15 },
+          { label: 'Mode', data: (inf.mode||[]).slice(-n),
+            borderColor: '#b79ae8', pointRadius: 0, borderWidth: 1.8, borderDash: [4,3], tension: 0.15 }
         ]
       },
       options: {

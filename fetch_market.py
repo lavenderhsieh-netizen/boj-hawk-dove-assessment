@@ -190,24 +190,31 @@ def fetch_inflation(prev):
     wb = openpyxl.load_workbook(io.BytesIO(r.content), data_only=True)
     ws = wb[wb.sheetnames[0]]
     months, ex_fresh, ex_fresh_energy, ex_food_energy = [], [], [], []
+    trimmed_mean, weighted_median, mode = [], [], []       # BOJ distribution-based core measures
+    R2 = lambda x: round(x, 2) if isinstance(x, (int, float)) else None
     for row in ws.iter_rows(min_row=6, values_only=True):
         d = row[0]
         if not isinstance(d, datetime) or d.year < 2019:
             continue
         b, e, h = row[1], row[4], row[7]
+        tm, wm, mo = row[10], row[16], row[22]             # trimmed mean / weighted median / mode
         if b is None and e is None and h is None:
             continue
         months.append(d.strftime("%Y-%m"))
-        ex_fresh.append(round(b, 2) if isinstance(b, (int, float)) else None)
-        ex_fresh_energy.append(round(e, 2) if isinstance(e, (int, float)) else None)
-        ex_food_energy.append(round(h, 2) if isinstance(h, (int, float)) else None)
+        ex_fresh.append(R2(b))
+        ex_fresh_energy.append(R2(e))
+        ex_food_energy.append(R2(h))
+        trimmed_mean.append(R2(tm))
+        weighted_median.append(R2(wm))
+        mode.append(R2(mo))
     check(len(months) > 12, "inflation: too few months")
     last_month = datetime.strptime(months[-1], "%Y-%m")
     check((datetime.now() - last_month).days < 120, f"inflation too old: {months[-1]}")
     vals = [v for v in ex_fresh if v is not None]
     check(all(-5 < v < 15 for v in vals), "inflation out of range")
     return {"months": months, "ex_fresh": ex_fresh,
-            "ex_fresh_energy": ex_fresh_energy, "ex_food_energy": ex_food_energy}
+            "ex_fresh_energy": ex_fresh_energy, "ex_food_energy": ex_food_energy,
+            "trimmed_mean": trimmed_mean, "weighted_median": weighted_median, "mode": mode}
 
 
 def fetch_potential_growth(prev):
