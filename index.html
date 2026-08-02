@@ -41,6 +41,9 @@
   .card.full{grid-column:1/-1}
   canvas{max-height:340px}
   .note{font-size:11.5px;color:var(--muted);margin-top:8px;line-height:1.5}
+  .mbcard{background:#ffffff;border:1px solid #d9dde3;border-radius:10px;padding:14px 14px 10px}
+  .mbcard h3{color:#1b2430;font-size:14px;font-weight:700;margin:0 0 6px;text-align:center;letter-spacing:.2px}
+  .mbcard canvas{max-height:270px}
   #tab-nisa .kpi .d{font-size:11.5px;margin-top:5px;font-weight:600}
   #tab-nisa .d.up{color:#4cba7a} #tab-nisa .d.flat{color:var(--muted)}
   #tab-approval .kpi .d{font-size:11.5px;margin-top:5px;font-weight:600}
@@ -412,22 +415,14 @@
       <div class="note" id="slNote">Net buying = purchases − sales, outright (ex-repo). Lifers/trust banks are the domestic bid; foreigners set the marginal price at the super-long.</div>
     </div>
     <div class="card full" style="margin-top:16px">
-      <h2>JGB net buying by player — who is the marginal buyer</h2>
-      <div class="sub">Monthly JGB net buying, ¥tn. Coloured bars are the identifiable real-money and foreign buyers; the muted grey bar is the residual net supply (bond dealers + JSDA その他 + minor holders) that clears the market. Bars above zero = net buying, below = net selling; the bright white line is the whole-market total (合計). Everything reconciles exactly to the JSDA 合計 row — coloured buyers + grey residual = total. Source: JSDA 公社債投資家別売買高, outright basis.</div>
-      <div style="display:flex;gap:6px;margin:12px 0 2px">
-        <button class="tab active" id="slPmExt"  style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setSlMeasure('extbills',this)">All JGBs ex-T-bills</button>
-        <button class="tab" id="slPmSl" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setSlMeasure('superlong',this)">Super-long &gt;10y only</button>
-      </div>
-      <canvas id="cSlPlayers" style="max-height:380px;margin-top:8px"></canvas>
-    </div>
-    <div class="card full" style="margin-top:16px">
-      <h2>Major players — monthly JGB net buying by tenor</h2>
-      <div class="sub">For the biggest JGB investor types, each month's outright net buying (¥tn) split by tenor: <b style="color:#4cba7a">Medium-Term</b>, <b style="color:#e0888a">Long-Term</b> and <b style="color:#6cb4e0">Superlong (&gt;10y)</b>, stacked. The white line is the total excluding T-bills (= the three tenors summed). Bars above zero = net buying, below = net selling. Source: JSDA 公社債投資家別売買高, outright (一般) basis.</div>
+      <h2>Japan bond flows by player — net buying by tenor <span id="tenStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">Each panel is one investor type; monthly outright JGB net buying (¥tn) stacked by tenor — <b style="color:#2e9e56">Medium-Term</b>, <b style="color:#d76d70">Long-Term</b>, <b style="color:#3f9fd6">Superlong (&gt;10y)</b> — with the <b>black line = total excluding T-bills</b>. Bars above zero = net buying, below = net selling. Source: JSDA 公社債投資家別売買高, outright (一般) basis.</div>
       <div id="slTenorGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:14px">
-        <div class="card" style="margin:0"><h2 id="tenTitle_trust" style="font-size:14px"></h2><canvas id="cTen_trust" style="max-height:280px"></canvas></div>
-        <div class="card" style="margin:0"><h2 id="tenTitle_life" style="font-size:14px"></h2><canvas id="cTen_life" style="max-height:280px"></canvas></div>
-        <div class="card" style="margin:0"><h2 id="tenTitle_mega" style="font-size:14px"></h2><canvas id="cTen_mega" style="max-height:280px"></canvas></div>
-        <div class="card" style="margin:0"><h2 id="tenTitle_foreign" style="font-size:14px"></h2><canvas id="cTen_foreign" style="max-height:280px"></canvas></div>
+        <div class="mbcard"><h3 id="tenTitle_mega"></h3><canvas id="cTen_mega"></canvas></div>
+        <div class="mbcard"><h3 id="tenTitle_trust"></h3><canvas id="cTen_trust"></canvas></div>
+        <div class="mbcard"><h3 id="tenTitle_foreign"></h3><canvas id="cTen_foreign"></canvas></div>
+        <div class="mbcard"><h3 id="tenTitle_life"></h3><canvas id="cTen_life"></canvas></div>
+        <div class="mbcard" style="grid-column:1 / -1"><h3 id="tenTitle_others"></h3><canvas id="cTen_others" style="max-height:300px"></canvas></div>
       </div>
     </div>
   </div>
@@ -1560,34 +1555,36 @@ function renderSlPlayers(canvasId){
     }
   });
 }
-// per-player "by tenor" stacked chart (Macrobond "Japan Bond Flows by <player>")
+// per-player "by tenor" stacked chart — Macrobond look: white panel, black total line
 function tenorChart(canvasId, titleId, T, key){
   const cv=document.getElementById(canvasId); if(!cv||!T||!T.players[key]) return;
   const mn=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   const P=T.players[key];
   const tt=document.getElementById(titleId); if(tt) tt.textContent=T.labels[key];
+  const COL={medium:'#2e9e56', long:'#d76d70', superlong:'#3f9fd6'};
   const bar=(bk)=>({type:'bar', label:T.tenor_labels[bk], data:P[bk],
-    backgroundColor:T.tenor_colors[bk], borderColor:T.tenor_colors[bk], borderWidth:0,
-    stack:'t', categoryPercentage:0.9, barPercentage:0.98, order:3});
+    backgroundColor:COL[bk], borderColor:COL[bk], borderWidth:0,
+    stack:'t', categoryPercentage:0.92, barPercentage:1.0, order:3});
   const datasets=[bar('medium'), bar('long'), bar('superlong'),
     {type:'line', label:'Total excl. T-bills', data:P.total,
-     borderColor:'#ffffff', backgroundColor:'#ffffff', borderWidth:2.2,
-     pointRadius:0, pointHoverRadius:3, tension:0.15, order:0, clip:false}];
+     borderColor:'#111111', backgroundColor:'#111111', borderWidth:1.8,
+     pointRadius:0, pointHoverRadius:3, tension:0.12, order:0, clip:false}];
   new Chart(cv, {data:{labels:T.months, datasets},
     options:{responsive:true, maintainAspectRatio:false,
       interaction:{mode:'index', intersect:false},
       plugins:{
-        legend:{position:'bottom', labels:{boxWidth:10, boxHeight:10, padding:8, font:{size:10}, color:'#c7d0e0'}},
+        legend:{position:'top', align:'start', labels:{boxWidth:11, boxHeight:11, padding:9, font:{size:10.5}, color:'#1b2430'}},
         tooltip:{callbacks:{
           title:it=>{const t=T.months[it[0].dataIndex]; const [y,mo]=t.split('-'); return mn[+mo]+' '+y;},
           label:c=>c.dataset.label+': '+(c.parsed.y==null?'–':(c.parsed.y>=0?'+':'')+c.parsed.y.toFixed(2)+'tn')}}
       },
       scales:{
-        y:{stacked:true, title:{display:true, text:'¥tn', color:'#93a1bd'},
-           grid:{color:x=>x.tick.value===0?'#8195b5':'#243149', lineWidth:x=>x.tick.value===0?1.4:1},
-           ticks:{color:'#93a1bd', callback:v=>(v>0?'+':'')+v}},
-        x:{stacked:true, grid:{display:false},
-           ticks:{autoSkip:false, maxRotation:0, color:'#7e8aa3', font:{size:9},
+        y:{stacked:true, title:{display:true, text:'JPY, trillion', color:'#5a6472', font:{size:10.5}},
+           grid:{color:x=>x.tick.value===0?'#8a939e':'#e6e9ee', lineWidth:x=>x.tick.value===0?1.3:1},
+           border:{color:'#c2c8d0'},
+           ticks:{color:'#5a6472', font:{size:10}, callback:v=>(v>0?'+':'')+v}},
+        x:{stacked:true, grid:{display:false}, border:{color:'#c2c8d0'},
+           ticks:{autoSkip:false, maxRotation:0, color:'#6b7480', font:{size:9},
              callback:(v,i)=>{const p=T.months[i].split('-'); const mi=+p[1]; const L='JFMAMJJASOND'[mi-1];
                if(mi===1||i===0) return [L, "'"+p[0].slice(2)]; return (mi%2===1)?L:'';}}}
       }
@@ -1602,12 +1599,10 @@ fetch('./superlong_data.json?' + Date.now())
     slChart('cSlLife','slCapLife', SL.series.life, m);
     slChart('cSlTrust','slCapTrust', SL.series.trust, m);
     slChart('cSlForeign','slCapForeign', SL.series.foreign, m);
-    slPlayersChart('cSlPlayers', SL.players);
     if(SL.byplayer_tenor){ const T=SL.byplayer_tenor;
-      tenorChart('cTen_trust','tenTitle_trust', T,'trust');
-      tenorChart('cTen_life','tenTitle_life', T,'life');
-      tenorChart('cTen_mega','tenTitle_mega', T,'mega');
-      tenorChart('cTen_foreign','tenTitle_foreign', T,'foreign');
+      ['mega','trust','foreign','life','others'].forEach(k=>tenorChart('cTen_'+k,'tenTitle_'+k, T, k));
+      const st=document.getElementById('tenStatus');
+      if(st && SL.meta && SL.meta.as_of) st.textContent='· data to '+SL.meta.as_of;
     }
     const el = document.getElementById('slStatus');
     if(el) el.textContent = SL.meta && SL.meta.as_of ? '· data to '+SL.meta.as_of : '';

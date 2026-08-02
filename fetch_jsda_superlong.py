@@ -179,6 +179,7 @@ def parse_tenor(path):
     if None in (sl, lg, md):
         raise RuntimeError(f"missing tenor columns in {path} (sl={sl},lg={lg},md={md})")
     def playerkey(inv):
+        if inv.startswith("合計"): return "__total__"      # whole-market row (for Others residual)
         for pre, key, *_ in TENOR_PLAYERS:
             if inv.startswith(pre): return key
         return None
@@ -215,10 +216,26 @@ def build_tenor(all_months):
                 m, l, s = round(d["m"],3), round(d["l"],3), round(d["s"],3)
                 med.append(m); lng.append(l); sup.append(s); tot.append(round(m+l+s,3))
         players[k] = {"medium": med, "long": lng, "superlong": sup, "total": tot}
+    # "Others" = whole-market 合計 − the named players, per tenor (all remaining investors).
+    omed, olng, osup, otot = [], [], [], []
+    for t in months:
+        tm = all_months[t].get("__total__")
+        if tm is None:
+            omed.append(None); olng.append(None); osup.append(None); otot.append(None); continue
+        m = tm["m"]; l = tm["l"]; s = tm["s"]
+        for k in keys:
+            d = all_months[t].get(k)
+            if d: m -= d["m"]; l -= d["l"]; s -= d["s"]
+        m, l, s = round(m,3), round(l,3), round(s,3)
+        omed.append(m); olng.append(l); osup.append(s); otot.append(round(m+l+s,3))
+    players["others"] = {"medium": omed, "long": olng, "superlong": osup, "total": otot}
+    labels = {p[1]: p[2] for p in TENOR_PLAYERS}
+    labels["others"] = "Others (all remaining investors)"
+    order = ["mega", "trust", "foreign", "life", "others"]
     return {
         "months": months,
-        "order": keys,
-        "labels": {p[1]: p[2] for p in TENOR_PLAYERS},
+        "order": order,
+        "labels": labels,
         "tenor_labels": {k: v[0] for k, v in TENOR_BUCKETS.items()},
         "tenor_colors": {k: v[1] for k, v in TENOR_BUCKETS.items()},
         "players": players,
