@@ -245,6 +245,7 @@
   <button class="tab" onclick="showTab('forecasts',this)">Forecasts</button>
   <button class="tab" onclick="showTab('pressconferences',this)">Press conferences</button>
   <button class="tab" onclick="showTab('superlong',this)">JSDA</button>
+  <button class="tab" onclick="showTab('crossborder',this)">Cross-border flows</button>
   <button class="tab" onclick="showTab('calendar',this)">BOJ calendar</button>
   <button class="tab" onclick="showTab('auctions',this)">Auctions &amp; fiscal</button>
   <button class="tab" onclick="showTab('news',this)">News</button>
@@ -445,6 +446,32 @@
         <div class="mbcard"><h3 id="tenTitle_life"></h3><canvas id="cTen_life"></canvas></div>
         <div class="mbcard"><h3 id="tenTitle_regional"></h3><canvas id="cTen_regional"></canvas></div>
         <div class="mbcard"><h3 id="tenTitle_agri"></h3><canvas id="cTen_agri"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CROSS-BORDER FLOWS (MoF) -->
+  <div id="tab-crossborder" class="panel">
+    <div class="card full">
+      <h2>Japanese investors' foreign bond buying — by investor type <span id="xbStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">Residents' monthly net purchase of <b>foreign long-term debt securities</b> (¥tn), by investor type — the mirror image of the JSDA JGB-by-player data: same players, but buying abroad instead of at home. Positive = net buying of foreign bonds (yen outflow); negative = net selling / repatriation. Source: MoF International Transactions in Securities (対外証券投資 中長期債), monthly.</div>
+    </div>
+    <div id="xbGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px">
+      <div class="mbcard"><h3 id="xbTitle_banks"></h3><canvas id="cXb_banks"></canvas></div>
+      <div class="mbcard"><h3 id="xbTitle_trust_bank"></h3><canvas id="cXb_trust_bank"></canvas></div>
+      <div class="mbcard"><h3 id="xbTitle_trust_pension"></h3><canvas id="cXb_trust_pension"></canvas></div>
+      <div class="mbcard"><h3 id="xbTitle_life"></h3><canvas id="cXb_life"></canvas></div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <div class="note">Trust a/c (pension) is the big structural outbound bid (GPIF & pension money); banks (banking a/c) swing with the yen-hedging / repatriation cycle; life insurers' foreign-bond appetite reads against their JGB super-long demand on the JSDA tab.</div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>Cumulative foreign bond buying — fiscal year to date (from April)</h2>
+      <div class="sub">Cumulative net purchase of foreign long-term debt since the start of each fiscal year (Apr→Mar), ¥tn. One line per fiscal year; the current year is highlighted — shows whether this year's outflow is running ahead of or behind prior years. Source: MoF, same series.</div>
+      <div id="xbCumGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:14px">
+        <div class="card" style="margin:0"><h2 id="xbCumT_total" style="font-size:14px"></h2><canvas id="cXbCum_total" style="max-height:280px"></canvas></div>
+        <div class="card" style="margin:0"><h2 id="xbCumT_trust_pension" style="font-size:14px"></h2><canvas id="cXbCum_trust_pension" style="max-height:280px"></canvas></div>
+        <div class="card" style="margin:0"><h2 id="xbCumT_life" style="font-size:14px"></h2><canvas id="cXbCum_life" style="max-height:280px"></canvas></div>
       </div>
     </div>
   </div>
@@ -1705,6 +1732,62 @@ fetch('./superlong_data.json?' + Date.now())
   })
   .catch(e => { console.warn('superlong_data.json unavailable:', e);
     const el=document.getElementById('slStatus'); if(el) el.textContent='· data loading on next refresh'; });
+
+// ── Cross-border flows tab (MoF) ──────────────────────────────────────────────
+function xbBarChart(canvasId, titleId, X, key){
+  const cv=document.getElementById(canvasId); if(!cv||!X.monthly[key]) return;
+  const mn=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const tt=document.getElementById(titleId); if(tt) tt.textContent=X.labels[key];
+  const data=X.monthly[key];
+  const col=data.map(v=>v==null?'#55617a':(v>=0?'#5aa0e6':'#e2564a'));  // buy foreign / repat
+  new Chart(cv, {type:'bar', data:{labels:X.months, datasets:[{data, backgroundColor:col, borderColor:col,
+      borderWidth:0, categoryPercentage:0.9, barPercentage:0.98}]},
+    options:{responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}, tooltip:{callbacks:{
+        title:it=>{const t=X.months[it[0].dataIndex]; const [y,mo]=t.split('-'); return mn[+mo]+' '+y;},
+        label:c=>(c.parsed.y==null?'–':(c.parsed.y>=0?'+':'')+c.parsed.y.toFixed(2)+'tn')}}},
+      scales:{
+        y:{title:{display:true, text:'¥tn', color:'#93a1bd', font:{size:10.5}},
+           grid:{color:x=>x.tick.value===0?'#7688a8':'#243149', lineWidth:x=>x.tick.value===0?1.3:1},
+           border:{color:'#2a3752'}, ticks:{color:'#93a1bd', font:{size:10}, callback:v=>(v>0?'+':'')+v}},
+        x:{grid:{display:false}, border:{color:'#2a3752'},
+           ticks:{autoSkip:false, maxRotation:0, color:'#7e8aa3', font:{size:9},
+             callback:(v,i)=>{const p=X.months[i].split('-'); const mi=+p[1]; const L='JFMAMJJASOND'[mi-1];
+               if(mi===1||i===0) return [L, "'"+p[0].slice(2)]; return (mi%2===1)?L:'';}}}
+      }
+    }
+  });
+}
+function xbCumChart(canvasId, titleId, X, key){
+  const cv=document.getElementById(canvasId); if(!cv||!X.fytd[key]) return;
+  const tt=document.getElementById(titleId); if(tt) tt.textContent=X.labels[key];
+  const fy=X.fytd[key]; const years=Object.keys(fy).sort(); const latest=years[years.length-1];
+  const hist=['#8a94ad','#4cba7a','#b79ae8','#d9a441','#4a90d9'];
+  const ds=years.map((y,i)=>{const cur=(y===latest);
+    const c=cur?'#e2564a':hist[Math.min(i,hist.length-1)];
+    return {label:'FY'+y, data:fy[y], borderColor:c, backgroundColor:c,
+      borderWidth:cur?3:1.5, pointRadius:cur?2.5:0, pointHoverRadius:4, tension:0.15, spanGaps:false, order:cur?0:1};});
+  new Chart(cv, {type:'line', data:{labels:X.fytd_months, datasets:ds},
+    options:{responsive:true, maintainAspectRatio:false, interaction:{mode:'index', intersect:false},
+      plugins:{legend:{position:'bottom', labels:{boxWidth:10, padding:7, font:{size:9.5}, color:'#c7d0e0'}},
+        tooltip:{callbacks:{label:c=>c.dataset.label+': '+(c.parsed.y==null?'–':(c.parsed.y>=0?'+':'')+c.parsed.y.toFixed(2)+'tn')}}},
+      scales:{
+        y:{title:{display:true, text:'¥tn cumulative', color:'#93a1bd', font:{size:10}},
+           grid:{color:x=>x.tick.value===0?'#7688a8':'#243149', lineWidth:x=>x.tick.value===0?1.3:1},
+           border:{color:'#2a3752'}, ticks:{color:'#93a1bd', font:{size:10}, callback:v=>(v>0?'+':'')+v}},
+        x:{grid:{display:false}, border:{color:'#2a3752'}, ticks:{color:'#7e8aa3', font:{size:9.5}}}
+      }
+    }
+  });
+}
+fetch('./mof_flows.json?' + Date.now())
+  .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
+  .then(X => {
+    ['banks','trust_bank','trust_pension','life'].forEach(k=>xbBarChart('cXb_'+k,'xbTitle_'+k, X, k));
+    ['total','trust_pension','life'].forEach(k=>xbCumChart('cXbCum_'+k,'xbCumT_'+k, X, k));
+    const el=document.getElementById('xbStatus'); if(el && X.meta) el.textContent='· data to '+X.meta.as_of;
+  })
+  .catch(e => { console.warn('mof_flows.json unavailable:', e); });
 
 // ── NISA tab ────────────────────────────────────────────────────────────────
 (function(){
