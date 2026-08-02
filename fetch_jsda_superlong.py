@@ -54,6 +54,23 @@ PLAYERS = [
     ("その他",         "othcat",   "Other (JSDA その他)",       "#cf8a5a"),  # exact-match; big dealer-offset line
 ]
 OTHERS = ("others", "Others (minor)", "#55617a")
+
+# ── per-player "by tenor" flow charts (Macrobond "Japan Bond Flows by <player>") ──
+# For a few major players, decompose monthly JGB net buying into Medium / Long /
+# Superlong tenor buckets (+ a Total-excl-T-bills line). JGB tenor columns on the
+# (K)一般差引 sheet: 超長期 (>10y), 利付長期 (long), 利付中期 (medium), 国庫短期証券等 (T-bills).
+TENOR_PLAYERS = [
+    # jp-prefix     key        label
+    ("信託銀行",    "trust",   "Trust banks (pension funds)"),
+    ("生保・損保",  "life",    "Insurance companies"),
+    ("都市銀行",    "mega",    "City (mega) banks"),
+    ("外国人",      "foreign", "Foreigners"),
+]
+TENOR_BUCKETS = {  # output key -> (display label, color)
+    "medium":   ("Medium-Term",     "#4cba7a"),
+    "long":     ("Long-Term",       "#e0888a"),
+    "superlong":("Superlong (>10y)","#6cb4e0"),
+}
 # players hidden from the stacked "By Players" chart (little super-long presence);
 # their net buying is folded into the "others" residual so the stack still sums to 合計.
 HIDE_PLAYERS = {"mega"}
@@ -143,6 +160,70 @@ def parse_players(path):
         if slv is not None: cur["sl"] += slv
     return out
 
+def parse_tenor(path):
+    """Per-major-player monthly net buying split by JGB tenor (medium/long/superlong).
+    Returns {month_tag -> {playerkey -> {'m','l','s'}}}. Net buying = −(差引), ¥tn."""
+    import openpyxl
+    wb = openpyxl.load_workbook(path, read_only=True, data_only=True)
+    sheet = next((s for s in wb.sheetnames if "一般差引" in s and "証券" not in s), None)
+    if not sheet:
+        raise RuntimeError(f"no 一般差引 sheet in {path}")
+    rows = [list(r) for r in wb[sheet].iter_rows(values_only=True)]
+    sl = lg = md = None
+    for r in rows[:6]:
+        for i, c in enumerate(r):
+            v = norm(c)
+            if v.startswith("超長期") and sl is None: sl = i
+            if v.startswith("利付長期") and lg is None: lg = i
+            if v.startswith("利付中期") and md is None: md = i
+    if None in (sl, lg, md):
+        raise RuntimeError(f"missing tenor columns in {path} (sl={sl},lg={lg},md={md})")
+    def playerkey(inv):
+        for pre, key, *_ in TENOR_PLAYERS:
+            if inv.startswith(pre): return key
+        return None
+    out = {}
+    for r in rows:
+        ym, inv = norm(r[0]), norm(r[1])
+        parts = ym.split("/")
+        if len(parts) < 2 or not inv: continue
+        try: y, m = int(parts[0]), int(parts[1])
+        except ValueError: continue
+        key = playerkey(inv)
+        if key is None: continue
+        tag = f"{y}-{m:02d}"
+        def nb(col):
+            v = r[col]; return -(v / 10000.0) if isinstance(v, (int, float)) else 0.0
+        d = out.setdefault(tag, {})
+        cur = d.setdefault(key, {"m": 0.0, "l": 0.0, "s": 0.0})
+        cur["m"] += nb(md); cur["l"] += nb(lg); cur["s"] += nb(sl)
+    return out
+
+def build_tenor(all_months):
+    """all_months: month_tag -> {playerkey -> {'m','l','s'}}. Produces per-player
+    chronological medium/long/superlong arrays + a Total(M+L+S) line, ex-T-bills."""
+    months = sorted(all_months)
+    keys = [p[1] for p in TENOR_PLAYERS]
+    players = {}
+    for k in keys:
+        med, lng, sup, tot = [], [], [], []
+        for t in months:
+            d = all_months[t].get(k)
+            if d is None:
+                med.append(None); lng.append(None); sup.append(None); tot.append(None)
+            else:
+                m, l, s = round(d["m"],3), round(d["l"],3), round(d["s"],3)
+                med.append(m); lng.append(l); sup.append(s); tot.append(round(m+l+s,3))
+        players[k] = {"medium": med, "long": lng, "superlong": sup, "total": tot}
+    return {
+        "months": months,
+        "order": keys,
+        "labels": {p[1]: p[2] for p in TENOR_PLAYERS},
+        "tenor_labels": {k: v[0] for k, v in TENOR_BUCKETS.items()},
+        "tenor_colors": {k: v[1] for k, v in TENOR_BUCKETS.items()},
+        "players": players,
+    }
+
 def build_players(all_months):
     """all_months: dict month_tag -> {bucket -> {'ext','sl'}} merged across FYs.
     Produces chronological arrays per player + total + others residual."""
@@ -178,6 +259,7 @@ def main():
               [(v[0], v) for v in TARGETS.values()]}
     latest_month = None
     players_raw = {}
+    tenor_raw = {}
     for fy, fname in FY_FILES.items():
         path = os.path.join(SRC, fname)
         try:
@@ -207,12 +289,17 @@ def main():
                 players_raw.update(parse_players(path))
             except Exception as e:
                 print(f"FY{fy}: players parse failed: {e}")
+            try:
+                tenor_raw.update(parse_tenor(path))
+            except Exception as e:
+                print(f"FY{fy}: tenor parse failed: {e}")
             print(f"FY{fy}: parsed {fname}  (foreign Apr={series['foreign']['fy'][str(fy)][0]})")
             time.sleep(6)
         except Exception as e:
             print(f"FY{fy}: FAILED {fname}: {e}")
 
     players = build_players(players_raw) if players_raw else None
+    byplayer_tenor = build_tenor(tenor_raw) if tenor_raw else None
 
     doc = {
         "meta": {
@@ -226,6 +313,7 @@ def main():
         "months": MONTHS,
         "series": series,
         "players": players,
+        "byplayer_tenor": byplayer_tenor,
     }
     for dest in (os.path.join(HERE, "superlong_data.json"),
                  os.path.join(HERE, "streamlit_app", "superlong_data.json")):
