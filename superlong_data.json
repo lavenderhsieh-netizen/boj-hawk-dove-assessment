@@ -1,7 +1,7 @@
 {
  "meta": {
   "as_of": "2026-06",
-  "generated_at": "2026-08-02T09:34:49Z",
+  "generated_at": "2026-08-02T09:50:10Z",
   "unit": "JPY tn",
   "source": "JSDA 公社債投資家別売買高 (国債投資家別売買高) — outright (一般) net, super-long JGB >10Y",
   "note": "Net buying = purchases − sales, outright (ex-repo). Positive = net buying of super-long (>10Y) JGBs. One line per fiscal year (Apr–Mar).",
@@ -1987,8 +1987,7 @@
    "foreign",
    "life",
    "regional",
-   "agri",
-   "others"
+   "agri"
   ],
   "labels": {
    "trust": "Trust banks (pension funds)",

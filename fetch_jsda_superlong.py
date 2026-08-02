@@ -233,7 +233,7 @@ def build_tenor(all_months):
     players["others"] = {"medium": omed, "long": olng, "superlong": osup, "total": otot}
     labels = {p[1]: p[2] for p in TENOR_PLAYERS}
     labels["others"] = "Others (all remaining investors)"
-    order = ["mega", "trust", "foreign", "life", "regional", "agri", "others"]
+    order = ["mega", "trust", "foreign", "life", "regional", "agri"]
     return {
         "months": months,
         "order": order,
