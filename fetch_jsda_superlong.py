@@ -54,6 +54,9 @@ PLAYERS = [
     ("その他",         "othcat",   "Other (JSDA その他)",       "#cf8a5a"),  # exact-match; big dealer-offset line
 ]
 OTHERS = ("others", "Others (minor)", "#55617a")
+# players hidden from the stacked "By Players" chart (little super-long presence);
+# their net buying is folded into the "others" residual so the stack still sums to 合計.
+HIDE_PLAYERS = {"mega"}
 
 def get(url, timeout=90, retries=4, sleep=8):
     last = None
@@ -145,6 +148,7 @@ def build_players(all_months):
     Produces chronological arrays per player + total + others residual."""
     months = sorted(all_months)
     keys = [p[1] for p in PLAYERS]
+    drawn = [k for k in keys if k not in HIDE_PLAYERS]   # stacked bars (mega hidden)
     ext = {k: [] for k in keys + ["others", "total"]}
     slg = {k: [] for k in keys + ["others", "total"]}
     for t in months:
@@ -155,13 +159,14 @@ def build_players(all_months):
         for k in keys:
             e = d.get(k, {}).get("ext", 0.0); s = d.get(k, {}).get("sl", 0.0)
             ext[k].append(round(e, 3)); slg[k].append(round(s, 3))
-            named_e += e; named_s += s
-        # residual others = total − named (keeps the stack summing to 合計)
+            if k in drawn:                    # hidden players fold into the residual
+                named_e += e; named_s += s
+        # residual others = total − drawn (keeps the stack summing to 合計)
         ext["others"].append(round((tot_e - named_e), 3) if tot_e is not None else None)
         slg["others"].append(round((tot_s - named_s), 3) if tot_s is not None else None)
         ext["total"].append(round(tot_e, 3) if tot_e is not None else None)
         slg["total"].append(round(tot_s, 3) if tot_s is not None else None)
-    order = keys + ["others"]
+    order = drawn + ["others"]
     labels = {p[1]: p[2] for p in PLAYERS}; labels["others"] = OTHERS[1]
     colors = {p[1]: p[3] for p in PLAYERS}; colors["others"] = OTHERS[2]
     return {"months": months, "order": order, "labels": labels, "colors": colors,
