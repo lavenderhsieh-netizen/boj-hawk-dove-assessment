@@ -114,10 +114,13 @@ def main():
     fys = [fy for fy in fys if fy >= 2021]
     fytd = {k: {} for k in keys}
     fytd_usd = {k: {} for k in keys}
+    seasonal = {k: {} for k in keys}          # monthly (non-cumulative) net buying, Apr..Mar
+    seasonal_usd = {k: {} for k in keys}
     for k in keys:
         for fy in fys:
             arr, run = [], 0.0
             arru, runu = [], 0.0
+            sea, seau = [], []
             for mlabel in FYM:
                 mnum = MN[mlabel]
                 yy = fy if mnum >= 4 else fy + 1
@@ -125,13 +128,17 @@ def main():
                 v = by.get((yy, mnum), {}).get(k)
                 if v is None:
                     arr.append(None); arru.append(None)      # month not yet published
+                    sea.append(None); seau.append(None)
                 else:
-                    run += v; arr.append(round(run, 3))
+                    run += v; arr.append(round(run, 3)); sea.append(v)
                     uv = usd(v, tag)
+                    seau.append(uv)
                     if uv is None: arru.append(None)
                     else: runu += uv; arru.append(round(runu, 2))
             fytd[k][str(fy)] = arr
             fytd_usd[k][str(fy)] = arru
+            seasonal[k][str(fy)] = sea
+            seasonal_usd[k][str(fy)] = seau
 
     as_of = f"{recs[-1][0]}-{recs[-1][1]:02d}"
     doc = {
@@ -151,6 +158,8 @@ def main():
         "fytd_months": FYM,
         "fytd": fytd,
         "fytd_usd": fytd_usd,
+        "seasonal": seasonal,
+        "seasonal_usd": seasonal_usd,
     }
     for dest in (os.path.join(HERE, "mof_flows.json"),
                  os.path.join(HERE, "streamlit_app", "mof_flows.json")):
