@@ -41,8 +41,8 @@
   .card.full{grid-column:1/-1}
   canvas{max-height:340px}
   .note{font-size:11.5px;color:var(--muted);margin-top:8px;line-height:1.5}
-  .mbcard{background:#ffffff;border:1px solid #d9dde3;border-radius:10px;padding:14px 14px 10px}
-  .mbcard h3{color:#1b2430;font-size:14px;font-weight:700;margin:0 0 6px;text-align:center;letter-spacing:.2px}
+  .mbcard{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:14px 16px 10px}
+  .mbcard h3{color:var(--ink);font-size:14px;font-weight:600;margin:0 0 8px;text-align:center;letter-spacing:.2px}
   .mbcard canvas{max-height:270px}
   #tab-nisa .kpi .d{font-size:11.5px;margin-top:5px;font-weight:600}
   #tab-nisa .d.up{color:#4cba7a} #tab-nisa .d.flat{color:var(--muted)}
@@ -416,12 +416,12 @@
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>Super long-end flows by players <span id="slfStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
-      <div class="sub">Monthly net buying of super-long (&gt;10y) JGBs, ¥tn — the three players that set the long-end: <b style="color:#2f6fb0">Trust banks (pension)</b>, <b style="color:#d6322f">Foreigners</b> (dashed), <b style="color:#2e7d32">Life &amp; non-life insurers</b>. Source: JSDA 公社債投資家別売買高, outright basis.</div>
+      <div class="sub">Monthly net buying of super-long (&gt;10y) JGBs, ¥tn — the three players that set the long-end: <b style="color:#5aa0e6">Trust banks (pension)</b>, <b style="color:#e2564a">Foreigners</b> (dashed), <b style="color:#4cba7a">Life &amp; non-life insurers</b>. Source: JSDA 公社債投資家別売買高, outright basis.</div>
       <div class="mbcard" style="margin-top:12px"><canvas id="cSlFlows" style="max-height:360px"></canvas></div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>Japan bond flows by player — net buying by tenor <span id="tenStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
-      <div class="sub">Each panel is one investor type; monthly outright JGB net buying (¥tn) stacked by tenor — <b style="color:#2e9e56">Medium-Term</b>, <b style="color:#d76d70">Long-Term</b>, <b style="color:#3f9fd6">Superlong (&gt;10y)</b> — with the <b>black line = total excluding T-bills</b>. Bars above zero = net buying, below = net selling. Source: JSDA 公社債投資家別売買高, outright (一般) basis.</div>
+      <div class="sub">Each panel is one investor type; monthly outright JGB net buying (¥tn) stacked by tenor — <b style="color:#4cba7a">Medium-Term</b>, <b style="color:#e0888a">Long-Term</b>, <b style="color:#6cb4e0">Superlong (&gt;10y)</b> — with the white line = total excluding T-bills. Bars above zero = net buying, below = net selling. Source: JSDA 公社債投資家別売買高, outright (一般) basis.</div>
       <div id="slTenorGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:14px">
         <div class="mbcard"><h3 id="tenTitle_mega"></h3><canvas id="cTen_mega"></canvas></div>
         <div class="mbcard"><h3 id="tenTitle_trust"></h3><canvas id="cTen_trust"></canvas></div>
@@ -1566,30 +1566,30 @@ function tenorChart(canvasId, titleId, T, key){
   const mn=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   const P=T.players[key];
   const tt=document.getElementById(titleId); if(tt) tt.textContent=T.labels[key];
-  const COL={medium:'#2e9e56', long:'#d76d70', superlong:'#3f9fd6'};
+  const COL={medium:'#4cba7a', long:'#e0888a', superlong:'#6cb4e0'};
   const bar=(bk)=>({type:'bar', label:T.tenor_labels[bk], data:P[bk],
     backgroundColor:COL[bk], borderColor:COL[bk], borderWidth:0,
     stack:'t', categoryPercentage:0.92, barPercentage:1.0, order:3});
   const datasets=[bar('medium'), bar('long'), bar('superlong'),
     {type:'line', label:'Total excl. T-bills', data:P.total,
-     borderColor:'#111111', backgroundColor:'#111111', borderWidth:1.8,
+     borderColor:'#eef2f9', backgroundColor:'#eef2f9', borderWidth:2.0,
      pointRadius:0, pointHoverRadius:3, tension:0.12, order:0, clip:false}];
   new Chart(cv, {data:{labels:T.months, datasets},
     options:{responsive:true, maintainAspectRatio:false,
       interaction:{mode:'index', intersect:false},
       plugins:{
-        legend:{position:'top', align:'start', labels:{boxWidth:11, boxHeight:11, padding:9, font:{size:10.5}, color:'#1b2430'}},
+        legend:{position:'top', align:'start', labels:{boxWidth:11, boxHeight:11, padding:9, font:{size:10.5}, color:'#c7d0e0'}},
         tooltip:{callbacks:{
           title:it=>{const t=T.months[it[0].dataIndex]; const [y,mo]=t.split('-'); return mn[+mo]+' '+y;},
           label:c=>c.dataset.label+': '+(c.parsed.y==null?'–':(c.parsed.y>=0?'+':'')+c.parsed.y.toFixed(2)+'tn')}}
       },
       scales:{
-        y:{stacked:true, title:{display:true, text:'JPY, trillion', color:'#5a6472', font:{size:10.5}},
-           grid:{color:x=>x.tick.value===0?'#8a939e':'#e6e9ee', lineWidth:x=>x.tick.value===0?1.3:1},
-           border:{color:'#c2c8d0'},
-           ticks:{color:'#5a6472', font:{size:10}, callback:v=>(v>0?'+':'')+v}},
-        x:{stacked:true, grid:{display:false}, border:{color:'#c2c8d0'},
-           ticks:{autoSkip:false, maxRotation:0, color:'#6b7480', font:{size:9},
+        y:{stacked:true, title:{display:true, text:'¥tn', color:'#93a1bd', font:{size:10.5}},
+           grid:{color:x=>x.tick.value===0?'#7688a8':'#243149', lineWidth:x=>x.tick.value===0?1.3:1},
+           border:{color:'#2a3752'},
+           ticks:{color:'#93a1bd', font:{size:10}, callback:v=>(v>0?'+':'')+v}},
+        x:{stacked:true, grid:{display:false}, border:{color:'#2a3752'},
+           ticks:{autoSkip:false, maxRotation:0, color:'#7e8aa3', font:{size:9},
              callback:(v,i)=>{const p=T.months[i].split('-'); const mi=+p[1]; const L='JFMAMJJASOND'[mi-1];
                if(mi===1||i===0) return [L, "'"+p[0].slice(2)]; return (mi%2===1)?L:'';}}}
       }
@@ -1610,25 +1610,25 @@ function slFlowsChart(canvasId, T){
     borderColor:col, backgroundColor:col, borderWidth:1.9, borderDash:dash||[],
     pointRadius:0, pointHoverRadius:3, tension:0.12, spanGaps:false};};
   const datasets=[
-    line('trust','Trust banks','#2f6fb0'),
-    line('foreign','Foreigners','#d6322f',[6,4]),
-    line('life','Life & non-life insurers','#2e7d32'),
+    line('trust','Trust banks','#5aa0e6'),
+    line('foreign','Foreigners','#e2564a',[6,4]),
+    line('life','Life & non-life insurers','#4cba7a'),
   ];
   new Chart(cv, {type:'line', data:{labels:months, datasets},
     options:{responsive:true, maintainAspectRatio:false,
       interaction:{mode:'index', intersect:false},
       plugins:{
-        legend:{position:'top', align:'start', labels:{boxWidth:22, boxHeight:2, padding:12, font:{size:11}, color:'#1b2430'}},
+        legend:{position:'top', align:'start', labels:{boxWidth:22, boxHeight:2, padding:12, font:{size:11}, color:'#c7d0e0'}},
         tooltip:{callbacks:{
           title:it=>{const t=months[it[0].dataIndex]; const [y,mo]=t.split('-'); return mn[+mo]+' '+y;},
           label:c=>c.dataset.label.replace(/ \(.*\)$/,'')+': '+(c.parsed.y==null?'–':(c.parsed.y>=0?'+':'')+c.parsed.y.toFixed(2)+'tn')}}
       },
       scales:{
-        y:{title:{display:true, text:'JPY, trillion', color:'#5a6472', font:{size:10.5}},
-           grid:{color:x=>x.tick.value===0?'#8a939e':'#e6e9ee', lineWidth:x=>x.tick.value===0?1.3:1},
-           border:{color:'#c2c8d0'}, ticks:{color:'#5a6472', font:{size:10}, callback:v=>(v>0?'+':'')+v}},
-        x:{grid:{display:false}, border:{color:'#c2c8d0'},
-           ticks:{autoSkip:false, maxRotation:0, color:'#6b7480', font:{size:9},
+        y:{title:{display:true, text:'¥tn', color:'#93a1bd', font:{size:10.5}},
+           grid:{color:x=>x.tick.value===0?'#7688a8':'#243149', lineWidth:x=>x.tick.value===0?1.3:1},
+           border:{color:'#2a3752'}, ticks:{color:'#93a1bd', font:{size:10}, callback:v=>(v>0?'+':'')+v}},
+        x:{grid:{display:false}, border:{color:'#2a3752'},
+           ticks:{autoSkip:false, maxRotation:0, color:'#7e8aa3', font:{size:9},
              callback:(v,i)=>{const p=months[i].split('-'); const mi=+p[1]; const L='JFMAMJJASOND'[mi-1];
                if(mi===1||i===0) return [L, "'"+p[0].slice(2)]; return (mi%2===1)?L:'';}}}
       }
