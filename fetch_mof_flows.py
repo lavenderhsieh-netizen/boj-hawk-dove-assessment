@@ -44,6 +44,21 @@ def num(x):
     try: return float(x)
     except ValueError: return None
 
+def usdjpy_monthly():
+    """Monthly USDJPY close from Yahoo, {YYYY-MM: rate}. Empty dict on failure."""
+    try:
+        j = json.loads(get("https://query1.finance.yahoo.com/v8/finance/chart/JPY=X?interval=1mo&range=7y").decode())
+        res = j["chart"]["result"][0]
+        ts, cl = res["timestamp"], res["indicators"]["quote"][0]["close"]
+        out = {}
+        for t, c in zip(ts, cl):
+            if c is None: continue
+            d = datetime.datetime.utcfromtimestamp(t)
+            out[f"{d.year}-{d.month:02d}"] = round(float(c), 3)
+        return out
+    except Exception as e:
+        print("usdjpy fetch failed:", e); return {}
+
 def main():
     raw = get(URL)
     open(os.path.join(SRC, "monthb3.csv"), "wb").write(raw)
@@ -73,31 +88,50 @@ def main():
             continue
         recs.append((yr, MN[r[2].strip()], {k: (round(v/10000.0, 3) if v is not None else None) for k, v in vals.items()}))
 
-    # monthly window
-    months, monthly = [], {k: [] for k in keys}
+    # USDJPY per month → convert ¥tn to $bn:  $bn = ¥tn * 1000 / rate
+    fx = usdjpy_monthly()
+    def rate(tag):
+        if tag in fx: return fx[tag]
+        earlier = [v for k, v in sorted(fx.items()) if k <= tag]
+        return earlier[-1] if earlier else (sorted(fx.values())[len(fx)//2] if fx else None)
+    def usd(v, tag):
+        r = rate(tag)
+        return round(v * 1000.0 / r, 2) if (v is not None and r) else None
+
+    # monthly window (¥tn) + USD ($bn)
+    months, monthly, monthly_usd = [], {k: [] for k in keys}, {k: [] for k in keys}
     for y, m, d in recs:
         tag = f"{y}-{m:02d}"
         if tag < START: continue
         months.append(tag)
-        for k in keys: monthly[k].append(d[k])
+        for k in keys:
+            monthly[k].append(d[k])
+            monthly_usd[k].append(usd(d[k], tag))
 
-    # cumulative fiscal-year-to-date (Apr..Mar), one array per FY per bucket
+    # cumulative fiscal-year-to-date (Apr..Mar), one array per FY per bucket, both currencies
     by = {(y, m): d for y, m, d in recs}
     fys = sorted({(y if m >= 4 else y - 1) for y, m, d in recs})
     fys = [fy for fy in fys if fy >= 2021]
     fytd = {k: {} for k in keys}
+    fytd_usd = {k: {} for k in keys}
     for k in keys:
         for fy in fys:
             arr, run = [], 0.0
-            for i, mlabel in enumerate(FYM):
+            arru, runu = [], 0.0
+            for mlabel in FYM:
                 mnum = MN[mlabel]
                 yy = fy if mnum >= 4 else fy + 1
+                tag = f"{yy}-{mnum:02d}"
                 v = by.get((yy, mnum), {}).get(k)
                 if v is None:
-                    arr.append(None)                 # month not yet published
+                    arr.append(None); arru.append(None)      # month not yet published
                 else:
                     run += v; arr.append(round(run, 3))
+                    uv = usd(v, tag)
+                    if uv is None: arru.append(None)
+                    else: runu += uv; arru.append(round(runu, 2))
             fytd[k][str(fy)] = arr
+            fytd_usd[k][str(fy)] = arru
 
     as_of = f"{recs[-1][0]}-{recs[-1][1]:02d}"
     doc = {
@@ -113,8 +147,10 @@ def main():
         "order": ["banks", "trust_bank", "trust_pension", "life"],
         "months": months,
         "monthly": monthly,
+        "monthly_usd": monthly_usd,
         "fytd_months": FYM,
         "fytd": fytd,
+        "fytd_usd": fytd_usd,
     }
     for dest in (os.path.join(HERE, "mof_flows.json"),
                  os.path.join(HERE, "streamlit_app", "mof_flows.json")):

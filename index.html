@@ -454,7 +454,20 @@
   <div id="tab-crossborder" class="panel">
     <div class="card full">
       <h2>Japanese investors' foreign bond buying — by investor type <span id="xbStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
-      <div class="sub">Residents' monthly net purchase of <b>foreign long-term debt securities</b> (¥tn), by investor type — the mirror image of the JSDA JGB-by-player data: same players, but buying abroad instead of at home. Positive = net buying of foreign bonds (yen outflow); negative = net selling / repatriation. Source: MoF International Transactions in Securities (対外証券投資 中長期債), monthly.</div>
+      <div class="sub">Residents' monthly net purchase of <b>foreign long-term debt securities</b>, by investor type — the mirror image of the JSDA JGB-by-player data: same players, but buying abroad instead of at home. Positive = net buying of foreign bonds (yen outflow); negative = net selling / repatriation. Source: MoF International Transactions in Securities (対外証券投資 中長期債), monthly; USD converted at each month's USDJPY.</div>
+      <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:center;margin-top:12px">
+        <div id="xbWinBtns" style="display:flex;gap:6px">
+          <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbWin(12,this)">1Y</button>
+          <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbWin(24,this)">2Y</button>
+          <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbWin(36,this)">3Y</button>
+          <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbWin(60,this)">5Y</button>
+          <button class="tab active" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbWin(0,this)">All</button>
+        </div>
+        <div id="xbCurBtns" style="display:flex;gap:6px">
+          <button class="tab active" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbCur('jpy',this)">¥ tn</button>
+          <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbCur('usd',this)">$ bn</button>
+        </div>
+      </div>
     </div>
     <div id="xbGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px">
       <div class="mbcard"><h3 id="xbTitle_banks"></h3><canvas id="cXb_banks"></canvas></div>
@@ -1734,45 +1747,55 @@ fetch('./superlong_data.json?' + Date.now())
     const el=document.getElementById('slStatus'); if(el) el.textContent='· data loading on next refresh'; });
 
 // ── Cross-border flows tab (MoF) ──────────────────────────────────────────────
-function xbBarChart(canvasId, titleId, X, key){
-  const cv=document.getElementById(canvasId); if(!cv||!X.monthly[key]) return;
+let _xbData=null, _xbWin=0, _xbCur='jpy'; const _xbCharts={};
+function _xbUnit(){ return _xbCur==='usd'
+  ? {m:'monthly_usd', f:'fytd_usd', u:'$bn', cu:'$bn cumulative', dp:1}
+  : {m:'monthly', f:'fytd', u:'¥tn', cu:'¥tn cumulative', dp:2}; }
+function xbBarChart(canvasId, titleId, key){
+  const cv=document.getElementById(canvasId); const X=_xbData; if(!cv||!X) return;
+  const U=_xbUnit(); if(!X[U.m][key]) return;
   const mn=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   const tt=document.getElementById(titleId); if(tt) tt.textContent=X.labels[key];
-  const data=X.monthly[key];
+  const i0=_xbWin>0 ? Math.max(0, X.months.length-_xbWin) : 0;
+  const months=X.months.slice(i0);
+  const data=X[U.m][key].slice(i0);
   const col=data.map(v=>v==null?'#55617a':(v>=0?'#5aa0e6':'#e2564a'));  // buy foreign / repat
-  new Chart(cv, {type:'bar', data:{labels:X.months, datasets:[{data, backgroundColor:col, borderColor:col,
+  if(_xbCharts[canvasId]){ _xbCharts[canvasId].destroy(); }
+  _xbCharts[canvasId]=new Chart(cv, {type:'bar', data:{labels:months, datasets:[{data, backgroundColor:col, borderColor:col,
       borderWidth:0, categoryPercentage:0.9, barPercentage:0.98}]},
     options:{responsive:true, maintainAspectRatio:false,
       plugins:{legend:{display:false}, tooltip:{callbacks:{
-        title:it=>{const t=X.months[it[0].dataIndex]; const [y,mo]=t.split('-'); return mn[+mo]+' '+y;},
-        label:c=>(c.parsed.y==null?'–':(c.parsed.y>=0?'+':'')+c.parsed.y.toFixed(2)+'tn')}}},
+        title:it=>{const t=months[it[0].dataIndex]; const [y,mo]=t.split('-'); return mn[+mo]+' '+y;},
+        label:c=>(c.parsed.y==null?'–':(c.parsed.y>=0?'+':'')+c.parsed.y.toFixed(U.dp)+U.u)}}},
       scales:{
-        y:{title:{display:true, text:'¥tn', color:'#93a1bd', font:{size:10.5}},
+        y:{title:{display:true, text:U.u, color:'#93a1bd', font:{size:10.5}},
            grid:{color:x=>x.tick.value===0?'#7688a8':'#243149', lineWidth:x=>x.tick.value===0?1.3:1},
            border:{color:'#2a3752'}, ticks:{color:'#93a1bd', font:{size:10}, callback:v=>(v>0?'+':'')+v}},
         x:{grid:{display:false}, border:{color:'#2a3752'},
            ticks:{autoSkip:false, maxRotation:0, color:'#7e8aa3', font:{size:9},
-             callback:(v,i)=>{const p=X.months[i].split('-'); const mi=+p[1]; const L='JFMAMJJASOND'[mi-1];
+             callback:(v,i)=>{const p=months[i].split('-'); const mi=+p[1]; const L='JFMAMJJASOND'[mi-1];
                if(mi===1||i===0) return [L, "'"+p[0].slice(2)]; return (mi%2===1)?L:'';}}}
       }
     }
   });
 }
-function xbCumChart(canvasId, titleId, X, key){
-  const cv=document.getElementById(canvasId); if(!cv||!X.fytd[key]) return;
+function xbCumChart(canvasId, titleId, key){
+  const cv=document.getElementById(canvasId); const X=_xbData; if(!cv||!X) return;
+  const U=_xbUnit(); const src=X[U.f][key]; if(!src) return;
   const tt=document.getElementById(titleId); if(tt) tt.textContent=X.labels[key];
-  const fy=X.fytd[key]; const years=Object.keys(fy).sort(); const latest=years[years.length-1];
+  const years=Object.keys(src).sort(); const latest=years[years.length-1];
   const hist=['#8a94ad','#4cba7a','#b79ae8','#d9a441','#4a90d9'];
   const ds=years.map((y,i)=>{const cur=(y===latest);
     const c=cur?'#e2564a':hist[Math.min(i,hist.length-1)];
-    return {label:'FY'+y, data:fy[y], borderColor:c, backgroundColor:c,
+    return {label:'FY'+y, data:src[y], borderColor:c, backgroundColor:c,
       borderWidth:cur?3:1.5, pointRadius:cur?2.5:0, pointHoverRadius:4, tension:0.15, spanGaps:false, order:cur?0:1};});
-  new Chart(cv, {type:'line', data:{labels:X.fytd_months, datasets:ds},
+  if(_xbCharts[canvasId]){ _xbCharts[canvasId].destroy(); }
+  _xbCharts[canvasId]=new Chart(cv, {type:'line', data:{labels:X.fytd_months, datasets:ds},
     options:{responsive:true, maintainAspectRatio:false, interaction:{mode:'index', intersect:false},
       plugins:{legend:{position:'bottom', labels:{boxWidth:10, padding:7, font:{size:9.5}, color:'#c7d0e0'}},
-        tooltip:{callbacks:{label:c=>c.dataset.label+': '+(c.parsed.y==null?'–':(c.parsed.y>=0?'+':'')+c.parsed.y.toFixed(2)+'tn')}}},
+        tooltip:{callbacks:{label:c=>c.dataset.label+': '+(c.parsed.y==null?'–':(c.parsed.y>=0?'+':'')+c.parsed.y.toFixed(U.dp)+U.u)}}},
       scales:{
-        y:{title:{display:true, text:'¥tn cumulative', color:'#93a1bd', font:{size:10}},
+        y:{title:{display:true, text:U.cu, color:'#93a1bd', font:{size:10}},
            grid:{color:x=>x.tick.value===0?'#7688a8':'#243149', lineWidth:x=>x.tick.value===0?1.3:1},
            border:{color:'#2a3752'}, ticks:{color:'#93a1bd', font:{size:10}, callback:v=>(v>0?'+':'')+v}},
         x:{grid:{display:false}, border:{color:'#2a3752'}, ticks:{color:'#7e8aa3', font:{size:9.5}}}
@@ -1780,11 +1803,20 @@ function xbCumChart(canvasId, titleId, X, key){
     }
   });
 }
+function renderXb(){ if(!_xbData) return;
+  ['banks','trust_bank','trust_pension','life'].forEach(k=>xbBarChart('cXb_'+k,'xbTitle_'+k, k));
+  ['total','trust_pension','life'].forEach(k=>xbCumChart('cXbCum_'+k,'xbCumT_'+k, k)); }
+function setXbWin(win, btn){ _xbWin=win;
+  document.querySelectorAll('#xbWinBtns .tab').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  ['banks','trust_bank','trust_pension','life'].forEach(k=>xbBarChart('cXb_'+k,'xbTitle_'+k, k)); }
+function setXbCur(cur, btn){ _xbCur=cur;
+  document.querySelectorAll('#xbCurBtns .tab').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  renderXb(); }
 fetch('./mof_flows.json?' + Date.now())
   .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
-  .then(X => {
-    ['banks','trust_bank','trust_pension','life'].forEach(k=>xbBarChart('cXb_'+k,'xbTitle_'+k, X, k));
-    ['total','trust_pension','life'].forEach(k=>xbCumChart('cXbCum_'+k,'xbCumT_'+k, X, k));
+  .then(X => { _xbData=X; renderXb();
     const el=document.getElementById('xbStatus'); if(el && X.meta) el.textContent='· data to '+X.meta.as_of;
   })
   .catch(e => { console.warn('mof_flows.json unavailable:', e); });
