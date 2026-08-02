@@ -1,5 +1,5 @@
 {
- "as_of": "2026-08-01",
+ "as_of": "2026-07-31",
  "kpis": [
   {
    "value": "1.00%",
@@ -601,6 +601,11 @@
    "text": "Kuroda launches QQE (\"bazooka\"): 2% inflation target, JGB purchases doubled to ¥50tn/yr, monetary base targeted to double in 2 years."
   },
   {
+   "date": "Oct 31, 2014",
+   "kind": "dove",
+   "text": "QQE expanded (\"Halloween easing\"): annual JGB purchases raised to ~¥80tn and ETF/J-REIT purchases tripled. The same day, GPIF unveils its landmark reallocation — domestic bonds cut from 60% to 35%, domestic and foreign equities sharply raised — structurally shrinking the bond bid of the JGB market's largest holder."
+  },
+  {
    "date": "Jan 29, 2016",
    "kind": "dove",
    "text": "NIRP introduced: BOJ adopts −0.1% policy rate on excess reserves — first negative rate in BOJ history."
@@ -609,6 +614,11 @@
    "date": "Sep 21, 2016",
    "kind": "event",
    "text": "YCC introduced: BOJ targets 10-year JGB yield at ~0% alongside −0.1% short rate; marks shift from quantity- to rate-based QE."
+  },
+  {
+   "date": "Jul 31, 2018",
+   "kind": "event",
+   "text": "YCC made flexible: BOJ widens the tolerated 10Y band to about ±0.2% and adopts forward guidance — the first step in the gradual YCC loosening that ran through 2022–24."
   },
   {
    "date": "Dec 20, 2022",
@@ -651,11 +661,6 @@
    "text": "JGB taper extended at gentler pace from Apr 2026; ETF/J-REIT sales decided (Sep). Jul: Japan–US trade agreement."
   },
   {
-   "date": "Sep & Oct 2025",
-   "kind": "event",
-   "text": "Holds, but Tamura and Takata dissent at both meetings, proposing 0.75%."
-  },
-  {
    "date": "Oct 2025",
    "kind": "event",
    "text": "Takaichi government takes office; Oct Outlook: FY25 CPI 2.7%, FY26 1.8%, FY27 2.0%."
@@ -668,7 +673,7 @@
   {
    "date": "Jan 2026",
    "kind": "event",
-   "text": "Hold, but Takata proposes going to 1.0%. Jan Outlook restores pre-tariff forecasts."
+   "text": "Jan Outlook restores pre-tariff forecasts — growth and inflation projections marked back up after the tariff-driven cuts; policy held at 0.75%."
   },
   {
    "date": "Jan 23, 2026",
@@ -678,12 +683,12 @@
   {
    "date": "Apr 28, 2026",
    "kind": "event",
-   "text": "Hold at 0.75% amid Iran-war worries; inflation forecast raised. Nakagawa reportedly calls for a hike."
+   "text": "Hold at 0.75% amid Iran-war worries; inflation forecast raised."
   },
   {
    "date": "Jun 16, 2026",
    "kind": "hike",
-   "text": "Rate raised to 1.00% (7–1; Asada dissents), highest since Sep 1995, amid yen weakness and FX intervention."
+   "text": "Rate raised to 1.00% (7–1), highest since Sep 1995, amid yen weakness and FX intervention."
   },
   {
    "date": "Jul 30, 2026",
@@ -693,7 +698,7 @@
   {
    "date": "Jul 31, 2026",
    "kind": "event",
-   "text": "Held at 1.00% (8–1). Hawk Takata dissents, proposing a hike to 1.25% on upside price risks; the other eight — including Ueda (back from illness) and first-time voter Sato — back the hold. July Outlook trims FY2026 CPI on summer energy subsidies and upgrades activity risk to 'generally balanced'; guidance to keep raising rates is retained."
+   "text": "Held at 1.00% (8–1). July Outlook trims FY2026 CPI on summer energy subsidies and upgrades the activity-risk assessment to 'generally balanced'; guidance to keep raising rates is retained. Ueda returns from illness; Sato votes for the first time."
   },
   {
    "date": "Jul 31, 2026",
