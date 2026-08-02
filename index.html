@@ -243,7 +243,7 @@
   <button class="tab" onclick="showTab('auctions',this)">Auctions &amp; fiscal</button>
   <button class="tab" onclick="showTab('news',this)">News</button>
   <button class="tab" onclick="showTab('markets',this)">Markets &amp; bonds</button>
-  <button class="tab" onclick="showTab('superlong',this)">Super-long demand</button>
+  <button class="tab" onclick="showTab('superlong',this)">JSDA</button>
   <button class="tab" onclick="showTab('nisa',this)" style="display:none" data-hidden="redesign">NISA</button>
   <button class="tab" onclick="showTab('approval',this)" style="display:none" data-hidden="rework">Approval ratings</button>
   <button class="tab" onclick="showTab('method',this)">Methodology</button>
@@ -407,7 +407,7 @@
       </div>
     </div>
     <div class="card full" style="margin-top:16px">
-      <div class="note" id="slNote">Net buying = purchases − sales, outright (ex-repo). Lifers and trust banks (a pension/GPIF proxy) are the structural domestic bid; foreigners are the marginal price-setter at the 20/30/40Y. A weak lifer/trust line into a foreign sell-off is the classic "no domestic backstop" signal for the super-long selloff.</div>
+      <div class="note" id="slNote">Net buying = purchases − sales, outright (ex-repo). Lifers/trust banks are the domestic bid; foreigners set the marginal price at the super-long.</div>
     </div>
   </div>
 
@@ -1431,7 +1431,7 @@ function slChart(canvasId, capId, s, months){
   const years = Object.keys(s.fy).sort();
   if(!years.length) return;
   const latest = years[years.length-1];
-  const hist = ['#4b5a78','#63769b','#8098bf','#9fb6de','#c3d1e8'];
+  const hist = ['#8a94ad','#4cba7a','#b79ae8','#d9a441','#4a90d9'];
   const datasets = years.map((y,i)=>{
     const cur = (y===latest);
     const col = cur ? '#e2564a' : hist[Math.min(i, hist.length-1)];
