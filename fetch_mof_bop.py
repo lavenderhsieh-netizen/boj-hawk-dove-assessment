@@ -71,7 +71,10 @@ def table_block(lines, header, n=75):
     return lines[i:i + n]
 
 def extract(lines, header, net_idx, countries):
-    """Per-country value at column `net_idx` from a table; plus the 合計/Total row."""
+    """Per-country value at column `net_idx` from a table; plus the 合計/Total row.
+
+    Layout: English country name at the END of the numbers line (Liabilities /
+    inbound table). Used for the by-country foreign demand for JGBs."""
     block = table_block(lines, header)
     out, total = {}, None
     for l in block:
@@ -83,6 +86,35 @@ def extract(lines, header, net_idx, countries):
             if sub in en and key not in out:
                 out[key] = nums[net_idx]
     return out, total
+
+def extract_sovereign(lines, net_idx, countries):
+    """Outbound sovereign-bond table (Assets, Country Breakdown of Sovereign Bonds).
+
+    Different layout from the inbound table: the Japanese label + numbers sit on
+    one line and the English country name is on the FOLLOWING line by itself. So
+    we pair each 9-column number row with the next english-only line. The table
+    has no explicit Total row, so the total is the sum of ALL rows (every country
+    plus その他/Others) at the long-term-net column."""
+    block = table_block(lines, header="Country Breakdown of Sovereign Bonds", n=50)
+    out, total, seen_any = {}, 0, False
+    for i, l in enumerate(block):
+        if "備考" in l or "(Notes)" in l or "Notes)" in l:
+            break                                    # end of the sovereign table
+        en, nums = parse_row(l)
+        if len(nums) < 9:                            # not a data row (headers etc.)
+            continue
+        val = nums[net_idx]
+        total += val if isinstance(val, int) else 0
+        seen_any = True
+        name = ""                                    # number-line `en` is ― placeholder
+        for j in range(i + 1, min(i + 3, len(block))):   # english is on a following line
+            en2, nums2 = parse_row(block[j])
+            if en2 and not nums2:
+                name = en2; break
+        for sub, key, _ in countries:
+            if sub in name and key not in out:
+                out[key] = val
+    return out, (total if seen_any else None)
 
 def main():
     today = datetime.date.today()
@@ -103,7 +135,7 @@ def main():
             # inbound: Liabilities country breakdown, LT-debt net = col index 8
             inb, inb_tot = extract(lines, "Portfolio Investment Liabilities, Country Breakdown", 8, INBOUND_COUNTRIES)
             # outbound: Assets sovereign-bond country breakdown, Sovereign LT net = col index 5
-            outb, outb_tot = extract(lines, "Portfolio Investment Assets, Country Breakdown of Sovereign Bonds", 5, OUTBOUND_COUNTRIES)
+            outb, outb_tot = extract_sovereign(lines, 5, OUTBOUND_COUNTRIES)
             if inb_tot is None and outb_tot is None:
                 raise ValueError("no tables parsed")
             months.append(tag)
