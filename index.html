@@ -422,6 +422,13 @@
     <div class="card full" style="margin-top:16px">
       <h2>Japan bond flows by player — net buying by tenor <span id="tenStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
       <div class="sub">Each panel is one investor type; monthly outright JGB net buying (¥tn) stacked by tenor — <b style="color:#4cba7a">Medium-Term</b>, <b style="color:#e0888a">Long-Term</b>, <b style="color:#6cb4e0">Superlong (&gt;10y)</b> — with the white line = total excluding T-bills. Bars above zero = net buying, below = net selling. Source: JSDA 公社債投資家別売買高, outright (一般) basis.</div>
+      <div id="tenWinBtns" style="display:flex;gap:6px;margin:12px 0 2px;flex-wrap:wrap">
+        <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setTenWin(12,this)">1Y</button>
+        <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setTenWin(24,this)">2Y</button>
+        <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setTenWin(36,this)">3Y</button>
+        <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setTenWin(60,this)">5Y</button>
+        <button class="tab active" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setTenWin(0,this)">All</button>
+      </div>
       <div id="slTenorGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:14px">
         <div class="mbcard"><h3 id="tenTitle_mega"></h3><canvas id="cTen_mega"></canvas></div>
         <div class="mbcard"><h3 id="tenTitle_trust"></h3><canvas id="cTen_trust"></canvas></div>
@@ -1562,27 +1569,33 @@ function renderSlPlayers(canvasId){
     }
   });
 }
-// per-player "by tenor" stacked chart — Macrobond look: white panel, black total line
+// per-player "by tenor" stacked chart — dark house style, white total line.
+// _tenWin = number of trailing months to show (0 = all); driven by the toggle.
+let _tenT=null, _tenWin=0; const _tenCharts={};
 function tenorChart(canvasId, titleId, T, key){
   const cv=document.getElementById(canvasId); if(!cv||!T||!T.players[key]) return;
   const mn=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   const P=T.players[key];
   const tt=document.getElementById(titleId); if(tt) tt.textContent=T.labels[key];
+  const i0=_tenWin>0 ? Math.max(0, T.months.length-_tenWin) : 0;
+  const months=T.months.slice(i0);
+  const slc=a=>a.slice(i0);
   const COL={medium:'#4cba7a', long:'#e0888a', superlong:'#6cb4e0'};
-  const bar=(bk)=>({type:'bar', label:T.tenor_labels[bk], data:P[bk],
+  const bar=(bk)=>({type:'bar', label:T.tenor_labels[bk], data:slc(P[bk]),
     backgroundColor:COL[bk], borderColor:COL[bk], borderWidth:0,
     stack:'t', categoryPercentage:0.92, barPercentage:1.0, order:3});
   const datasets=[bar('medium'), bar('long'), bar('superlong'),
-    {type:'line', label:'Total excl. T-bills', data:P.total,
+    {type:'line', label:'Total excl. T-bills', data:slc(P.total),
      borderColor:'#eef2f9', backgroundColor:'#eef2f9', borderWidth:2.0,
      pointRadius:0, pointHoverRadius:3, tension:0.12, order:0, clip:false}];
-  new Chart(cv, {data:{labels:T.months, datasets},
+  if(_tenCharts[canvasId]){ _tenCharts[canvasId].destroy(); }
+  _tenCharts[canvasId]=new Chart(cv, {data:{labels:months, datasets},
     options:{responsive:true, maintainAspectRatio:false,
       interaction:{mode:'index', intersect:false},
       plugins:{
         legend:{position:'top', align:'start', labels:{boxWidth:11, boxHeight:11, padding:9, font:{size:10.5}, color:'#c7d0e0'}},
         tooltip:{callbacks:{
-          title:it=>{const t=T.months[it[0].dataIndex]; const [y,mo]=t.split('-'); return mn[+mo]+' '+y;},
+          title:it=>{const t=months[it[0].dataIndex]; const [y,mo]=t.split('-'); return mn[+mo]+' '+y;},
           label:c=>c.dataset.label+': '+(c.parsed.y==null?'–':(c.parsed.y>=0?'+':'')+c.parsed.y.toFixed(2)+'tn')}}
       },
       scales:{
@@ -1592,12 +1605,20 @@ function tenorChart(canvasId, titleId, T, key){
            ticks:{color:'#93a1bd', font:{size:10}, callback:v=>(v>0?'+':'')+v}},
         x:{stacked:true, grid:{display:false}, border:{color:'#2a3752'},
            ticks:{autoSkip:false, maxRotation:0, color:'#7e8aa3', font:{size:9},
-             callback:(v,i)=>{const p=T.months[i].split('-'); const mi=+p[1]; const L='JFMAMJJASOND'[mi-1];
+             callback:(v,i)=>{const p=months[i].split('-'); const mi=+p[1]; const L='JFMAMJJASOND'[mi-1];
                if(mi===1||i===0) return [L, "'"+p[0].slice(2)]; return (mi%2===1)?L:'';}}}
       }
     }
   });
 }
+
+function renderTenPanels(){ if(!_tenT) return;
+  (_tenT.order||['mega','trust','foreign','life','regional','agri','others'])
+    .forEach(k=>tenorChart('cTen_'+k,'tenTitle_'+k, _tenT, k)); }
+function setTenWin(win, btn){ _tenWin=win;
+  document.querySelectorAll('#tenWinBtns .tab').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  renderTenPanels(); }
 
 // "Super long-end flows by players" — 3-line time series (super-long net buying)
 function slFlowsChart(canvasId, T){
@@ -1649,7 +1670,7 @@ fetch('./superlong_data.json?' + Date.now())
       const sf=document.getElementById('slfStatus');
       if(sf && SL.meta && SL.meta.as_of) sf.textContent='· data to '+SL.meta.as_of; }
     if(SL.byplayer_tenor){ const T=SL.byplayer_tenor;
-      (T.order||['mega','trust','foreign','life','regional','agri','others']).forEach(k=>tenorChart('cTen_'+k,'tenTitle_'+k, T, k));
+      _tenT=T; renderTenPanels();
       const st=document.getElementById('tenStatus');
       if(st && SL.meta && SL.meta.as_of) st.textContent='· data to '+SL.meta.as_of;
     }
