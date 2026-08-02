@@ -415,6 +415,11 @@
       <div class="note" id="slNote">Net buying = purchases − sales, outright (ex-repo). Lifers/trust banks are the domestic bid; foreigners set the marginal price at the super-long.</div>
     </div>
     <div class="card full" style="margin-top:16px">
+      <h2>Super long-end flows by players <span id="slfStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">Monthly net buying of super-long (&gt;10y) JGBs, ¥tn — the three players that set the long-end: <b style="color:#2f6fb0">Trust banks (pension)</b>, <b style="color:#d6322f">Foreigners</b> (dashed), <b style="color:#2e7d32">Life &amp; non-life insurers</b>. Source: JSDA 公社債投資家別売買高, outright basis.</div>
+      <div class="mbcard" style="margin-top:12px"><canvas id="cSlFlows" style="max-height:360px"></canvas></div>
+    </div>
+    <div class="card full" style="margin-top:16px">
       <h2>Japan bond flows by player — net buying by tenor <span id="tenStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
       <div class="sub">Each panel is one investor type; monthly outright JGB net buying (¥tn) stacked by tenor — <b style="color:#2e9e56">Medium-Term</b>, <b style="color:#d76d70">Long-Term</b>, <b style="color:#3f9fd6">Superlong (&gt;10y)</b> — with the <b>black line = total excluding T-bills</b>. Bars above zero = net buying, below = net selling. Source: JSDA 公社債投資家別売買高, outright (一般) basis.</div>
       <div id="slTenorGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:14px">
@@ -1592,6 +1597,45 @@ function tenorChart(canvasId, titleId, T, key){
   });
 }
 
+// "Super long-end flows by players" — 3-line time series (super-long net buying)
+function slFlowsChart(canvasId, T){
+  const cv=document.getElementById(canvasId); if(!cv||!T) return;
+  const mn=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  let i0=T.months.findIndex(t=>t>='2023-01'); if(i0<0) i0=0;
+  const months=T.months.slice(i0);
+  const slc=k=>T.players[k].superlong.slice(i0);
+  const last=a=>{for(let i=a.length-1;i>=0;i--) if(a[i]!=null) return a[i]; return null;};
+  const bn=v=>v==null?'':(v>=0?'+':'')+Math.round(v*1000)+'bn';
+  const line=(k,lab,col,dash)=>{const d=slc(k); return {label:lab+' ('+bn(last(d))+')', data:d,
+    borderColor:col, backgroundColor:col, borderWidth:1.9, borderDash:dash||[],
+    pointRadius:0, pointHoverRadius:3, tension:0.12, spanGaps:false};};
+  const datasets=[
+    line('trust','Trust banks','#2f6fb0'),
+    line('foreign','Foreigners','#d6322f',[6,4]),
+    line('life','Life & non-life insurers','#2e7d32'),
+  ];
+  new Chart(cv, {type:'line', data:{labels:months, datasets},
+    options:{responsive:true, maintainAspectRatio:false,
+      interaction:{mode:'index', intersect:false},
+      plugins:{
+        legend:{position:'top', align:'start', labels:{boxWidth:22, boxHeight:2, padding:12, font:{size:11}, color:'#1b2430'}},
+        tooltip:{callbacks:{
+          title:it=>{const t=months[it[0].dataIndex]; const [y,mo]=t.split('-'); return mn[+mo]+' '+y;},
+          label:c=>c.dataset.label.replace(/ \(.*\)$/,'')+': '+(c.parsed.y==null?'–':(c.parsed.y>=0?'+':'')+c.parsed.y.toFixed(2)+'tn')}}
+      },
+      scales:{
+        y:{title:{display:true, text:'JPY, trillion', color:'#5a6472', font:{size:10.5}},
+           grid:{color:x=>x.tick.value===0?'#8a939e':'#e6e9ee', lineWidth:x=>x.tick.value===0?1.3:1},
+           border:{color:'#c2c8d0'}, ticks:{color:'#5a6472', font:{size:10}, callback:v=>(v>0?'+':'')+v}},
+        x:{grid:{display:false}, border:{color:'#c2c8d0'},
+           ticks:{autoSkip:false, maxRotation:0, color:'#6b7480', font:{size:9},
+             callback:(v,i)=>{const p=months[i].split('-'); const mi=+p[1]; const L='JFMAMJJASOND'[mi-1];
+               if(mi===1||i===0) return [L, "'"+p[0].slice(2)]; return (mi%2===1)?L:'';}}}
+      }
+    }
+  });
+}
+
 fetch('./superlong_data.json?' + Date.now())
   .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
   .then(SL => {
@@ -1599,6 +1643,9 @@ fetch('./superlong_data.json?' + Date.now())
     slChart('cSlLife','slCapLife', SL.series.life, m);
     slChart('cSlTrust','slCapTrust', SL.series.trust, m);
     slChart('cSlForeign','slCapForeign', SL.series.foreign, m);
+    if(SL.byplayer_tenor){ slFlowsChart('cSlFlows', SL.byplayer_tenor);
+      const sf=document.getElementById('slfStatus');
+      if(sf && SL.meta && SL.meta.as_of) sf.textContent='· data to '+SL.meta.as_of; }
     if(SL.byplayer_tenor){ const T=SL.byplayer_tenor;
       ['mega','trust','foreign','life','others'].forEach(k=>tenorChart('cTen_'+k,'tenTitle_'+k, T, k));
       const st=document.getElementById('tenStatus');
