@@ -243,6 +243,7 @@
   <button class="tab" onclick="showTab('auctions',this)">Auctions &amp; fiscal</button>
   <button class="tab" onclick="showTab('news',this)">News</button>
   <button class="tab" onclick="showTab('markets',this)">Markets &amp; bonds</button>
+  <button class="tab" onclick="showTab('superlong',this)">Super-long demand</button>
   <button class="tab" onclick="showTab('nisa',this)" style="display:none" data-hidden="redesign">NISA</button>
   <button class="tab" onclick="showTab('approval',this)" style="display:none" data-hidden="rework">Approval ratings</button>
   <button class="tab" onclick="showTab('method',this)">Methodology</button>
@@ -379,6 +380,34 @@
         <tbody id="sourceStatus"></tbody>
       </table></div>
       <div class="note">Stale = previous fetch succeeded; current fetch failed — last good data is displayed. Missing = no data available.</div>
+    </div>
+  </div>
+
+  <!-- SUPER-LONG DEMAND -->
+  <div id="tab-superlong" class="panel">
+    <div class="card full">
+      <h2>Super-long JGB demand by investor — seasonality <span id="slStatus"></span></h2>
+      <div class="sub">Monthly net buying of super-long (over-10-year) JGBs, ¥tn, by investor type. Each line is one fiscal year (Apr–Mar); the current fiscal year is highlighted. Positive = net buying. Source: JSDA 公社債投資家別売買高 (国債投資家別売買高), outright basis.</div>
+    </div>
+    <div id="slGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      <div class="card" style="margin-bottom:0">
+        <h2 id="slTitleLife" style="font-size:15px">Life &amp; non-life insurers</h2>
+        <canvas id="cSlLife" style="max-height:300px"></canvas>
+        <div class="note" id="slCapLife"></div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <h2 id="slTitleTrust" style="font-size:15px">Trust banks</h2>
+        <canvas id="cSlTrust" style="max-height:300px"></canvas>
+        <div class="note" id="slCapTrust"></div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <h2 id="slTitleForeign" style="font-size:15px">Foreigners</h2>
+        <canvas id="cSlForeign" style="max-height:300px"></canvas>
+        <div class="note" id="slCapForeign"></div>
+      </div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <div class="note" id="slNote">Net buying = purchases − sales, outright (ex-repo). Lifers and trust banks (a pension/GPIF proxy) are the structural domestic bid; foreigners are the marginal price-setter at the 20/30/40Y. A weak lifer/trust line into a foreign sell-off is the classic "no domestic backstop" signal for the super-long selloff.</div>
     </div>
   </div>
 
@@ -1395,6 +1424,57 @@ fetch('./market_data.json?' + Date.now())
     document.getElementById('newsList').innerHTML =
       '<div style="color:var(--muted);padding:20px">News unavailable.</div>';
   });
+
+// ── Super-long demand tab ───────────────────────────────────────────────────
+function slChart(canvasId, capId, s, months){
+  if(!s || !s.fy) return;
+  const years = Object.keys(s.fy).sort();
+  if(!years.length) return;
+  const latest = years[years.length-1];
+  const hist = ['#4b5a78','#63769b','#8098bf','#9fb6de','#c3d1e8'];
+  const datasets = years.map((y,i)=>{
+    const cur = (y===latest);
+    const col = cur ? '#e2564a' : hist[Math.min(i, hist.length-1)];
+    return { label:'FY'+y, data:s.fy[y], borderColor:col, backgroundColor:col,
+      borderWidth: cur?3:1.5, pointRadius: cur?2.5:0, pointHoverRadius:4,
+      tension:0.25, spanGaps:false, order: cur?0:1 };
+  });
+  new Chart(document.getElementById(canvasId), {
+    type:'line',
+    data:{ labels:months, datasets },
+    options:{ responsive:true, maintainAspectRatio:false,
+      interaction:{mode:'index', intersect:false},
+      plugins:{
+        legend:{position:'bottom', labels:{boxWidth:10, padding:8, font:{size:10}}},
+        tooltip:{callbacks:{label:c=>c.dataset.label+': '+(c.parsed.y==null?'–':(c.parsed.y>=0?'+':'')+c.parsed.y.toFixed(2)+'tn')}}
+      },
+      scales:{
+        y:{ title:{display:true, text:'¥tn, net buying'},
+            grid:{color:ctx=>ctx.tick.value===0?'#7688a8':'#2a3752'},
+            ticks:{callback:v=>(v>0?'+':'')+v} },
+        x:{ grid:{display:false} }
+      }
+    }
+  });
+  const arr = s.fy[latest]; let li=-1;
+  for(let i=arr.length-1;i>=0;i--){ if(arr[i]!=null){ li=i; break; } }
+  if(li>=0){ const v=arr[li];
+    document.getElementById(capId).textContent =
+      'FY'+latest+' latest ('+months[li]+'): '+(v>=0?'+':'')+v.toFixed(2)+'tn net '+(v>=0?'buying':'selling');
+  }
+}
+fetch('./superlong_data.json?' + Date.now())
+  .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
+  .then(SL => {
+    const m = SL.months;
+    slChart('cSlLife','slCapLife', SL.series.life, m);
+    slChart('cSlTrust','slCapTrust', SL.series.trust, m);
+    slChart('cSlForeign','slCapForeign', SL.series.foreign, m);
+    const el = document.getElementById('slStatus');
+    if(el) el.textContent = SL.meta && SL.meta.as_of ? '· data to '+SL.meta.as_of : '';
+  })
+  .catch(e => { console.warn('superlong_data.json unavailable:', e);
+    const el=document.getElementById('slStatus'); if(el) el.textContent='· data loading on next refresh'; });
 
 // ── NISA tab ────────────────────────────────────────────────────────────────
 (function(){
