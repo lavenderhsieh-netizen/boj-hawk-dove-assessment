@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-08-03T16:09:33Z",
+  "scraped_at": "2026-08-04T16:08:41Z",
   "analysts": [
     "Kyohei Morita",
     "Tomoaki Shishido",
@@ -69,6 +69,22 @@
     ],
     "Tomoaki Shishido": [
       {
+        "title": "Yen RV Analytics - 04 Aug 2026",
+        "url": "https://go.nomuranow.com/research/japi/publication/1313259?appname=GRPUI",
+        "date": "AUG 4, 2026",
+        "summary": "TOMOAKI SHISHIDO, YUJIRO GOTO, TOMOCHIKA KITAOKA",
+        "analyst": "Tomoaki Shishido",
+        "coverage": "Japan Rates"
+      },
+      {
+        "title": "Yen Rates Daily Monitor - 04 Aug 2026",
+        "url": "https://go.nomuranow.com/research/japi/publication/1313250?appname=GRPUI",
+        "date": "AUG 4, 2026",
+        "summary": "TOMOAKI SHISHIDO, YUJIRO GOTO, TOMOCHIKA KITAOKA",
+        "analyst": "Tomoaki Shishido",
+        "coverage": "Japan Rates"
+      },
+      {
         "title": "Yen RV Analytics - 03 Aug 2026",
         "url": "https://go.nomuranow.com/research/japi/publication/1312961?appname=GRPUI",
         "date": "AUG 3, 2026",
@@ -85,14 +101,6 @@
         "coverage": "Japan Rates"
       },
       {
-        "title": "Yen RV Analytics - 31 Jul 2026",
-        "url": "https://go.nomuranow.com/research/japi/publication/1312413?appname=GRPUI",
-        "date": "JUL 31, 2026",
-        "summary": "TOMOAKI SHISHIDO, YUJIRO GOTO, TOMOCHIKA KITAOKA",
-        "analyst": "Tomoaki Shishido",
-        "coverage": "Japan Rates"
-      },
-      {
         "title": "Japan Macro Report - Steps taken by Takaichi administration and market reaction/assessment",
         "url": "https://go.nomuranow.com/research/japi/publication/1310892?appname=GRPUI",
         "date": "JUL 24, 2026",
@@ -103,14 +111,6 @@
       {
         "title": "Japan Macro Report - Probability of September BOJ rate hike, near-term scenarios",
         "url": "https://go.nomuranow.com/research/japi/publication/1312917?appname=GRPUI",
-        "date": "JUL 24, 2026",
-        "summary": "TOMOAKI SHISHIDO, YUJIRO GOTO, TOMOCHIKA KITAOKA",
-        "analyst": "Tomoaki Shishido",
-        "coverage": "Japan Rates"
-      },
-      {
-        "title": "[Webcast] - MacroBrew@Nomura - Japan : Beyond the BOJ decision – Macro & Market Implications",
-        "url": "https://go.nomuranow.com/research/japi/publication/1312663?appname=GRPUI",
         "date": "JUL 24, 2026",
         "summary": "TOMOAKI SHISHIDO, YUJIRO GOTO, TOMOCHIKA KITAOKA",
         "analyst": "Tomoaki Shishido",
@@ -137,6 +137,14 @@
       {
         "title": "Key focus and themes - Less USD supportive factors; higher convictions on long CNH and short IDR",
         "url": "https://go.nomuranow.com/research/japi/publication/1312580?appname=GRPUI",
+        "date": "JUL 31, 2026",
+        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, MANTHAN SHINGALA more...",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
+        "title": "JPY Intraday Comment - Looking at past episodes of coordinated intervention",
+        "url": "https://go.nomuranow.com/research/japi/publication/1313256?appname=GRPUI",
         "date": "JUL 31, 2026",
         "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, MANTHAN SHINGALA more...",
         "analyst": "Yujiro Goto",
@@ -175,14 +183,6 @@
         "coverage": "Japan FX"
       },
       {
-        "title": "JPY Weekly - Intervention paved the way for a live September BOJ policy meeting",
-        "url": "https://go.nomuranow.com/research/japi/publication/1312691?appname=GRPUI",
-        "date": "JUL 31, 2026",
-        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, MANTHAN SHINGALA more...",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
         "title": "Japan Macro Report - Steps taken by Takaichi administration and market reaction/assessment",
         "url": "https://go.nomuranow.com/research/japi/publication/1310892?appname=GRPUI",
         "date": "JUL 24, 2026",
@@ -201,6 +201,22 @@
     ],
     "Masaki Kuwahara": [
       {
+        "title": "Yen RV Analytics - 04 Aug 2026",
+        "url": "https://go.nomuranow.com/research/japi/publication/1313259?appname=GRPUI",
+        "date": "AUG 4, 2026",
+        "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, YUNA MINEGISHI",
+        "analyst": "Masaki Kuwahara",
+        "coverage": "Japan Macro"
+      },
+      {
+        "title": "Yen Rates Daily Monitor - 04 Aug 2026",
+        "url": "https://go.nomuranow.com/research/japi/publication/1313250?appname=GRPUI",
+        "date": "AUG 4, 2026",
+        "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, YUNA MINEGISHI",
+        "analyst": "Masaki Kuwahara",
+        "coverage": "Japan Macro"
+      },
+      {
         "title": "Yen RV Analytics - 03 Aug 2026",
         "url": "https://go.nomuranow.com/research/japi/publication/1312961?appname=GRPUI",
         "date": "AUG 3, 2026",
@@ -212,22 +228,6 @@
         "title": "Yen Rates Daily Monitor - 03 Aug 2026",
         "url": "https://go.nomuranow.com/research/japi/publication/1312936?appname=GRPUI",
         "date": "AUG 3, 2026",
-        "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, YUNA MINEGISHI",
-        "analyst": "Masaki Kuwahara",
-        "coverage": "Japan Macro"
-      },
-      {
-        "title": "Yen RV Analytics - 31 Jul 2026",
-        "url": "https://go.nomuranow.com/research/japi/publication/1312413?appname=GRPUI",
-        "date": "JUL 31, 2026",
-        "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, YUNA MINEGISHI",
-        "analyst": "Masaki Kuwahara",
-        "coverage": "Japan Macro"
-      },
-      {
-        "title": "Yen Rates Daily Monitor - 31 Jul 2026",
-        "url": "https://go.nomuranow.com/research/japi/publication/1312398?appname=GRPUI",
-        "date": "JUL 31, 2026",
         "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, YUNA MINEGISHI",
         "analyst": "Masaki Kuwahara",
         "coverage": "Japan Macro"
