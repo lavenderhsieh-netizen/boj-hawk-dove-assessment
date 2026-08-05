@@ -246,6 +246,7 @@
   <button class="tab" onclick="showTab('pressconferences',this)">Press conferences</button>
   <button class="tab" onclick="showTab('superlong',this)">JSDA</button>
   <button class="tab" onclick="showTab('crossborder',this)">Cross-border flows</button>
+  <button class="tab" onclick="showTab('intervention',this)">Intervention</button>
   <button class="tab" onclick="showTab('calendar',this)">BOJ calendar</button>
   <button class="tab" onclick="showTab('auctions',this)">Auctions &amp; fiscal</button>
   <button class="tab" onclick="showTab('news',this)">News</button>
@@ -388,6 +389,13 @@
         </div>
       </div>
     </div>
+    <div class="card full" style="margin-top:16px">
+      <h2 style="min-height:44px">Natural rate of interest (r*) — model estimates (quarterly, %) <span id="natRateStatus"></span></h2>
+      <canvas id="cNatRate" style="max-height:360px"></canvas>
+      <div class="note" id="natRateNote" style="margin-top:8px">
+        Six model estimates of Japan's <b>natural rate of interest</b> — the real rate that is neutral to economic activity and prices. The shaded band spans the min–max of the models each quarter; the BOJ stresses the estimates show <b>considerable dispersion</b>, so the degree of monetary accommodation is a comprehensive judgment rather than a single r*. Re-estimated after the latest GDP benchmark revision. Source: <a href="https://www.boj.or.jp/en/research/wps_rev/rev_2026/rev26e04.htm" target="_blank">BOJ Review 2026-E-4</a> (Chart 3), 27 Mar 2026 · <a href="https://www.boj.or.jp/en/research/wps_rev/rev_2026/data/rev26e04b.xlsx" target="_blank">data</a>.
+      </div>
+    </div>
     <div class="card" style="margin-top:16px">
       <h2>Data source status</h2>
       <div style="overflow-x:auto"><table>
@@ -453,8 +461,8 @@
   <!-- CROSS-BORDER FLOWS (MoF) -->
   <div id="tab-crossborder" class="panel">
     <div class="card full">
-      <h2>Japanese investors' foreign bond buying — by investor type <span id="xbStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
-      <div class="sub">Residents' monthly net purchase of <b>foreign long-term debt securities</b>, by investor type — the mirror image of the JSDA JGB-by-player data: same players, but buying abroad instead of at home. Positive = net buying of foreign bonds (yen outflow); negative = net selling / repatriation. Source: MoF International Transactions in Securities (対外証券投資 中長期債), monthly; USD converted at each month's USDJPY.</div>
+      <h2>Japanese investors' net purchase of foreign equity &amp; bonds — by investor type <span id="xbStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">Residents' monthly net purchase of <b>foreign equity &amp; investment fund shares, long-term bonds, and short-term bonds</b>, stacked by instrument, by investor type — the mirror image of the JSDA JGB-by-player data: same players, but buying abroad instead of at home. The line is the net total across all three instruments. Positive = net buying (yen outflow); negative = net selling / repatriation. Source: MoF International Transactions in Securities (対外証券投資: 株式・投資ファンド持分 / 中長期債 / 短期債), monthly; USD converted at each month's USDJPY.</div>
       <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:center;margin-top:12px">
         <div id="xbWinBtns" style="display:flex;gap:6px">
           <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbWin(12,this)">1Y</button>
@@ -505,6 +513,82 @@
       <h2>Where Japan buys foreign sovereign bonds — by destination <span id="bopOutStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
       <div class="sub">Residents' monthly net purchase of foreign sovereign bonds (¥bn), stacked by destination country — where the yen outflow is going. The white line is the total across all countries. Source: MoF Balance of Payments, Portfolio Investment Assets — country breakdown of sovereign bonds (monthly).</div>
       <canvas id="cBopOutbound" style="max-height:360px;margin-top:12px"></canvas>
+    </div>
+  </div>
+
+  <!-- INTERVENTION -->
+  <div id="tab-intervention" class="panel">
+    <div class="card full" id="ivRuleCard">
+      <h2>IMF's "free floating" rule <span id="ivRuleQuota" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub" id="ivRuleText"></div>
+      <div class="note" id="ivRuleOpNote" style="margin-top:10px"></div>
+      <div style="overflow-x:auto;margin-top:10px">
+        <table id="ivRuleTable" style="width:100%;border-collapse:collapse;font-size:12.5px">
+          <thead><tr style="color:var(--muted);text-align:left;border-bottom:1px solid var(--line)">
+            <th style="padding:6px 8px">Instance</th><th style="padding:6px 8px">Dates</th>
+            <th style="padding:6px 8px">Note</th>
+          </tr></thead>
+          <tbody id="ivRuleBody"></tbody>
+        </table>
+      </div>
+      <div class="note" id="ivRuleWindowNote" style="margin-top:10px"></div>
+      <div class="note" id="ivRuleSource" style="margin-top:4px"></div>
+    </div>
+    <div class="card full">
+      <h2>Bessent-Japan diplomatic timeline (2026)</h2>
+      <div class="sub">Bilateral meetings/calls between US Treasury Sec. Bessent and Japan's FinMin Katayama, plus Vice Finance Minister Mimura's on-the-record remarks on FX coordination.</div>
+      <div style="overflow-x:auto;margin-top:10px">
+      <table id="ivEventTable" style="width:100%;border-collapse:collapse;font-size:12.5px">
+        <thead><tr style="color:var(--muted);text-align:left;border-bottom:1px solid var(--line)">
+          <th style="padding:6px 8px">Date</th><th style="padding:6px 8px">Who</th>
+          <th style="padding:6px 8px">Event</th><th style="padding:6px 8px">Detail / quote</th>
+        </tr></thead>
+        <tbody id="ivEventBody"></tbody>
+      </table>
+      </div>
+    </div>
+    <div class="card full">
+      <div style="overflow-x:auto">
+      <table id="ivEpTable" style="width:100%;border-collapse:collapse;font-size:12.5px">
+        <thead><tr style="color:var(--muted);text-align:left;border-bottom:1px solid var(--line)">
+          <th style="padding:6px 8px">Period</th><th style="padding:6px 8px">Context</th>
+          <th style="padding:6px 8px">Direction</th><th style="padding:6px 8px;text-align:center">Coordinated?</th>
+          <th style="padding:6px 8px;text-align:right">Total (US$bn)</th>
+          <th style="padding:6px 8px;text-align:right">Japan only</th>
+          <th style="padding:6px 8px;text-align:right">Non-Japan</th>
+        </tr></thead>
+        <tbody id="ivEpBody"></tbody>
+      </table>
+      </div>
+      <div class="note" id="ivSources"></div>
+    </div>
+    <div class="card full">
+      <h2>USD/JPY — intervention episodes since 1985 <span id="ivLongStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">Every major Japan FX intervention episode since the Plaza Accord, shaded on the USD/JPY history — green = strengthen yen (buy JPY), red = weaken yen (sell JPY), gold = EUR-side coordinated action. Full detail (dates, $ amounts, coordinated Y/N) in the table above.</div>
+      <canvas id="cIvLong" style="max-height:380px;margin-top:12px"></canvas>
+    </div>
+    <div class="card full">
+      <h2>USD/JPY — the 2022-2026 intervention cycle, day by day</h2>
+      <div class="sub">Daily USD/JPY since 2020 with each known intervention operation marked — solid dot = MOF-confirmed date, hollow square = market estimate pending confirmation. Labels show ¥tn | US$bn per operation.</div>
+      <div style="display:flex;gap:6px;margin-top:12px" id="ivWinBtns">
+        <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setIvWin(24,this)">2Y</button>
+        <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setIvWin(36,this)">3Y</button>
+        <button class="tab active" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setIvWin(0,this)">All (2020-)</button>
+      </div>
+      <canvas id="cIvRecent" style="max-height:380px;margin-top:12px"></canvas>
+    </div>
+    <div class="card full">
+      <div style="overflow-x:auto">
+      <table id="ivOpTable" style="width:100%;border-collapse:collapse;font-size:12.5px">
+        <thead><tr style="color:var(--muted);text-align:left;border-bottom:1px solid var(--line)">
+          <th style="padding:6px 8px">Date</th><th style="padding:6px 8px;text-align:right">¥tn</th>
+          <th style="padding:6px 8px;text-align:right">US$bn</th><th style="padding:6px 8px">Status</th>
+          <th style="padding:6px 8px">Note</th>
+        </tr></thead>
+        <tbody id="ivOpBody"></tbody>
+      </table>
+      </div>
+      <div class="note">This tab is a curated reference dataset, not on the daily auto-refresh loop — MOF's official day-by-day intervention data is released quarterly with a ~3 month lag. Updated by hand when a new episode occurs or MOF issues a fresh quarterly breakdown.</div>
     </div>
   </div>
 
@@ -1765,6 +1849,68 @@ fetch('./superlong_data.json?' + Date.now())
   .catch(e => { console.warn('superlong_data.json unavailable:', e);
     const el=document.getElementById('slStatus'); if(el) el.textContent='· data loading on next refresh'; });
 
+// ── Natural rate of interest (r*) — BOJ Review 2026-E-4 ───────────────────────
+fetch('./natural_rate.json?' + Date.now())
+  .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
+  .then(NR => {
+    const L = NR.labels, S = NR.series;
+    const cols = ['#4a90d9','#7acc8c','#d9a441','#b978c8','#e2564a','#5fc8c8'];
+    // min / max envelope across models per quarter (band)
+    const keys = NR.models.map(m => m.key);
+    const lo = L.map((_,i) => { const v = keys.map(k => S[k][i]).filter(x => x!=null); return v.length ? Math.min(...v) : null; });
+    const hi = L.map((_,i) => { const v = keys.map(k => S[k][i]).filter(x => x!=null); return v.length ? Math.max(...v) : null; });
+    const bandTop = { label:'_band', data: hi, borderColor:'transparent', pointRadius:0,
+      backgroundColor:'rgba(122,204,140,0.10)', fill:'+1', order:99, tension:0.25 };
+    const bandBot = { label:'_band2', data: lo, borderColor:'transparent', pointRadius:0,
+      fill:false, order:99, tension:0.25 };
+    const lines = NR.models.map((m,i) => ({
+      label: m.name, data: S[m.key], borderColor: cols[i % cols.length],
+      backgroundColor: cols[i % cols.length], borderWidth: 1.8, pointRadius: 0,
+      tension: 0.25, spanGaps: true, fill: false
+    }));
+    // latest valid value per model for the summary line
+    const latest = NR.models.map((m,i) => {
+      const arr = S[m.key], q = L;
+      let val=null, lab=null;
+      for (let j=0;j<arr.length;j++){ if(arr[j]!=null){ val=arr[j]; lab=q[j]; } }
+      return { name:m.name, val, lab };
+    }).filter(x => x.val!=null);
+    const vals = latest.map(x => x.val);
+    const sgn = v => (v<0?'−':'+') + Math.abs(v).toFixed(2) + '%';
+    const st = document.getElementById('natRateStatus');
+    if (st && latest.length) st.innerHTML =
+      `<span style="font-size:12px;color:var(--muted);font-weight:400">· latest (${esc(latest[0].lab)}): `
+      + `${sgn(Math.min(...vals))} to ${sgn(Math.max(...vals))} across models</span>`;
+    new Chart(document.getElementById('cNatRate'), {
+      type: 'line',
+      data: { labels: L, datasets: [bandTop, bandBot, ...lines] },
+      options: {
+        responsive: true,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { position: 'top', labels: { font: { size: 11 }, boxWidth: 14, padding: 12,
+            filter: it => !it.text.startsWith('_band') } },
+          datalabels: { display: false },
+          tooltip: {
+            filter: it => !it.dataset.label.startsWith('_band'),
+            callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y!=null ? ctx.parsed.y.toFixed(2)+'%' : '—'}` }
+          }
+        },
+        scales: {
+          x: { ticks: { maxTicksLimit: 12, maxRotation: 30, font: { size: 10 },
+            callback: function(v){ const s=this.getLabelForValue(v); return s && s.endsWith('Q1') ? s.slice(0,4) : ''; } },
+            grid: { color: 'rgba(255,255,255,0.04)' } },
+          y: { ticks: { callback: v => v.toFixed(1)+'%', font: { size: 10 } },
+            grid: { color: ctx => ctx.tick.value===0 ? 'rgba(255,255,255,0.28)' : 'rgba(255,255,255,0.06)' },
+            title: { display: true, text: 'real %', font: { size: 11 } } }
+        }
+      }
+    });
+  })
+  .catch(e => { console.warn('natural_rate.json unavailable:', e);
+    const st=document.getElementById('natRateStatus');
+    if(st) st.innerHTML='<span style="font-size:12px;color:var(--muted);font-weight:400">· data unavailable</span>'; });
+
 // ── Cross-border flows tab (MoF) ──────────────────────────────────────────────
 let _xbData=null, _xbWin=0, _xbCur='jpy'; const _xbCharts={};
 function _xbUnit(){ return _xbCur==='usd'
@@ -1795,27 +1941,37 @@ function xbFyChart(canvasId, titleId, key, mode){
     }
   });
 }
-function xbBarChart(canvasId, titleId, key){
+const XB_INSTR = [
+  {key:'equity',  label:'Equity',    color:'#e2564a'},
+  {key:'stbonds', label:'ST Bonds',  color:'#4cba7a'},
+  {key:'ltbonds', label:'LT Bonds',  color:'#5aa0e6'},
+];
+function xbStackedChart(canvasId, titleId, key){
   const cv=document.getElementById(canvasId); const X=_xbData; if(!cv||!X) return;
-  const U=_xbUnit(); if(!X[U.m][key]) return;
+  const U=_xbUnit(); const byInstr=(U.m==='monthly_usd')?X.monthly_by_instrument_usd:X.monthly_by_instrument;
+  const totSrc=(U.m==='monthly_usd')?X.monthly_total_usd:X.monthly_total;
+  if(!totSrc||!totSrc[key]) return;
   const mn=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   const tt=document.getElementById(titleId); if(tt) tt.textContent=X.labels[key];
   const i0=_xbWin>0 ? Math.max(0, X.months.length-_xbWin) : 0;
   const months=X.months.slice(i0);
-  const data=X[U.m][key].slice(i0);
-  const col=data.map(v=>v==null?'#55617a':(v>=0?'#5aa0e6':'#e2564a'));  // buy foreign / repat
+  const datasets=XB_INSTR.map(ins=>({type:'bar', label:ins.label, data:byInstr[ins.key][key].slice(i0),
+    backgroundColor:ins.color, borderColor:ins.color, borderWidth:0, stack:'c',
+    categoryPercentage:0.9, barPercentage:0.98, order:3}));
+  datasets.push({type:'line', label:'Net (Equity + Bonds)', data:totSrc[key].slice(i0),
+    borderColor:'#eef2f9', backgroundColor:'#eef2f9', borderWidth:2, pointRadius:0, pointHoverRadius:3, tension:0.12, order:0, clip:false});
   if(_xbCharts[canvasId]){ _xbCharts[canvasId].destroy(); }
-  _xbCharts[canvasId]=new Chart(cv, {type:'bar', data:{labels:months, datasets:[{data, backgroundColor:col, borderColor:col,
-      borderWidth:0, categoryPercentage:0.9, barPercentage:0.98}]},
-    options:{responsive:true, maintainAspectRatio:false,
-      plugins:{legend:{display:false}, tooltip:{callbacks:{
+  _xbCharts[canvasId]=new Chart(cv, {data:{labels:months, datasets},
+    options:{responsive:true, maintainAspectRatio:false, interaction:{mode:'index', intersect:false},
+      plugins:{legend:{position:'top', align:'start', labels:{boxWidth:11, boxHeight:11, padding:8, font:{size:10}, color:'#c7d0e0'}},
+        tooltip:{callbacks:{
         title:it=>{const t=months[it[0].dataIndex]; const [y,mo]=t.split('-'); return mn[+mo]+' '+y;},
-        label:c=>(c.parsed.y==null?'–':(c.parsed.y>=0?'+':'')+c.parsed.y.toFixed(U.dp)+U.u)}}},
+        label:c=>c.dataset.label+': '+(c.parsed.y==null?'–':(c.parsed.y>=0?'+':'')+c.parsed.y.toFixed(U.dp)+U.u)}}},
       scales:{
-        y:{title:{display:true, text:U.u, color:'#93a1bd', font:{size:10.5}},
+        y:{stacked:true, title:{display:true, text:U.u, color:'#93a1bd', font:{size:10.5}},
            grid:{color:x=>x.tick.value===0?'#7688a8':'#243149', lineWidth:x=>x.tick.value===0?1.3:1},
            border:{color:'#2a3752'}, ticks:{color:'#93a1bd', font:{size:10}, callback:v=>(v>0?'+':'')+v}},
-        x:{grid:{display:false}, border:{color:'#2a3752'},
+        x:{stacked:true, grid:{display:false}, border:{color:'#2a3752'},
            ticks:{autoSkip:false, maxRotation:0, color:'#7e8aa3', font:{size:9},
              callback:(v,i)=>{const p=months[i].split('-'); const mi=+p[1]; const L='JFMAMJJASOND'[mi-1];
                if(mi===1||i===0) return [L, "'"+p[0].slice(2)]; return (mi%2===1)?L:'';}}}
@@ -1848,13 +2004,13 @@ function xbCumChart(canvasId, titleId, key){
   });
 }
 function renderXb(){ if(!_xbData) return;
-  ['banks','trust_bank','trust_pension','life'].forEach(k=>xbBarChart('cXb_'+k,'xbTitle_'+k, k));
+  ['banks','trust_bank','trust_pension','life'].forEach(k=>xbStackedChart('cXb_'+k,'xbTitle_'+k, k));
   ['total','trust_pension','life'].forEach(k=>xbFyChart('cXbSeas_'+k,'xbSeasT_'+k, k, 'seas'));
   ['total','trust_pension','life'].forEach(k=>xbFyChart('cXbCum_'+k,'xbCumT_'+k, k, 'cum')); }
 function setXbWin(win, btn){ _xbWin=win;
   document.querySelectorAll('#xbWinBtns .tab').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
-  ['banks','trust_bank','trust_pension','life'].forEach(k=>xbBarChart('cXb_'+k,'xbTitle_'+k, k)); }
+  ['banks','trust_bank','trust_pension','life'].forEach(k=>xbStackedChart('cXb_'+k,'xbTitle_'+k, k)); }
 function setXbCur(cur, btn){ _xbCur=cur;
   document.querySelectorAll('#xbCurBtns .tab').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
@@ -1900,6 +2056,208 @@ fetch('./mof_bop.json?' + Date.now())
   .then(B => { bopChart('cBopInbound','bopInStatus', B, 'inbound');
                bopChart('cBopOutbound','bopOutStatus', B, 'outbound_sov'); })
   .catch(e => { console.warn('mof_bop.json unavailable:', e); });
+
+// ── Intervention tab ─────────────────────────────────────────────────────────
+let _ivData = null, _ivWin = 0;
+const IV_COLOR = { buy: '#4cba7a', sell: '#e2564a', eur: '#d9a441' };
+const IV_LABEL = { buy: 'Strengthen yen (buy JPY)', sell: 'Weaken yen (sell JPY)', eur: 'Strengthen EUR (buy EUR)' };
+
+function ivIdxForDate(labels, dateStr, side) {
+  // side 'lo': first label >= dateStr; side 'hi': last label <= dateStr
+  if (side === 'lo') {
+    for (let i = 0; i < labels.length; i++) if (labels[i] >= dateStr) return i;
+    return labels.length - 1;
+  }
+  for (let i = labels.length - 1; i >= 0; i--) if (labels[i] <= dateStr) return i;
+  return 0;
+}
+
+function ivBandsPlugin(episodes, labels) {
+  return {
+    id: 'ivBands',
+    beforeDatasetsDraw(chart) {
+      const { ctx, chartArea, scales: { x } } = chart;
+      if (!chartArea) return;
+      ctx.save();
+      episodes.forEach(ep => {
+        const color = IV_COLOR[ep.direction];
+        if (!color) return;
+        const lo = ivIdxForDate(labels, ep.start, 'lo');
+        const hi = Math.max(lo, ivIdxForDate(labels, ep.end, 'hi'));
+        let x0 = x.getPixelForValue(lo), x1 = x.getPixelForValue(hi);
+        if (x1 - x0 < 2) { const mid = (x0 + x1) / 2; x0 = mid - 1.5; x1 = mid + 1.5; }
+        ctx.fillStyle = color + '33';
+        ctx.fillRect(x0, chartArea.top, x1 - x0, chartArea.bottom - chartArea.top);
+      });
+      ctx.restore();
+    }
+  };
+}
+
+function ivLongChart(D) {
+  const cv = document.getElementById('cIvLong'); if (!cv) return;
+  const H = D.long_history, labels = H.map(p => p.date);
+  new Chart(cv, {
+    type: 'line',
+    data: { labels, datasets: [{ data: H.map(p => p.value), borderColor: '#eef2f9', borderWidth: 1.2,
+      pointRadius: 0, tension: 0, backgroundColor: 'transparent' }] },
+    plugins: [ivBandsPlugin(D.episodes, labels)],
+    options: {
+      responsive: true, maintainAspectRatio: false, animation: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: {
+        title: i => i[0].label, label: i => 'USD/JPY ' + i.raw.toFixed(2) } } },
+      scales: {
+        x: { grid: { display: false }, border: { color: '#2a3752' },
+          ticks: { color: '#7e8aa3', font: { size: 10 }, maxTicksLimit: 14, maxRotation: 0,
+            callback: (v, i) => labels[i].slice(0, 4) } },
+        y: { grid: { color: '#243149' }, border: { color: '#2a3752' }, ticks: { color: '#93a1bd' },
+          title: { display: true, text: 'JPY per US$', color: '#93a1bd' } }
+      }
+    }
+  });
+}
+
+let _ivRecentChart = null;
+function ivRecentChart(D) {
+  const cv = document.getElementById('cIvRecent'); if (!cv) return;
+  if (_ivRecentChart) { _ivRecentChart.destroy(); _ivRecentChart = null; }
+  let H = D.recent_history;
+  if (_ivWin) { const cutoff = new Date(); cutoff.setMonth(cutoff.getMonth() - _ivWin); H = H.filter(p => new Date(p.date) >= cutoff); }
+  const labels = H.map(p => p.date);
+  const opByDate = {}; D.recent_ops.forEach(o => { opByDate[o.date] = o; });
+  const n = H.length;
+  const radii = new Array(n).fill(0), colors = new Array(n).fill('#eef2f9'), styles = new Array(n).fill('circle');
+  H.forEach((p, i) => {
+    const o = opByDate[p.date];
+    if (o) { radii[i] = 5; colors[i] = IV_COLOR.buy; styles[i] = o.official ? 'circle' : 'rect'; }
+  });
+  const opDatesSorted = D.recent_ops.map(o => o.date).sort();
+  _ivRecentChart = new Chart(cv, {
+    type: 'line',
+    data: { labels, datasets: [{
+      data: H.map(p => p.value), borderColor: '#93a1bd', borderWidth: 1.2, tension: 0,
+      pointRadius: radii, pointHoverRadius: radii.map(r => r ? r + 2 : 3),
+      pointBackgroundColor: colors, pointBorderColor: colors, pointStyle: styles,
+      backgroundColor: 'transparent',
+      datalabels: {
+        display: ctx => !!opByDate[labels[ctx.dataIndex]],
+        color: IV_COLOR.buy, font: { size: 9, weight: '600' }, anchor: 'end',
+        align: ctx => (opDatesSorted.indexOf(labels[ctx.dataIndex]) % 2 === 0) ? 'end' : 'start',
+        offset: 8, rotation: 0, textAlign: 'center',
+        formatter: (v, ctx) => { const o = opByDate[labels[ctx.dataIndex]]; return o ? [`¥${o.jpy_tn}tn`, `$${o.usd_bn}bn`] : ''; }
+      }
+    }] },
+    plugins: [ChartDataLabels],
+    options: {
+      responsive: true, maintainAspectRatio: false, animation: false,
+      layout: { padding: { top: 50, bottom: 30, right: 36 } },
+      plugins: {
+        legend: { display: false },
+        datalabels: { clamp: true },
+        tooltip: { callbacks: {
+          title: i => i[0].label,
+          label: i => { const o = opByDate[labels[i.dataIndex]];
+            return 'USD/JPY ' + i.raw.toFixed(2) + (o ? ` — ¥${o.jpy_tn}tn | $${o.usd_bn}bn (${o.official ? 'MOF-confirmed' : (o.label||'estimate')})` : ''); }
+        } }
+      },
+      scales: {
+        x: { grid: { display: false }, border: { color: '#2a3752' },
+          ticks: { color: '#7e8aa3', font: { size: 10 }, maxTicksLimit: 16, maxRotation: 0 } },
+        y: { grid: { color: '#243149' }, border: { color: '#2a3752' }, ticks: { color: '#93a1bd' },
+          title: { display: true, text: 'JPY per US$', color: '#93a1bd' } }
+      }
+    }
+  });
+}
+
+const IV_MON = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function ivPeriodLabel(s) {
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) { const [y,m,d] = s.split('-'); return `${d}-${IV_MON[+m]}-${y}`; }
+  if (/^\d{4}-\d{2}$/.test(s)) { const [y,m] = s.split('-'); return `${IV_MON[+m]}-${y}`; }
+  return s;
+}
+
+function renderIvEpTable(episodes) {
+  const fmt = v => v == null ? '—' : (v > 0 ? '+' : '') + v.toFixed(1);
+  document.getElementById('ivEpBody').innerHTML = episodes.map(ep => `
+    <tr style="border-bottom:1px solid var(--line)${ep.confirmed==='event' ? ';background:rgba(76,186,122,.08)' : ''}">
+      <td style="padding:6px 8px;white-space:nowrap">${esc(ivPeriodLabel(ep.start))}${ep.end!==ep.start ? ' – ' + esc(ivPeriodLabel(ep.end)) : ''}</td>
+      <td style="padding:6px 8px">${esc(ep.context)}${ep.confirmed==='event' ? ' <span class="npill">confirmed 3-Aug-26</span>' : ''}${ep.note ? `<div class="note" style="margin-top:2px">${esc(ep.note)}</div>` : ''}</td>
+      <td style="padding:6px 8px;color:${IV_COLOR[ep.direction]}">${esc(IV_LABEL[ep.direction]||ep.direction)}</td>
+      <td style="padding:6px 8px;text-align:center">${ep.coordinated ? 'Yes' : 'No'}</td>
+      <td style="padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums">${fmt(ep.total)}${ep.confirmed===false||ep.confirmed==='event' ? '?' : ''}</td>
+      <td style="padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums">${fmt(ep.japan)}</td>
+      <td style="padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums">${fmt(ep.nonjapan)}</td>
+    </tr>`).join('');
+}
+
+function renderIvOpTable(ops) {
+  document.getElementById('ivOpBody').innerHTML = ops.map(o => `
+    <tr style="border-bottom:1px solid var(--line)">
+      <td style="padding:6px 8px;white-space:nowrap">${esc(o.date)}</td>
+      <td style="padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums">${o.jpy_tn}</td>
+      <td style="padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums">${o.usd_bn}</td>
+      <td style="padding:6px 8px;color:${o.official ? '#4cba7a' : 'var(--accent)'}">${o.official ? 'MOF-confirmed' : (esc(o.label)||'Estimate')}</td>
+      <td style="padding:6px 8px;color:var(--muted);font-size:11.5px">${esc(o.note||'')}</td>
+    </tr>`).join('');
+}
+
+function renderIvRule(rule) {
+  if (!rule) return;
+  const quotaEl = document.getElementById('ivRuleQuota');
+  if (quotaEl) quotaEl.textContent = `· ${rule.used} of ${rule.quota} instances used in trailing 6 months (as of ${ivPeriodLabel(rule.as_of)})`;
+  const textEl = document.getElementById('ivRuleText');
+  if (textEl) textEl.textContent = rule.text;
+  const opEl = document.getElementById('ivRuleOpNote');
+  if (opEl) opEl.textContent = rule.operational_note;
+  document.getElementById('ivRuleBody').innerHTML = (rule.instances_trailing_6mo||[]).map(inst => `
+    <tr style="border-bottom:1px solid var(--line)">
+      <td style="padding:6px 8px;white-space:nowrap">${esc(inst.label)}</td>
+      <td style="padding:6px 8px;white-space:nowrap">${esc(inst.dates)}</td>
+      <td style="padding:6px 8px;color:var(--muted);font-size:11.5px">${esc(inst.note||'')}</td>
+    </tr>`).join('');
+  const winEl = document.getElementById('ivRuleWindowNote');
+  if (winEl) winEl.textContent = rule.window_note;
+  const srcEl = document.getElementById('ivRuleSource');
+  if (srcEl) srcEl.textContent = 'Source: ' + rule.source;
+}
+
+function renderIvEvents(events) {
+  const body = document.getElementById('ivEventBody');
+  if (!body) return;
+  const NAME_COLOR = { Bessent: '#e0a13c', Katayama: '#4cba7a', Mimura: '#4cba7a', Ueda: '#e08fb0' };
+  const colorActor = a => esc(a).replace(/Bessent|Katayama|Mimura|Ueda/g,
+    m => `<span style="color:${NAME_COLOR[m]}">${m}</span>`);
+  body.innerHTML = (events||[]).map(e => `
+    <tr style="border-bottom:1px solid var(--line)${e.kind==='scheduled' ? ';opacity:.75;border-left:3px dashed var(--muted);font-style:italic' : ''}">
+      <td style="padding:6px 8px;white-space:nowrap">${esc(ivPeriodLabel(e.date.split('/')[0]))}</td>
+      <td style="padding:6px 8px;white-space:nowrap">${colorActor(e.actor)}</td>
+      <td style="padding:6px 8px">${esc(e.event)}${e.kind==='scheduled' ? ' <span class="npill" style="background:rgba(147,161,189,.12);color:var(--muted);border:1px dashed var(--muted);font-style:normal">⏳ not yet happened</span>' : ''}</td>
+      <td style="padding:6px 8px;color:var(--muted);font-size:11.5px">${esc(e.detail||'')}</td>
+    </tr>`).join('');
+}
+
+function setIvWin(win, btn) {
+  _ivWin = win;
+  document.querySelectorAll('#ivWinBtns .tab').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  if (_ivData) ivRecentChart(_ivData);
+}
+
+fetch('./intervention_data.json?' + Date.now())
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(D => {
+    _ivData = D;
+    ivLongChart(D);
+    ivRecentChart(D);
+    renderIvEpTable(D.episodes);
+    renderIvOpTable(D.recent_ops);
+    renderIvRule(D.imf_rule);
+    renderIvEvents(D.diplomatic_events);
+    document.getElementById('ivSources').textContent = 'Source: ' + D.sources.join(' · ');
+    const el = document.getElementById('ivLongStatus'); if (el) el.textContent = '· data to ' + D.long_history[D.long_history.length-1].date;
+  })
+  .catch(e => { console.warn('intervention_data.json unavailable:', e); });
 
 // ── NISA tab ────────────────────────────────────────────────────────────────
 (function(){
