@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-08-07T16:08:23Z",
+  "scraped_at": "2026-08-08T16:05:01Z",
   "analysts": [
     "Kyohei Morita",
     "Tomoaki Shishido",
@@ -19,17 +19,9 @@
   "reports": {
     "Kyohei Morita": [
       {
-        "title": "Japan Economic Weekly - We revise our BOJ scenarios, now expect rate hikes in October 2026, March 2027, and July 2027",
-        "url": "https://go.nomuranow.com/research/japi/publication/1312920?appname=GRPUI",
-        "date": "AUG 3, 2026",
-        "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, ZHAOQI LIU, YUNA MINEGISHI",
-        "analyst": "Kyohei Morita",
-        "coverage": "Japan Macro / BOJ"
-      },
-      {
         "title": "Japan: Monthly Labor Survey for June 2026 - Steady underlying wage hikes and growth in summer bonuses at SMEs",
         "url": "https://go.nomuranow.com/research/japi/publication/1313616?appname=GRPUI",
-        "date": "AUG 3, 2026",
+        "date": "AUG 6, 2026",
         "summary": "SONAL VARMA, TING LU, EUBEN PARACUELLES, AURODEEP NANDI, JEONG WOO PARK, KYOHEI MORITA, ANDREW TICEHURST",
         "analyst": "Kyohei Morita",
         "coverage": "Japan Macro / BOJ"
@@ -37,7 +29,7 @@
       {
         "title": "Japan Macro Report - Probability of September BOJ rate hike, near-term scenarios",
         "url": "https://go.nomuranow.com/research/japi/publication/1312917?appname=GRPUI",
-        "date": "AUG 3, 2026",
+        "date": "AUG 6, 2026",
         "summary": "SONAL VARMA, TING LU, EUBEN PARACUELLES, AURODEEP NANDI, JEONG WOO PARK, KYOHEI MORITA, ANDREW TICEHURST",
         "analyst": "Kyohei Morita",
         "coverage": "Japan Macro / BOJ"
@@ -45,8 +37,16 @@
       {
         "title": "[Webcast] - MacroBrew@Nomura - Japan : Beyond the BOJ decision – Macro & Market Implications",
         "url": "https://go.nomuranow.com/research/japi/publication/1312663?appname=GRPUI",
-        "date": "AUG 3, 2026",
+        "date": "AUG 6, 2026",
         "summary": "SONAL VARMA, TING LU, EUBEN PARACUELLES, AURODEEP NANDI, JEONG WOO PARK, KYOHEI MORITA, ANDREW TICEHURST",
+        "analyst": "Kyohei Morita",
+        "coverage": "Japan Macro / BOJ"
+      },
+      {
+        "title": "Japan Economic Weekly - We revise our BOJ scenarios, now expect rate hikes in October 2026, March 2027, and July 2027",
+        "url": "https://go.nomuranow.com/research/japi/publication/1312920?appname=GRPUI",
+        "date": "AUG 3, 2026",
+        "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, ZHAOQI LIU, YUNA MINEGISHI",
         "analyst": "Kyohei Morita",
         "coverage": "Japan Macro / BOJ"
       },
@@ -127,57 +127,9 @@
     ],
     "Yujiro Goto": [
       {
-        "title": "Key focus and themes - Less USD supportive factors; higher convictions on long CNH and short IDR",
-        "url": "https://go.nomuranow.com/research/japi/publication/1312580?appname=GRPUI",
-        "date": "JUL 31, 2026",
-        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, ALBERT LEUNG more...",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
-        "title": "Nomura Pulse Check - US-Japan joint FX intervention and USD/JPY",
-        "url": "https://go.nomuranow.com/research/japi/publication/1314787?appname=GRPUI",
-        "date": "JUL 31, 2026",
-        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, ALBERT LEUNG more...",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
-        "title": "JPY Intraday Comment - Key considerations for using Foreign Exchange Fund Special Account to fund tax cut policy",
-        "url": "https://go.nomuranow.com/research/japi/publication/1314255?appname=GRPUI",
-        "date": "JUL 31, 2026",
-        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, ALBERT LEUNG more...",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
-        "title": "JPY Intraday Comment - Bessent’s consecutive verbal interventions",
-        "url": "https://go.nomuranow.com/research/japi/publication/1313801?appname=GRPUI",
-        "date": "JUL 31, 2026",
-        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, ALBERT LEUNG more...",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
-        "title": "JPY Intraday Comment - Looking at past episodes of coordinated intervention",
-        "url": "https://go.nomuranow.com/research/japi/publication/1313256?appname=GRPUI",
-        "date": "JUL 31, 2026",
-        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, ALBERT LEUNG more...",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
-        "title": "JPY Intraday Comment - Unprecedented joint interventions address JPY weakness",
-        "url": "https://go.nomuranow.com/research/japi/publication/1313102?appname=GRPUI",
-        "date": "JUL 31, 2026",
-        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, ALBERT LEUNG more...",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
         "title": "Key focus and themes - Weak NFP add further support to our key convictions",
         "url": "https://go.nomuranow.com/research/japi/publication/1314825?appname=GRPUI",
-        "date": "",
+        "date": "AUG 7, 2026",
         "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, ALBERT LEUNG more...",
         "analyst": "Yujiro Goto",
         "coverage": "Japan FX"
@@ -185,8 +137,56 @@
       {
         "title": "JPY Flow Special Report - GPIF kept its domestic bond weighting steady around 25% at end-June",
         "url": "https://go.nomuranow.com/research/japi/publication/1314679?appname=GRPUI",
-        "date": "",
+        "date": "AUG 7, 2026",
         "summary": "YUSUKE MIYAIRI, CFA, YUJIRO GOTO",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
+        "title": "JPY Weekly - Continued vigilance on future joint actions",
+        "url": "https://go.nomuranow.com/research/japi/publication/1314860?appname=GRPUI",
+        "date": "AUG 7, 2026",
+        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, ALBERT LEUNG more...",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
+        "title": "Nomura Pulse Check - US-Japan joint FX intervention and USD/JPY",
+        "url": "https://go.nomuranow.com/research/japi/publication/1314787?appname=GRPUI",
+        "date": "AUG 7, 2026",
+        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, ALBERT LEUNG more...",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
+        "title": "JPY Intraday Comment - Key considerations for using Foreign Exchange Fund Special Account to fund tax cut policy",
+        "url": "https://go.nomuranow.com/research/japi/publication/1314255?appname=GRPUI",
+        "date": "AUG 7, 2026",
+        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, ALBERT LEUNG more...",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
+        "title": "JPY Intraday Comment - Bessent’s consecutive verbal interventions",
+        "url": "https://go.nomuranow.com/research/japi/publication/1313801?appname=GRPUI",
+        "date": "AUG 7, 2026",
+        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, ALBERT LEUNG more...",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
+        "title": "JPY Intraday Comment - Looking at past episodes of coordinated intervention",
+        "url": "https://go.nomuranow.com/research/japi/publication/1313256?appname=GRPUI",
+        "date": "AUG 7, 2026",
+        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, ALBERT LEUNG more...",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
+        "title": "Key focus and themes - Less USD supportive factors; higher convictions on long CNH and short IDR",
+        "url": "https://go.nomuranow.com/research/japi/publication/1312580?appname=GRPUI",
+        "date": "JUL 31, 2026",
+        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, ALBERT LEUNG more...",
         "analyst": "Yujiro Goto",
         "coverage": "Japan FX"
       }
