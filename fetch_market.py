@@ -28,6 +28,12 @@ from email.utils import parsedate_to_datetime
 
 import requests
 
+try:
+    import yfinance as yf
+    HAS_YFINANCE = True
+except ImportError:
+    HAS_YFINANCE = False
+
 REPO = os.path.dirname(os.path.abspath(__file__))
 OUT_PATH = os.path.join(REPO, "market_data.json")
 UA = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"}
@@ -107,14 +113,13 @@ def fetch_jgb(prev):
         all_curves = parse_mof_csv(get(MOF_HISTORICAL).text)
         curves = [c for c in all_curves if c["date"] >= cutoff] + curves
     else:
-        # Always backfill full curves so 1-month curve comparison works
-        # (MOF_CURRENT only has a few days; full-curve history needs 28+ days)
-        target_full = (datetime.now(timezone.utc) - timedelta(days=35)).strftime("%Y-%m-%d")
-        if not any(c["date"] <= target_full and len(c["yields"]) >= 10 for c in curves):
-            cutoff = (datetime.now(timezone.utc) - timedelta(days=90)).strftime("%Y-%m-%d")
-            hist_curves = parse_mof_csv(get(MOF_HISTORICAL).text)
-            extra = [c for c in hist_curves if c["date"] >= cutoff and c["date"] < curves[0]["date"]]
-            curves = extra + curves
+        # Always backfill full curves reaching back ~400 days: needed for the 1-month
+        # curve comparison, and for the daily/MTD/QTD/YTD bp-change-by-tenor table
+        # (MOF_CURRENT only carries the most recent few days).
+        cutoff = (datetime.now(timezone.utc) - timedelta(days=400)).strftime("%Y-%m-%d")
+        hist_curves = parse_mof_csv(get(MOF_HISTORICAL).text)
+        extra = [c for c in hist_curves if c["date"] >= cutoff and c["date"] < curves[0]["date"]]
+        curves = extra + curves
 
     # merge with previous history (keyed by date)
     by_date = {}
@@ -153,6 +158,49 @@ def fetch_jgb(prev):
 
     tenor_order = ["1Y", "2Y", "3Y", "4Y", "5Y", "6Y", "7Y", "8Y", "9Y", "10Y", "15Y", "20Y", "25Y", "30Y", "40Y"]
     tenors = [t for t in tenor_order if t in latest["yields"]]
+
+    # bp-change-by-tenor table: daily / MTD / QTD / YTD, vs. the latest curve
+    def curve_on_or_before(target_date):
+        cands = [d for d in full if d <= target_date]
+        return by_date[cands[-1]] if cands else None
+
+    latest_dt = datetime.strptime(latest["date"], "%Y-%m-%d")
+    month_start = latest_dt.replace(day=1)
+    mtd_ref = curve_on_or_before((month_start - timedelta(days=1)).strftime("%Y-%m-%d"))
+
+    q_first_month = ((latest_dt.month - 1) // 3) * 3 + 1
+    q_start = latest_dt.replace(month=q_first_month, day=1)
+    qtd_ref = curve_on_or_before((q_start - timedelta(days=1)).strftime("%Y-%m-%d"))
+
+    year_start = latest_dt.replace(month=1, day=1)
+    ytd_ref = curve_on_or_before((year_start - timedelta(days=1)).strftime("%Y-%m-%d"))
+
+    # table shows a curated subset of tenors (not every grid point on the curve)
+    bp_tenor_order = ["1Y", "2Y", "3Y", "5Y", "7Y", "10Y", "15Y", "20Y", "25Y", "30Y", "40Y"]
+    bp_tenors = [t for t in bp_tenor_order if t in tenors]
+
+    def bp_row(ref):
+        if not ref:
+            return None
+        return {
+            "date": ref["date"],
+            "chg": [
+                round((latest["yields"][t] - ref["yields"][t]) * 100, 1)
+                if ref["yields"].get(t) is not None else None
+                for t in bp_tenors
+            ],
+        }
+
+    bp_table = {
+        "tenors": bp_tenors,
+        "latest_date": latest["date"],
+        "yield_convention": "Semiannual compound interest rate on a constant maturity basis (MOF's published convention) — not a simple-interest yield.",
+        "daily": bp_row(curve_1d),
+        "mtd": bp_row(mtd_ref),
+        "qtd": bp_row(qtd_ref),
+        "ytd": bp_row(ytd_ref),
+    }
+
     return {
         "curve": {"date": latest["date"], "tenors": tenors,
                   "yields": [latest["yields"][t] for t in tenors]},
@@ -161,7 +209,40 @@ def fetch_jgb(prev):
         "curve_prev": {"date": prev_curve["date"], "tenors": tenors,
                        "yields": [prev_curve["yields"].get(t) for t in tenors]},
         "history": hist,
+        "bp_table": bp_table,
     }
+
+
+def fetch_fx(prev):
+    """USD/JPY — live intraday from Yahoo Finance JPY=X; FRED DEXJPUS fallback.
+
+    FRED's DEXJPUS is a once-daily reference rate that has been running several
+    business days behind its sibling FRED series here (NIKKEI225, DGS10) —
+    confirmed 2026-08-08 by querying FRED directly (DEXJPUS stuck at 2026-07-31
+    while NIKKEI225/DGS10 were current through 08-06/08-07). Yahoo JPY=X tracks
+    live spot, so prefer it and fall back to FRED only if Yahoo is unavailable.
+    Same pattern as bok-hawk-dove-assessment/fetch_market.py's fetch_fx (KRW=X).
+    """
+    if HAS_YFINANCE:
+        try:
+            t = yf.Ticker("JPY=X")
+            hist_df = t.history(period="2y")
+            if not hist_df.empty:
+                hist_df = hist_df.tail(550)
+                hist = [{"date": d.strftime("%Y-%m-%d"), "value": round(float(v), 2)}
+                        for d, v in zip(hist_df.index, hist_df["Close"])]
+                try:
+                    live = t.fast_info.get("last_price")
+                    if live:
+                        hist[-1] = {"date": hist[-1]["date"], "value": round(float(live), 2)}
+                except Exception:
+                    pass
+                check(len(hist) > 10, "USD/JPY (Yahoo): too few observations")
+                check(50 < hist[-1]["value"] < 300, f"USD/JPY (Yahoo) out of range: {hist[-1]['value']}")
+                return {"history": hist}
+        except Exception as exc:
+            print(f"(Yahoo FX failed: {exc}; falling back to FRED) ", end="")
+    return fetch_fred_single("DEXJPUS", 50, 300, "USD/JPY")
 
 
 def fetch_fred_single(series_id, lo, hi, name, days_back=550):
@@ -557,7 +638,7 @@ def fetch_news(prev):
 
 SOURCES = {
     "jgb":              lambda prev: fetch_jgb(prev),
-    "fx":               lambda prev: fetch_fred_single("DEXJPUS", 50, 300, "USD/JPY"),
+    "fx":               fetch_fx,
     "nikkei":           lambda prev: fetch_fred_single("NIKKEI225", 5000, 200000, "Nikkei"),
     "us10y":            lambda prev: fetch_fred_single("DGS10", 0, 20, "US 10Y"),
     "call_rate":        fetch_call_rate,

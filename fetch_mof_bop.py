@@ -31,15 +31,37 @@ INBOUND_COUNTRIES = [
     ("France",    "france",  "France"),
 ]
 OUTBOUND_COUNTRIES = [
-    ("U.S.A.",     "us",        "United States"),
-    ("Germany",    "germany",   "Germany"),
-    ("France",     "france",    "France"),
-    ("Australia",  "australia", "Australia"),
-    ("U.K.",       "uk",        "United Kingdom"),
+    ("U.S.A.",       "us",          "United States"),
+    ("Canada",       "canada",      "Canada"),
+    ("Australia",    "australia",   "Australia"),
+    ("Germany",      "germany",     "Germany"),
+    ("France",       "france",      "France"),
+    ("Italy",        "italy",       "Italy"),
+    ("Netherlands",  "netherlands", "Netherlands"),
+    ("U.K.",         "uk",          "United Kingdom"),
+    ("Denmark",      "denmark",     "Denmark"),
+    ("Switzerland",  "switzerland", "Switzerland"),
+    ("Hong Kong",    "hongkong",    "Hong Kong"),
+    ("Sweden",       "sweden",      "Sweden"),
 ]
 
 def get(url):
     return urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=60).read()
+
+def usdjpy_monthly():
+    """Monthly USDJPY close from Yahoo, {YYYY-MM: rate}. Empty dict on failure."""
+    try:
+        j = json.loads(get("https://query1.finance.yahoo.com/v8/finance/chart/JPY=X?interval=1mo&range=7y").decode())
+        res = j["chart"]["result"][0]
+        ts, cl = res["timestamp"], res["indicators"]["quote"][0]["close"]
+        out = {}
+        for t, c in zip(ts, cl):
+            if c is None: continue
+            d = datetime.datetime.fromtimestamp(t, datetime.UTC)
+            out[f"{d.year}-{d.month:02d}"] = round(float(c), 3)
+        return out
+    except Exception as e:
+        print("usdjpy fetch failed:", e); return {}
 
 def to_text(pdf_bytes):
     with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as f:
@@ -147,39 +169,75 @@ def main():
         m += 1
         if m > 12: m = 1; y += 1
 
-    def series(recs, countries):
+    fx = usdjpy_monthly()
+    def rate(tag):
+        if tag in fx: return fx[tag]
+        earlier = [v for k, v in sorted(fx.items()) if k <= tag]
+        return earlier[-1] if earlier else (sorted(fx.values())[len(fx)//2] if fx else None)
+
+    def series(recs, countries, usd=False):
         keys = [c[1] for c in countries]
         out = {k: [] for k in keys + ["others", "total"]}
-        for r in recs:
+        for tag, r in zip(months, recs):
             tot = r.get("total")
             named = 0
+            conv = (lambda v: round(v/10 * 1000.0 / rate(tag), 2)) if usd else (lambda v: round(v/10, 1))
             for k in keys:
                 v = r.get(k)
-                out[k].append(round(v/10, 1) if isinstance(v, int) else None)   # 億円 → ¥bn
+                out[k].append(conv(v) if isinstance(v, int) else None)   # 億円 → ¥bn or $mn
                 if isinstance(v, int): named += v
-            out["total"].append(round(tot/10, 1) if isinstance(tot, int) else None)
-            out["others"].append(round((tot-named)/10, 1) if isinstance(tot, int) else None)
+            out["total"].append(conv(tot) if isinstance(tot, int) else None)
+            out["others"].append(conv(tot-named) if isinstance(tot, int) else None)
         return out
+
+    # outbound_sov: DO NOT regenerate from the MoF preliminary PDF anymore (2026-08-10).
+    # That PDF's by-country sovereign-bond table is a first-release snapshot that MoF/BOJ
+    # revise later without ever updating the static PDF in place -- it drifted materially
+    # from what Nomura/Mizuho/SMBC actually show (e.g. US Jan-2026: PDF=293.2 vs Mizuho=444,
+    # a 34% gap). The authoritative, continuously-revised source is BOJ's Time-Series Data
+    # Search site (stat-search.boj.or.jp, series BP01'BPPI6D1N{country}) -- confirmed via
+    # MoF's own bppi.htm page, which explicitly says to use BOJ's site for this table. That
+    # site is a legacy CGI system behind bot protection that blocks headless curl/requests,
+    # so it can't be refreshed by this unattended script; it was pulled via interactive
+    # browser automation on 2026-08-10 and gave US Jan-2026 = 450.6 (1.5% off Mizuho's 444,
+    # vs the PDF's 34% miss). We keep whatever outbound_sov block is already in mof_bop.json
+    # (from that manual pull) untouched here, rather than clobbering it with the worse PDF
+    # data on every automated run. If it needs extending to newer months, redo the BOJ
+    # browser pull (see boj-hawk-dove-assessment/AGENTS.md) -- don't just re-enable this
+    # PDF-based path.
+    existing_outbound_sov = None
+    for src in (os.path.join(HERE, "mof_bop.json"),
+                os.path.join(HERE, "streamlit_app", "mof_bop.json")):
+        if os.path.exists(src):
+            try:
+                existing_outbound_sov = json.load(open(src))["outbound_sov"]
+                break
+            except Exception:
+                pass
 
     doc = {
         "meta": {"as_of": months[-1] if months else None,
                  "generated_at": datetime.datetime.now(datetime.UTC).replace(microsecond=0).isoformat(),
-                 "unit": "JPY bn", "sign": "+ = net purchase",
+                 "unit": "JPY bn", "unit_usd": "$mn", "sign": "+ = net purchase",
                  "source": "MoF Balance of Payments monthly (bppiYYYYMM.pdf) — Portfolio Investment Assets/Liabilities, Country Breakdown",
-                 "source_url": "https://www.mof.go.jp/policy/international_policy/reference/balance_of_payments/bppi.htm"},
+                 "source_url": "https://www.mof.go.jp/policy/international_policy/reference/balance_of_payments/bppi.htm",
+                 "outbound_sov_source": "outbound_sov is frozen from a manual BOJ Time-Series Data Search pull (2026-08-10) — see comment above main()'s doc-building step; this script no longer regenerates it from the PDF."},
         "months": months,
         "inbound": {"order": [c[1] for c in INBOUND_COUNTRIES] + ["others"],
                     "labels": {c[1]: c[2] for c in INBOUND_COUNTRIES} | {"others": "Others"},
-                    "series": series(inbound, INBOUND_COUNTRIES)},
-        "outbound_sov": {"order": [c[1] for c in OUTBOUND_COUNTRIES] + ["others"],
+                    "series": series(inbound, INBOUND_COUNTRIES),
+                    "series_usd": series(inbound, INBOUND_COUNTRIES, usd=True)},
+        "outbound_sov": existing_outbound_sov if existing_outbound_sov is not None else {
+                         "order": [c[1] for c in OUTBOUND_COUNTRIES] + ["others"],
                          "labels": {c[1]: c[2] for c in OUTBOUND_COUNTRIES} | {"others": "Others"},
-                         "series": series(outbound, OUTBOUND_COUNTRIES)},
+                         "series": series(outbound, OUTBOUND_COUNTRIES),
+                         "series_usd": series(outbound, OUTBOUND_COUNTRIES, usd=True)},
     }
     for dest in (os.path.join(HERE, "mof_bop.json"),
                  os.path.join(HERE, "streamlit_app", "mof_bop.json")):
         os.makedirs(os.path.dirname(dest), exist_ok=True)
         json.dump(doc, open(dest, "w"), ensure_ascii=False, indent=1)
-    print(f"months {len(months)} ({months[0] if months else '-'}..{months[-1] if months else '-'}) -> mof_bop.json")
+    print(f"months {len(months)} ({months[0] if months else '-'}..{months[-1] if months else '-'}) -> mof_bop.json (outbound_sov preserved from manual BOJ pull, not regenerated)")
 
 if __name__ == "__main__":
     main()

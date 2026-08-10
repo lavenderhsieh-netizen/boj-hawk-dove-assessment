@@ -1,1451 +1,1483 @@
 {
- "as_of": "2026-07-31",
- "kpis": [
-  {
-   "value": "1.00%",
-   "label": "Policy rate — held at 1.00% on Jul 31, 2026 (8–1 vote); highest since 1995"
-  },
-  {
-   "value": "4 hikes",
-   "label": "Since exit from easing (Mar 2024): Jul '24, Jan '25, Dec '25, Jun '26"
-  },
-  {
-   "value": "Sep 17–18",
-   "label": "Next MPM (2026) — decision Sep 18; no Outlook Report this meeting"
-  },
-  {
-   "value": "Hawkish",
-   "label": "Net board drift: dovish dissenters replaced; doves now accept gradual hikes"
-  },
-  {
-   "value": "8–1 hold",
-   "label": "Jul 31: hawk Takata dissents for a 1.25% hike (lone dissenter); Asada's Jun dovish dissent is the opposite pole"
-  }
- ],
- "rate_path": {
-  "labels": [
-   "Jul '24",
-   "Aug '24",
-   "Jan '25",
-   "Apr '25",
-   "Jul '25",
-   "Oct '25",
-   "Dec '25",
-   "Jan '26",
-   "Apr '26",
-   "Jun '26",
-   "Jul '26"
+  "as_of": "2026-07-31",
+  "kpis": [
+    {
+      "value": "1.00%",
+      "label": "Policy rate — held at 1.00% on Jul 31, 2026 (8–1 vote); highest since 1995"
+    },
+    {
+      "value": "4 hikes",
+      "label": "Since exit from easing (Mar 2024): Jul '24, Jan '25, Dec '25, Jun '26"
+    },
+    {
+      "value": "Sep 17–18",
+      "label": "Next MPM (2026) — decision Sep 18; no Outlook Report this meeting"
+    },
+    {
+      "value": "Hawkish",
+      "label": "Net board drift: dovish dissenters replaced; doves now accept gradual hikes"
+    },
+    {
+      "value": "8–1 hold",
+      "label": "Jul 31: hawk Takata dissents for a 1.25% hike (lone dissenter); Asada's Jun dovish dissent is the opposite pole"
+    }
   ],
-  "values": [
-   0.25,
-   0.25,
-   0.5,
-   0.5,
-   0.5,
-   0.5,
-   0.75,
-   0.75,
-   0.75,
-   1.0,
-   1.0
-  ]
- },
- "periods": [
-  "Feb 26",
-  "Mar 26",
-  "Apr 26",
-  "May 26",
-  "Jun 26",
-  "Jul 26"
- ],
- "tone": [
-  {
-   "name": "Tamura",
-   "scores": [
-    2,
-    2,
-    2,
-    2,
-    2,
-    2
-   ]
-  },
-  {
-   "name": "Takata",
-   "scores": [
-    2,
-    2,
-    2,
-    2,
-    2,
-    2.5
-   ]
-  },
-  {
-   "name": "Ueda",
-   "scores": [
-    0.5,
-    0.5,
-    0.5,
-    0.75,
-    1,
-    1
-   ]
-  },
-  {
-   "name": "Himino",
-   "scores": [
-    0.5,
-    0.5,
-    0.5,
-    0.75,
-    1,
-    1
-   ]
-  },
-  {
-   "name": "Koeda",
-   "scores": [
-    1,
-    1,
-    1,
-    1.5,
-    1.5,
-    1.5
-   ]
-  },
-  {
-   "name": "Masu",
-   "scores": [
-    0.5,
-    0.5,
-    0.5,
-    0.5,
-    0.5,
-    0.5
-   ]
-  },
-  {
-   "name": "Uchida",
-   "scores": [
-    0,
-    0,
-    0,
-    0,
-    0,
-    0
-   ]
-  },
-  {
-   "name": "Asada",
-   "scores": [
-    null,
-    null,
-    -0.5,
-    -1,
-    -1.5,
-    -1.5
-   ]
-  },
-  {
-   "name": "Sato",
-   "scores": [
-    null,
-    null,
-    null,
-    null,
-    -0.5,
-    -0.5
-   ]
-  }
- ],
- "spectrum": [
-  {
-   "name": "Tamura",
-   "score": 2
-  },
-  {
-   "name": "Takata",
-   "score": 2.5
-  },
-  {
-   "name": "Koeda",
-   "score": 1.5
-  },
-  {
-   "name": "Ueda",
-   "score": 1
-  },
-  {
-   "name": "Himino",
-   "score": 1
-  },
-  {
-   "name": "Masu",
-   "score": 0.5
-  },
-  {
-   "name": "Uchida",
-   "score": 0
-  },
-  {
-   "name": "Sato",
-   "score": -0.5,
-   "role": "Member"
-  },
-  {
-   "name": "Asada",
-   "score": -1.5
-  }
- ],
- "speakers": [
-  {
-   "name": "UEDA Kazuo",
-   "role": "Governor",
-   "tag": "Neutral-to-hawk",
-   "lean": "neutral-hawk",
-   "shift": "Patient normalizer → confident normalizer (≈ +0.5 → +1)",
-   "quote": "\"If upside risks to prices outweigh downside risks to economic activity, it would be necessary to thoroughly discuss raising the policy interest rate.\" — Jun 2026",
-   "remarks": [
-    {
-     "date": "16 Feb 2026",
-     "source": "Meeting with PM Takaichi at PM's Office",
-     "comment": "Following talks with PM Takaichi at the PM's Office, Ueda said he made no specific requests — only a general discussion of economic and financial conditions."
-    },
-    {
-     "date": "13 Apr 2026",
-     "source": "Speech read by Dep Gov Himino (Ueda absent)",
-     "comment": "In a speech read by Deputy Governor Himino (Ueda was absent), Ueda signalled caution on the Middle East conflict's impact, keeping policy options open and cooling expectations of an April rate hike."
-    },
-    {
-     "date": "22 May 2026",
-     "source": "PM Takaichi-BOJ interaction",
-     "comment": "Ueda disclosed that PM Takaichi asked the BOJ to conduct \"appropriate policy\" while taking into consideration the government's price measures, in line with the joint government-BOJ accord."
-    },
-    {
-     "date": "27 May 2026",
-     "source": "International Banking Conference, Tokyo",
-     "comment": "At an international banking conference in Tokyo, Ueda warned that oil price shocks are \"tests of the entire inflation regime,\" flagging the need for vigilance without giving a clear hint on the June policy meeting outcome."
-    },
-    {
-     "date": "3 Jun 2026",
-     "source": "Speech — June rate hike signal",
-     "comment": "Ueda signalled a good chance of a June rate hike, stating that if upside risks to prices outweigh downside risks to economic activity, it would be necessary to \"thoroughly discuss the pros and cons of raising the policy interest rate.\""
-    },
-    {
-     "date": "24 Jun 2026",
-     "source": "Speech (post-MPM)",
-     "comment": "In a speech, Ueda reiterated that the BOJ sees upside risks to its 2% inflation target and will conduct additional rate hikes \"appropriately,\" reaffirming the bank's tightening bias."
-    }
-   ]
-  },
-  {
-   "name": "TAMURA Naoki",
-   "role": "Policy Board Member",
-   "tag": "Strong hawk",
-   "lean": "hawk",
-   "shift": "Consistently the board's most hawkish voice (≈ +2 throughout)",
-   "quote": "\"It is quite possible that, as early as this spring, the price stability target... can be judged to have been achieved\"; hike impact so far \"extremely limited\"; neutral rate \"at least around 1 percent.\" — Kanagawa, Feb 13, 2026.",
-   "remarks": [
-    {
-     "date": "25 Jun 2026",
-     "source": "Speech — Meeting with Local Businesses, Hyogo",
-     "comment": "The baseline path is to raise the interest rate by a quarter percentage point at intervals of a few months toward the neutral interest rate level of 2%; the BOJ needs to raise rates every few months and should quicken the pace given stronger inflation risks. No rapid fire hikes are needed now. Need to hike rates to neutral to avoid an overshoot. Should search for the neutral level while hiking rates, but it's hard to pinpoint the level of neutral rate."
-    }
-   ]
-  },
-  {
-   "name": "TAKATA Hajime",
-   "role": "Policy Board Member",
-   "tag": "Escalating hawk",
-   "lean": "hawk",
-   "shift": "\"Gear shift\" advocate → proposed 1.0% hike at Jan 2026 MPM (≈ +1.5 → +2)",
-   "quote": "\"At the January 2026 MPM, I proposed that the Bank raise the policy interest rate to 1.0 percent as a further gear shift.\" — Kyoto, Feb 26, 2026.",
-   "remarks": [
-    {
-     "date": "27 Feb 2026",
-     "source": "Public Remarks / Speech",
-     "comment": "Delivered hawkish remarks, warning that a global recovery and rate hikes could lead to the risk of unintentionally falling behind the curve."
-    }
-   ]
-  },
-  {
-   "name": "HIMINO Ryozo",
-   "role": "Deputy Governor",
-   "tag": "Measured hawk",
-   "lean": "neutral-hawk",
-   "shift": "Steady gradualist; intellectual groundwork for hikes (≈ +0.5 → +1)",
-   "quote": "Mar 2026: policy \"should gradually shift to a more neutral stance through moderate policy rate hikes.\"",
-   "remarks": [
-    {
-     "date": "2 Mar 2026",
-     "source": "Speech to business leaders, Wakayama; press conference",
-     "comment": "The BOJ should gradually shift to a more neutral stance through moderate policy rate hikes. Financial conditions appear still accommodative and the impact of rate hikes has been limited so far; there is a lag before data show the effect of rate hikes."
-    },
-    {
-     "date": "6 Mar 2026",
-     "source": "Parliament",
-     "comment": "Weaker yen is a factor pushing up CPI via higher import costs and corporate price-passing moves. Monetary policy is not targeted at guiding or controlling FX rate levels, but rather at achieving price stability. Japan's economy is in an inflationary situation."
-    },
-    {
-     "date": "10 Apr 2026",
-     "source": "Parliament",
-     "comment": "The BOJ is at the stage of watching the risk of economic slowdown and inflation in the case of prolonged escalation of the Middle East situation. Does not see Japan as being in stagflation now."
-    },
-    {
-     "date": "26 May 2026",
-     "source": "Parliament",
-     "comment": "It is important for the BOJ to maintain market trust in controlling inflation by adjusting the degree of monetary easing appropriately. The BOJ will raise rates in response to economic and price developments; timing and pace will depend on the economic impact of the Middle East conflict. Appropriate policy adjustments are key to keeping market confidence amid the recent JGB selloff."
-    },
-    {
-     "date": "19 Jun 2026",
-     "source": "Parliament (post-rate hike explanation)",
-     "comment": "Sees a risk that inflation could accelerate beyond the 2% target; pass-through of higher costs in B2B transactions is proceeding at a somewhat faster pace and could eventually spread to broader price increases. Delay in rate hikes might end up weighing on the economy. Higher corporate prices expected to start affecting CPI soon; FX fluctuations more likely to affect prices."
-    }
-   ]
-  },
-  {
-   "name": "UCHIDA Shinichi",
-   "role": "Deputy Governor",
-   "tag": "Dove → neutral",
-   "lean": "neutral",
-   "shift": "Aug 2024 market-calmer → on-consensus (≈ −1 → 0)",
-   "quote": "After the Aug 2024 rout, pledged no hikes amid market instability. Fronted the June 2026 presser during Ueda's hospitalization.",
-   "remarks": [
-    {
-     "date": "16 Jun 2026",
-     "source": "BOJ Post-Meeting Press Conference (hosted for hospitalized Governor Ueda)",
-     "comment": "Policymakers will conduct policy so as to avoid falling behind the curve; BOJ is watching not only real interest rates but also overall conditions. Even with the rate hike, financial conditions remain accommodative and the policy rate continues to support the economy. It has become a trend that wages and prices rise together, which is a positive factor for the economy. Yen depreciation is increasingly influencing price trends, making it a crucial part of monetary policy decision-making. There is a substantial range in neutral rate estimates, making it hard to specify in practice; without knowing exactly what the neutral rate is, it is hard to know how much more the BOJ has to raise rates."
-    }
-   ]
-  },
-  {
-   "name": "KOEDA Junko",
-   "role": "Board Member (from Apr 2025)",
-   "tag": "New normalizer",
-   "lean": "neutral-hawk",
-   "shift": "Data-driven, leans hawkish from arrival (≈ +1); replaced dove Adachi",
-   "quote": "\"Underlying inflation is about 2 percent\"; \"the Bank needs to proceed with interest rate normalization... to avoid creating unintended distortions.\" — Niigata, Nov 20, 2025.",
-   "remarks": [
-    {
-     "date": "21 May 2026",
-     "source": "Speech — Meeting with Local Business Leaders, Fukuoka + Post-Speech Press Briefing",
-     "comment": "Underlying inflation is already around 2%; sees some possibility that underlying inflation may exceed 2% looking ahead given the Middle East situation. It is reasonable for the BOJ to raise the policy interest rate at an appropriate pace to address high inflation while considering trade-offs for the economy. The role of monetary policy in responding to inflation is increasing. Authorities continue to monitor upside risks for prices and downside risks for the economy; sees bigger risks for prices. BOJ will set monetary policy in a manner that ensures it won't fall behind the curve in fighting inflation. Notes that the lower band of the neutral rate for Japan is around 1%."
-    }
-   ]
-  },
-  {
-   "name": "MASU Kazuyuki",
-   "role": "Board Member (from Jul 2025)",
-   "tag": "Cautious normalizer",
-   "lean": "neutral",
-   "shift": "Supports normalization, stresses caution (≈ +0.5); replaced dove Nakamura",
-   "quote": "\"I am convinced that continuing with further policy interest rate hikes will be needed to complete the normalization\"... but the Bank will \"proceed cautiously.\" — Ehime, Feb 6, 2026.",
-   "remarks": [
-    {
-     "date": "6 Feb 2026",
-     "source": "Speech — Meeting with Local Business Leaders",
-     "comment": "BOJ needs to continue raising its benchmark interest rate to complete the process of policy normalization; this would help end the situation where Japan and other countries are pursuing contrasting monetary policy directions. Although underlying inflation remains below 2%, it is on a rising trend. Not particularly desirable if the price trend stays above the 2% target. Does not have any specific pace in mind for when the BOJ should raise rates; will monitor economic data carefully when making policy decisions; the central bank won't hesitate to move its policy rate when convinced by examining economic data."
-    },
-    {
-     "date": "14 May 2026",
-     "source": "Speech — Business Conference, Kagoshima",
-     "comment": "If statistical data do not indicate clear signs of an economic downturn, it is desirable to raise the policy rate at the earliest stage possible. Further rate hikes are needed to complete policy normalization."
-    }
-   ]
-  },
-  {
-   "name": "ASADA Toichiro",
-   "role": "Board Member (from Apr 2026; PM Takaichi's first pick)",
-   "tag": "New dove",
-   "lean": "dove",
-   "shift": "Sole dissenter at the June 2026 hike (≈ −1.5)",
-   "quote": "Any further hike conditional on the economy's “endogenous strength” — wage- and demand-driven inflation toward the 2% target, with employment weighed alongside prices (Reuters, Jul 8 2026). Jul 7 (Sankei): raising rates could slow the economy. Sole dissenter at the June 2026 hike — preferred to hold at 0.75%, citing downside risks to production and employment.",
-   "remarks": [
-    {
-     "date": "1 Apr 2026",
-     "source": "Inaugural Press Conference",
-     "comment": "Struck a neutral tone, stating he would \"carefully examine the various data and information before making a judgment\". On exchange rates, said \"I cannot say whether yen weakness is desirable or yen strength is desirable.\""
-    },
-    {
-     "date": "Jun 2026",
-     "source": "June Monetary Policy Meeting",
-     "comment": "Cast the sole dissenting vote against the BOJ's rate hike (0.75% → 1.0%), arguing downside risks to production and employment outweighed upside risks to prices. Preferred to maintain the existing guideline for money market operations."
-    },
-    {
-     "date": "Jun 2026",
-     "source": "June MPM Summary of Opinions",
-     "comment": "Reportedly pointed out that the Japanese economy could return to deflation in a worst-case scenario, emphasising downside risks to production and employment in contrast to the prevailing hawkish tone among most board members."
-    },
-    {
-     "date": "7 Jul 2026",
-     "source": "Interview — Sankei Newspaper",
-     "comment": "Said that raising interest rates could lead to a slowdown in the economy."
-    },
-    {
-     "date": "8 Jul 2026",
-     "source": "Reuters Interview",
-     "comment": "Stated that any further rate hikes would be conditional on confirming the economy's \"endogenous strength\" — wage- and demand-driven inflation toward the 2% target. Also indicated that employment would be considered alongside inflation in policy decisions."
-    }
-   ]
-  },
-  {
-   "name": "SATO Ayano",
-   "role": "Member",
-   "tag": "New — monitoring",
-   "lean": "dove",
-   "shift": "Joined Jun 2026 — inaugural tone: cautious/dovish",
-   "quote": "\"Inflation is not that strong by societal norms.\" / \"Need to watch for both downside risks to growth and upside risks to inflation.\" — Inaugural press conference, Jun 30, 2026",
-   "remarks": [
-    {
-     "date": "30 Jun 2026",
-     "source": "First Press Conference as BOJ Policymaker",
-     "comment": "There is some evidence emerging that suggests currency fluctuations are having a larger impact on prices than before."
-    },
-    {
-     "date": "8 Jul 2026",
-     "source": "Public Remarks / Speech",
-     "comment": "Accommodative monetary conditions exist if the policy rate is below the neutral rate, restrictive if above; noted the neutral rate is not directly observable. Found it difficult to definitively state whether upside risks to prices or downside risks to the economy were greater — a stance considered slightly more dovish than Governor Ueda's June 3 speech. FX movements could affect underlying inflation with both positive and negative effects, but preferred not to comment further in her capacity as a Board member. Did not offer specific views on monetary conditions or economic risks, avoided mentioning exchange rates, and did not express definite views on rate hikes or suggest she was a reflationist."
-    }
-   ]
-  }
- ],
- "board": [
-  {
-   "member": "UEDA Kazuo",
-   "role": "Governor",
-   "tenure": "9 Apr 2023 – 8 Apr 2028",
-   "dissents": "0",
-   "kind": "none",
-   "record": "Chairman; in the majority at all meetings. Absent (hospitalized) for the Jun 2026 vote; returned to chair the Jul 31, 2026 meeting.",
-   "lean": "Neutral, turning less dovish",
-   "active": true
-  },
-  {
-   "member": "HIMINO Ryozo",
-   "role": "Deputy Governor",
-   "tenure": "20 Mar 2023 – 19 Mar 2028",
-   "dissents": "0",
-   "kind": "none",
-   "record": "Voted with the majority throughout.",
-   "lean": "Neutral",
-   "active": true
-  },
-  {
-   "member": "UCHIDA Shinichi",
-   "role": "Deputy Governor",
-   "tenure": "20 Mar 2023 – 19 Mar 2028",
-   "dissents": "0",
-   "kind": "none",
-   "record": "Voted with the majority throughout; fronted Jun 2026 presser.",
-   "lean": "Neutral",
-   "active": true,
-   "remarks": [
-    {
-     "date": "16 Jun 2026",
-     "source": "BOJ Post-Meeting Press Conference (hosted for hospitalized Governor Ueda)",
-     "comment": "Policymakers will conduct policy so as to avoid falling behind the curve; BOJ is watching not only real interest rates but also overall conditions. Even with the rate hike, financial conditions remain accommodative and the policy rate continues to support the economy. It has become a trend that wages and prices rise together, which is a positive factor for the economy. Yen depreciation is increasingly influencing price trends, making it a crucial part of monetary policy decision-making. There is a substantial range in neutral rate estimates, making it hard to specify in practice; without knowing exactly what the neutral rate is, it is hard to know how much more the BOJ has to raise rates."
-    }
-   ]
-  },
-  {
-   "member": "TAMURA Naoki",
-   "role": "Board Member",
-   "tenure": "24 Jul 2022 – 23 Jul 2027",
-   "dissents": "4 hawkish",
-   "kind": "hawk",
-   "record": "Dec 2024: proposed 0.5% · Jun 2025: opposed slowing the JGB taper · Sep & Oct 2025: proposed 0.75% · Jul 2026: voted with the majority to hold (no dissent).",
-   "lean": "Strong hawk",
-   "active": true,
-   "remarks": [
-    {
-     "date": "25 Jun 2026",
-     "source": "Speech — Meeting with Local Businesses, Hyogo",
-     "comment": "The baseline path is to raise the interest rate by a quarter percentage point at intervals of a few months toward the neutral interest rate level of 2%; the BOJ needs to raise rates every few months and should quicken the pace given stronger inflation risks. No rapid fire hikes are needed now. Need to hike rates to neutral to avoid an overshoot. Should search for the neutral level while hiking rates, but it's hard to pinpoint the level of neutral rate."
-    }
-   ]
-  },
-  {
-   "member": "TAKATA Hajime",
-   "role": "Board Member",
-   "tenure": "24 Jul 2022 – 23 Jul 2027",
-   "dissents": "5 hawkish",
-   "kind": "hawk",
-   "record": "Sep & Oct 2025: proposed 0.75% · Jan 2026: proposed 1.0% · Mar 2026: proposed a hike · Jul 2026: dissented at the hold, proposing 1.25% (defeated 8–1).",
-   "lean": "Escalating hawk — lone dissenter",
-   "active": true,
-   "remarks": [
-    {
-     "date": "27 Feb 2026",
-     "source": "Public Remarks / Speech",
-     "comment": "Delivered hawkish remarks, warning that a global recovery and rate hikes could lead to the risk of unintentionally falling behind the curve."
-    }
-   ]
-  },
-  {
-   "member": "KOEDA Junko",
-   "role": "Board Member",
-   "tenure": "26 Mar 2025 – 25 Mar 2030",
-   "dissents": "0",
-   "kind": "none",
-   "record": "Voted with the majority since joining.",
-   "lean": "Neutral-Hawkish",
-   "active": true,
-   "remarks": [
-    {
-     "date": "21 May 2026",
-     "source": "Speech — Meeting with Local Business Leaders, Fukuoka + Post-Speech Press Briefing",
-     "comment": "Underlying inflation is already around 2%; sees some possibility that underlying inflation may exceed 2% looking ahead given the Middle East situation. It is reasonable for the BOJ to raise the policy interest rate at an appropriate pace to address high inflation while considering trade-offs for the economy. The role of monetary policy in responding to inflation is increasing. Authorities continue to monitor upside risks for prices and downside risks for the economy; sees bigger risks for prices. BOJ will set monetary policy in a manner that ensures it won't fall behind the curve in fighting inflation. Notes that the lower band of the neutral rate for Japan is around 1%."
-    }
-   ]
-  },
-  {
-   "member": "MASU Kazuyuki",
-   "role": "Board Member",
-   "tenure": "1 Jul 2025 – 30 Jun 2030",
-   "dissents": "0",
-   "kind": "none",
-   "record": "Voted with the majority since joining.",
-   "lean": "Neutral",
-   "active": true,
-   "remarks": [
-    {
-     "date": "6 Feb 2026",
-     "source": "Speech — Meeting with Local Business Leaders",
-     "comment": "BOJ needs to continue raising its benchmark interest rate to complete the process of policy normalization; this would help end the situation where Japan and other countries are pursuing contrasting monetary policy directions. Although underlying inflation remains below 2%, it is on a rising trend. Not particularly desirable if the price trend stays above the 2% target. Does not have any specific pace in mind for when the BOJ should raise rates; will monitor economic data carefully when making policy decisions; the central bank won't hesitate to move its policy rate when convinced by examining economic data."
-    },
-    {
-     "date": "14 May 2026",
-     "source": "Speech — Business Conference, Kagoshima",
-     "comment": "If statistical data do not indicate clear signs of an economic downturn, it is desirable to raise the policy rate at the earliest stage possible. Further rate hikes are needed to complete policy normalization."
-    }
-   ]
-  },
-  {
-   "member": "ASADA Toichiro",
-   "role": "Board Member",
-   "tenure": "1 Apr 2026 – 31 Mar 2031",
-   "dissents": "1 dovish",
-   "kind": "dove",
-   "record": "Jun 2026: sole dissent against the hike to 1.00% (preferred to hold) · Jul 2026: voted with the majority to hold.",
-   "lean": "Dovish, reflationist-leaning",
-   "active": true
-  },
-  {
-   "member": "SATO Ayano",
-   "role": "Board Member",
-   "tenure": "30 Jun 2026 – 29 Jun 2031",
-   "dissents": "0",
-   "kind": "none",
-   "record": "Joined end-June 2026 (replaced Nakagawa). Jul 2026: cast her first vote, siding with the 8–1 majority to hold at 1.00%. Reported reflationist lean.",
-   "lean": "Expected dovish",
-   "active": true,
-   "remarks": [
-    {
-     "date": "30 Jun 2026",
-     "source": "First Press Conference as BOJ Policymaker",
-     "comment": "There is some evidence emerging that suggests currency fluctuations are having a larger impact on prices than before."
-    },
-    {
-     "date": "8 Jul 2026",
-     "source": "Public Remarks / Speech",
-     "comment": "Accommodative monetary conditions exist if the policy rate is below the neutral rate, restrictive if above; noted the neutral rate is not directly observable. Found it difficult to definitively state whether upside risks to prices or downside risks to the economy were greater — a stance considered slightly more dovish than Governor Ueda's June 3 speech. FX movements could affect underlying inflation with both positive and negative effects, but preferred not to comment further in her capacity as a Board member. Did not offer specific views on monetary conditions or economic risks, avoided mentioning exchange rates, and did not express definite views on rate hikes or suggest she was a reflationist."
-    }
-   ]
-  },
-  {
-   "member": "NAKAGAWA Junko",
-   "role": "Board Member (departed)",
-   "tenure": "30 Jun 2021 – 29 Jun 2026",
-   "dissents": "0",
-   "kind": "none",
-   "record": "No formal dissents; reportedly urged a hike at the Apr 2026 hold.",
-   "lean": "Centrist",
-   "active": false
-  },
-  {
-   "member": "NOGUCHI Asahi",
-   "role": "Board Member (departed)",
-   "tenure": "1 Apr 2021 – 31 Mar 2026",
-   "dissents": "1 dovish",
-   "kind": "dove",
-   "record": "Jul 2024: dissented against the hike to 0.25%.",
-   "lean": "Softening dove",
-   "active": false
-  },
-  {
-   "member": "NAKAMURA Toyoaki",
-   "role": "Board Member (departed)",
-   "tenure": "1 Jul 2020 – 30 Jun 2025",
-   "dissents": "2 dovish",
-   "kind": "dove",
-   "record": "Jul 2024 and Jan 2025: dissented against the hikes.",
-   "lean": "Dove",
-   "active": false
-  },
-  {
-   "member": "ADACHI Seiji",
-   "role": "Board Member (departed)",
-   "tenure": "26 Mar 2020 – 25 Mar 2025",
-   "dissents": "0",
-   "kind": "none",
-   "record": "Dovish rhetoric but voted with the majority in window.",
-   "lean": "Dove",
-   "active": false
-  }
- ],
- "timeline": [
-  {
-   "date": "Apr 4, 2013",
-   "kind": "event",
-   "text": "Kuroda launches QQE (\"bazooka\"): 2% inflation target, JGB purchases doubled to ¥50tn/yr, monetary base targeted to double in 2 years."
-  },
-  {
-   "date": "Oct 31, 2014",
-   "kind": "dove",
-   "text": "QQE expanded (\"Halloween easing\"): annual JGB purchases raised to ~¥80tn and ETF/J-REIT purchases tripled. The same day, GPIF unveils its landmark reallocation — domestic bonds cut from 60% to 35%, domestic and foreign equities sharply raised — structurally shrinking the bond bid of the JGB market's largest holder."
-  },
-  {
-   "date": "Jan 29, 2016",
-   "kind": "dove",
-   "text": "NIRP introduced: BOJ adopts −0.1% policy rate on excess reserves — first negative rate in BOJ history."
-  },
-  {
-   "date": "Sep 21, 2016",
-   "kind": "event",
-   "text": "YCC introduced: BOJ targets 10-year JGB yield at ~0% alongside −0.1% short rate; marks shift from quantity- to rate-based QE."
-  },
-  {
-   "date": "Jul 31, 2018",
-   "kind": "event",
-   "text": "YCC made flexible: BOJ widens the tolerated 10Y band to about ±0.2% and adopts forward guidance — the first step in the gradual YCC loosening that ran through 2022–24."
-  },
-  {
-   "date": "Dec 20, 2022",
-   "kind": "event",
-   "text": "YCC band shock-widened from ±0.25% to ±0.5%: surprise move under Kuroda, widely seen as de facto tightening; 10Y yield surges."
-  },
-  {
-   "date": "Jul 28, 2023",
-   "kind": "event",
-   "text": "YCC upper limit raised to 1.0% (reference point, not hard cap): Ueda's first major tweak; 10Y yield allowed to drift toward 1%."
-  },
-  {
-   "date": "Mar 19, 2024",
-   "kind": "hike",
-   "text": "Historic pivot: NIRP ended (rate +0→0.1%), YCC formally scrapped, ETF new purchases halted — first rate hike since 2007 and end of 8 years of negative rates."
-  },
-  {
-   "date": "Jul 31, 2024",
-   "kind": "hike",
-   "text": "Rate raised to 0.25%; JGB purchase-reduction plan announced."
-  },
-  {
-   "date": "Aug 5–7, 2024",
-   "kind": "dove",
-   "text": "Global market rout; Deputy Governor Uchida calms markets — no hikes while markets are unstable."
-  },
-  {
-   "date": "Jan 24, 2025",
-   "kind": "hike",
-   "text": "Rate raised to 0.5% (highest since 2008), after Himino's and Ueda's signaling."
-  },
-  {
-   "date": "Apr 2025",
-   "kind": "event",
-   "text": "US tariff shock: Outlook Report cuts FY25 growth forecast from 1.1% to 0.5%; hiking cycle pauses."
-  },
-  {
-   "date": "Jun–Sep 2025",
-   "kind": "event",
-   "text": "JGB taper extended at gentler pace from Apr 2026; ETF/J-REIT sales decided (Sep). Jul: Japan–US trade agreement."
-  },
-  {
-   "date": "Oct 2025",
-   "kind": "event",
-   "text": "Takaichi government takes office; Oct Outlook: FY25 CPI 2.7%, FY26 1.8%, FY27 2.0%."
-  },
-  {
-   "date": "Dec 19, 2025",
-   "kind": "hike",
-   "text": "Rate raised to 0.75% (unanimous) — first hike in 11 months; 10-year JGB yield tops 2%."
-  },
-  {
-   "date": "Jan 2026",
-   "kind": "event",
-   "text": "Jan Outlook restores pre-tariff forecasts — growth and inflation projections marked back up after the tariff-driven cuts; policy held at 0.75%."
-  },
-  {
-   "date": "Jan 23, 2026",
-   "kind": "event",
-   "text": "US–Japan rate check (yen): after the BOJ held at 0.75%, an unusual rate check by the NY Fed — echoed by finance officials in Tokyo — spiked the yen ~1.7% to ¥155.6, its biggest one-day jump since Aug and the year's strongest level. First sign of possible coordinated US–Japan action to defend the yen; ¥160 seen as the red line. MOF data (Jan 30) confirmed no actual intervention followed — verbal/rate-check warnings only."
-  },
-  {
-   "date": "Apr 28, 2026",
-   "kind": "event",
-   "text": "Hold at 0.75% amid Iran-war worries; inflation forecast raised."
-  },
-  {
-   "date": "Jun 16, 2026",
-   "kind": "hike",
-   "text": "Rate raised to 1.00% (7–1), highest since Sep 1995, amid yen weakness and FX intervention."
-  },
-  {
-   "date": "Jul 30, 2026",
-   "kind": "event",
-   "text": "US–Japan \"rate check\" + yen intervention: with USD/JPY at a four-decade low near ¥163, Japan bought yen and sold dollars in New York (its first intervention in ~3 months) while the US Treasury ran a rate check — Sec. Bessent called the yen \"very undervalued\" — a rare coordinated signal to stem yen weakness, two days before the Jul 31 MPM."
-  },
-  {
-   "date": "Jul 31, 2026",
-   "kind": "event",
-   "text": "Held at 1.00% (8–1). July Outlook trims FY2026 CPI on summer energy subsidies and upgrades the activity-risk assessment to 'generally balanced'; guidance to keep raising rates is retained. Ueda returns from illness; Sato votes for the first time."
-  },
-  {
-   "date": "Jul 31, 2026",
-   "kind": "event",
-   "text": "FT: US Treasury's first direct yen support since 2011 — the NY Fed sold euros to buy yen on behalf of the Treasury (via Goldman Sachs and Morgan Stanley), alongside Japan's own yen-buying in New York; the yen closed the week up over 1% against both the dollar and the euro."
-  }
- ],
- "mpm_calendar": [
-  {
-   "date": "Jul 30–31 (Thu–Fri)",
-   "event": "MPM — decision Jul 31",
-   "type": "MPM",
-   "relates": "—",
-   "notes": "Held at 1.00% by 8–1; Takata dissented (proposed 1.25%). First vote for Sato Ayano; Ueda returned from illness.",
-   "next": false
-  },
-  {
-   "date": "Jul 31 (Fri)",
-   "event": "Outlook Report (The Bank's View)",
-   "type": "Outlook",
-   "relates": "Jul MPM",
-   "notes": "Released Jul 31: FY2026 CPI trimmed on summer energy subsidies, activity risk upgraded to 'generally balanced'; full text 2pm next business day.",
-   "next": false
-  },
-  {
-   "date": "Aug 5 (Wed)",
-   "event": "Minutes",
-   "type": "Minutes",
-   "relates": "Jun 15–16 MPM",
-   "notes": "Full record of the 7–1 hike to 1.00%, incl. Asada's dissent.",
-   "next": false
-  },
-  {
-   "date": "Aug 10 (Mon)",
-   "event": "Summary of Opinions",
-   "type": "Opinions",
-   "relates": "Jul MPM",
-   "notes": "Unattributed member opinions; 8:50am JST.",
-   "next": false
-  },
-  {
-   "date": "Sep 17–18 (Thu–Fri)",
-   "event": "MPM — decision Sep 18",
-   "type": "MPM",
-   "relates": "—",
-   "notes": "No Outlook Report at this meeting.",
-   "next": true
-  },
-  {
-   "date": "Sep 28 (Mon)",
-   "event": "Minutes",
-   "type": "Minutes",
-   "relates": "Jul MPM",
-   "notes": "8:50am JST.",
-   "next": false
-  },
-  {
-   "date": "Oct 1 (Thu)",
-   "event": "Summary of Opinions",
-   "type": "Opinions",
-   "relates": "Sep MPM",
-   "notes": "8:50am JST.",
-   "next": false
-  },
-  {
-   "date": "Oct 1 (Thu)",
-   "event": "Tankan — September 2026 Survey",
-   "type": "Tankan",
-   "relates": "Oct MPM",
-   "notes": "Quarterly enterprise business-sentiment survey; 8:50am JST. Key input into the Oct 29–30 MPM & Outlook Report.",
-   "next": false
-  },
-  {
-   "date": "Oct 29–30 (Thu–Fri)",
-   "event": "MPM — decision Oct 30",
-   "type": "MPM",
-   "relates": "—",
-   "notes": "With Outlook Report (Oct 30).",
-   "next": false
-  },
-  {
-   "date": "Nov 5 (Thu)",
-   "event": "Minutes",
-   "type": "Minutes",
-   "relates": "Sep MPM",
-   "notes": "8:50am JST.",
-   "next": false
-  },
-  {
-   "date": "Nov 10 (Tue)",
-   "event": "Summary of Opinions",
-   "type": "Opinions",
-   "relates": "Oct MPM",
-   "notes": "8:50am JST.",
-   "next": false
-  },
-  {
-   "date": "~Dec 14 (Mon)",
-   "event": "Tankan — December 2026 Survey",
-   "type": "Tankan",
-   "relates": "Dec MPM",
-   "notes": "BOJ has not yet scheduled the exact date; typical mid-Dec slot (Dec 13 in '23 & '24, Dec 15 in '25). Lands just before the Dec 17–18 MPM.",
-   "next": false
-  },
-  {
-   "date": "Dec 17–18 (Thu–Fri)",
-   "event": "MPM — decision Dec 18",
-   "type": "MPM",
-   "relates": "—",
-   "notes": "Final meeting of 2026; no Outlook Report.",
-   "next": false
-  },
-  {
-   "date": "Dec 23 (Wed)",
-   "event": "Minutes",
-   "type": "Minutes",
-   "relates": "Oct MPM",
-   "notes": "8:50am JST.",
-   "next": false
-  },
-  {
-   "date": "Dec 28 (Mon)",
-   "event": "Summary of Opinions",
-   "type": "Opinions",
-   "relates": "Dec MPM",
-   "notes": "8:50am JST.",
-   "next": false
-  },
-  {
-   "date": "Jan 21–22 (Thu–Fri)",
-   "event": "MPM — decision Jan 22 · Outlook Report",
-   "type": "MPM",
-   "relates": "—",
-   "notes": "Summary of Opinions Feb 1; Minutes Mar 24.",
-   "next": false,
-   "_yr": "2027"
-  },
-  {
-   "date": "Mar 17–18 (Wed–Thu)",
-   "event": "MPM — decision Mar 18",
-   "type": "MPM",
-   "relates": "—",
-   "notes": "No Outlook Report. Summary of Opinions Mar 29; Minutes May 7.",
-   "next": false,
-   "_yr": "2027"
-  },
-  {
-   "date": "Apr 27–28 (Tue–Wed)",
-   "event": "MPM — decision Apr 28 · Outlook Report",
-   "type": "MPM",
-   "relates": "—",
-   "notes": "Summary of Opinions May 12; Minutes Jun 16.",
-   "next": false,
-   "_yr": "2027"
-  },
-  {
-   "date": "Jun 10–11 (Thu–Fri)",
-   "event": "MPM — decision Jun 11",
-   "type": "MPM",
-   "relates": "—",
-   "notes": "No Outlook Report. Summary of Opinions Jun 21; Minutes Jul 27.",
-   "next": false,
-   "_yr": "2027"
-  },
-  {
-   "date": "Jul 21–22 (Wed–Thu)",
-   "event": "MPM — decision Jul 22 · Outlook Report",
-   "type": "MPM",
-   "relates": "—",
-   "notes": "Summary of Opinions Jul 30; Minutes Sep 28.",
-   "next": false,
-   "_yr": "2027"
-  },
-  {
-   "date": "Jul 23, 2027 (Fri)",
-   "event": "Tamura & Takata terms expire",
-   "type": "Term",
-   "relates": "—",
-   "notes": "Both hawks remain eligible to vote at the Jul 21–22 MPM (their last meeting); Cabinet-appointed successors take over from Jul 24, 2027.",
-   "_yr": "2027",
-   "next": false
-  },
-  {
-   "date": "Sep 21–22 (Tue–Wed)",
-   "event": "MPM — decision Sep 22",
-   "type": "MPM",
-   "relates": "—",
-   "notes": "No Outlook Report. Summary of Opinions Oct 1; Minutes Nov 4.",
-   "next": false,
-   "_yr": "2027"
-  },
-  {
-   "date": "Oct 28–29 (Thu–Fri)",
-   "event": "MPM — decision Oct 29 · Outlook Report",
-   "type": "MPM",
-   "relates": "—",
-   "notes": "Summary of Opinions Nov 9; Minutes Dec 22.",
-   "next": false,
-   "_yr": "2027"
-  },
-  {
-   "date": "Dec 16–17 (Thu–Fri)",
-   "event": "MPM — decision Dec 17",
-   "type": "MPM",
-   "relates": "—",
-   "notes": "No Outlook Report. Summary of Opinions Dec 27; Minutes TBA.",
-   "next": false,
-   "_yr": "2027"
-  }
- ],
- "auctions": {
-  "July 2026": [
-   {
-    "date": "Jul 2 (Thu)",
-    "type": "Coupon",
-    "issue": "10-year",
-    "context": ""
-   },
-   {
-    "date": "Jul 3 (Fri)",
-    "type": "T-bill",
-    "issue": "Treasury Discount Bills (3-month)",
-    "context": ""
-   },
-   {
-    "date": "Jul 7 (Tue)",
-    "type": "Coupon",
-    "issue": "30-year",
-    "context": "Super-long supply amid post-hike curve repricing"
-   },
-   {
-    "date": "Jul 8 (Wed)",
-    "type": "T-bill",
-    "issue": "Treasury Discount Bills (6-month)",
-    "context": ""
-   },
-   {
-    "date": "Jul 9 (Thu)",
-    "type": "Coupon",
-    "issue": "5-year",
-    "context": ""
-   },
-   {
-    "date": "Jul 10 (Fri)",
-    "type": "T-bill",
-    "issue": "Treasury Discount Bills (3-month)",
-    "context": ""
-   },
-   {
-    "date": "Jul 14 (Tue)",
-    "type": "Coupon",
-    "issue": "20-year",
-    "context": ""
-   },
-   {
-    "date": "Jul 16 (Thu)",
-    "type": "T-bill",
-    "issue": "Treasury Discount Bills (1-year)",
-    "context": "Prices in the July MPM outcome"
-   },
-   {
-    "date": "Jul 16 (Thu)",
-    "type": "Liquidity",
-    "issue": "Liquidity Enhancement Auction (1–5y remaining)",
-    "context": ""
-   },
-   {
-    "date": "Jul 17 (Fri)",
-    "type": "T-bill",
-    "issue": "Treasury Discount Bills (3-month)",
-    "context": ""
-   },
-   {
-    "date": "Jul 22 (Wed)",
-    "type": "Coupon",
-    "issue": "40-year",
-    "context": "Longest tenor; key duration-demand test"
-   },
-   {
-    "date": "Jul 24 (Fri)",
-    "type": "T-bill",
-    "issue": "Treasury Discount Bills (3-month)",
-    "context": ""
-   },
-   {
-    "date": "Jul 28 (Tue)",
-    "type": "Liquidity",
-    "issue": "Liquidity Enhancement Auction (5–11y remaining)",
-    "context": ""
-   },
-   {
-    "date": "Jul 30 (Thu)",
-    "type": "T-bill",
-    "issue": "Treasury Discount Bills (3-month)",
-    "context": "MPM day 1 (Jul 30–31)"
-   },
-   {
-    "date": "Jul 30 (Thu)",
-    "type": "Coupon",
-    "issue": "2-year",
-    "context": "MPM day 1 — short end most exposed to the Jul 31 decision"
-   }
+  "rate_path": {
+    "labels": [
+      "Jul '24",
+      "Aug '24",
+      "Jan '25",
+      "Apr '25",
+      "Jul '25",
+      "Oct '25",
+      "Dec '25",
+      "Jan '26",
+      "Apr '26",
+      "Jun '26",
+      "Jul '26"
+    ],
+    "values": [
+      0.25,
+      0.25,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.75,
+      0.75,
+      0.75,
+      1.0,
+      1.0
+    ]
+  },
+  "periods": [
+    "Feb 26",
+    "Mar 26",
+    "Apr 26",
+    "May 26",
+    "Jun 26",
+    "Jul 26"
   ],
-  "August 2026": [
-   {
-    "date": "Aug 4 (Tue)",
-    "type": "Coupon",
-    "issue": "10-year",
-    "context": "First 10y supply after the July MPM/Outlook"
-   },
-   {
-    "date": "Aug 6 (Thu)",
-    "type": "T-bill",
-    "issue": "Treasury Discount Bills (6-month)",
-    "context": ""
-   },
-   {
-    "date": "Aug 6 (Thu)",
-    "type": "Coupon",
-    "issue": "30-year",
-    "context": "Day after Jun-MPM Minutes (Aug 5)"
-   },
-   {
-    "date": "Aug 7 (Fri)",
-    "type": "T-bill",
-    "issue": "Treasury Discount Bills (3-month)",
-    "context": ""
-   },
-   {
-    "date": "Aug 12 (Wed)",
-    "type": "Linker",
-    "issue": "10-year Inflation-Indexed Bonds",
-    "context": "Breakeven read with CPI still near 2%+"
-   },
-   {
-    "date": "Aug 14 (Fri)",
-    "type": "T-bill",
-    "issue": "Treasury Discount Bills (3-month)",
-    "context": ""
-   },
-   {
-    "date": "Aug 14 (Fri)",
-    "type": "Liquidity",
-    "issue": "Liquidity Enhancement Auction (11–39y remaining)",
-    "context": ""
-   },
-   {
-    "date": "Aug 18 (Tue)",
-    "type": "Coupon",
-    "issue": "5-year",
-    "context": ""
-   },
-   {
-    "date": "Aug 19 (Wed)",
-    "type": "T-bill",
-    "issue": "Treasury Discount Bills (1-year)",
-    "context": ""
-   },
-   {
-    "date": "Aug 20 (Thu)",
-    "type": "Coupon",
-    "issue": "20-year",
-    "context": ""
-   },
-   {
-    "date": "Aug 21 (Fri)",
-    "type": "T-bill",
-    "issue": "Treasury Discount Bills (3-month)",
-    "context": ""
-   },
-   {
-    "date": "Aug 24 (Mon)",
-    "type": "GX",
-    "issue": "10-year Japan Climate Transition Bonds",
-    "context": ""
-   },
-   {
-    "date": "Aug 26 (Wed)",
-    "type": "Liquidity",
-    "issue": "Liquidity Enhancement Auction (5–11y remaining)",
-    "context": ""
-   },
-   {
-    "date": "Aug 28 (Fri)",
-    "type": "T-bill",
-    "issue": "Treasury Discount Bills (3-month)",
-    "context": ""
-   },
-   {
-    "date": "Aug 28 (Fri)",
-    "type": "Coupon",
-    "issue": "2-year",
-    "context": ""
-   }
-  ]
- },
- "fiscal": [
-  {
-   "timing": "Early Jul 2026",
-   "event": "FY2025 final tax-revenue settlement (MOF)",
-   "relevance": "Revenue outturn frames the scale of any autumn supplementary budget.",
-   "hot": true
-  },
-  {
-   "timing": "Aug 31, 2026",
-   "event": "Ministries' FY2027 budget requests submitted to MOF",
-   "relevance": "First indication of spending pressure under the Takaichi administration.",
-   "hot": false
-  },
-  {
-   "timing": "Oct–Dec 2026",
-   "event": "Supplementary budget window",
-   "relevance": "A package on the scale of the 2025 'Comprehensive Economic Measures' would imply additional JGB issuance.",
-   "hot": false
-  },
-  {
-   "timing": "Mid-Dec 2026",
-   "event": "Ruling-party tax reform outline for FY2027",
-   "relevance": "Sets the revenue side of the budget; signals the fiscal stance.",
-   "hot": false
-  },
-  {
-   "timing": "Late Dec 2026",
-   "event": "FY2027 draft budget & FY2027 JGB Issuance Plan (cabinet approval)",
-   "relevance": "Determines gross issuance and maturity mix; coincides with BOJ deliberations on its post-Apr 2027 purchase plan — fiscal and monetary calendars intersect.",
-   "hot": true
-  },
-  {
-   "timing": "Jan 2027",
-   "event": "Ordinary Diet session convenes",
-   "relevance": "Budget deliberations begin; political friction can delay passage.",
-   "hot": false
-  },
-  {
-   "timing": "By end-Mar 2027",
-   "event": "FY2027 budget passage",
-   "relevance": "Required before the fiscal year starts April 1.",
-   "hot": false
-  },
-  {
-   "timing": "Jun 2027",
-   "event": "Basic Policy on Economic and Fiscal Management ('honebuto')",
-   "relevance": "Sets the medium-term fiscal framework, incl. the primary-balance target.",
-   "hot": false
-  },
-  {
-   "timing": "Ad hoc",
-   "event": "MOF meetings with JGB Market Special Participants / investors",
-   "relevance": "Typically precede issuance-mix changes; moved markets during the 2025 super-long selloff.",
-   "hot": false
-  },
-  {
-   "timing": "Ad hoc",
-   "event": "Sovereign rating reviews",
-   "relevance": "Sustained stimulus raises the salience of rating commentary for the long end.",
-   "hot": false
-  }
- ],
- "press_conferences": [
-  {
-   "date": "2025-12-19",
-   "display": "18–19 Dec 2025",
-   "decision": "Hike to 0.75%",
-   "vote": "9–0 (unanimous)",
-   "presider": "Governor UEDA Kazuo",
-   "note": "",
-   "file": "2025-12-19.md"
-  },
-  {
-   "date": "2026-01-23",
-   "display": "22–23 Jan 2026",
-   "decision": "Hold at 0.75%",
-   "vote": "8–1 (Takata dissented for 1.0%)",
-   "presider": "Governor UEDA Kazuo",
-   "note": "",
-   "file": "2026-01-23.md"
-  },
-  {
-   "date": "2026-03-19",
-   "display": "18–19 Mar 2026",
-   "decision": "Hold at 0.75%",
-   "vote": "8–1 (Takata dissented for hike)",
-   "presider": "Governor UEDA Kazuo",
-   "note": "",
-   "file": "2026-03-19.md"
-  },
-  {
-   "date": "2026-04-28",
-   "display": "27–28 Apr 2026",
-   "decision": "Hold at 0.75%",
-   "vote": "6–3 (Nakagawa, Takata, Tamura dissented for hike)",
-   "presider": "Governor UEDA Kazuo",
-   "note": "",
-   "file": "2026-04-28.md"
-  },
-  {
-   "date": "2026-06-16",
-   "display": "15–16 Jun 2026",
-   "decision": "Hike to 1.00%",
-   "vote": "7–1 (Asada dissented for hold)",
-   "presider": "Deputy Governor UCHIDA Shinichi",
-   "note": "Ueda absent (hospitalised). Presser fronted by Uchida.",
-   "file": "2026-06-16.md"
-  },
-  {
-   "date": "2026-07-31",
-   "display": "30–31 Jul 2026",
-   "decision": "Hold at 1.00%",
-   "vote": "8–1 (Takata dissented for a hike to 1.25%)",
-   "presider": "Governor UEDA Kazuo",
-   "note": "Ueda back from illness; Sato's first vote (with majority). July Outlook trims FY2026 CPI on govt energy subsidies and upgrades activity risk to 'generally balanced'; overshoot-2% warning retained. Presser: risk factors for timing/pace expanded from one to three (Middle East, AI, FX); Kumamoto earthquake and Apr-2027 food consumption-tax cut both flagged; Takata and Tamura alternative-language proposals both defeated.",
-   "file": "2026-07-31.md"
-  }
- ],
- "forecasts": {
-  "as_of": "July 2026 Outlook Report",
-  "decided": "Decided at the MPM held July 30–31, 2026 · policy rate held at 1.00%. Each column shows one Outlook Report's Policy Board median with its revision from the prior report: July vs April, and April vs January.",
-  "table": [
-   {
-    "fy": "FY2026",
-    "gdp": {
-     "jul": 0.6,
-     "apr": 0.5,
-     "jan": 1.0,
-     "jul_r": "+0.6 to +0.7",
-     "apr_r": "+0.4 to +0.7"
+  "tone": [
+    {
+      "name": "Tamura",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ]
     },
-    "cpi": {
-     "jul": 2.5,
-     "apr": 2.8,
-     "jan": 1.9,
-     "jul_r": "+2.3 to +2.7",
-     "apr_r": "+2.8 to +3.0"
+    {
+      "name": "Takata",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2.5
+      ]
     },
-    "core": {
-     "jul": 2.5,
-     "apr": 2.6,
-     "jan": 2.2,
-     "jul_r": "+2.3 to +2.6",
-     "apr_r": "+2.5 to +2.7"
+    {
+      "name": "Ueda",
+      "scores": [
+        0.5,
+        0.5,
+        0.5,
+        0.75,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "Himino",
+      "scores": [
+        0.5,
+        0.5,
+        0.5,
+        0.75,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "Koeda",
+      "scores": [
+        1,
+        1,
+        1,
+        1.5,
+        1.5,
+        1.5
+      ]
+    },
+    {
+      "name": "Masu",
+      "scores": [
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "name": "Uchida",
+      "scores": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "Asada",
+      "scores": [
+        null,
+        null,
+        -0.5,
+        -1,
+        -1.5,
+        -1.5
+      ]
+    },
+    {
+      "name": "Sato",
+      "scores": [
+        null,
+        null,
+        null,
+        null,
+        -0.5,
+        -0.5
+      ]
     }
-   },
-   {
-    "fy": "FY2027",
-    "gdp": {
-     "jul": 0.8,
-     "apr": 0.7,
-     "jan": 0.8,
-     "jul_r": "+0.7 to +0.8",
-     "apr_r": "+0.6 to +0.8"
-    },
-    "cpi": {
-     "jul": 2.4,
-     "apr": 2.3,
-     "jan": 2.0,
-     "jul_r": "+2.2 to +2.5",
-     "apr_r": "+2.3 to +2.4"
-    },
-    "core": {
-     "jul": 2.6,
-     "apr": 2.6,
-     "jan": 2.1,
-     "jul_r": "+2.2 to +2.7",
-     "apr_r": "+2.6 to +2.7"
-    }
-   },
-   {
-    "fy": "FY2028",
-    "gdp": {
-     "jul": 0.8,
-     "apr": 0.8,
-     "jan": null,
-     "jul_r": "+0.7 to +0.8",
-     "apr_r": "+0.7 to +0.8"
-    },
-    "cpi": {
-     "jul": 2.0,
-     "apr": 2.0,
-     "jan": null,
-     "jul_r": "+2.0 to +2.2",
-     "apr_r": "+2.0 to +2.2"
-    },
-    "core": {
-     "jul": 2.2,
-     "apr": 2.2,
-     "jan": null,
-     "jul_r": "+2.1 to +2.3",
-     "apr_r": "+2.1 to +2.4"
-    }
-   }
   ],
-  "risk": {
-   "jul": {
-    "prices": "Skewed to the upside — with underlying CPI approaching 2%, there is a risk it deviates above the 2% target as firms shift further toward raising wages and prices and medium- to long-term inflation expectations keep rising.",
-    "prices_dir": "up",
-    "activity": "Generally balanced — the crude-oil / Middle East drag on profits and real income is offset by government energy-relief measures, high corporate profits, solid wage gains and strong global AI-related demand.",
-    "activity_dir": "bal",
-    "target_timing": "Underlying CPI seen reaching a level generally consistent with the 2% target between H2 FY2026 and FY2027, and remaining around that level thereafter."
-   },
-   "apr": {
-    "prices": "Skewed to the upside, particularly for FY2026 — crude-oil / Middle East pass-through into energy and goods, continued wage-to-price pass-through, and medium- to long-term inflation expectations near 2%.",
-    "prices_dir": "up",
-    "activity": "Skewed to the downside — higher crude-oil prices weigh on corporate profits and real income via the terms of trade; partly cushioned by high corporate profits, solid wage gains and government energy-relief measures.",
-    "activity_dir": "down",
-    "target_timing": "Underlying CPI seen reaching a level generally consistent with the 2% target between H2 FY2026 and FY2027."
-   },
-   "forward": "Key shift in July: the Board upgraded economic-activity risks from 'skewed to the downside' (April, on the crude-oil shock) to 'generally balanced', while CPI risks stay skewed to the upside. FY2026 headline CPI was trimmed mainly on the government's summer energy subsidies (electricity/gas); GDP is essentially unchanged. Guidance retained: the Bank 'will continue to raise the policy interest rate' if its outlook is realised, weighing the timing and pace against Middle East, AI-demand and FX risks."
+  "spectrum": [
+    {
+      "name": "Tamura",
+      "score": 2
+    },
+    {
+      "name": "Takata",
+      "score": 2.5
+    },
+    {
+      "name": "Koeda",
+      "score": 1.5
+    },
+    {
+      "name": "Ueda",
+      "score": 1
+    },
+    {
+      "name": "Himino",
+      "score": 1
+    },
+    {
+      "name": "Masu",
+      "score": 0.5
+    },
+    {
+      "name": "Uchida",
+      "score": 0
+    },
+    {
+      "name": "Sato",
+      "score": -0.5,
+      "role": "Member"
+    },
+    {
+      "name": "Asada",
+      "score": -1.5
+    }
+  ],
+  "speakers": [
+    {
+      "name": "UEDA Kazuo",
+      "role": "Governor",
+      "tag": "Neutral-to-hawk",
+      "lean": "neutral-hawk",
+      "shift": "Patient normalizer → confident normalizer (≈ +0.5 → +1)",
+      "quote": "\"If upside risks to prices outweigh downside risks to economic activity, it would be necessary to thoroughly discuss raising the policy interest rate.\" — Jun 2026",
+      "remarks": [
+        {
+          "date": "16 Feb 2026",
+          "source": "Meeting with PM Takaichi at PM's Office",
+          "comment": "Following talks with PM Takaichi at the PM's Office, Ueda said he made no specific requests — only a general discussion of economic and financial conditions."
+        },
+        {
+          "date": "13 Apr 2026",
+          "source": "Speech read by Dep Gov Himino (Ueda absent)",
+          "comment": "In a speech read by Deputy Governor Himino (Ueda was absent), Ueda signalled caution on the Middle East conflict's impact, keeping policy options open and cooling expectations of an April rate hike."
+        },
+        {
+          "date": "22 May 2026",
+          "source": "PM Takaichi-BOJ interaction",
+          "comment": "Ueda disclosed that PM Takaichi asked the BOJ to conduct \"appropriate policy\" while taking into consideration the government's price measures, in line with the joint government-BOJ accord."
+        },
+        {
+          "date": "27 May 2026",
+          "source": "International Banking Conference, Tokyo",
+          "comment": "At an international banking conference in Tokyo, Ueda warned that oil price shocks are \"tests of the entire inflation regime,\" flagging the need for vigilance without giving a clear hint on the June policy meeting outcome."
+        },
+        {
+          "date": "3 Jun 2026",
+          "source": "Speech — June rate hike signal",
+          "comment": "Ueda signalled a good chance of a June rate hike, stating that if upside risks to prices outweigh downside risks to economic activity, it would be necessary to \"thoroughly discuss the pros and cons of raising the policy interest rate.\""
+        },
+        {
+          "date": "24 Jun 2026",
+          "source": "Speech (post-MPM)",
+          "comment": "In a speech, Ueda reiterated that the BOJ sees upside risks to its 2% inflation target and will conduct additional rate hikes \"appropriately,\" reaffirming the bank's tightening bias."
+        }
+      ]
+    },
+    {
+      "name": "TAMURA Naoki",
+      "role": "Policy Board Member",
+      "tag": "Strong hawk",
+      "lean": "hawk",
+      "shift": "Consistently the board's most hawkish voice (≈ +2 throughout)",
+      "quote": "\"It is quite possible that, as early as this spring, the price stability target... can be judged to have been achieved\"; hike impact so far \"extremely limited\"; neutral rate \"at least around 1 percent.\" — Kanagawa, Feb 13, 2026.",
+      "remarks": [
+        {
+          "date": "25 Jun 2026",
+          "source": "Speech — Meeting with Local Businesses, Hyogo",
+          "comment": "The baseline path is to raise the interest rate by a quarter percentage point at intervals of a few months toward the neutral interest rate level of 2%; the BOJ needs to raise rates every few months and should quicken the pace given stronger inflation risks. No rapid fire hikes are needed now. Need to hike rates to neutral to avoid an overshoot. Should search for the neutral level while hiking rates, but it's hard to pinpoint the level of neutral rate."
+        }
+      ]
+    },
+    {
+      "name": "TAKATA Hajime",
+      "role": "Policy Board Member",
+      "tag": "Escalating hawk",
+      "lean": "hawk",
+      "shift": "\"Gear shift\" advocate → proposed 1.0% hike at Jan 2026 MPM (≈ +1.5 → +2)",
+      "quote": "\"At the January 2026 MPM, I proposed that the Bank raise the policy interest rate to 1.0 percent as a further gear shift.\" — Kyoto, Feb 26, 2026.",
+      "remarks": [
+        {
+          "date": "27 Feb 2026",
+          "source": "Public Remarks / Speech",
+          "comment": "Delivered hawkish remarks, warning that a global recovery and rate hikes could lead to the risk of unintentionally falling behind the curve."
+        }
+      ]
+    },
+    {
+      "name": "HIMINO Ryozo",
+      "role": "Deputy Governor",
+      "tag": "Measured hawk",
+      "lean": "neutral-hawk",
+      "shift": "Steady gradualist; intellectual groundwork for hikes (≈ +0.5 → +1)",
+      "quote": "Mar 2026: policy \"should gradually shift to a more neutral stance through moderate policy rate hikes.\"",
+      "remarks": [
+        {
+          "date": "2 Mar 2026",
+          "source": "Speech to business leaders, Wakayama; press conference",
+          "comment": "The BOJ should gradually shift to a more neutral stance through moderate policy rate hikes. Financial conditions appear still accommodative and the impact of rate hikes has been limited so far; there is a lag before data show the effect of rate hikes."
+        },
+        {
+          "date": "6 Mar 2026",
+          "source": "Parliament",
+          "comment": "Weaker yen is a factor pushing up CPI via higher import costs and corporate price-passing moves. Monetary policy is not targeted at guiding or controlling FX rate levels, but rather at achieving price stability. Japan's economy is in an inflationary situation."
+        },
+        {
+          "date": "10 Apr 2026",
+          "source": "Parliament",
+          "comment": "The BOJ is at the stage of watching the risk of economic slowdown and inflation in the case of prolonged escalation of the Middle East situation. Does not see Japan as being in stagflation now."
+        },
+        {
+          "date": "26 May 2026",
+          "source": "Parliament",
+          "comment": "It is important for the BOJ to maintain market trust in controlling inflation by adjusting the degree of monetary easing appropriately. The BOJ will raise rates in response to economic and price developments; timing and pace will depend on the economic impact of the Middle East conflict. Appropriate policy adjustments are key to keeping market confidence amid the recent JGB selloff."
+        },
+        {
+          "date": "19 Jun 2026",
+          "source": "Parliament (post-rate hike explanation)",
+          "comment": "Sees a risk that inflation could accelerate beyond the 2% target; pass-through of higher costs in B2B transactions is proceeding at a somewhat faster pace and could eventually spread to broader price increases. Delay in rate hikes might end up weighing on the economy. Higher corporate prices expected to start affecting CPI soon; FX fluctuations more likely to affect prices."
+        }
+      ]
+    },
+    {
+      "name": "UCHIDA Shinichi",
+      "role": "Deputy Governor",
+      "tag": "Dove → neutral",
+      "lean": "neutral",
+      "shift": "Aug 2024 market-calmer → on-consensus (≈ −1 → 0)",
+      "quote": "After the Aug 2024 rout, pledged no hikes amid market instability. Fronted the June 2026 presser during Ueda's hospitalization.",
+      "remarks": [
+        {
+          "date": "16 Jun 2026",
+          "source": "BOJ Post-Meeting Press Conference (hosted for hospitalized Governor Ueda)",
+          "comment": "Policymakers will conduct policy so as to avoid falling behind the curve; BOJ is watching not only real interest rates but also overall conditions. Even with the rate hike, financial conditions remain accommodative and the policy rate continues to support the economy. It has become a trend that wages and prices rise together, which is a positive factor for the economy. Yen depreciation is increasingly influencing price trends, making it a crucial part of monetary policy decision-making. There is a substantial range in neutral rate estimates, making it hard to specify in practice; without knowing exactly what the neutral rate is, it is hard to know how much more the BOJ has to raise rates."
+        }
+      ]
+    },
+    {
+      "name": "KOEDA Junko",
+      "role": "Board Member (from Apr 2025)",
+      "tag": "New normalizer",
+      "lean": "neutral-hawk",
+      "shift": "Data-driven, leans hawkish from arrival (≈ +1); replaced dove Adachi",
+      "quote": "\"Underlying inflation is about 2 percent\"; \"the Bank needs to proceed with interest rate normalization... to avoid creating unintended distortions.\" — Niigata, Nov 20, 2025.",
+      "remarks": [
+        {
+          "date": "21 May 2026",
+          "source": "Speech — Meeting with Local Business Leaders, Fukuoka + Post-Speech Press Briefing",
+          "comment": "Underlying inflation is already around 2%; sees some possibility that underlying inflation may exceed 2% looking ahead given the Middle East situation. It is reasonable for the BOJ to raise the policy interest rate at an appropriate pace to address high inflation while considering trade-offs for the economy. The role of monetary policy in responding to inflation is increasing. Authorities continue to monitor upside risks for prices and downside risks for the economy; sees bigger risks for prices. BOJ will set monetary policy in a manner that ensures it won't fall behind the curve in fighting inflation. Notes that the lower band of the neutral rate for Japan is around 1%."
+        }
+      ]
+    },
+    {
+      "name": "MASU Kazuyuki",
+      "role": "Board Member (from Jul 2025)",
+      "tag": "Cautious normalizer",
+      "lean": "neutral",
+      "shift": "Supports normalization, stresses caution (≈ +0.5); replaced dove Nakamura",
+      "quote": "\"I am convinced that continuing with further policy interest rate hikes will be needed to complete the normalization\"... but the Bank will \"proceed cautiously.\" — Ehime, Feb 6, 2026.",
+      "remarks": [
+        {
+          "date": "6 Feb 2026",
+          "source": "Speech — Meeting with Local Business Leaders",
+          "comment": "BOJ needs to continue raising its benchmark interest rate to complete the process of policy normalization; this would help end the situation where Japan and other countries are pursuing contrasting monetary policy directions. Although underlying inflation remains below 2%, it is on a rising trend. Not particularly desirable if the price trend stays above the 2% target. Does not have any specific pace in mind for when the BOJ should raise rates; will monitor economic data carefully when making policy decisions; the central bank won't hesitate to move its policy rate when convinced by examining economic data."
+        },
+        {
+          "date": "14 May 2026",
+          "source": "Speech — Business Conference, Kagoshima",
+          "comment": "If statistical data do not indicate clear signs of an economic downturn, it is desirable to raise the policy rate at the earliest stage possible. Further rate hikes are needed to complete policy normalization."
+        }
+      ]
+    },
+    {
+      "name": "ASADA Toichiro",
+      "role": "Board Member (from Apr 2026; PM Takaichi's first pick)",
+      "tag": "New dove",
+      "lean": "dove",
+      "shift": "Sole dissenter at the June 2026 hike (≈ −1.5)",
+      "quote": "Any further hike conditional on the economy's “endogenous strength” — wage- and demand-driven inflation toward the 2% target, with employment weighed alongside prices (Reuters, Jul 8 2026). Jul 7 (Sankei): raising rates could slow the economy. Sole dissenter (7-1) at the June 2026 hike — per the BOJ's official minutes (released 5 Aug 2026): “downside risks to production and employment were greater than upside risks to prices, and it was desirable for the Bank to maintain the guideline for money market operations.”",
+      "remarks": [
+        {
+          "date": "1 Apr 2026",
+          "source": "Inaugural Press Conference",
+          "comment": "Struck a neutral tone, stating he would \"carefully examine the various data and information before making a judgment\". On exchange rates, said \"I cannot say whether yen weakness is desirable or yen strength is desirable.\""
+        },
+        {
+          "date": "Jun 2026",
+          "source": "June Monetary Policy Meeting — Official Vote",
+          "comment": "Cast the sole dissenting vote (7-1) against the BOJ's rate hike (0.75% → 1.0%). Official minutes text: \"Asada Toichiro dissented, considering that, regarding the impact of the situation in the Middle East, downside risks to production and employment were greater than upside risks to prices, and it was desirable for the Bank to maintain the guideline for money market operations.\""
+        },
+        {
+          "date": "5 Aug 2026",
+          "source": "June MPM Full Minutes (released Aug 5, 2026)",
+          "comment": "Confirmed by the official minutes (upgrading the earlier, hedged Summary-of-Opinions readout): in the deliberation, the dissenting member warned that if the downside risks to production and employment from the Middle East situation materialized, this could disrupt the wage-price virtuous cycle and, in a worst-case scenario, tip Japan's economy — which appeared to have overcome a prolonged period of deflation — back into deflation."
+        },
+        {
+          "date": "7 Jul 2026",
+          "source": "Interview — Sankei Newspaper",
+          "comment": "Said that raising interest rates could lead to a slowdown in the economy."
+        },
+        {
+          "date": "8 Jul 2026",
+          "source": "Reuters Interview",
+          "comment": "Stated that any further rate hikes would be conditional on confirming the economy's \"endogenous strength\" — wage- and demand-driven inflation toward the 2% target. Also indicated that employment would be considered alongside inflation in policy decisions."
+        }
+      ]
+    },
+    {
+      "name": "SATO Ayano",
+      "role": "Member",
+      "tag": "New — monitoring",
+      "lean": "dove",
+      "shift": "Joined Jun 2026 — inaugural tone: cautious/dovish",
+      "quote": "\"Inflation is not that strong by societal norms.\" / \"Need to watch for both downside risks to growth and upside risks to inflation.\" — Inaugural press conference, Jun 30, 2026",
+      "remarks": [
+        {
+          "date": "30 Jun 2026",
+          "source": "First Press Conference as BOJ Policymaker",
+          "comment": "There is some evidence emerging that suggests currency fluctuations are having a larger impact on prices than before."
+        },
+        {
+          "date": "8 Jul 2026",
+          "source": "Public Remarks / Speech",
+          "comment": "Accommodative monetary conditions exist if the policy rate is below the neutral rate, restrictive if above; noted the neutral rate is not directly observable. Found it difficult to definitively state whether upside risks to prices or downside risks to the economy were greater — a stance considered slightly more dovish than Governor Ueda's June 3 speech. FX movements could affect underlying inflation with both positive and negative effects, but preferred not to comment further in her capacity as a Board member. Did not offer specific views on monetary conditions or economic risks, avoided mentioning exchange rates, and did not express definite views on rate hikes or suggest she was a reflationist."
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "member": "UEDA Kazuo",
+      "role": "Governor",
+      "tenure": "9 Apr 2023 – 8 Apr 2028",
+      "dissents": "0",
+      "kind": "none",
+      "record": "Chairman; in the majority at all meetings. Absent (hospitalized) for the Jun 2026 vote; returned to chair the Jul 31, 2026 meeting.",
+      "lean": "Neutral, turning less dovish",
+      "active": true
+    },
+    {
+      "member": "HIMINO Ryozo",
+      "role": "Deputy Governor",
+      "tenure": "20 Mar 2023 – 19 Mar 2028",
+      "dissents": "0",
+      "kind": "none",
+      "record": "Voted with the majority throughout.",
+      "lean": "Neutral",
+      "active": true
+    },
+    {
+      "member": "UCHIDA Shinichi",
+      "role": "Deputy Governor",
+      "tenure": "20 Mar 2023 – 19 Mar 2028",
+      "dissents": "0",
+      "kind": "none",
+      "record": "Voted with the majority throughout; fronted Jun 2026 presser.",
+      "lean": "Neutral",
+      "active": true,
+      "remarks": [
+        {
+          "date": "16 Jun 2026",
+          "source": "BOJ Post-Meeting Press Conference (hosted for hospitalized Governor Ueda)",
+          "comment": "Policymakers will conduct policy so as to avoid falling behind the curve; BOJ is watching not only real interest rates but also overall conditions. Even with the rate hike, financial conditions remain accommodative and the policy rate continues to support the economy. It has become a trend that wages and prices rise together, which is a positive factor for the economy. Yen depreciation is increasingly influencing price trends, making it a crucial part of monetary policy decision-making. There is a substantial range in neutral rate estimates, making it hard to specify in practice; without knowing exactly what the neutral rate is, it is hard to know how much more the BOJ has to raise rates."
+        }
+      ]
+    },
+    {
+      "member": "TAMURA Naoki",
+      "role": "Board Member",
+      "tenure": "24 Jul 2022 – 23 Jul 2027",
+      "dissents": "4 hawkish",
+      "kind": "hawk",
+      "record": "Dec 2024: proposed 0.5% · Jun 2025: opposed slowing the JGB taper · Sep & Oct 2025: proposed 0.75% · Jul 2026: voted with the majority to hold (no dissent).",
+      "lean": "Strong hawk",
+      "active": true,
+      "remarks": [
+        {
+          "date": "25 Jun 2026",
+          "source": "Speech — Meeting with Local Businesses, Hyogo",
+          "comment": "The baseline path is to raise the interest rate by a quarter percentage point at intervals of a few months toward the neutral interest rate level of 2%; the BOJ needs to raise rates every few months and should quicken the pace given stronger inflation risks. No rapid fire hikes are needed now. Need to hike rates to neutral to avoid an overshoot. Should search for the neutral level while hiking rates, but it's hard to pinpoint the level of neutral rate."
+        }
+      ]
+    },
+    {
+      "member": "TAKATA Hajime",
+      "role": "Board Member",
+      "tenure": "24 Jul 2022 – 23 Jul 2027",
+      "dissents": "5 hawkish",
+      "kind": "hawk",
+      "record": "Sep & Oct 2025: proposed 0.75% · Jan 2026: proposed 1.0% · Mar 2026: proposed a hike · Jul 2026: dissented at the hold, proposing 1.25% (defeated 8–1).",
+      "lean": "Escalating hawk — lone dissenter",
+      "active": true,
+      "remarks": [
+        {
+          "date": "27 Feb 2026",
+          "source": "Public Remarks / Speech",
+          "comment": "Delivered hawkish remarks, warning that a global recovery and rate hikes could lead to the risk of unintentionally falling behind the curve."
+        }
+      ]
+    },
+    {
+      "member": "KOEDA Junko",
+      "role": "Board Member",
+      "tenure": "26 Mar 2025 – 25 Mar 2030",
+      "dissents": "0",
+      "kind": "none",
+      "record": "Voted with the majority since joining.",
+      "lean": "Neutral-Hawkish",
+      "active": true,
+      "remarks": [
+        {
+          "date": "21 May 2026",
+          "source": "Speech — Meeting with Local Business Leaders, Fukuoka + Post-Speech Press Briefing",
+          "comment": "Underlying inflation is already around 2%; sees some possibility that underlying inflation may exceed 2% looking ahead given the Middle East situation. It is reasonable for the BOJ to raise the policy interest rate at an appropriate pace to address high inflation while considering trade-offs for the economy. The role of monetary policy in responding to inflation is increasing. Authorities continue to monitor upside risks for prices and downside risks for the economy; sees bigger risks for prices. BOJ will set monetary policy in a manner that ensures it won't fall behind the curve in fighting inflation. Notes that the lower band of the neutral rate for Japan is around 1%."
+        }
+      ]
+    },
+    {
+      "member": "MASU Kazuyuki",
+      "role": "Board Member",
+      "tenure": "1 Jul 2025 – 30 Jun 2030",
+      "dissents": "0",
+      "kind": "none",
+      "record": "Voted with the majority since joining.",
+      "lean": "Neutral",
+      "active": true,
+      "remarks": [
+        {
+          "date": "6 Feb 2026",
+          "source": "Speech — Meeting with Local Business Leaders",
+          "comment": "BOJ needs to continue raising its benchmark interest rate to complete the process of policy normalization; this would help end the situation where Japan and other countries are pursuing contrasting monetary policy directions. Although underlying inflation remains below 2%, it is on a rising trend. Not particularly desirable if the price trend stays above the 2% target. Does not have any specific pace in mind for when the BOJ should raise rates; will monitor economic data carefully when making policy decisions; the central bank won't hesitate to move its policy rate when convinced by examining economic data."
+        },
+        {
+          "date": "14 May 2026",
+          "source": "Speech — Business Conference, Kagoshima",
+          "comment": "If statistical data do not indicate clear signs of an economic downturn, it is desirable to raise the policy rate at the earliest stage possible. Further rate hikes are needed to complete policy normalization."
+        }
+      ]
+    },
+    {
+      "member": "ASADA Toichiro",
+      "role": "Board Member",
+      "tenure": "1 Apr 2026 – 31 Mar 2031",
+      "dissents": "1 dovish",
+      "kind": "dove",
+      "record": "Jun 2026: sole dissent against the hike to 1.00% (preferred to hold) · Jul 2026: voted with the majority to hold.",
+      "lean": "Dovish, reflationist-leaning",
+      "active": true
+    },
+    {
+      "member": "SATO Ayano",
+      "role": "Board Member",
+      "tenure": "30 Jun 2026 – 29 Jun 2031",
+      "dissents": "0",
+      "kind": "none",
+      "record": "Joined end-June 2026 (replaced Nakagawa). Jul 2026: cast her first vote, siding with the 8–1 majority to hold at 1.00%. Reported reflationist lean.",
+      "lean": "Expected dovish",
+      "active": true,
+      "remarks": [
+        {
+          "date": "30 Jun 2026",
+          "source": "First Press Conference as BOJ Policymaker",
+          "comment": "There is some evidence emerging that suggests currency fluctuations are having a larger impact on prices than before."
+        },
+        {
+          "date": "8 Jul 2026",
+          "source": "Public Remarks / Speech",
+          "comment": "Accommodative monetary conditions exist if the policy rate is below the neutral rate, restrictive if above; noted the neutral rate is not directly observable. Found it difficult to definitively state whether upside risks to prices or downside risks to the economy were greater — a stance considered slightly more dovish than Governor Ueda's June 3 speech. FX movements could affect underlying inflation with both positive and negative effects, but preferred not to comment further in her capacity as a Board member. Did not offer specific views on monetary conditions or economic risks, avoided mentioning exchange rates, and did not express definite views on rate hikes or suggest she was a reflationist."
+        }
+      ]
+    },
+    {
+      "member": "NAKAGAWA Junko",
+      "role": "Board Member (departed)",
+      "tenure": "30 Jun 2021 – 29 Jun 2026",
+      "dissents": "0",
+      "kind": "none",
+      "record": "No formal dissents; reportedly urged a hike at the Apr 2026 hold.",
+      "lean": "Centrist",
+      "active": false
+    },
+    {
+      "member": "NOGUCHI Asahi",
+      "role": "Board Member (departed)",
+      "tenure": "1 Apr 2021 – 31 Mar 2026",
+      "dissents": "1 dovish",
+      "kind": "dove",
+      "record": "Jul 2024: dissented against the hike to 0.25%.",
+      "lean": "Softening dove",
+      "active": false
+    },
+    {
+      "member": "NAKAMURA Toyoaki",
+      "role": "Board Member (departed)",
+      "tenure": "1 Jul 2020 – 30 Jun 2025",
+      "dissents": "2 dovish",
+      "kind": "dove",
+      "record": "Jul 2024 and Jan 2025: dissented against the hikes.",
+      "lean": "Dove",
+      "active": false
+    },
+    {
+      "member": "ADACHI Seiji",
+      "role": "Board Member (departed)",
+      "tenure": "26 Mar 2020 – 25 Mar 2025",
+      "dissents": "0",
+      "kind": "none",
+      "record": "Dovish rhetoric but voted with the majority in window.",
+      "lean": "Dove",
+      "active": false
+    }
+  ],
+  "timeline": [
+    {
+      "date": "Apr 4, 2013",
+      "kind": "event",
+      "text": "Kuroda launches QQE (\"bazooka\"): 2% inflation target, JGB purchases doubled to ¥50tn/yr, monetary base targeted to double in 2 years."
+    },
+    {
+      "date": "Oct 31, 2014",
+      "kind": "dove",
+      "text": "QQE expanded (\"Halloween easing\"): annual JGB purchases raised to ~¥80tn and ETF/J-REIT purchases tripled. The same day, GPIF unveils its landmark reallocation — domestic bonds cut from 60% to 35%, domestic and foreign equities sharply raised — structurally shrinking the bond bid of the JGB market's largest holder."
+    },
+    {
+      "date": "Jan 29, 2016",
+      "kind": "dove",
+      "text": "NIRP introduced: BOJ adopts −0.1% policy rate on excess reserves — first negative rate in BOJ history."
+    },
+    {
+      "date": "Sep 21, 2016",
+      "kind": "event",
+      "text": "YCC introduced: BOJ targets 10-year JGB yield at ~0% alongside −0.1% short rate; marks shift from quantity- to rate-based QE."
+    },
+    {
+      "date": "Jul 31, 2018",
+      "kind": "event",
+      "text": "YCC made flexible: BOJ widens the tolerated 10Y band to about ±0.2% and adopts forward guidance — the first step in the gradual YCC loosening that ran through 2022–24."
+    },
+    {
+      "date": "Dec 20, 2022",
+      "kind": "event",
+      "text": "YCC band shock-widened from ±0.25% to ±0.5%: surprise move under Kuroda, widely seen as de facto tightening; 10Y yield surges."
+    },
+    {
+      "date": "Jul 28, 2023",
+      "kind": "event",
+      "text": "YCC upper limit raised to 1.0% (reference point, not hard cap): Ueda's first major tweak; 10Y yield allowed to drift toward 1%."
+    },
+    {
+      "date": "Mar 19, 2024",
+      "kind": "hike",
+      "text": "Historic pivot: NIRP ended (rate +0→0.1%), YCC formally scrapped, ETF new purchases halted — first rate hike since 2007 and end of 8 years of negative rates."
+    },
+    {
+      "date": "Jul 31, 2024",
+      "kind": "hike",
+      "text": "Rate raised to 0.25%; JGB purchase-reduction plan announced."
+    },
+    {
+      "date": "Aug 5–7, 2024",
+      "kind": "dove",
+      "text": "Global market rout; Deputy Governor Uchida calms markets — no hikes while markets are unstable."
+    },
+    {
+      "date": "Jan 24, 2025",
+      "kind": "hike",
+      "text": "Rate raised to 0.5% (highest since 2008), after Himino's and Ueda's signaling."
+    },
+    {
+      "date": "Apr 2025",
+      "kind": "event",
+      "text": "US tariff shock: Outlook Report cuts FY25 growth forecast from 1.1% to 0.5%; hiking cycle pauses."
+    },
+    {
+      "date": "Jun–Sep 2025",
+      "kind": "event",
+      "text": "JGB taper extended at gentler pace from Apr 2026; ETF/J-REIT sales decided (Sep). Jul: Japan–US trade agreement."
+    },
+    {
+      "date": "Oct 2025",
+      "kind": "event",
+      "text": "Takaichi government takes office; Oct Outlook: FY25 CPI 2.7%, FY26 1.8%, FY27 2.0%."
+    },
+    {
+      "date": "Dec 19, 2025",
+      "kind": "hike",
+      "text": "Rate raised to 0.75% (unanimous) — first hike in 11 months; 10-year JGB yield tops 2%."
+    },
+    {
+      "date": "Jan 2026",
+      "kind": "event",
+      "text": "Jan Outlook restores pre-tariff forecasts — growth and inflation projections marked back up after the tariff-driven cuts; policy held at 0.75%."
+    },
+    {
+      "date": "Jan 23, 2026",
+      "kind": "event",
+      "text": "US–Japan rate check (yen): after the BOJ held at 0.75%, an unusual rate check by the NY Fed — echoed by finance officials in Tokyo — spiked the yen ~1.7% to ¥155.6, its biggest one-day jump since Aug and the year's strongest level. First sign of possible coordinated US–Japan action to defend the yen; ¥160 seen as the red line. MOF data (Jan 30) confirmed no actual intervention followed — verbal/rate-check warnings only."
+    },
+    {
+      "date": "Apr 28, 2026",
+      "kind": "event",
+      "text": "Hold at 0.75% amid Iran-war worries; inflation forecast raised."
+    },
+    {
+      "date": "Jun 16, 2026",
+      "kind": "hike",
+      "text": "Rate raised to 1.00% (7–1), highest since Sep 1995, amid yen weakness and FX intervention."
+    },
+    {
+      "date": "Jul 30, 2026",
+      "kind": "event",
+      "text": "US–Japan \"rate check\" + yen intervention: with USD/JPY at a four-decade low near ¥163, Japan bought yen and sold dollars in New York (its first intervention in ~3 months) while the US Treasury ran a rate check — Sec. Bessent called the yen \"very undervalued\" — a rare coordinated signal to stem yen weakness, two days before the Jul 31 MPM."
+    },
+    {
+      "date": "Jul 31, 2026",
+      "kind": "event",
+      "text": "Held at 1.00% (8–1). July Outlook trims FY2026 CPI on summer energy subsidies and upgrades the activity-risk assessment to 'generally balanced'; guidance to keep raising rates is retained. Ueda returns from illness; Sato votes for the first time."
+    },
+    {
+      "date": "Jul 31, 2026",
+      "kind": "event",
+      "text": "FT: US Treasury's first direct yen support since 2011 — the NY Fed sold euros to buy yen on behalf of the Treasury (via Goldman Sachs and Morgan Stanley), alongside Japan's own yen-buying in New York; the yen closed the week up over 1% against both the dollar and the euro."
+    }
+  ],
+  "mpm_calendar": [
+    {
+      "date": "Jul 30–31 (Thu–Fri)",
+      "event": "MPM — decision Jul 31",
+      "type": "MPM",
+      "relates": "—",
+      "notes": "Held at 1.00% by 8–1; Takata dissented (proposed 1.25%). First vote for Sato Ayano; Ueda returned from illness.",
+      "next": false
+    },
+    {
+      "date": "Jul 31 (Fri)",
+      "event": "Outlook Report (The Bank's View)",
+      "type": "Outlook",
+      "relates": "Jul MPM",
+      "notes": "Released Jul 31: FY2026 CPI trimmed on summer energy subsidies, activity risk upgraded to 'generally balanced'; full text 2pm next business day.",
+      "next": false
+    },
+    {
+      "date": "Aug 5 (Wed)",
+      "event": "Minutes",
+      "type": "Minutes",
+      "relates": "Jun 15–16 MPM",
+      "notes": "Full record of the 7–1 hike to 1.00%, incl. Asada's dissent.",
+      "next": false
+    },
+    {
+      "date": "Aug 10 (Mon)",
+      "event": "Summary of Opinions",
+      "type": "Opinions",
+      "relates": "Jul MPM",
+      "notes": "Unattributed member opinions; 8:50am JST.",
+      "next": false
+    },
+    {
+      "date": "Aug 27 (Thu)",
+      "event": "Speech — HIMINO Ryozo (Deputy Governor)",
+      "type": "Speech",
+      "relates": "—",
+      "notes": "\"Japan's Economy and Monetary Policy\" at a meeting with local leaders in Saitama. Himino has leaned more hawkish in tone lately (Jun 19: flagged risk of the price trend rising above the 2% target); watch for any signal on the Sep 17–18 MPM. Scheduled per BOJ's official upcoming-speeches page as of Aug 5, 2026 — not yet delivered.",
+      "next": false
+    },
+    {
+      "date": "Aug 31 – Sep 1 (Mon–Tue)",
+      "event": "G20 Finance Ministers & Central Bank Governors — Bessent/Ueda expected meeting",
+      "type": "Meeting",
+      "relates": "Sep MPM",
+      "notes": "Asheville, NC. Treasury Secretary Bessent has said he expects to meet Governor Ueda here (Bessent public remarks, confirmed via Reuters/Japan Today, Aug 1–5, 2026) — would be their first face-to-face since Bessent's repeated public calls for BOJ tightening. Reuters sources say a Bessent–Ueda meeting, if it happens, would make it ‘very hard for the BOJ to avoid raising rates in September.’ Lands ~2.5 weeks before the Sep 17–18 MPM. Not yet officially confirmed by the BOJ itself (BOJ previously denied a meeting took place on at least one earlier occasion, May 13, 2026) — flagged as expected/reported, not an officially scheduled BOJ event.",
+      "next": false
+    },
+    {
+      "date": "Sep 2 (Wed)",
+      "event": "Speech — TAKATA Hajime (Policy Board, hawk)",
+      "type": "Speech",
+      "relates": "—",
+      "notes": "\"Economic Activity, Prices, and Monetary Policy in Japan\" at a meeting with local leaders in Sapporo. Takata is the board's most hawkish voter — dissented at the Jul 30–31 MPM proposing a hike to 1.25% (vs. the 8–1 hold at 1.00%); this speech lands ~2 weeks before the Sep 17–18 MPM and is a key hawkish-tone check. Scheduled per BOJ's official upcoming-speeches page as of Aug 5, 2026 — not yet delivered.",
+      "next": false
+    },
+    {
+      "date": "Sep 10 (Thu)",
+      "event": "Speech — MASU Kazuyuki (Policy Board)",
+      "type": "Speech",
+      "relates": "—",
+      "notes": "\"Economic Activity, Prices, and Monetary Policy in Japan\" at a meeting with local leaders in Fukui. Scheduled per BOJ's official upcoming-speeches page (boj.or.jp/en/about/press) as of Aug 10, 2026 — not yet delivered. Lands ~1 week before the Sep 17–18 MPM, the last scheduled board speech before that decision.",
+      "next": false
+    },
+    {
+      "date": "Sep 17–18 (Thu–Fri)",
+      "event": "MPM — decision Sep 18",
+      "type": "MPM",
+      "relates": "—",
+      "notes": "No Outlook Report at this meeting.",
+      "next": true
+    },
+    {
+      "date": "Sep 28 (Mon)",
+      "event": "Minutes",
+      "type": "Minutes",
+      "relates": "Jul MPM",
+      "notes": "8:50am JST.",
+      "next": false
+    },
+    {
+      "date": "Oct 1 (Thu)",
+      "event": "Summary of Opinions",
+      "type": "Opinions",
+      "relates": "Sep MPM",
+      "notes": "8:50am JST.",
+      "next": false
+    },
+    {
+      "date": "Oct 1 (Thu)",
+      "event": "Tankan — September 2026 Survey",
+      "type": "Tankan",
+      "relates": "Oct MPM",
+      "notes": "Quarterly enterprise business-sentiment survey; 8:50am JST. Key input into the Oct 29–30 MPM & Outlook Report.",
+      "next": false
+    },
+    {
+      "date": "Oct 29–30 (Thu–Fri)",
+      "event": "MPM — decision Oct 30",
+      "type": "MPM",
+      "relates": "—",
+      "notes": "With Outlook Report (Oct 30).",
+      "next": false
+    },
+    {
+      "date": "Nov 5 (Thu)",
+      "event": "Minutes",
+      "type": "Minutes",
+      "relates": "Sep MPM",
+      "notes": "8:50am JST.",
+      "next": false
+    },
+    {
+      "date": "Nov 10 (Tue)",
+      "event": "Summary of Opinions",
+      "type": "Opinions",
+      "relates": "Oct MPM",
+      "notes": "8:50am JST.",
+      "next": false
+    },
+    {
+      "date": "~Dec 14 (Mon)",
+      "event": "Tankan — December 2026 Survey",
+      "type": "Tankan",
+      "relates": "Dec MPM",
+      "notes": "BOJ has not yet scheduled the exact date; typical mid-Dec slot (Dec 13 in '23 & '24, Dec 15 in '25). Lands just before the Dec 17–18 MPM.",
+      "next": false
+    },
+    {
+      "date": "Dec 17–18 (Thu–Fri)",
+      "event": "MPM — decision Dec 18",
+      "type": "MPM",
+      "relates": "—",
+      "notes": "Final meeting of 2026; no Outlook Report.",
+      "next": false
+    },
+    {
+      "date": "Dec 23 (Wed)",
+      "event": "Minutes",
+      "type": "Minutes",
+      "relates": "Oct MPM",
+      "notes": "8:50am JST.",
+      "next": false
+    },
+    {
+      "date": "Dec 28 (Mon)",
+      "event": "Summary of Opinions",
+      "type": "Opinions",
+      "relates": "Dec MPM",
+      "notes": "8:50am JST.",
+      "next": false
+    },
+    {
+      "date": "Jan 21–22 (Thu–Fri)",
+      "event": "MPM — decision Jan 22 · Outlook Report",
+      "type": "MPM",
+      "relates": "—",
+      "notes": "Summary of Opinions Feb 1; Minutes Mar 24.",
+      "next": false,
+      "_yr": "2027"
+    },
+    {
+      "date": "Mar 17–18 (Wed–Thu)",
+      "event": "MPM — decision Mar 18",
+      "type": "MPM",
+      "relates": "—",
+      "notes": "No Outlook Report. Summary of Opinions Mar 29; Minutes May 7.",
+      "next": false,
+      "_yr": "2027"
+    },
+    {
+      "date": "Apr 27–28 (Tue–Wed)",
+      "event": "MPM — decision Apr 28 · Outlook Report",
+      "type": "MPM",
+      "relates": "—",
+      "notes": "Summary of Opinions May 12; Minutes Jun 16.",
+      "next": false,
+      "_yr": "2027"
+    },
+    {
+      "date": "Jun 10–11 (Thu–Fri)",
+      "event": "MPM — decision Jun 11",
+      "type": "MPM",
+      "relates": "—",
+      "notes": "No Outlook Report. Summary of Opinions Jun 21; Minutes Jul 27.",
+      "next": false,
+      "_yr": "2027"
+    },
+    {
+      "date": "Jul 21–22 (Wed–Thu)",
+      "event": "MPM — decision Jul 22 · Outlook Report",
+      "type": "MPM",
+      "relates": "—",
+      "notes": "Summary of Opinions Jul 30; Minutes Sep 28.",
+      "next": false,
+      "_yr": "2027"
+    },
+    {
+      "date": "Jul 23, 2027 (Fri)",
+      "event": "Tamura & Takata terms expire",
+      "type": "Term",
+      "relates": "—",
+      "notes": "Both hawks remain eligible to vote at the Jul 21–22 MPM (their last meeting); Cabinet-appointed successors take over from Jul 24, 2027.",
+      "_yr": "2027",
+      "next": false
+    },
+    {
+      "date": "Sep 21–22 (Tue–Wed)",
+      "event": "MPM — decision Sep 22",
+      "type": "MPM",
+      "relates": "—",
+      "notes": "No Outlook Report. Summary of Opinions Oct 1; Minutes Nov 4.",
+      "next": false,
+      "_yr": "2027"
+    },
+    {
+      "date": "Oct 28–29 (Thu–Fri)",
+      "event": "MPM — decision Oct 29 · Outlook Report",
+      "type": "MPM",
+      "relates": "—",
+      "notes": "Summary of Opinions Nov 9; Minutes Dec 22.",
+      "next": false,
+      "_yr": "2027"
+    },
+    {
+      "date": "Dec 16–17 (Thu–Fri)",
+      "event": "MPM — decision Dec 17",
+      "type": "MPM",
+      "relates": "—",
+      "notes": "No Outlook Report. Summary of Opinions Dec 27; Minutes TBA.",
+      "next": false,
+      "_yr": "2027"
+    }
+  ],
+  "auctions": {
+    "July 2026": [
+      {
+        "date": "Jul 2 (Thu)",
+        "type": "Coupon",
+        "issue": "10-year",
+        "context": ""
+      },
+      {
+        "date": "Jul 3 (Fri)",
+        "type": "T-bill",
+        "issue": "Treasury Discount Bills (3-month)",
+        "context": ""
+      },
+      {
+        "date": "Jul 7 (Tue)",
+        "type": "Coupon",
+        "issue": "30-year",
+        "context": "Super-long supply amid post-hike curve repricing"
+      },
+      {
+        "date": "Jul 8 (Wed)",
+        "type": "T-bill",
+        "issue": "Treasury Discount Bills (6-month)",
+        "context": ""
+      },
+      {
+        "date": "Jul 9 (Thu)",
+        "type": "Coupon",
+        "issue": "5-year",
+        "context": ""
+      },
+      {
+        "date": "Jul 10 (Fri)",
+        "type": "T-bill",
+        "issue": "Treasury Discount Bills (3-month)",
+        "context": ""
+      },
+      {
+        "date": "Jul 14 (Tue)",
+        "type": "Coupon",
+        "issue": "20-year",
+        "context": ""
+      },
+      {
+        "date": "Jul 16 (Thu)",
+        "type": "T-bill",
+        "issue": "Treasury Discount Bills (1-year)",
+        "context": "Prices in the July MPM outcome"
+      },
+      {
+        "date": "Jul 16 (Thu)",
+        "type": "Liquidity",
+        "issue": "Liquidity Enhancement Auction (1–5y remaining)",
+        "context": ""
+      },
+      {
+        "date": "Jul 17 (Fri)",
+        "type": "T-bill",
+        "issue": "Treasury Discount Bills (3-month)",
+        "context": ""
+      },
+      {
+        "date": "Jul 22 (Wed)",
+        "type": "Coupon",
+        "issue": "40-year",
+        "context": "Longest tenor; key duration-demand test"
+      },
+      {
+        "date": "Jul 24 (Fri)",
+        "type": "T-bill",
+        "issue": "Treasury Discount Bills (3-month)",
+        "context": ""
+      },
+      {
+        "date": "Jul 28 (Tue)",
+        "type": "Liquidity",
+        "issue": "Liquidity Enhancement Auction (5–11y remaining)",
+        "context": ""
+      },
+      {
+        "date": "Jul 30 (Thu)",
+        "type": "T-bill",
+        "issue": "Treasury Discount Bills (3-month)",
+        "context": "MPM day 1 (Jul 30–31)"
+      },
+      {
+        "date": "Jul 30 (Thu)",
+        "type": "Coupon",
+        "issue": "2-year",
+        "context": "MPM day 1 — short end most exposed to the Jul 31 decision"
+      }
+    ],
+    "August 2026": [
+      {
+        "date": "Aug 4 (Tue)",
+        "type": "Coupon",
+        "issue": "10-year",
+        "context": "First 10y supply after the July MPM/Outlook"
+      },
+      {
+        "date": "Aug 6 (Thu)",
+        "type": "T-bill",
+        "issue": "Treasury Discount Bills (6-month)",
+        "context": ""
+      },
+      {
+        "date": "Aug 6 (Thu)",
+        "type": "Coupon",
+        "issue": "30-year",
+        "context": "Day after Jun-MPM Minutes (Aug 5)"
+      },
+      {
+        "date": "Aug 7 (Fri)",
+        "type": "T-bill",
+        "issue": "Treasury Discount Bills (3-month)",
+        "context": ""
+      },
+      {
+        "date": "Aug 12 (Wed)",
+        "type": "Linker",
+        "issue": "10-year Inflation-Indexed Bonds",
+        "context": "Breakeven read with CPI still near 2%+"
+      },
+      {
+        "date": "Aug 14 (Fri)",
+        "type": "T-bill",
+        "issue": "Treasury Discount Bills (3-month)",
+        "context": ""
+      },
+      {
+        "date": "Aug 14 (Fri)",
+        "type": "Liquidity",
+        "issue": "Liquidity Enhancement Auction (11–39y remaining)",
+        "context": ""
+      },
+      {
+        "date": "Aug 18 (Tue)",
+        "type": "Coupon",
+        "issue": "5-year",
+        "context": ""
+      },
+      {
+        "date": "Aug 19 (Wed)",
+        "type": "T-bill",
+        "issue": "Treasury Discount Bills (1-year)",
+        "context": ""
+      },
+      {
+        "date": "Aug 20 (Thu)",
+        "type": "Coupon",
+        "issue": "20-year",
+        "context": ""
+      },
+      {
+        "date": "Aug 21 (Fri)",
+        "type": "T-bill",
+        "issue": "Treasury Discount Bills (3-month)",
+        "context": ""
+      },
+      {
+        "date": "Aug 24 (Mon)",
+        "type": "GX",
+        "issue": "10-year Japan Climate Transition Bonds",
+        "context": ""
+      },
+      {
+        "date": "Aug 26 (Wed)",
+        "type": "Liquidity",
+        "issue": "Liquidity Enhancement Auction (5–11y remaining)",
+        "context": ""
+      },
+      {
+        "date": "Aug 28 (Fri)",
+        "type": "T-bill",
+        "issue": "Treasury Discount Bills (3-month)",
+        "context": ""
+      },
+      {
+        "date": "Aug 28 (Fri)",
+        "type": "Coupon",
+        "issue": "2-year",
+        "context": ""
+      }
+    ]
   },
-  "note": "y/y % change. Bold figure = Policy Board median (point estimate); the small line is the range of the majority's forecasts. FY2025 is now treated as actual and dropped from the Bank's July appendix. Japanese fiscal years run Apr–Mar.",
-  "source": "Bank of Japan, \"Outlook for Economic Activity and Prices\" (July 2026 and April 2026), Appendix — forecasts of the majority of the Policy Board members.",
-  "history": {
-   "reports": [
-    "Oct 2024",
-    "Jan 2025",
-    "Apr 2025",
-    "Jul 2025",
-    "Oct 2025",
-    "Jan 2026",
-    "Apr 2026",
-    "Jul 2026"
-   ],
-   "gdp": {
-    "FY2025": [
-     1.1,
-     1.1,
-     0.5,
-     0.6,
-     0.7,
-     0.9,
-     1.0,
-     null
+  "fiscal": [
+    {
+      "timing": "Early Jul 2026",
+      "event": "FY2025 final tax-revenue settlement (MOF)",
+      "relevance": "Revenue outturn frames the scale of any autumn supplementary budget.",
+      "hot": true
+    },
+    {
+      "timing": "Aug 31, 2026",
+      "event": "Ministries' FY2027 budget requests submitted to MOF",
+      "relevance": "First indication of spending pressure under the Takaichi administration.",
+      "hot": false
+    },
+    {
+      "timing": "Oct–Dec 2026",
+      "event": "Supplementary budget window",
+      "relevance": "A package on the scale of the 2025 'Comprehensive Economic Measures' would imply additional JGB issuance.",
+      "hot": false
+    },
+    {
+      "timing": "Mid-Dec 2026",
+      "event": "Ruling-party tax reform outline for FY2027",
+      "relevance": "Sets the revenue side of the budget; signals the fiscal stance.",
+      "hot": false
+    },
+    {
+      "timing": "Late Dec 2026",
+      "event": "FY2027 draft budget & FY2027 JGB Issuance Plan (cabinet approval)",
+      "relevance": "Determines gross issuance and maturity mix; coincides with BOJ deliberations on its post-Apr 2027 purchase plan — fiscal and monetary calendars intersect.",
+      "hot": true
+    },
+    {
+      "timing": "Jan 2027",
+      "event": "Ordinary Diet session convenes",
+      "relevance": "Budget deliberations begin; political friction can delay passage.",
+      "hot": false
+    },
+    {
+      "timing": "By end-Mar 2027",
+      "event": "FY2027 budget passage",
+      "relevance": "Required before the fiscal year starts April 1.",
+      "hot": false
+    },
+    {
+      "timing": "Jun 2027",
+      "event": "Basic Policy on Economic and Fiscal Management ('honebuto')",
+      "relevance": "Sets the medium-term fiscal framework, incl. the primary-balance target.",
+      "hot": false
+    },
+    {
+      "timing": "Ad hoc",
+      "event": "MOF meetings with JGB Market Special Participants / investors",
+      "relevance": "Typically precede issuance-mix changes; moved markets during the 2025 super-long selloff.",
+      "hot": false
+    },
+    {
+      "timing": "Ad hoc",
+      "event": "Sovereign rating reviews",
+      "relevance": "Sustained stimulus raises the salience of rating commentary for the long end.",
+      "hot": false
+    }
+  ],
+  "press_conferences": [
+    {
+      "date": "2025-12-19",
+      "display": "18–19 Dec 2025",
+      "decision": "Hike to 0.75%",
+      "vote": "9–0 (unanimous)",
+      "presider": "Governor UEDA Kazuo",
+      "note": "",
+      "file": "2025-12-19.md"
+    },
+    {
+      "date": "2026-01-23",
+      "display": "22–23 Jan 2026",
+      "decision": "Hold at 0.75%",
+      "vote": "8–1 (Takata dissented for 1.0%)",
+      "presider": "Governor UEDA Kazuo",
+      "note": "",
+      "file": "2026-01-23.md"
+    },
+    {
+      "date": "2026-03-19",
+      "display": "18–19 Mar 2026",
+      "decision": "Hold at 0.75%",
+      "vote": "8–1 (Takata dissented for hike)",
+      "presider": "Governor UEDA Kazuo",
+      "note": "",
+      "file": "2026-03-19.md"
+    },
+    {
+      "date": "2026-04-28",
+      "display": "27–28 Apr 2026",
+      "decision": "Hold at 0.75%",
+      "vote": "6–3 (Nakagawa, Takata, Tamura dissented for hike)",
+      "presider": "Governor UEDA Kazuo",
+      "note": "",
+      "file": "2026-04-28.md"
+    },
+    {
+      "date": "2026-06-16",
+      "display": "15–16 Jun 2026",
+      "decision": "Hike to 1.00%",
+      "vote": "7–1 (Asada dissented for hold)",
+      "presider": "Deputy Governor UCHIDA Shinichi",
+      "note": "Ueda absent (hospitalised). Presser fronted by Uchida.",
+      "file": "2026-06-16.md"
+    },
+    {
+      "date": "2026-07-31",
+      "display": "30–31 Jul 2026",
+      "decision": "Hold at 1.00%",
+      "vote": "8–1 (Takata dissented for a hike to 1.25%)",
+      "presider": "Governor UEDA Kazuo",
+      "note": "Ueda back from illness; Sato's first vote (with majority). July Outlook trims FY2026 CPI on govt energy subsidies and upgrades activity risk to 'generally balanced'; overshoot-2% warning retained. Presser: risk factors for timing/pace expanded from one to three (Middle East, AI, FX); Kumamoto earthquake and Apr-2027 food consumption-tax cut both flagged; Takata and Tamura alternative-language proposals both defeated.",
+      "file": "2026-07-31.md"
+    }
+  ],
+  "forecasts": {
+    "as_of": "July 2026 Outlook Report",
+    "decided": "Decided at the MPM held July 30–31, 2026 · policy rate held at 1.00%. Each column shows one Outlook Report's Policy Board median with its revision from the prior report: July vs April, and April vs January.",
+    "table": [
+      {
+        "fy": "FY2026",
+        "gdp": {
+          "jul": 0.6,
+          "apr": 0.5,
+          "jan": 1.0,
+          "jul_r": "+0.6 to +0.7",
+          "apr_r": "+0.4 to +0.7"
+        },
+        "cpi": {
+          "jul": 2.5,
+          "apr": 2.8,
+          "jan": 1.9,
+          "jul_r": "+2.3 to +2.7",
+          "apr_r": "+2.8 to +3.0"
+        },
+        "core": {
+          "jul": 2.5,
+          "apr": 2.6,
+          "jan": 2.2,
+          "jul_r": "+2.3 to +2.6",
+          "apr_r": "+2.5 to +2.7"
+        }
+      },
+      {
+        "fy": "FY2027",
+        "gdp": {
+          "jul": 0.8,
+          "apr": 0.7,
+          "jan": 0.8,
+          "jul_r": "+0.7 to +0.8",
+          "apr_r": "+0.6 to +0.8"
+        },
+        "cpi": {
+          "jul": 2.4,
+          "apr": 2.3,
+          "jan": 2.0,
+          "jul_r": "+2.2 to +2.5",
+          "apr_r": "+2.3 to +2.4"
+        },
+        "core": {
+          "jul": 2.6,
+          "apr": 2.6,
+          "jan": 2.1,
+          "jul_r": "+2.2 to +2.7",
+          "apr_r": "+2.6 to +2.7"
+        }
+      },
+      {
+        "fy": "FY2028",
+        "gdp": {
+          "jul": 0.8,
+          "apr": 0.8,
+          "jan": null,
+          "jul_r": "+0.7 to +0.8",
+          "apr_r": "+0.7 to +0.8"
+        },
+        "cpi": {
+          "jul": 2.0,
+          "apr": 2.0,
+          "jan": null,
+          "jul_r": "+2.0 to +2.2",
+          "apr_r": "+2.0 to +2.2"
+        },
+        "core": {
+          "jul": 2.2,
+          "apr": 2.2,
+          "jan": null,
+          "jul_r": "+2.1 to +2.3",
+          "apr_r": "+2.1 to +2.4"
+        }
+      }
     ],
-    "FY2026": [
-     1.0,
-     1.0,
-     0.7,
-     0.7,
-     0.7,
-     1.0,
-     0.5,
-     0.6
-    ],
-    "FY2027": [
-     null,
-     null,
-     1.0,
-     1.0,
-     1.0,
-     0.8,
-     0.7,
-     0.8
-    ],
-    "FY2028": [
-     null,
-     null,
-     null,
-     null,
-     null,
-     null,
-     0.8,
-     0.8
-    ]
-   },
-   "cpi": {
-    "FY2025": [
-     1.9,
-     2.4,
-     2.2,
-     2.7,
-     2.7,
-     2.7,
-     2.7,
-     null
-    ],
-    "FY2026": [
-     1.9,
-     2.0,
-     1.7,
-     1.8,
-     1.8,
-     1.9,
-     2.8,
-     2.5
-    ],
-    "FY2027": [
-     null,
-     null,
-     1.9,
-     2.0,
-     2.0,
-     2.0,
-     2.3,
-     2.4
-    ],
-    "FY2028": [
-     null,
-     null,
-     null,
-     null,
-     null,
-     null,
-     2.0,
-     2.0
-    ]
-   },
-   "core": {
-    "FY2025": [
-     1.9,
-     2.1,
-     2.3,
-     2.8,
-     2.8,
-     3.0,
-     3.0,
-     null
-    ],
-    "FY2026": [
-     2.1,
-     2.1,
-     1.8,
-     1.9,
-     2.0,
-     2.2,
-     2.6,
-     2.5
-    ],
-    "FY2027": [
-     null,
-     null,
-     2.0,
-     2.0,
-     2.0,
-     2.1,
-     2.6,
-     2.6
-    ],
-    "FY2028": [
-     null,
-     null,
-     null,
-     null,
-     null,
-     null,
-     2.2,
-     2.2
-    ]
-   }
+    "risk": {
+      "jul": {
+        "prices": "Skewed to the upside — with underlying CPI approaching 2%, there is a risk it deviates above the 2% target as firms shift further toward raising wages and prices and medium- to long-term inflation expectations keep rising.",
+        "prices_dir": "up",
+        "activity": "Generally balanced — the crude-oil / Middle East drag on profits and real income is offset by government energy-relief measures, high corporate profits, solid wage gains and strong global AI-related demand.",
+        "activity_dir": "bal",
+        "target_timing": "Underlying CPI seen reaching a level generally consistent with the 2% target between H2 FY2026 and FY2027, and remaining around that level thereafter."
+      },
+      "apr": {
+        "prices": "Skewed to the upside, particularly for FY2026 — crude-oil / Middle East pass-through into energy and goods, continued wage-to-price pass-through, and medium- to long-term inflation expectations near 2%.",
+        "prices_dir": "up",
+        "activity": "Skewed to the downside — higher crude-oil prices weigh on corporate profits and real income via the terms of trade; partly cushioned by high corporate profits, solid wage gains and government energy-relief measures.",
+        "activity_dir": "down",
+        "target_timing": "Underlying CPI seen reaching a level generally consistent with the 2% target between H2 FY2026 and FY2027."
+      },
+      "forward": "Key shift in July: the Board upgraded economic-activity risks from 'skewed to the downside' (April, on the crude-oil shock) to 'generally balanced', while CPI risks stay skewed to the upside. FY2026 headline CPI was trimmed mainly on the government's summer energy subsidies (electricity/gas); GDP is essentially unchanged. Guidance retained: the Bank 'will continue to raise the policy interest rate' if its outlook is realised, weighing the timing and pace against Middle East, AI-demand and FX risks."
+    },
+    "note": "y/y % change. Bold figure = Policy Board median (point estimate); the small line is the range of the majority's forecasts. FY2025 is now treated as actual and dropped from the Bank's July appendix. Japanese fiscal years run Apr–Mar.",
+    "source": "Bank of Japan, \"Outlook for Economic Activity and Prices\" (July 2026 and April 2026), Appendix — forecasts of the majority of the Policy Board members.",
+    "history": {
+      "reports": [
+        "Oct 2024",
+        "Jan 2025",
+        "Apr 2025",
+        "Jul 2025",
+        "Oct 2025",
+        "Jan 2026",
+        "Apr 2026",
+        "Jul 2026"
+      ],
+      "gdp": {
+        "FY2025": [
+          1.1,
+          1.1,
+          0.5,
+          0.6,
+          0.7,
+          0.9,
+          1.0,
+          null
+        ],
+        "FY2026": [
+          1.0,
+          1.0,
+          0.7,
+          0.7,
+          0.7,
+          1.0,
+          0.5,
+          0.6
+        ],
+        "FY2027": [
+          null,
+          null,
+          1.0,
+          1.0,
+          1.0,
+          0.8,
+          0.7,
+          0.8
+        ],
+        "FY2028": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          0.8,
+          0.8
+        ]
+      },
+      "cpi": {
+        "FY2025": [
+          1.9,
+          2.4,
+          2.2,
+          2.7,
+          2.7,
+          2.7,
+          2.7,
+          null
+        ],
+        "FY2026": [
+          1.9,
+          2.0,
+          1.7,
+          1.8,
+          1.8,
+          1.9,
+          2.8,
+          2.5
+        ],
+        "FY2027": [
+          null,
+          null,
+          1.9,
+          2.0,
+          2.0,
+          2.0,
+          2.3,
+          2.4
+        ],
+        "FY2028": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          2.0,
+          2.0
+        ]
+      },
+      "core": {
+        "FY2025": [
+          1.9,
+          2.1,
+          2.3,
+          2.8,
+          2.8,
+          3.0,
+          3.0,
+          null
+        ],
+        "FY2026": [
+          2.1,
+          2.1,
+          1.8,
+          1.9,
+          2.0,
+          2.2,
+          2.6,
+          2.5
+        ],
+        "FY2027": [
+          null,
+          null,
+          2.0,
+          2.0,
+          2.0,
+          2.1,
+          2.6,
+          2.6
+        ],
+        "FY2028": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          2.2,
+          2.2
+        ]
+      }
+    }
   }
- }
 }

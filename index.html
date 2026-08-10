@@ -46,10 +46,7 @@
   .mbcard canvas{max-height:270px}
   #tab-nisa .kpi .d{font-size:11.5px;margin-top:5px;font-weight:600}
   #tab-nisa .d.up{color:#4cba7a} #tab-nisa .d.flat{color:var(--muted)}
-  #tab-approval .kpi .d{font-size:11.5px;margin-top:5px;font-weight:600}
-  #tab-approval .d.up{color:#4cba7a} #tab-approval .d.down{color:var(--hawk2)} #tab-approval .d.flat{color:var(--muted)}
-  #tab-approval .pdot{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:7px;vertical-align:middle}
-  #tab-approval td.num{text-align:right;font-variant-numeric:tabular-nums}
+  #tab-gpif .gpif-up{color:#4cba7a;font-weight:600} #tab-gpif .gpif-down{color:var(--hawk2);font-weight:600} #tab-gpif .gpif-flat{color:var(--muted)}
   .npill{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 9px;border-radius:20px;background:rgba(217,164,65,.16);color:var(--accent)}
   /* forecasts tab */
   #fcTable{table-layout:fixed;width:100%}
@@ -123,6 +120,8 @@
   .c-min{background:rgba(185,194,212,.15);color:var(--neutral)}
   .c-tan{background:rgba(88,186,140,.18);color:#58ba8c}
   .c-term{background:rgba(160,120,220,.20);color:#b79ae8}
+  .c-spe{background:rgba(95,201,217,.18);color:#5fc9d9}
+  .c-meet{background:rgba(226,86,74,.18);color:var(--hawk)}
   /* timeline */
   .tl{margin-left:8px;padding-left:22px;border-left:2px solid var(--line)}
   .ev{position:relative;padding:0 0 16px}
@@ -238,6 +237,7 @@
   <h1>Japan Macro Monitoring</h1>
 </div>
 <p class="asof" id="asof"></p>
+<p class="asof" id="staleBadgeTop" style="display:none;cursor:pointer" onclick="showTab('dashboard', document.querySelector('.tabs .tab'))" title="Click to jump to the Data source status table on the Dashboard tab"></p>
 
 <div class="tabs">
   <button class="tab active" onclick="showTab('dashboard',this)">Dashboard</button>
@@ -246,13 +246,15 @@
   <button class="tab" onclick="showTab('pressconferences',this)">Press conferences</button>
   <button class="tab" onclick="showTab('superlong',this)">JSDA</button>
   <button class="tab" onclick="showTab('crossborder',this)">Cross-border flows</button>
+  <button class="tab" onclick="showTab('gpif',this)">GPIF</button>
   <button class="tab" onclick="showTab('intervention',this)">Intervention</button>
+  <button class="tab" onclick="showTab('balancesheet',this)" style="display:none" data-hidden="pending-nisa-review-2026-08-10">BOJ Balance Sheet</button>
   <button class="tab" onclick="showTab('calendar',this)">BOJ calendar</button>
   <button class="tab" onclick="showTab('auctions',this)">Auctions &amp; fiscal</button>
   <button class="tab" onclick="showTab('news',this)">News</button>
   <button class="tab" onclick="showTab('markets',this)">Markets &amp; bonds</button>
+  <button class="tab" onclick="showTab('seasonality',this)">Seasonality</button>
   <button class="tab" onclick="showTab('nisa',this)" style="display:none" data-hidden="redesign">NISA</button>
-  <button class="tab" onclick="showTab('approval',this)" style="display:none" data-hidden="rework">Approval ratings</button>
   <button class="tab" onclick="showTab('method',this)">Methodology</button>
 </div>
 
@@ -336,13 +338,17 @@
     <div class="grid2">
       <div class="card full">
         <h2>JGB yield curve <span id="curveStatus"></span></h2>
-        <canvas id="cCurve" style="max-height:300px"></canvas>
-        <div class="note" id="curveNote"></div>
-      </div>
-      <div class="card full">
-        <h2>JGB yields over time <span id="jgbHistStatus"></span></h2>
-        <canvas id="cJgbHist" style="max-height:300px"></canvas>
-        <div class="note">2Y, 10Y, 30Y benchmark yields. Source: MOF daily publication.</div>
+        <div style="display:grid;grid-template-columns:1.15fr 1fr;gap:20px;align-items:stretch;height:520px">
+          <div style="display:flex;flex-direction:column;height:100%;min-height:0">
+            <div style="flex:1;position:relative;min-height:0"><canvas id="cCurve" style="max-height:none"></canvas></div>
+            <div class="note" id="curveNote" style="margin-top:8px"></div>
+          </div>
+          <div style="display:flex;flex-direction:column;height:100%;min-height:0">
+            <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-bottom:8px">Change by tenor (bp)</div>
+            <div style="flex:1;min-height:0;overflow-y:auto"><table id="jgbBpTable"></table></div>
+            <div class="note" id="jgbBpNote" style="margin-top:8px"></div>
+          </div>
+        </div>
       </div>
       <div class="card">
         <h2>USD/JPY <span id="fxStatus"></span></h2>
@@ -406,6 +412,41 @@
     </div>
   </div>
 
+  <!-- SEASONALITY -->
+  <div id="tab-seasonality" class="panel">
+    <div class="card full">
+      <h2>JGB seasonality &amp; back-tested hit rates</h2>
+      <div class="sub" style="margin:0 0 4px">
+        Calendar-month seasonality across the JGB curve (2Y–40Y outright) and five curve spreads (2s10s, 2s30s, 5s30s, 10s30s, 20s30s),
+        6 years of MOF daily yields (2021–2026). For each series, months are flagged long/short when their average change vs. all other months
+        clears a |t|≥1.3 threshold; the resulting rule is backtested daily net of a flat 3bp (outright) / 1.5bp (curve) round-trip cost.
+        <b>Annual hit rate</b> = share of the 6 calendar years the strategy's cumulative P&amp;L was net positive (a stricter bar than the daily win rate).
+        Scope is deliberately JGB outright + curve only — an ASW/OIS-swap version was considered but excluded, as there's no reliable free
+        swap-curve data source for it.
+      </div>
+      <div class="note" id="seasStatus" style="margin-top:6px"></div>
+    </div>
+
+    <div class="grid2" style="margin-top:16px">
+      <div class="card full">
+        <h2>Outright — by tenor</h2>
+        <div style="overflow-x:auto"><table id="seasOutrightTable"></table></div>
+      </div>
+      <div class="card full">
+        <h2>Curve spreads</h2>
+        <div style="overflow-x:auto"><table id="seasCurveTable"></table></div>
+      </div>
+    </div>
+
+    <div class="card full" style="margin-top:16px">
+      <h2>Calendar-month heatmap (bp change, month-start → month-end)</h2>
+      <div id="seasHeatPicker" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px"></div>
+      <div style="overflow-x:auto"><table id="seasHeatTable"></table></div>
+      <div class="note" id="seasHeatNote" style="margin-top:8px"></div>
+    </div>
+
+  </div>
+
   <!-- SUPER-LONG DEMAND -->
   <div id="tab-superlong" class="panel">
     <div class="card full">
@@ -460,6 +501,10 @@
 
   <!-- CROSS-BORDER FLOWS (MoF) -->
   <div id="tab-crossborder" class="panel">
+    <div style="margin-bottom:.8rem">
+      <h1 style="font-size:1.05rem;color:var(--ink)">Outward — Japanese residents buying foreign assets</h1>
+      <div class="sub" style="margin-top:.15rem">Japan &rarr; abroad. Positive = net buying (yen outflow); negative = net selling / repatriation.</div>
+    </div>
     <div class="card full">
       <h2>Japanese investors' net purchase of foreign equity &amp; bonds — by investor type <span id="xbStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
       <div class="sub">Residents' monthly net purchase of <b>foreign equity &amp; investment fund shares, long-term bonds, and short-term bonds</b>, stacked by instrument, by investor type — the mirror image of the JSDA JGB-by-player data: same players, but buying abroad instead of at home. The line is the net total across all three instruments. Positive = net buying (yen outflow); negative = net selling / repatriation. Source: MoF International Transactions in Securities (対外証券投資: 株式・投資ファンド持分 / 中長期債 / 短期債), monthly; USD converted at each month's USDJPY.</div>
@@ -477,7 +522,12 @@
         </div>
       </div>
     </div>
-    <div id="xbGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px">
+    <div class="card full" style="margin-top:16px">
+      <h2>Net purchases of foreign securities — by investor type, combined <span id="xbAllStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">All investor buckets stacked into one chart — the same monthly net-purchase series (equity + LT + ST bonds) as the four panels below, but combined so the relative size of each investor type is visible at a glance. White line = total across all investors. Source: MoF International Transactions in Securities, monthly.</div>
+      <canvas id="cXbAll" style="max-height:380px;margin-top:12px"></canvas>
+    </div>
+    <div id="xbGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px">
       <div class="mbcard"><h3 id="xbTitle_banks"></h3><canvas id="cXb_banks"></canvas></div>
       <div class="mbcard"><h3 id="xbTitle_trust_bank"></h3><canvas id="cXb_trust_bank"></canvas></div>
       <div class="mbcard"><h3 id="xbTitle_trust_pension"></h3><canvas id="cXb_trust_pension"></canvas></div>
@@ -505,21 +555,172 @@
       </div>
     </div>
     <div class="card full" style="margin-top:16px">
+      <h2>Where Japan buys foreign sovereign bonds — by destination <span id="bopOutStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">Residents' monthly net purchase of foreign sovereign bonds (¥bn), stacked by destination country — where the yen outflow is going. The white line is the total across all countries. Source: Bank of Japan Time-Series Data Search — Balance of Payments, sovereign bonds by country (net), the continuously-revised database (matches sell-side research); MoF's own preliminary press-release PDF is a first-release snapshot that's never updated in place, so it drifts from this over time.</div>
+      <canvas id="cBopOutbound" style="max-height:360px;margin-top:12px"></canvas>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>Japan, outward portfolio investment, sovereign bonds, long-term, net — by country <span id="bopOutTableStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">Same series as the chart above, in table form — last 8 months, ¥bn. Blue = net buying, red = net selling. Source: Bank of Japan Time-Series Data Search — Balance of Payments, sovereign bonds by country (net), monthly.</div>
+      <div style="overflow-x:auto;margin-top:12px"><table id="bopOutTable" style="width:100%;border-collapse:collapse;font-size:12.5px"></table></div>
+    </div>
+
+    <div style="margin:1.6rem 0 .8rem;border-top:1px solid var(--line);padding-top:1.1rem">
+      <h1 style="font-size:1.05rem;color:var(--ink)">Inward — foreign investors buying Japanese assets</h1>
+      <div class="sub" style="margin-top:.15rem">Foreign &rarr; Japan (the mirror direction of the group above). Positive = capital inflow to Japan; negative = net selling / repatriation.</div>
+    </div>
+    <div class="card full">
+      <h2>Foreign investors' net purchases of Japanese assets — by instrument <span id="xbInStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">Non-residents' monthly net purchase of <b>Japanese equity &amp; fund shares, long-term debt, and short-term debt</b>. White line = total across all three. Positive = foreign capital inflow to Japan; negative = net selling / repatriation. Source: MoF International Transactions in Securities (対内証券投資: 非居住者による取得・処分), monthly.</div>
+      <canvas id="cXbIn" style="max-height:380px;margin-top:12px"></canvas>
+    </div>
+    <div class="card full" style="margin-top:16px">
       <h2>Foreign demand for Japanese bonds — by country <span id="bopInStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
       <div class="sub">Non-residents' monthly net purchase of Japanese long-term bonds (¥bn), stacked by country — who's providing the foreign bid for JGBs. The white line is the whole-market total. Note the UK is inflated by custodial/booking-centre flows. Source: MoF Balance of Payments, Portfolio Investment Liabilities country breakdown (monthly).</div>
       <canvas id="cBopInbound" style="max-height:360px;margin-top:12px"></canvas>
     </div>
+
+    <div style="margin:1.6rem 0 .8rem;border-top:1px solid var(--line);padding-top:1.1rem">
+      <h1 style="font-size:1.05rem;color:var(--ink)">Both directions, weekly</h1>
+    </div>
+    <div class="card full">
+      <h2>Weekly cross-border flows — net purchases <span id="xbWeeklyStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">The same MoF release behind the monthly panels above, at <b>weekly</b> frequency for a faster read on the flow: residents' net purchase of foreign securities ("Japan &rarr; abroad") vs. non-residents' net purchase of Japanese securities ("Foreign &rarr; Japan"), both totals across equity + LT bonds + ST bonds. Positive = net buying; negative = net selling / repatriation. Respects the &yen;/$ toggle above. Source: MoF International Transactions in Securities (Weekly; based on reports from designated major investors).</div>
+      <canvas id="cXbWeekly" style="max-height:360px;margin-top:12px"></canvas>
+    </div>
+  </div>
+
+  <!-- GPIF -->
+  <div id="tab-gpif" class="panel">
+    <div class="card full">
+      <h2>GPIF — Government Pension Investment Fund asset allocation, Q1 FY2026 (end-June 2026)</h2>
+      <div class="sub">The world's largest pension fund (¥320.4tn managed). Portfolio composition released quarterly; this is the Q1 FY2026 (Apr-Jun 2026) update, published <b>7 Aug 2026</b>. Source: GPIF official quarterly report, <a href="https://www.gpif.go.jp/operation/38371785gpif/2026_1Q_0807_en.pdf" target="_blank" style="color:var(--accent)">gpif.go.jp</a> — figures are preliminary and may be revised in GPIF's Annual Report.</div>
+    </div>
+    <div class="kpis">
+      <div class="kpi"><div class="v">¥320.4tn</div><div class="l">Total portfolio value, end-Jun 2026</div></div>
+      <div class="kpi"><div class="v">+8.20%</div><div class="l">Q1 FY2026 quarterly return (not annualized)</div></div>
+      <div class="kpi"><div class="v">+¥24.09tn</div><div class="l">Q1 FY2026 quarterly profit</div></div>
+      <div class="kpi"><div class="v">+4.95%</div><div class="l">Annualized cumulative return since FY2001</div></div>
+    </div>
     <div class="card full" style="margin-top:16px">
-      <h2>Where Japan buys foreign sovereign bonds — by destination <span id="bopOutStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
-      <div class="sub">Residents' monthly net purchase of foreign sovereign bonds (¥bn), stacked by destination country — where the yen outflow is going. The white line is the total across all countries. Source: MoF Balance of Payments, Portfolio Investment Assets — country breakdown of sovereign bonds (monthly).</div>
-      <canvas id="cBopOutbound" style="max-height:360px;margin-top:12px"></canvas>
+      <h2>Asset allocation by class — value &amp; % vs. policy target</h2>
+      <div class="sub">Domestic bonds/equities and foreign bonds/equities each carry a 25% policy target weight (GPIF's basic portfolio); deviation limits are the maximum permitted drift from that target before rebalancing. End-March 2026 figures are from GPIF's FY2025 annual summary (released 3 Jul 2026) for quarter-over-quarter comparison.</div>
+      <div style="display:flex;gap:6px;margin-top:10px">
+        <button id="gpifCurJpy" onclick="setGpifCur('jpy')" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px;background:var(--ink);color:var(--bg);font-weight:600">¥ bn</button>
+        <button id="gpifCurUsd" onclick="setGpifCur('usd')" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px;background:transparent;color:var(--ink)">$ bn</button>
+      </div>
+      <div style="overflow-x:auto;margin-top:12px">
+        <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+          <thead><tr style="color:var(--muted);text-align:left;border-bottom:1px solid var(--line)">
+            <th style="padding:6px 8px">Asset class</th>
+            <th style="padding:6px 8px">Value, end-Mar 2026</th>
+            <th style="padding:6px 8px">% end-Mar 2026</th>
+            <th style="padding:6px 8px">Value, end-Jun 2026</th>
+            <th style="padding:6px 8px">% end-Jun 2026</th>
+            <th style="padding:6px 8px">QoQ Δ (pt)</th>
+            <th style="padding:6px 8px">Policy target</th>
+            <th style="padding:6px 8px">Deviation limit</th>
+          </tr></thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--line)">
+              <td style="padding:6px 8px">Domestic bonds</td>
+              <td style="padding:6px 8px" class="gpif-val" data-jpy="80,679.1" data-usd="507.2">80,679.1</td><td style="padding:6px 8px">26.91%</td>
+              <td style="padding:6px 8px" class="gpif-val" data-jpy="81,997.6" data-usd="504.3">81,997.6</td><td style="padding:6px 8px">25.59%</td>
+              <td style="padding:6px 8px" class="gpif-down">−1.32</td><td style="padding:6px 8px">25%</td><td style="padding:6px 8px">±6%</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--line)">
+              <td style="padding:6px 8px">Domestic equities</td>
+              <td style="padding:6px 8px" class="gpif-val" data-jpy="71,390.5" data-usd="448.8">71,390.5</td><td style="padding:6px 8px">23.81%</td>
+              <td style="padding:6px 8px" class="gpif-val" data-jpy="78,798.0" data-usd="484.6">78,798.0</td><td style="padding:6px 8px">24.60%</td>
+              <td style="padding:6px 8px" class="gpif-up">+0.79</td><td style="padding:6px 8px">25%</td><td style="padding:6px 8px">±6%</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--line)">
+              <td style="padding:6px 8px">Foreign bonds</td>
+              <td style="padding:6px 8px" class="gpif-val" data-jpy="73,399.0" data-usd="461.4">73,399.0</td><td style="padding:6px 8px">24.48%</td>
+              <td style="padding:6px 8px" class="gpif-val" data-jpy="78,432.1" data-usd="482.3">78,432.1</td><td style="padding:6px 8px">24.48%</td>
+              <td style="padding:6px 8px" class="gpif-flat">0.00</td><td style="padding:6px 8px">25%</td><td style="padding:6px 8px">±5%</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--line)">
+              <td style="padding:6px 8px">Foreign equities</td>
+              <td style="padding:6px 8px" class="gpif-val" data-jpy="74,356.9" data-usd="467.4">74,356.9</td><td style="padding:6px 8px">24.80%</td>
+              <td style="padding:6px 8px" class="gpif-val" data-jpy="81,145.4" data-usd="499.0">81,145.4</td><td style="padding:6px 8px">25.33%</td>
+              <td style="padding:6px 8px" class="gpif-up">+0.53</td><td style="padding:6px 8px">25%</td><td style="padding:6px 8px">±6%</td>
+            </tr>
+            <tr style="font-weight:600">
+              <td style="padding:6px 8px">Total</td>
+              <td style="padding:6px 8px" class="gpif-val" data-jpy="299,825.4" data-usd="1,884.7">299,825.4</td><td style="padding:6px 8px">100.00%</td>
+              <td style="padding:6px 8px" class="gpif-val" data-jpy="320,373.2" data-usd="1,970.2">320,373.2</td><td style="padding:6px 8px">100.00%</td>
+              <td style="padding:6px 8px">—</td><td style="padding:6px 8px">100%</td><td style="padding:6px 8px">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note" id="gpifFxNote" style="margin-top:8px">Showing ¥bn (original reporting currency).</div>
+      <div class="note" style="margin-top:10px">Deviation limits shown are per-asset limits under GPIF's Fifth Medium-Term Objectives Period policy (effective 1 Apr 2025, tightened from the prior period's ±7%/±8%/±6%/±7%). Separately, GPIF also caps the <b>combined</b> bond bucket (domestic+foreign) and combined equity bucket at ±9% each of the 50% target — bonds-as-a-whole = 50.07% vs. 50% target, equities-as-a-whole = 49.93% vs. 50% target, both comfortably inside that combined limit even as individual classes drift more. Alternative assets (real estate/PE/infrastructure, categorized within the four classes above rather than as a separate bucket) are 1.70% of the portfolio, well under the 5% ceiling. Total portfolio value rose ~¥20.5tn QoQ, driven by the quarter's strong return (equities/foreign bonds both up sharply) plus rebalancing flows. Source: GPIF, "Policy Asset Mix for the Fifth Medium-Term Objectives Period."</div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>Quarterly return by asset class — GPIF's own realized returns</h2>
+      <div class="sub">GPIF's actual portfolio return each quarter (not benchmark index return) for the four asset classes plus total, Q1 FY2024 (Apr-Jun 2024) through Q1 FY2026 (Apr-Jun 2026). Sourced directly from each quarter's official GPIF report and cross-checked against the FY2024/FY2025 annual summaries; domestic-bond figures independently verified against the NOMURA-BPI ex-ABS benchmark each quarter (within ~0.15pt every time).</div>
+      <div style="overflow-x:auto;margin-top:12px"><canvas id="gpifReturnChart" width="1040" height="320"></canvas></div>
+      <div style="overflow-x:auto;margin-top:16px">
+        <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+          <thead><tr style="color:var(--muted);text-align:left;border-bottom:1px solid var(--line)">
+            <th style="padding:6px 8px">Quarter</th><th style="padding:6px 8px">Domestic bonds</th><th style="padding:6px 8px">Domestic equities</th><th style="padding:6px 8px">Foreign bonds</th><th style="padding:6px 8px">Foreign equities</th><th style="padding:6px 8px">Total</th>
+          </tr></thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">Q1 FY2024 (Apr-Jun 24)</td><td style="padding:6px 8px">−2.39%</td><td style="padding:6px 8px">+1.75%</td><td style="padding:6px 8px">+5.50%</td><td style="padding:6px 8px">+9.96%</td><td style="padding:6px 8px;font-weight:600">+3.65%</td></tr>
+            <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">Q2 FY2024 (Jul-Sep 24)</td><td style="padding:6px 8px">+1.42%</td><td style="padding:6px 8px">−4.92%</td><td style="padding:6px 8px">−5.51%</td><td style="padding:6px 8px">−5.35%</td><td style="padding:6px 8px;font-weight:600">−3.57%</td></tr>
+            <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">Q3 FY2024 (Oct-Dec 24)</td><td style="padding:6px 8px">−1.33%</td><td style="padding:6px 8px">+5.55%</td><td style="padding:6px 8px">+4.12%</td><td style="padding:6px 8px">+8.96%</td><td style="padding:6px 8px;font-weight:600">+4.31%</td></tr>
+            <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">Q4 FY2024 (Jan-Mar 25)</td><td style="padding:6px 8px">−2.20%</td><td style="padding:6px 8px">−3.50%</td><td style="padding:6px 8px">−2.01%</td><td style="padding:6px 8px">−5.98%</td><td style="padding:6px 8px;font-weight:600">−3.41%</td></tr>
+            <tr style="border-bottom:1px solid var(--line);color:var(--muted)"><td style="padding:6px 8px">FY2024 full year</td><td style="padding:6px 8px">−4.47%</td><td style="padding:6px 8px">−1.46%</td><td style="padding:6px 8px">+1.70%</td><td style="padding:6px 8px">+6.62%</td><td style="padding:6px 8px;font-weight:600">+0.71%</td></tr>
+            <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">Q1 FY2025 (Apr-Jun 25)</td><td style="padding:6px 8px">−0.19%</td><td style="padding:6px 8px">+7.48%</td><td style="padding:6px 8px">+1.56%</td><td style="padding:6px 8px">+7.44%</td><td style="padding:6px 8px;font-weight:600">+4.09%</td></tr>
+            <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">Q2 FY2025 (Jul-Sep 25)</td><td style="padding:6px 8px">−1.36%</td><td style="padding:6px 8px">+11.02%</td><td style="padding:6px 8px">+2.96%</td><td style="padding:6px 8px">+9.75%</td><td style="padding:6px 8px;font-weight:600">+5.52%</td></tr>
+            <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">Q3 FY2025 (Oct-Dec 25)</td><td style="padding:6px 8px">−2.07%</td><td style="padding:6px 8px">+8.89%</td><td style="padding:6px 8px">+7.14%</td><td style="padding:6px 8px">+9.73%</td><td style="padding:6px 8px;font-weight:600">+5.84%</td></tr>
+            <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">Q4 FY2025 (Jan-Mar 26)</td><td style="padding:6px 8px">−1.57%</td><td style="padding:6px 8px">+3.60%</td><td style="padding:6px 8px">+0.26%</td><td style="padding:6px 8px">−1.72%</td><td style="padding:6px 8px;font-weight:600">+0.19%</td></tr>
+            <tr style="border-bottom:1px solid var(--line);color:var(--muted)"><td style="padding:6px 8px">FY2025 full year</td><td style="padding:6px 8px">−5.11%</td><td style="padding:6px 8px">+34.62%</td><td style="padding:6px 8px">+12.33%</td><td style="padding:6px 8px">+27.16%</td><td style="padding:6px 8px;font-weight:600">+16.47%</td></tr>
+            <tr><td style="padding:6px 8px">Q1 FY2026 (Apr-Jun 26)</td><td style="padding:6px 8px">−1.11%</td><td style="padding:6px 8px">+14.48%</td><td style="padding:6px 8px">+3.13%</td><td style="padding:6px 8px">+16.94%</td><td style="padding:6px 8px;font-weight:600">+8.20%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note" style="margin-top:10px">Domestic bonds is the only asset class that's been negative in every one of the last 9 quarters — a reflection of BOJ's hiking cycle pushing JGB yields (and prices down) throughout this window, consistent with the JGB tabs elsewhere on this dashboard. Foreign equities swung from GPIF's worst quarter (Q4 FY2024, −5.98%) to among its best (FY2025 full year, +27.16%) within about a year. Sources: GPIF quarterly "Investment results" reports (gpif.go.jp/en/performance/) for each standalone quarter, cross-validated against the FY2024 and FY2025 annual report summaries.</div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>Long-run allocation vs. policy threshold, FY2013 – Q1 FY2026</h2>
+      <div class="sub">Actual allocation % (solid line) against the policy target (dashed) and permitted deviation band (dotted) in force at each point — GPIF has revised its "basic portfolio" three times over this window: Oct 2014 (shift from a bond-heavy 60/12/11/12 mix toward 35/25/15/25), Apr 2020 (equal-weighted 25/25/25/25 with ±7/±8/±6/±7 bands), and Apr 2025 (same 25/25/25/25 target, tightened to ±6/±6/±5/±6). Fiscal-year-end (31 Mar) points throughout, with the two most recent quarterly points (Q1 FY2025, Q1 FY2026) added for currency. All 13 fiscal years FY2013-FY2025 are covered — no gaps.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px">
+        <div><h3 style="font-size:14px;margin-bottom:8px">Domestic bonds</h3><div style="overflow-x:auto"><canvas id="gpifDbChart" width="500" height="280"></canvas></div></div>
+        <div><h3 style="font-size:14px;margin-bottom:8px">Domestic equities</h3><div style="overflow-x:auto"><canvas id="gpifDeChart" width="500" height="280"></canvas></div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
+        <div><h3 style="font-size:14px;margin-bottom:8px">Foreign bonds</h3><div style="overflow-x:auto"><canvas id="gpifFbChart" width="500" height="280"></canvas></div></div>
+        <div><h3 style="font-size:14px;margin-bottom:8px">Foreign equities</h3><div style="overflow-x:auto"><canvas id="gpifFeChart" width="500" height="280"></canvas></div></div>
+      </div>
+      <div class="note" style="margin-top:12px">Domestic bonds has spent virtually this entire 13-year window below its policy target as GPIF steadily reallocated toward equities — it briefly touched the very top of its 2014-regime band (35% ±10%) in FY2014-15 but has undershot the 25% target every year since the 2020 revision. Domestic equities, foreign bonds, and foreign equities have all tracked close to target and comfortably inside their bands throughout — the real story of this dataset is concentrated in domestic bonds. Sources: GPIF annual report / annual report summary PDFs (gpif.go.jp/en/performance/) for each fiscal year-end; GPIF quarterly "Investment results" PDFs for the two most recent quarterly points; policy target/band figures from GPIF's own "Adoption of New Policy Asset Mix" / "Policy Asset Mix" PDFs (gpif.go.jp/en/topics/, gpif.go.jp/en/investment/).</div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>Q1 FY2026 return by asset class — reference index vs. GPIF's realized return</h2>
+      <div class="sub">The benchmark index each asset class is measured against, alongside GPIF's actual realized return from the table above — the gap reflects active positioning, currency hedging (particularly visible in foreign bonds, where GPIF partially hedges vs. the unhedged FTSE WGBI benchmark), fees, and timing.</div>
+      <div style="overflow-x:auto;margin-top:12px">
+        <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+          <thead><tr style="color:var(--muted);text-align:left;border-bottom:1px solid var(--line)">
+            <th style="padding:6px 8px">Asset class</th><th style="padding:6px 8px">Reference index return</th><th style="padding:6px 8px">Reference index</th><th style="padding:6px 8px">GPIF realized return</th>
+          </tr></thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">Domestic bonds</td><td style="padding:6px 8px">−1.15%</td><td style="padding:6px 8px">NOMURA-BPI ex-ABS</td><td style="padding:6px 8px">−1.11%</td></tr>
+            <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">Domestic equities</td><td style="padding:6px 8px">+14.40%</td><td style="padding:6px 8px">TOPIX (incl. dividends)</td><td style="padding:6px 8px">+14.48%</td></tr>
+            <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">Foreign bonds</td><td style="padding:6px 8px">+3.06%</td><td style="padding:6px 8px">FTSE WGBI (unhedged)</td><td style="padding:6px 8px">+3.13%</td></tr>
+            <tr><td style="padding:6px 8px">Foreign equities</td><td style="padding:6px 8px">+17.56%</td><td style="padding:6px 8px">MSCI ACWI ex-China A (JPY, incl. dividends)</td><td style="padding:6px 8px">+16.94%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note" style="margin-top:10px">Corrected 2026-08-09 — the reference-index values were previously assigned to the wrong asset-class rows (a table-reading-order error when the source PDF was first transcribed), producing implausible 10-18pt gaps that looked like a genuine anomaly. Re-checked directly against page 6 of GPIF's own Q1 FY2026 report (image, not just text extraction, since the PDF's table layout doesn't extract in reading order): the correct pairing shows GPIF tracking every one of its own benchmarks closely, as expected for a near-passive mandate — domestic bonds −1.15% (index) vs. −1.11% (realized), domestic equities +14.40% vs. +14.48%, foreign bonds +3.06% vs. +3.13%, foreign equities +17.56% vs. +16.94% — all within ~0.6pp, consistent with fees/timing/light hedging rather than any active-positioning story. Source: GPIF Q1 FY2026 quarterly report, page 6 ("Reference index: 1Q of fiscal 2026"), gpif.go.jp.</div>
     </div>
   </div>
 
   <!-- INTERVENTION -->
   <div id="tab-intervention" class="panel">
     <div class="card full" id="ivRuleCard">
-      <h2>IMF's "free floating" rule <span id="ivRuleQuota" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <h2>IMF free-floating classification criterion — not an intervention constraint <span id="ivRuleQuota" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
       <div class="sub" id="ivRuleText"></div>
       <div class="note" id="ivRuleOpNote" style="margin-top:10px"></div>
       <div style="overflow-x:auto;margin-top:10px">
@@ -548,14 +749,27 @@
       </div>
     </div>
     <div class="card full">
-      <div style="overflow-x:auto">
-      <table id="ivEpTable" style="width:100%;border-collapse:collapse;font-size:12.5px">
+      <h2>Intervention episodes — official/estimate status, ¥ &amp; approx. US$, effectiveness</h2>
+      <div class="sub">Episode/campaign subtotals (not individual daily ops — see the day-by-day table below). <b>Data status</b> distinguishes MOF-confirmed official figures from settlement-based market estimates — settlement estimates are <i>not</i> final MOF figures until MOF's quarterly release confirms them. All US$ amounts are approximate conversions at contemporaneous USD/JPY (MOF only publishes yen amounts) — never official MOF figures in their own right. 1d/5d/20d effect = USD/JPY change vs. the last trading day before the episode's first operation (positive = yen weakened despite the intervention, negative = yen strengthened), computed from the same daily USD/JPY history that drives the chart below; only available for single/multi-day episodes with an exact start date.</div>
+      <div style="overflow-x:auto;margin-top:10px">
+      <table id="ivEpTable" style="width:100%;border-collapse:collapse;font-size:12.5px;table-layout:fixed">
+        <colgroup>
+          <col style="width:10%"><col style="width:10%"><col style="width:24%">
+          <col style="width:7%"><col style="width:8%"><col style="width:8%">
+          <col style="width:11%"><col style="width:10%">
+          <col style="width:4%"><col style="width:4%"><col style="width:4%">
+        </colgroup>
         <thead><tr style="color:var(--muted);text-align:left;border-bottom:1px solid var(--line)">
-          <th style="padding:6px 8px">Period</th><th style="padding:6px 8px">Context</th>
-          <th style="padding:6px 8px">Direction</th><th style="padding:6px 8px;text-align:center">Coordinated?</th>
-          <th style="padding:6px 8px;text-align:right">Total (US$bn)</th>
-          <th style="padding:6px 8px;text-align:right">Japan only</th>
-          <th style="padding:6px 8px;text-align:right">Non-Japan</th>
+          <th style="padding:6px 8px">Date / episode</th><th style="padding:6px 8px">Direction</th>
+          <th style="padding:6px 8px">Catalyst</th>
+          <th style="padding:6px 8px;text-align:right">Japan ¥tn</th>
+          <th style="padding:6px 8px;text-align:right">Approx. Japan US$bn</th>
+          <th style="padding:6px 8px;text-align:right">Foreign/coordinated US$bn</th>
+          <th style="padding:6px 8px">Data status</th>
+          <th style="padding:6px 8px">Coordination</th>
+          <th style="padding:6px 8px;text-align:right">1d effect</th>
+          <th style="padding:6px 8px;text-align:right">5d effect</th>
+          <th style="padding:6px 8px;text-align:right">20d effect</th>
         </tr></thead>
         <tbody id="ivEpBody"></tbody>
       </table>
@@ -564,31 +778,129 @@
     </div>
     <div class="card full">
       <h2>USD/JPY — intervention episodes since 1985 <span id="ivLongStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
-      <div class="sub">Every major Japan FX intervention episode since the Plaza Accord, shaded on the USD/JPY history — green = strengthen yen (buy JPY), red = weaken yen (sell JPY), gold = EUR-side coordinated action. Full detail (dates, $ amounts, coordinated Y/N) in the table above.</div>
+      <div class="sub">Every major Japan FX intervention episode since the Plaza Accord, shaded on the USD/JPY history — green = strengthen yen (buy JPY), red = weaken yen (sell JPY), gold = EUR-side coordinated action. Full detail (dates, ¥/approx. US$ amounts, coordination tag, data status) in the table above.</div>
       <canvas id="cIvLong" style="max-height:380px;margin-top:12px"></canvas>
-    </div>
-    <div class="card full">
-      <h2>USD/JPY — the 2022-2026 intervention cycle, day by day</h2>
-      <div class="sub">Daily USD/JPY since 2020 with each known intervention operation marked — solid dot = MOF-confirmed date, hollow square = market estimate pending confirmation. Labels show ¥tn | US$bn per operation.</div>
-      <div style="display:flex;gap:6px;margin-top:12px" id="ivWinBtns">
-        <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setIvWin(24,this)">2Y</button>
-        <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setIvWin(36,this)">3Y</button>
-        <button class="tab active" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setIvWin(0,this)">All (2020-)</button>
-      </div>
-      <canvas id="cIvRecent" style="max-height:380px;margin-top:12px"></canvas>
     </div>
     <div class="card full">
       <div style="overflow-x:auto">
       <table id="ivOpTable" style="width:100%;border-collapse:collapse;font-size:12.5px">
         <thead><tr style="color:var(--muted);text-align:left;border-bottom:1px solid var(--line)">
           <th style="padding:6px 8px">Date</th><th style="padding:6px 8px;text-align:right">¥tn</th>
-          <th style="padding:6px 8px;text-align:right">US$bn</th><th style="padding:6px 8px">Status</th>
+          <th style="padding:6px 8px;text-align:right">Approx. US$bn</th><th style="padding:6px 8px">Status</th>
           <th style="padding:6px 8px">Note</th>
         </tr></thead>
         <tbody id="ivOpBody"></tbody>
       </table>
       </div>
-      <div class="note">This tab is a curated reference dataset, not on the daily auto-refresh loop — MOF's official day-by-day intervention data is released quarterly with a ~3 month lag. Updated by hand when a new episode occurs or MOF issues a fresh quarterly breakdown.</div>
+      <div class="note">Approx. US$bn = a conversion of the MOF-published yen amount at that day's USD/JPY close — not an MOF-published figure in its own right (MOF only publishes yen amounts). This tab is a curated reference dataset, not on the daily auto-refresh loop — MOF's official day-by-day intervention data is released quarterly with a ~3 month lag. Updated by hand when a new episode occurs or MOF issues a fresh quarterly breakdown.</div>
+    </div>
+  </div>
+
+  <!-- BOJ BALANCE SHEET / QT -->
+  <div id="tab-balancesheet" class="panel">
+    <div class="card full">
+      <h2>Why this matters</h2>
+      <div class="sub">The policy rate alone does not describe BOJ tightening. Rate normalisation, lower purchases, balance-sheet runoff and private-sector duration absorption are happening together — this tab tracks the pace and composition of quantitative tightening directly from the BOJ's own published accounts.</div>
+    </div>
+    <div class="kpis" id="bsKpis" style="margin-top:16px"></div>
+    <div class="grid2" style="margin-top:16px">
+      <div class="card full">
+        <h2>Total BOJ assets since 2012 <span id="bsAssetsStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+        <canvas id="cBsAssets" style="max-height:340px"></canvas>
+      </div>
+      <div class="card full">
+        <h2>JGB (JGS) holdings since 2012</h2>
+        <canvas id="cBsJgs" style="max-height:340px"></canvas>
+        <div class="note">JGS = Japanese Government Securities (JGBs + Treasury Discount Bills/FBs), the BOJ's own balance-sheet line item.</div>
+      </div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>Current-account / reserve balances (¥tn)</h2>
+      <canvas id="cBsCab" style="max-height:300px"></canvas>
+      <div class="note">Current deposits are the largest liability-side counterpart to BOJ asset creation, but short-term movements also reflect government deposits, lending facilities, repo operations, banknotes and other balance-sheet factors — not a one-for-one mirror of JGB holdings. Rose mechanically as BOJ bought JGBs 2013-2024; now the main liability absorbing the shrinking asset side under QT plus the July 2024 taper plan.</div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>QT decomposition — gross purchases vs. implied redemptions vs. net change (¥tn/mo)</h2>
+      <div class="sub">A decline in BOJ JGB holdings can reflect smaller purchases, larger maturity/redemption months, or both — this decomposes the two. Redemptions are <b>implied</b>, not directly published by the BOJ: gross outright purchases (BOJ Time-Series API, DB=MD06) minus that month's net change in JGS holdings. The pattern lines up cleanly with Japan's JGB redemption calendar — large redemption months recur every March/June/September/December, which is the strongest available check on this approximation without the BOJ publishing a redemptions series directly. This one chart replaces what used to be three separate cards here (monthly net change, gross purchase operations, and the chart below it) — each showed a piece of the same story; this shows all three together.</div>
+      <canvas id="cBsQtDecomp" style="max-height:320px;margin-top:10px"></canvas>
+      <div class="note">Bars: gross outright purchases (+) and implied redemptions (−, shown as negative for readability). Line: net change in JGS holdings (= purchases − redemptions). Not broken out by maturity bucket — BOJ's daily operation-result releases carry that detail but aren't yet in a clean scrapable time series on this dashboard.</div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>Gross JGB issuance less BOJ purchases — private-sector absorption requirement (¥tn/mo)</h2>
+      <div class="sub">The other side of the QT story: every month MOF issues new JGBs and the BOJ buys back some of them outright — the gap is duration the private sector (banks, insurers, pension funds, foreign investors) has to absorb. As BOJ purchases taper while MOF issuance stays roughly flat, this gap widens — the mechanism behind rising super-long yields and steeper curves. <b>This is a gross measure, not a true net-duration-supply figure</b> — see the note below.</div>
+      <canvas id="cBsNetSupply" style="max-height:320px;margin-top:10px"></canvas>
+      <div class="note" id="bsNetSupplyNote">Bars: MOF gross coupon-JGB issuance (auction offering amounts, Treasury Discount Bills excluded) minus BOJ outright JGB purchases (DB=MD06). Line: BOJ absorption ratio, right axis = BOJ purchases ÷ MOF gross issuance. <b>Caveat:</b> "gross issuance" here is the full auction offering amount, which includes both new-money financing bonds and 借換債 (refunding bonds reissued to redeem maturing debt) — it is not netted against redemptions on either side of the ledger, so this is a <i>gross</i> absorption requirement, not a true net-new-duration figure. See the card just below for MOF's own new-money-vs-refunding split, which is the more accurate annual basis for net duration supply.</div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>FY2026 MOF issuance plan — new-money vs. refunding <span style="font-size:12px;color:var(--muted);font-weight:400">· annual, not monthly</span></h2>
+      <div class="sub">The chart above nets MOF's <i>total</i> auction offering amount against BOJ purchases, but most of that gross issuance is 借換債 (refunding bonds) — reissued specifically to redeem maturing JGBs, replacing old paper rather than adding new duration to the market. MOF's own annual issuance plan breaks this out directly; it's the more accurate basis for "true" net new duration, just at yearly rather than monthly granularity, since auctions don't tag individual bonds as new-money vs. refunding.</div>
+      <div id="bsIssuancePlanKpis" class="kpis" style="margin-top:12px"></div>
+      <div class="note">Source: MOF "JGB IR Basic Materials" investor presentation (2 Mar 2026) and FY2026 (令和8年度) JGB Issuance Plan, <a href="https://www.mof.go.jp/jgbs/issuance_plan/fy2026/index.html" target="_blank">mof.go.jp/jgbs/issuance_plan/fy2026</a>. Figures are the original FY2026 plan (発行根拠法別, ¥180.7tn total); a supplementary revision in June 2026 raised total planned issuance to ~¥183.8tn but a clean re-split by legal basis wasn't available from a single source at the time this was built — treat the shares below as approximate for the second half of the fiscal year.</div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>MOF gross issuance by maturity bucket <span style="font-size:12px;color:var(--muted);font-weight:400">· issuance side only — see note</span></h2>
+      <div class="sub">¥1tn of 2Y supply is not the same as ¥1tn of 30Y/40Y supply for the rates market — this shows the duration mix of what MOF is actually issuing each month, not just the total. <b>This is the issuance side only.</b> A true duration-weighted absorption measure would also need BOJ's purchases broken out by maturity bucket, and the BOJ does not publish that as a clean time series (only in daily operation-result HTML releases) — that half of this ask remains an open gap, flagged here rather than guessed at.</div>
+      <canvas id="cBsMaturityMix" style="max-height:320px;margin-top:10px"></canvas>
+      <div class="note" id="bsMaturityMixNote"></div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>Asset composition — latest month <span id="bsCompStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div style="display:grid;grid-template-columns:1.1fr 1fr;gap:20px;align-items:center">
+        <div><canvas id="cBsComp" style="max-height:320px"></canvas></div>
+        <div style="overflow-x:auto"><table id="bsCompTable" style="width:100%;border-collapse:collapse;font-size:12.5px"></table></div>
+      </div>
+    </div>
+    <div class="grid2" style="margin-top:16px">
+      <div class="card full">
+        <h2>Balance-sheet contraction pace — 3m / 6m / 12m cumulative change in JGB holdings (¥tn)</h2>
+        <canvas id="cBsPace" style="max-height:300px"></canvas>
+        <div class="note">Three overlapping windows instead of one annualised rate. The quarterly redemption spikes shown in the QT-decomposition chart above mean a single-quarter annualised contraction rate (×4) mechanically overstates the "true" taper pace whenever it happens to land on a heavy redemption month — the 3m line will look dramatic every Mar/Jun/Sep/Dec even when purchases haven't changed. The 6m and 12m lines smooth that out and are the more reliable read on the underlying pace.</div>
+      </div>
+      <div class="card full">
+        <h2>BOJ JGB holdings as % of total JGB outstanding</h2>
+        <canvas id="cBsJgbShare" style="max-height:300px"></canvas>
+        <div class="note">Denominator = MOF ordinary government bonds + Treasury Discount Bills, amount outstanding (BOJ Time-Series API, DB=FM05). Lags BOJ's own accounts by ~1 month.</div>
+      </div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>Free-float JGB supply — BOJ holdings vs. private-sector holdings (¥tn)</h2>
+      <div class="sub">The BOJ-ownership-share chart above only shows BOJ's slice shrinking; this reframes the same two numbers (BOJ holdings, total outstanding) as what's actually tradable. QT can mean two things happening at once: the private sector has to absorb more new duration each month (see the absorption-requirement chart higher up), <b>and</b> more of the existing stock circulates in private hands rather than sitting on the BOJ's balance sheet — a liquidity tailwind even as it's a duration headwind. Both are true simultaneously; this chart is the liquidity side of that story.</div>
+      <canvas id="cBsFreeFloat" style="max-height:300px;margin-top:10px"></canvas>
+      <div class="note">Private-sector (free-float) holdings = total JGB outstanding (DB=FM05) minus BOJ holdings (DB=BS01). Not a precise "tradable" measure — it still includes JGBs held to maturity by banks/insurers under held-to-maturity accounting, not just actively-traded float — but it is the right direction of travel for market-functioning/liquidity discussions. Same ~1-month FM05 lag as the BOJ-ownership-share chart above.</div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>Total BOJ assets as % of nominal GDP</h2>
+      <canvas id="cBsGdp" style="max-height:280px"></canvas>
+      <div class="note">Useful for historical QE scale and cross-country comparison, but less actionable for JGB pricing than the charts above — kept here as macro context rather than a primary QT-pace read. GDP = Cabinet Office nominal GDP (original series, quarterly level, annualised ×4). Lags BOJ's own accounts by a full quarter — the most recent 1-2 quarters will show as a flat line until the next GDP release.</div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>Non-JGB holdings — ETFs, J-REITs, corporate bonds <span style="font-size:12px;color:var(--muted);font-weight:400">· secondary to JGB QT, but ETF disposal is politically sensitive</span></h2>
+      <div class="sub">The rest of the BOJ's unconventional-easing legacy. Corporate bonds are unwinding fast (no reinvestment of maturing holdings since 2022); ETFs and J-REITs are barely moving — the BOJ's ETF sale program is real but glacial, which is exactly why it keeps generating political debate about a faster/larger disposal.</div>
+      <canvas id="cBsNonJgb" style="max-height:300px;margin-top:10px"></canvas>
+      <div id="bsNonJgbKpis" class="kpis" style="margin-top:12px"></div>
+      <div class="note">"Years to unwind at current pace" is a naive linear extrapolation of each series' trailing-6-month run-rate — not a BOJ target or announced schedule (the BOJ has never committed to a fixed ETF/J-REIT disposal timeline). Treat it as a pace indicator, not a forecast: corporate bonds are winding down on a real, deliberate maturity schedule, while the ETF/J-REIT figures reflect occasional book-value sales with no disclosed cadence, so a straight-line projection is illustrative at best for those two.</div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>Market-impact panel — does QT actually show up in JGB pricing?</h2>
+      <div class="sub">The rest of this tab explains the mechanics of QT; this asks whether it's visible in the market. Two views: the absorption ratio against 10Y/30Y yield levels, and against 30Y auction quality plus who's actually buying the super-long paper the BOJ is stepping back from.</div>
+      <div class="grid2" style="margin-top:12px">
+        <div>
+          <h3 style="font-size:14px;color:var(--muted);margin:0 0 8px">BOJ absorption ratio vs. 10Y / 30Y yields</h3>
+          <canvas id="cBsImpactYields" style="max-height:280px"></canvas>
+        </div>
+        <div>
+          <h3 style="font-size:14px;color:var(--muted);margin:0 0 8px">30Y auction tail (bp) vs. BOJ absorption ratio</h3>
+          <canvas id="cBsImpactTail" style="max-height:280px"></canvas>
+        </div>
+      </div>
+      <div style="margin-top:16px">
+        <h3 style="font-size:14px;color:var(--muted);margin:0 0 8px">Who's buying super-long JGBs as BOJ steps back — JSDA net flows (¥tn/mo)</h3>
+        <canvas id="cBsImpactFlows" style="max-height:280px"></canvas>
+      </div>
+      <div class="note" id="bsImpactNote"></div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <div class="note" id="bsSourceNote"></div>
     </div>
   </div>
 
@@ -742,39 +1054,6 @@
     </div>
   </div>
 
-  <!-- APPROVAL RATINGS -->
-  <div id="tab-approval" class="panel">
-    <div class="sub" style="margin-bottom:16px">Public opinion on the <b>Takaichi cabinet</b> and party support — the political backdrop to fiscal and monetary policy. A weakening cabinet raises the odds of stimulus / softer fiscal consolidation; support for opposition parties (esp. those pushing tax cuts or bigger spending) shapes the JGB supply outlook. <span id="apvAsof" style="color:var(--muted)"></span></div>
-    <div class="kpis" id="apvKpis"></div>
-    <div class="card full">
-      <h2>Cabinet approval vs disapproval <span class="npill" id="apvSeriesPill">monthly</span></h2>
-      <div class="note" id="apvSeriesNote"></div>
-      <canvas id="apvTrendChart"></canvas>
-    </div>
-    <div class="grid2">
-      <div class="card">
-        <h2>Party support — latest poll</h2>
-        <div class="note" id="apvPartyNote"></div>
-        <canvas id="apvPartyChart"></canvas>
-      </div>
-      <div class="card">
-        <h2>Net approval (approve − disapprove)</h2>
-        <div class="note">Above zero = net positive. The single cleanest read on political capital.</div>
-        <canvas id="apvNetChart"></canvas>
-      </div>
-    </div>
-    <div class="card full">
-      <h2>Latest poll — full breakdown</h2>
-      <table id="apvPartyTable"></table>
-      <div class="note" id="apvContext"></div>
-    </div>
-    <div class="card full">
-      <h2>Sources</h2>
-      <table id="apvSrcTable"></table>
-      <div class="note">Japanese pollsters (NHK, Jiji, Kyodo, and the major dailies) publish monthly; figures are hand-updated from their releases. Approval methodology differs by pollster, so levels are not directly comparable across houses — the trend within one house is the signal.</div>
-    </div>
-  </div>
-
   <!-- METHODOLOGY -->
   <div id="tab-method" class="panel">
     <div class="card">
@@ -792,6 +1071,9 @@ function showTab(id, btn) {
   document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + id).classList.add('active');
   btn.classList.add('active');
+  if (id === 'gpif' && typeof initGpifChart === 'function') {
+    requestAnimationFrame(() => requestAnimationFrame(initGpifChart));
+  }
 }
 
 
@@ -895,7 +1177,7 @@ function tagHtml(lean) {
   return `<span class="tag ${cls}">${esc(lean)}</span>`;
 }
 function chipHtml(type) {
-  const map = {MPM:'c-mpm',Outlook:'c-out',Opinions:'c-opi',Minutes:'c-min',Tankan:'c-tan',Term:'c-term'};
+  const map = {MPM:'c-mpm',Outlook:'c-out',Opinions:'c-opi',Minutes:'c-min',Tankan:'c-tan',Term:'c-term',Speech:'c-spe',Meeting:'c-meet'};
   return `<span class="chip ${map[type]||'c-min'}">${esc(type)}</span>`;
 }
 
@@ -906,6 +1188,16 @@ window.toggleBoardRemarks = function(btn, rid) {
   var open = row.style.display === 'table-row';
   row.style.display = open ? 'none' : 'table-row';
   btn.querySelector('.bchev').textContent = open ? '▶' : '▼';
+};
+
+// ── Auctions month collapse ──────────────────────────────────────────────────
+window.toggleAucMonth = function(header, sid) {
+  var el = document.getElementById(sid);
+  if (!el) return;
+  var open = el.style.display !== 'none';
+  el.style.display = open ? 'none' : '';
+  var chev = header.querySelector('.bchev');
+  if (chev) chev.textContent = open ? '▶' : '▼';
 };
 
 // ── Render ──────────────────────────────────────────────────────────────────
@@ -1039,6 +1331,17 @@ function render(D) {
   }).join('');
 
   // Calendar
+  const CAL_MON = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
+  function calEndDate(e) {
+    const m = e.date.match(/^~?([A-Za-z]{3})\.?\s+(\d{1,2})(?:\s*[–-]\s*(?:([A-Za-z]{3})\.?\s+)?(\d{1,2}))?/);
+    if (!m) return null;
+    const mon = CAL_MON[m[3] || m[1]];
+    const day = m[4] ? +m[4] : +m[2];
+    if (mon === undefined || !day) return null;
+    const yr = e._yr ? +e._yr : 2026;
+    return new Date(yr, mon, day);
+  }
+  const calToday = new Date(); calToday.setHours(0,0,0,0);
   let calShownYear = 2026;
   document.getElementById('calBody').innerHTML = D.mpm_calendar.map(e => {
     let divider = '';
@@ -1046,8 +1349,10 @@ function render(D) {
       calShownYear = 2027;
       divider = `<tr><td colspan="5" style="background:var(--card);font-weight:700;letter-spacing:.04em;color:var(--muted);font-size:11px;padding:8px 10px">2027 SCHEDULED MPMs</td></tr>`;
     }
+    const endDate = calEndDate(e);
+    const isPast = endDate && endDate < calToday;
     return divider + `
-    <tr class="${e.next ? 'next' : ''}">
+    <tr class="${[e.next ? 'next' : '', isPast ? 'gone' : ''].filter(Boolean).join(' ')}">
       <td><b>${esc(e.date)}</b>${e.next ? ' <span style="color:var(--accent);font-size:10px">◀ next</span>' : ''}</td>
       <td>${chipHtml(e.type)}</td>
       <td>${esc(e.event)}</td>
@@ -1058,19 +1363,36 @@ function render(D) {
 
   // Auctions
   const auc = document.getElementById('auctionSections');
-  auc.innerHTML = Object.entries(D.auctions).map(([month, rows]) => `
-    <h3 style="font-size:14px;font-weight:600;margin:16px 0 8px;color:var(--accent)">${esc(month)}</h3>
-    <div style="overflow-x:auto"><table>
+  auc.innerHTML = Object.entries(D.auctions).map(([month, rows], mi) => {
+    const yrMatch = month.match(/(\d{4})/);
+    const aucYr = yrMatch ? +yrMatch[1] : 2026;
+    const rowsWithPast = rows.map(r => {
+      const dm = r.date.match(/^([A-Za-z]{3})\.?\s+(\d{1,2})/);
+      const mon = dm ? CAL_MON[dm[1]] : undefined;
+      const day = dm ? +dm[2] : null;
+      const isPast = !!(mon !== undefined && day && new Date(aucYr, mon, day) < calToday);
+      return { r, isPast };
+    });
+    const allPast = rowsWithPast.every(x => x.isPast);
+    const sid = 'auc-sec-' + mi;
+    return `
+    <h3 style="font-size:14px;font-weight:600;margin:16px 0 8px;color:var(--accent);cursor:pointer;display:flex;align-items:center;gap:6px" onclick="toggleAucMonth(this,'${sid}')">
+      <span class="bchev">${allPast ? '▶' : '▼'}</span>
+      <span>${esc(month)}</span>
+      ${allPast ? '<span style="font-size:11px;color:var(--muted);font-weight:400">— auctions completed, click to expand</span>' : ''}
+    </h3>
+    <div id="${sid}" style="overflow-x:auto${allPast ? ';display:none' : ''}"><table>
       <thead><tr><th>Date</th><th>Type</th><th>Issue</th><th>Context</th></tr></thead>
-      <tbody>${rows.map(r => `
-        <tr>
+      <tbody>${rowsWithPast.map(({ r, isPast }) => `
+        <tr class="${isPast ? 'gone' : ''}">
           <td>${esc(r.date)}</td>
           <td><span class="chip c-min">${esc(r.type)}</span></td>
           <td>${esc(r.issue)}</td>
           <td style="color:var(--muted)">${esc(r.context)}</td>
         </tr>`).join('')}
       </tbody>
-    </table></div>`).join('');
+    </table></div>`;
+  }).join('');
 
   // Fiscal
   document.getElementById('fiscalBody').innerHTML = D.fiscal.map(f => `
@@ -1141,7 +1463,7 @@ function render(D) {
     <br>
     <p><b>Primary sources:</b> BOJ Speeches and Statements listings 2024–2026 (boj.or.jp), including Ueda (Keidanren, Dec 25, 2025), Tamura (Kanagawa, Feb 13, 2026), Takata (Kyoto, Feb 26, 2026), Noguchi (Oita, Nov 27, 2025), Nakagawa (Okayama, Nov 10, 2025), Koeda (Niigata, Nov 20, 2025), Masu (Ehime, Feb 6, 2026), Himino (Wakayama, Mar 2, 2026), Uchida (Kochi, Jul 23, 2025); BOJ MPM statements and Summaries of Opinions; the BOJ meeting schedule; MOF auction calendars.</p>
     <br>
-    <p><b>Press:</b> CNBC (Dec 19, 2025; Jun 16, 2026), The Japan Times (Jun 2026), Bloomberg (Jun 21, 2026), Reuters (Sep–Oct 2025 dissents), Nippon.com/JIJI (Asada appointment).</p>
+    <p><b>Press:</b> CNBC (Dec 19, 2025; Jun 16, 2026), The Japan Times (Jun 2026), financial wires (Jun 21, 2026), Reuters (Sep–Oct 2025 dissents), Nippon.com/JIJI (Asada appointment).</p>
     <br>
     <p>Summary-of-Opinions attributions are analytical inferences (the BOJ publishes them unattributed). This is an analytical assessment of central-bank communication, not investment advice.</p>`;
 
@@ -1342,6 +1664,7 @@ function renderMarkets(M) {
         ]
       },
       options: {
+        responsive: true, maintainAspectRatio: false,
         plugins: { legend: { position: 'top' } },
         scales: { y: { title: { display: true, text: 'Yield (%)' },
                         ticks: { callback: v => v.toFixed(2)+'%' } } }
@@ -1349,28 +1672,30 @@ function renderMarkets(M) {
     });
   }
 
-  // ── JGB history 2Y/10Y/30Y ────────────────────────────────────────────────
-  document.getElementById('jgbHistStatus').innerHTML = staleBadge(src.jgb?.status);
-  if (M.jgb?.history) {
-    const h = M.jgb.history.slice(-250);
-    new Chart(document.getElementById('cJgbHist'), {
-      type: 'line',
-      data: {
-        labels: h.map(p => p.date),
-        datasets: [
-          { label: '10Y', data: h.map(p => p.y10), borderColor: '#d9a441', pointRadius: 0, borderWidth: 2, tension: 0.1 },
-          { label: '2Y',  data: h.map(p => p.y2),  borderColor: '#4a90d9', pointRadius: 0, borderWidth: 1.8, tension: 0.1 },
-          { label: '30Y', data: h.map(p => p.y30), borderColor: '#e2564a', pointRadius: 0, borderWidth: 1.5, borderDash: [4,3], tension: 0.1 }
-        ]
-      },
-      options: {
-        plugins: { legend: { position: 'top' } },
-        scales: {
-          x: { ticks: { maxTicksLimit: 8, maxRotation: 0 } },
-          y: { ticks: { callback: v => v.toFixed(2)+'%' } }
-        }
-      }
-    });
+  // ── JGB bp-change-by-tenor table (1D / MTD / QTD / YTD) ────────────────────
+  if (M.jgb?.bp_table) {
+    const bp = M.jgb.bp_table;
+    const cols = [
+      { key: 'daily', label: '1D' },
+      { key: 'mtd',   label: 'MTD' },
+      { key: 'qtd',   label: 'QTD' },
+      { key: 'ytd',   label: 'YTD' },
+    ];
+    const fmtBp = v => {
+      if (v == null) return '<span style="color:var(--muted)">—</span>';
+      const color = v > 0 ? 'var(--hawk2)' : v < 0 ? 'var(--dove2)' : 'var(--muted)';
+      return `<span style="color:${color}">${v > 0 ? '+' : ''}${v.toFixed(1)}</span>`;
+    };
+    const thead = `<thead><tr><th>Tenor</th>${cols.map(c => `<th style="text-align:right">${c.label}</th>`).join('')}</tr></thead>`;
+    const tbody = '<tbody>' + bp.tenors.map((t, i) => `
+      <tr>
+        <td style="font-weight:600">${t}</td>
+        ${cols.map(c => `<td style="text-align:right">${bp[c.key] ? fmtBp(bp[c.key].chg[i]) : '—'}</td>`).join('')}
+      </tr>`).join('') + '</tbody>';
+    document.getElementById('jgbBpTable').innerHTML = thead + tbody;
+    document.getElementById('jgbBpNote').innerHTML =
+      `vs. <b>1D</b> ${esc(bp.daily?.date ?? '—')} · <b>MTD</b> ${esc(bp.mtd?.date ?? '—')} · <b>QTD</b> ${esc(bp.qtd?.date ?? '—')} · <b>YTD</b> ${esc(bp.ytd?.date ?? '—')}. ` +
+      `Positive (red) = yields higher / cheapened; negative (blue) = lower / richened. Latest: ${esc(bp.latest_date)}. ${esc(bp.yield_convention || '')}`;
   }
 
   // ── USD/JPY ───────────────────────────────────────────────────────────────
@@ -1553,6 +1878,27 @@ function renderMarkets(M) {
       <td style="color:var(--muted);font-size:12px">${esc(v.error || '')}</td>
     </tr>`;
   }).join('');
+
+  // Top-level stale/missing badge — reviewer's ask: surface feed health without
+  // digging into the buried Data source status table. Counts src entries only
+  // (the ~8 sources this table actually tracks, not every fetch script in the
+  // project — a real, separate gap flagged in AGENTS.md, not fixed here).
+  const badgeEl = document.getElementById('staleBadgeTop');
+  if (badgeEl) {
+    const entries = Object.entries(src);
+    const stale = entries.filter(([, v]) => v.status === 'stale');
+    const missing = entries.filter(([, v]) => v.status === 'missing');
+    if (stale.length || missing.length) {
+      const parts = [];
+      if (missing.length) parts.push(`${missing.length} missing`);
+      if (stale.length) parts.push(`${stale.length} stale`);
+      badgeEl.textContent = `⚠ Data feeds: ${parts.join(', ')} — see Data source status ↓`;
+      badgeEl.style.display = '';
+      badgeEl.style.color = missing.length ? 'var(--hawk2)' : 'var(--accent)';
+    } else {
+      badgeEl.style.display = 'none';
+    }
+  }
 }
 
 const TAG_LABELS = {
@@ -1849,6 +2195,85 @@ fetch('./superlong_data.json?' + Date.now())
   .catch(e => { console.warn('superlong_data.json unavailable:', e);
     const el=document.getElementById('slStatus'); if(el) el.textContent='· data loading on next refresh'; });
 
+// ── Seasonality (JGB outright + curve, no ASW) ─────────────────────────────
+fetch('./seasonality_data.json?' + Date.now())
+  .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
+  .then(SE => {
+    const fmtBp = v => {
+      if (v == null) return '<span style="color:var(--muted)">—</span>';
+      const color = v > 0 ? 'var(--hawk2)' : v < 0 ? 'var(--dove2)' : 'var(--muted)';
+      return `<span style="color:${color}">${v > 0 ? '+' : ''}${v.toFixed(1)}</span>`;
+    };
+    const sharpeColor = s => s == null ? 'var(--muted)' : s >= 0.6 ? 'var(--hawk2)' : s >= 0 ? 'var(--neutral)' : 'var(--dove2)';
+
+    const btTable = (rows, label) => {
+      const thead = `<thead><tr><th>${label}</th><th>Long (rich/steepen)</th><th>Short (cheap/flatten)</th>
+        <th style="text-align:right">Ann. ${label==='Tenor'?'ret':'chg'} (bp)</th><th style="text-align:right">Ann. vol (bp)</th>
+        <th style="text-align:right">Sharpe</th><th style="text-align:right">Max DD (bp)</th>
+        <th style="text-align:right">Annual hit rate</th><th style="text-align:right">Years</th></tr></thead>`;
+      const tbody = '<tbody>' + rows.map(r => `
+        <tr>
+          <td style="font-weight:600">${label==='Tenor'?r.key.toUpperCase():r.key}</td>
+          <td>${r.long_months.length ? r.long_months.join(', ') : '<span style="color:var(--muted)">none</span>'}</td>
+          <td>${r.short_months.length ? r.short_months.join(', ') : '<span style="color:var(--muted)">none</span>'}</td>
+          <td style="text-align:right">${fmtBp(r.ann_bp)}</td>
+          <td style="text-align:right;color:var(--muted)">${r.ann_vol_bp}</td>
+          <td style="text-align:right;font-weight:600;color:${sharpeColor(r.sharpe)}">${r.sharpe ?? '—'}</td>
+          <td style="text-align:right;color:var(--dove2)">${r.max_dd_bp}</td>
+          <td style="text-align:right;font-weight:600">${r.annual_hit_rate ?? '—'}</td>
+          <td style="text-align:right;color:var(--muted)">${r.n_years}</td>
+        </tr>`).join('') + '</tbody>';
+      return thead + tbody;
+    };
+    document.getElementById('seasOutrightTable').innerHTML = btTable(SE.outright.backtest, 'Tenor');
+    document.getElementById('seasCurveTable').innerHTML = btTable(SE.curve.backtest, 'Spread');
+    const st = document.getElementById('seasStatus');
+    if (st) st.textContent = SE.generated_note || '';
+
+    // ── calendar heatmap with tenor/spread picker ──
+    const allKeys = [...SE.outright.tenors.map(k => ({k, kind:'outright'})), ...SE.curve.spreads.map(k => ({k, kind:'curve'}))];
+    const calFor = k => (SE.outright.calendar[k] || SE.curve.calendar[k]);
+    let seasHeatKey = '10y';
+    const maxAbs = rows => Math.max(1, ...rows.flatMap(r => Object.values(r.years).filter(v => v!=null).map(Math.abs)));
+
+    function renderHeat(){
+      const cal = calFor(seasHeatKey);
+      if (!cal) return;
+      const m = maxAbs(cal.rows);
+      const cell = v => {
+        if (v == null) return `<td style="text-align:right;color:var(--muted)">—</td>`;
+        const a = Math.min(1, Math.abs(v) / m);
+        const op = 0.20 + a*0.70;
+        const bg = v > 0 ? `rgba(226,86,74,${op})` : `rgba(90,160,230,${op})`;
+        const fg = op > 0.55 ? '#0d1220' : 'inherit';
+        const fw = op > 0.4 ? 600 : 400;
+        return `<td style="text-align:right;background:${bg};color:${fg};font-weight:${fw}">${v>0?'+':''}${v.toFixed(1)}</td>`;
+      };
+      const thead = `<thead><tr><th>Month</th>${cal.years.map(y=>`<th style="text-align:right">${y}</th>`).join('')}
+        <th style="text-align:right">Avg</th><th style="text-align:right">Hit rate</th></tr></thead>`;
+      const tbody = '<tbody>' + cal.rows.map(r => `
+        <tr><td style="font-weight:600">${r.month}</td>
+        ${cal.years.map(y=>cell(r.years[y])).join('')}
+        <td style="text-align:right;font-weight:600">${r.avg!=null?fmtBp(r.avg):'—'}</td>
+        <td style="text-align:right">${r.hit_rate||'—'}</td></tr>`).join('') + '</tbody>';
+      document.getElementById('seasHeatTable').innerHTML = thead + tbody;
+      document.getElementById('seasHeatNote').textContent =
+        `Month-start→month-end change in bp, ${cal.years[0]}–${cal.years[cal.years.length-1]}. Red = yield/spread rose (cheapened/steepened); blue = fell (richened/flattened).`;
+    }
+    document.getElementById('seasHeatPicker').innerHTML = allKeys.map(({k,kind}) =>
+      `<button class="tab${k===seasHeatKey?' active':''}" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px"
+        onclick="window._seasSetHeat('${k}',this)">${kind==='curve'?k:k.toUpperCase()}${kind==='curve'?' spr':''}</button>`).join('');
+    window._seasSetHeat = (k, btn) => {
+      seasHeatKey = k;
+      document.querySelectorAll('#seasHeatPicker .tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderHeat();
+    };
+    renderHeat();
+  })
+  .catch(e => { console.warn('seasonality_data.json unavailable:', e);
+    const el=document.getElementById('seasStatus'); if(el) el.textContent='data unavailable'; });
+
 // ── Natural rate of interest (r*) — BOJ Review 2026-E-4 ───────────────────────
 fetch('./natural_rate.json?' + Date.now())
   .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
@@ -2003,22 +2428,117 @@ function xbCumChart(canvasId, titleId, key){
     }
   });
 }
+const XB_ALL_BUCKETS = [
+  {key:'banks',         label:'Banks',              color:'#e2564a'},
+  {key:'trust_bank',    label:'Trust banks',        color:'#5aa0e6'},
+  {key:'trust_pension', label:'Trust a/c (pension)', color:'#4cba7a'},
+  {key:'secfirms',      label:'Securities firms',   color:'#4ec9c0'},
+  {key:'life',          label:'Life insurers',      color:'#b79ae8'},
+  {key:'nonlife',       label:'Non-life insurers',  color:'#8a94ad'},
+  {key:'invtrust',      label:'Investment trusts',  color:'#e58fb5'},
+  {key:'others',        label:'Others',             color:'#5f6b85'},
+];
+function xbAllChart(){
+  const cv=document.getElementById('cXbAll'); const X=_xbData; if(!cv||!X) return;
+  const U=_xbUnit(); const totSrc=(U.m==='monthly_usd')?X.monthly_total_usd:X.monthly_total;
+  if(!totSrc || !totSrc.total) return;
+  // fold the (near-zero) public-sector columns into "Others" so the chart matches
+  // the 6-7 category view convention (central bank / general govt aren't separately
+  // material for foreign-securities purchases in this series).
+  const src={...totSrc};
+  if(totSrc.others) src.others = totSrc.others.map((v,i)=>{
+    const cb=(totSrc.central_bank||[])[i]||0, gv=(totSrc.govt||[])[i]||0;
+    return (v==null && !cb && !gv) ? v : Math.round(((v||0)+cb+gv)*1000)/1000;
+  });
+  const mn=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const i0=_xbWin>0 ? Math.max(0, X.months.length-_xbWin) : 0;
+  const months=X.months.slice(i0);
+  const datasets=XB_ALL_BUCKETS.filter(b=>src[b.key]).map(b=>({type:'bar', label:b.label, data:src[b.key].slice(i0),
+    backgroundColor:b.color, borderColor:b.color, borderWidth:0, stack:'c',
+    categoryPercentage:0.9, barPercentage:0.98, order:3}));
+  datasets.push({type:'line', label:'Total (all investors)', data:totSrc.total.slice(i0),
+    borderColor:'#eef2f9', backgroundColor:'#eef2f9', borderWidth:2, pointRadius:0, pointHoverRadius:3, tension:0.12, order:0, clip:false});
+  if(_xbCharts.cXbAll){ _xbCharts.cXbAll.destroy(); }
+  _xbCharts.cXbAll=new Chart(cv, {data:{labels:months, datasets},
+    options:{responsive:true, maintainAspectRatio:false, interaction:{mode:'index', intersect:false},
+      plugins:{legend:{position:'top', align:'start', labels:{boxWidth:11, boxHeight:11, padding:8, font:{size:10}, color:'#c7d0e0'}},
+        tooltip:{callbacks:{
+        title:it=>{const t=months[it[0].dataIndex]; const [y,mo]=t.split('-'); return mn[+mo]+' '+y;},
+        label:c=>c.dataset.label+': '+(c.parsed.y==null?'–':(c.parsed.y>=0?'+':'')+c.parsed.y.toFixed(U.dp)+U.u)}}},
+      scales:{
+        y:{stacked:true, title:{display:true, text:U.u, color:'#93a1bd', font:{size:10.5}},
+           grid:{color:x=>x.tick.value===0?'#7688a8':'#243149', lineWidth:x=>x.tick.value===0?1.3:1},
+           border:{color:'#2a3752'}, ticks:{color:'#93a1bd', font:{size:10}, callback:v=>(v>0?'+':'')+v}},
+        x:{stacked:true, grid:{display:false}, border:{color:'#2a3752'},
+           ticks:{autoSkip:false, maxRotation:0, color:'#7e8aa3', font:{size:9},
+             callback:(v,i)=>{const p=months[i].split('-'); const mi=+p[1]; const L='JFMAMJJASOND'[mi-1];
+               if(mi===1||i===0) return [L, "'"+p[0].slice(2)]; return (mi%2===1)?L:'';}}}
+      }
+    }
+  });
+}
+const XB_IN_BUCKETS = [
+  {key:'equity',  label:'Equity & fund shares', color:'#e2564a'},
+  {key:'ltbonds', label:'Long-term debt',       color:'#5aa0e6'},
+  {key:'stbonds', label:'Short-term debt',      color:'#4cba7a'},
+];
+let _xbInData = null;
+function xbInChart(){
+  const cv=document.getElementById('cXbIn'); const X=_xbInData; if(!cv||!X) return;
+  const U=_xbUnit(); const src=(U.m==='monthly_usd')?X.monthly_usd:X.monthly;
+  if(!src || !src.in_total) return;
+  const mn=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const i0=_xbWin>0 ? Math.max(0, X.months.length-_xbWin) : 0;
+  const months=X.months.slice(i0);
+  const datasets=XB_IN_BUCKETS.map(b=>({type:'bar', label:b.label, data:src['in_'+b.key].slice(i0),
+    backgroundColor:b.color, borderColor:b.color, borderWidth:0, stack:'c',
+    categoryPercentage:0.9, barPercentage:0.98, order:3}));
+  datasets.push({type:'line', label:'Total (all instruments)', data:src.in_total.slice(i0),
+    borderColor:'#eef2f9', backgroundColor:'#eef2f9', borderWidth:2, pointRadius:0, pointHoverRadius:3, tension:0.12, order:0, clip:false});
+  if(_xbCharts.cXbIn){ _xbCharts.cXbIn.destroy(); }
+  _xbCharts.cXbIn=new Chart(cv, {data:{labels:months, datasets},
+    options:{responsive:true, maintainAspectRatio:false, interaction:{mode:'index', intersect:false},
+      plugins:{legend:{position:'top', align:'start', labels:{boxWidth:11, boxHeight:11, padding:8, font:{size:10}, color:'#c7d0e0'}},
+        tooltip:{callbacks:{
+        title:it=>{const t=months[it[0].dataIndex]; const [y,mo]=t.split('-'); return mn[+mo]+' '+y;},
+        label:c=>c.dataset.label+': '+(c.parsed.y==null?'–':(c.parsed.y>=0?'+':'')+c.parsed.y.toFixed(U.dp)+U.u)}}},
+      scales:{
+        y:{stacked:true, title:{display:true, text:U.u, color:'#93a1bd', font:{size:10.5}},
+           grid:{color:x=>x.tick.value===0?'#7688a8':'#243149', lineWidth:x=>x.tick.value===0?1.3:1},
+           border:{color:'#2a3752'}, ticks:{color:'#93a1bd', font:{size:10}, callback:v=>(v>0?'+':'')+v}},
+        x:{stacked:true, grid:{display:false}, border:{color:'#2a3752'},
+           ticks:{autoSkip:false, maxRotation:0, color:'#7e8aa3', font:{size:9},
+             callback:(v,i)=>{const p=months[i].split('-'); const mi=+p[1]; const L='JFMAMJJASOND'[mi-1];
+               if(mi===1||i===0) return [L, "'"+p[0].slice(2)]; return (mi%2===1)?L:'';}}}
+      }
+    }
+  });
+}
+fetch('./mof_inbound.json?' + Date.now())
+  .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
+  .then(X => { _xbInData=X; xbInChart();
+    const el=document.getElementById('xbInStatus'); if(el && X.meta) el.textContent='· data to '+X.meta.as_of;
+  })
+  .catch(e => { console.warn('mof_inbound.json unavailable:', e); });
 function renderXb(){ if(!_xbData) return;
+  xbAllChart();
   ['banks','trust_bank','trust_pension','life'].forEach(k=>xbStackedChart('cXb_'+k,'xbTitle_'+k, k));
   ['total','trust_pension','life'].forEach(k=>xbFyChart('cXbSeas_'+k,'xbSeasT_'+k, k, 'seas'));
   ['total','trust_pension','life'].forEach(k=>xbFyChart('cXbCum_'+k,'xbCumT_'+k, k, 'cum')); }
 function setXbWin(win, btn){ _xbWin=win;
   document.querySelectorAll('#xbWinBtns .tab').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
+  xbAllChart(); xbInChart();
   ['banks','trust_bank','trust_pension','life'].forEach(k=>xbStackedChart('cXb_'+k,'xbTitle_'+k, k)); }
 function setXbCur(cur, btn){ _xbCur=cur;
   document.querySelectorAll('#xbCurBtns .tab').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
-  renderXb(); }
+  renderXb(); xbInChart(); xbWeeklyChart(); renderBop(); }
 fetch('./mof_flows.json?' + Date.now())
   .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
   .then(X => { _xbData=X; renderXb();
     const el=document.getElementById('xbStatus'); if(el && X.meta) el.textContent='· data to '+X.meta.as_of;
+    const el2=document.getElementById('xbAllStatus'); if(el2 && X.meta) el2.textContent='· data to '+X.meta.as_of;
   })
   .catch(e => { console.warn('mof_flows.json unavailable:', e); });
 
@@ -2026,20 +2546,24 @@ fetch('./mof_flows.json?' + Date.now())
 const XB_CTRY={china:'#e2564a', us:'#5aa0e6', uk:'#d9a441', germany:'#4cba7a', france:'#b79ae8', australia:'#e08fb0', others:'rgba(124,136,160,0.55)'};
 function bopChart(cvId, statusId, B, sec){
   const cv=document.getElementById(cvId); if(!cv||!B[sec]) return;
-  const D=B[sec], S=D.series, lab=D.labels, mn=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const U=_xbUnit(); const D=B[sec], S=(U.m==='monthly_usd'&&D.series_usd)?D.series_usd:D.series, lab=D.labels;
+  const unitLabel = (U.m==='monthly_usd') ? '$mn, net buying' : '¥bn, net buying';
+  const suffix = (U.m==='monthly_usd') ? 'mn' : 'bn';
+  const mn=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   const datasets=D.order.map(k=>({type:'bar', label:lab[k], data:S[k],
     backgroundColor:XB_CTRY[k]||'#8a94ad', borderColor:XB_CTRY[k]||'#8a94ad', borderWidth:0, stack:'c',
     categoryPercentage:0.9, barPercentage:0.98, order:3}));
   datasets.push({type:'line', label:'Whole-market total', data:S.total,
     borderColor:'#eef2f9', backgroundColor:'#eef2f9', borderWidth:2, pointRadius:0, pointHoverRadius:3, tension:0.12, order:0, clip:false});
-  new Chart(cv, {data:{labels:B.months, datasets},
+  if(_xbCharts[cvId]){ _xbCharts[cvId].destroy(); }
+  _xbCharts[cvId]=new Chart(cv, {data:{labels:B.months, datasets},
     options:{responsive:true, maintainAspectRatio:false, interaction:{mode:'index', intersect:false},
       plugins:{legend:{position:'top', align:'start', labels:{boxWidth:11, boxHeight:11, padding:9, font:{size:10.5}, color:'#c7d0e0'}},
         tooltip:{callbacks:{
           title:it=>{const t=B.months[it[0].dataIndex]; const [y,m]=t.split('-'); return mn[+m]+' '+y;},
-          label:c=>c.dataset.label+': '+(c.parsed.y==null?'–':(c.parsed.y>=0?'+':'')+c.parsed.y.toFixed(0)+'bn')}}},
+          label:c=>c.dataset.label+': '+(c.parsed.y==null?'–':(c.parsed.y>=0?'+':'')+c.parsed.y.toFixed(0)+suffix)}}},
       scales:{
-        y:{stacked:true, title:{display:true, text:'¥bn, net buying', color:'#93a1bd'},
+        y:{stacked:true, title:{display:true, text:unitLabel, color:'#93a1bd'},
            grid:{color:x=>x.tick.value===0?'#7688a8':'#243149', lineWidth:x=>x.tick.value===0?1.3:1},
            border:{color:'#2a3752'}, ticks:{color:'#93a1bd', callback:v=>(v>0?'+':'')+v}},
         x:{stacked:true, grid:{display:false}, border:{color:'#2a3752'},
@@ -2051,14 +2575,86 @@ function bopChart(cvId, statusId, B, sec){
   });
   const el=document.getElementById(statusId); if(el && B.meta) el.textContent='· data to '+B.meta.as_of;
 }
+function bopOutTable(B, nMonths){
+  const tbl=document.getElementById('bopOutTable'); if(!tbl||!B.outbound_sov) return;
+  const U=_xbUnit(); const D=B.outbound_sov, S=(U.m==='monthly_usd'&&D.series_usd)?D.series_usd:D.series, lab=D.labels;
+  const scale = (U.m==='monthly_usd') ? 25 : 2500;
+  const mn=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const i0=Math.max(0, B.months.length-nMonths);
+  const months=B.months.slice(i0);
+  const rows=D.order.map(k=>({key:k, label:lab[k]||k, vals:S[k].slice(i0)}));
+  const cell=(v,strong)=>{
+    if(v==null) return '<td style="padding:.3rem .5rem;text-align:right;color:#5a6580">–</td>';
+    const mag=Math.min(Math.abs(v)/scale,1);
+    const bg = v>=0 ? `rgba(90,160,230,${0.12+mag*0.32})` : `rgba(226,86,74,${0.12+mag*0.32})`;
+    const fw = strong ? 'font-weight:600' : '';
+    return `<td style="padding:.3rem .5rem;text-align:right;background:${bg};${fw}">${v>=0?'+':''}${v.toFixed(0)}</td>`;
+  };
+  let html='<thead><tr><th style="padding:.3rem .5rem;text-align:left;color:#93a1bd;font-weight:600;position:sticky;left:0;background:var(--card,#171f31)">Country</th>';
+  months.forEach(t=>{ const [y,m]=t.split('-'); html+=`<th style="padding:.3rem .5rem;text-align:right;color:#93a1bd;font-weight:600;white-space:nowrap">${mn[+m]}'${y.slice(2)}</th>`; });
+  html+='</tr></thead><tbody>';
+  rows.forEach(r=>{
+    html+=`<tr style="border-top:1px solid #243149"><td style="padding:.3rem .5rem;color:#c7d0e0;white-space:nowrap;position:sticky;left:0;background:var(--card,#171f31)">${r.label}</td>`;
+    r.vals.forEach(v=>{ html+=cell(v,false); });
+    html+='</tr>';
+  });
+  const totVals=S.total.slice(i0);
+  html+=`<tr style="border-top:2px solid #3a4a6b"><td style="padding:.3rem .5rem;color:#eef2f9;font-weight:600;white-space:nowrap;position:sticky;left:0;background:var(--card,#171f31)">Total</td>`;
+  totVals.forEach(v=>{ html+=cell(v,true); });
+  html+='</tr></tbody>';
+  tbl.innerHTML=html;
+  const unitLabel=(U.m==='monthly_usd')?'$mn':'¥bn';
+  const el=document.getElementById('bopOutTableStatus'); if(el && B.meta) el.textContent='· data to '+B.meta.as_of+' · '+unitLabel;
+}
+let _bopData=null;
+function renderBop(){ if(!_bopData) return;
+  bopChart('cBopInbound','bopInStatus', _bopData, 'inbound');
+  bopChart('cBopOutbound','bopOutStatus', _bopData, 'outbound_sov');
+  bopOutTable(_bopData, 8); }
 fetch('./mof_bop.json?' + Date.now())
   .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
-  .then(B => { bopChart('cBopInbound','bopInStatus', B, 'inbound');
-               bopChart('cBopOutbound','bopOutStatus', B, 'outbound_sov'); })
+  .then(B => { _bopData=B; renderBop(); })
   .catch(e => { console.warn('mof_bop.json unavailable:', e); });
 
+// MoF weekly release: Portfolio Investment Assets (outward) vs Liabilities (inward), net, 2-line
+let _xbWeeklyData=null, _xbWeeklyChartObj=null;
+function xbWeeklyChart(){
+  const cv=document.getElementById('cXbWeekly'); const W=_xbWeeklyData; if(!cv||!W) return;
+  const usd=(_xbCur==='usd');
+  const assets=usd?W.assets_net_usd:W.assets_net, liab=usd?W.liab_net_usd:W.liab_net;
+  const u=usd?'$bn':'¥tn', dp=usd?1:2;
+  const datasets=[
+    {label:'Japan → abroad (Assets, net)', data:assets, borderColor:'#5aa0e6', backgroundColor:'#5aa0e6',
+     borderWidth:1.5, pointRadius:0, pointHoverRadius:3, tension:0.1, order:1},
+    {label:'Foreign → Japan (Liabilities, net)', data:liab, borderColor:'#d9a441', backgroundColor:'#d9a441',
+     borderWidth:1.5, pointRadius:0, pointHoverRadius:3, tension:0.1, order:0},
+  ];
+  if(_xbWeeklyChartObj){ _xbWeeklyChartObj.destroy(); }
+  _xbWeeklyChartObj=new Chart(cv, {type:'line', data:{labels:W.weeks, datasets},
+    options:{responsive:true, maintainAspectRatio:false, interaction:{mode:'index', intersect:false},
+      plugins:{legend:{position:'top', align:'start', labels:{boxWidth:11, boxHeight:11, padding:8, font:{size:10}, color:'#c7d0e0'}},
+        tooltip:{callbacks:{
+          title:it=>{const i=it[0].dataIndex; return 'Week '+(W.week_labels[i]||W.weeks[i]);},
+          label:c=>c.dataset.label+': '+(c.parsed.y==null?'–':(c.parsed.y>=0?'+':'')+c.parsed.y.toFixed(dp)+u)}}},
+      scales:{
+        y:{title:{display:true, text:u+', net buying', color:'#93a1bd', font:{size:10.5}},
+           grid:{color:x=>x.tick.value===0?'#7688a8':'#243149', lineWidth:x=>x.tick.value===0?1.3:1},
+           border:{color:'#2a3752'}, ticks:{color:'#93a1bd', font:{size:10}, callback:v=>(v>0?'+':'')+v}},
+        x:{grid:{display:false}, border:{color:'#2a3752'},
+           ticks:{autoSkip:true, maxTicksLimit:12, maxRotation:0, color:'#7e8aa3', font:{size:9.5},
+             callback:(v,i)=>W.weeks[i]?W.weeks[i].slice(0,7):''}}
+      }
+    }
+  });
+  const el=document.getElementById('xbWeeklyStatus'); if(el && W.meta) el.textContent='· data to '+W.meta.as_of;
+}
+fetch('./mof_weekly.json?' + Date.now())
+  .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
+  .then(W => { _xbWeeklyData=W; xbWeeklyChart(); })
+  .catch(e => { console.warn('mof_weekly.json unavailable:', e); });
+
 // ── Intervention tab ─────────────────────────────────────────────────────────
-let _ivData = null, _ivWin = 0;
+let _ivData = null;
 const IV_COLOR = { buy: '#4cba7a', sell: '#e2564a', eur: '#d9a441' };
 const IV_LABEL = { buy: 'Strengthen yen (buy JPY)', sell: 'Weaken yen (sell JPY)', eur: 'Strengthen EUR (buy EUR)' };
 
@@ -2117,56 +2713,91 @@ function ivLongChart(D) {
   });
 }
 
-let _ivRecentChart = null;
-function ivRecentChart(D) {
-  const cv = document.getElementById('cIvRecent'); if (!cv) return;
-  if (_ivRecentChart) { _ivRecentChart.destroy(); _ivRecentChart = null; }
-  let H = D.recent_history;
-  if (_ivWin) { const cutoff = new Date(); cutoff.setMonth(cutoff.getMonth() - _ivWin); H = H.filter(p => new Date(p.date) >= cutoff); }
-  const labels = H.map(p => p.date);
-  const opByDate = {}; D.recent_ops.forEach(o => { opByDate[o.date] = o; });
-  const n = H.length;
-  const radii = new Array(n).fill(0), colors = new Array(n).fill('#eef2f9'), styles = new Array(n).fill('circle');
-  H.forEach((p, i) => {
-    const o = opByDate[p.date];
-    if (o) { radii[i] = 5; colors[i] = IV_COLOR.buy; styles[i] = o.official ? 'circle' : 'rect'; }
-  });
-  const opDatesSorted = D.recent_ops.map(o => o.date).sort();
-  _ivRecentChart = new Chart(cv, {
-    type: 'line',
-    data: { labels, datasets: [{
-      data: H.map(p => p.value), borderColor: '#93a1bd', borderWidth: 1.2, tension: 0,
-      pointRadius: radii, pointHoverRadius: radii.map(r => r ? r + 2 : 3),
-      pointBackgroundColor: colors, pointBorderColor: colors, pointStyle: styles,
-      backgroundColor: 'transparent',
-      datalabels: {
-        display: ctx => !!opByDate[labels[ctx.dataIndex]],
-        color: IV_COLOR.buy, font: { size: 9, weight: '600' }, anchor: 'end',
-        align: ctx => (opDatesSorted.indexOf(labels[ctx.dataIndex]) % 2 === 0) ? 'end' : 'start',
-        offset: 8, rotation: 0, textAlign: 'center',
-        formatter: (v, ctx) => { const o = opByDate[labels[ctx.dataIndex]]; return o ? [`¥${o.jpy_tn}tn`, `$${o.usd_bn}bn`] : ''; }
-      }
-    }] },
-    plugins: [ChartDataLabels],
-    options: {
-      responsive: true, maintainAspectRatio: false, animation: false,
-      layout: { padding: { top: 50, bottom: 30, right: 36 } },
-      plugins: {
-        legend: { display: false },
-        datalabels: { clamp: true },
-        tooltip: { callbacks: {
-          title: i => i[0].label,
-          label: i => { const o = opByDate[labels[i.dataIndex]];
-            return 'USD/JPY ' + i.raw.toFixed(2) + (o ? ` — ¥${o.jpy_tn}tn | $${o.usd_bn}bn (${o.official ? 'MOF-confirmed' : (o.label||'estimate')})` : ''); }
-        } }
-      },
-      scales: {
-        x: { grid: { display: false }, border: { color: '#2a3752' },
-          ticks: { color: '#7e8aa3', font: { size: 10 }, maxTicksLimit: 16, maxRotation: 0 } },
-        y: { grid: { color: '#243149' }, border: { color: '#2a3752' }, ticks: { color: '#93a1bd' },
-          title: { display: true, text: 'JPY per US$', color: '#93a1bd' } }
-      }
+function ivDropBracketPlugin(peakIdx, troughIdx, dropYen) {
+  return {
+    id: 'ivDropBracket',
+    afterDatasetsDraw(chart) {
+      const meta = chart.getDatasetMeta(0);
+      const p = meta.data[peakIdx], t = meta.data[troughIdx];
+      if (!p || !t) return;
+      const { ctx, chartArea } = chart;
+      if (!chartArea) return;
+      const bx = Math.min(chartArea.right - 4, Math.max(p.x, t.x) + 16);
+      ctx.save();
+      ctx.strokeStyle = '#e2564a';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([]);
+      ctx.beginPath();
+      ctx.moveTo(bx, p.y); ctx.lineTo(bx, t.y);
+      ctx.moveTo(bx - 5, p.y); ctx.lineTo(bx + 5, p.y);
+      ctx.moveTo(bx - 5, t.y); ctx.lineTo(bx + 5, t.y);
+      ctx.stroke();
+      ctx.fillStyle = '#e2564a';
+      ctx.font = '700 11px sans-serif';
+      ctx.textAlign = bx + 40 > chartArea.right ? 'right' : 'left';
+      ctx.fillText(`−${dropYen.toFixed(2)}`, ctx.textAlign === 'right' ? bx - 8 : bx + 8, (p.y + t.y) / 2 + 4);
+      ctx.restore();
     }
+  };
+}
+
+function renderIvSnapshots(D) {
+  const grid = document.getElementById('ivSnapGrid');
+  if (!grid) return;
+  const snaps = D.episode_snapshots || [];
+  const statusEl = document.getElementById('ivSnapStatus');
+  if (statusEl) statusEl.textContent = snaps.length ? `· ${snaps.length} rounds, ${esc(snaps[0].window_start)} to ${esc(snaps[snaps.length-1].window_end)}` : '';
+
+  grid.innerHTML = snaps.map((s, i) => `
+    <div class="mbcard" style="margin-bottom:0">
+      <h3>${esc(s.label)}</h3>
+      <div style="font-size:11px;color:var(--muted);text-align:center;margin:-4px 0 8px">
+        ¥${s.total_jpy_tn}tn / $${s.total_usd_bn}bn total · peak ${esc(s.peak.date)} (${s.peak.value.toFixed(2)}) → trough ${esc(s.trough.date)} (${s.trough.value.toFixed(2)})
+      </div>
+      <div style="text-align:center;font-size:20px;font-weight:700;color:#e2564a;margin-bottom:8px">−${s.drop_yen.toFixed(2)}¥ <span style="font-size:14px;font-weight:600;color:#eb9d90">(−${s.drop_pct.toFixed(2)}%)</span></div>
+      <canvas id="cIvSnap${i}" style="max-height:180px"></canvas>
+      <div class="note" style="margin-top:6px">${s.ops.map(o => `${esc(o.date)}: ¥${o.jpy_tn}tn/$${o.usd_bn}bn${o.official ? '' : ' (est.)'}`).join(' · ')}</div>
+    </div>`).join('');
+
+  snaps.forEach((s, i) => {
+    const cv = document.getElementById('cIvSnap' + i);
+    if (!cv) return;
+    const labels = s.points.map(p => p.date);
+    const opDates = new Set(s.ops.map(o => o.date));
+    const peakIdx = labels.indexOf(s.peak.date);
+    const troughIdx = labels.indexOf(s.trough.date);
+    new Chart(cv, {
+      type: 'line',
+      data: { labels, datasets: [{
+        data: s.points.map(p => p.value),
+        borderColor: '#5aa0e6', backgroundColor: 'rgba(90,160,230,.18)', fill: true,
+        borderWidth: 1.6, tension: 0,
+        pointRadius: labels.map((d, idx) => idx === peakIdx || idx === troughIdx ? 5 : (opDates.has(d) ? 3 : 0)),
+        pointBackgroundColor: labels.map((d, idx) => idx === troughIdx ? '#e2564a' : (idx === peakIdx ? '#eef2f9' : (opDates.has(d) ? '#d9a441' : '#5aa0e6'))),
+        datalabels: {
+          display: ctx => ctx.dataIndex === peakIdx || ctx.dataIndex === troughIdx,
+          color: ctx => ctx.dataIndex === troughIdx ? '#e2564a' : '#eef2f9',
+          font: { size: 10, weight: '700' },
+          anchor: ctx => ctx.dataIndex === troughIdx ? 'end' : 'start',
+          align: ctx => ctx.dataIndex === troughIdx ? 'bottom' : 'top', offset: 4,
+          formatter: v => v.toFixed(2)
+        }
+      }] },
+      plugins: [ChartDataLabels, ivDropBracketPlugin(peakIdx, troughIdx, s.drop_yen)],
+      options: {
+        responsive: true, maintainAspectRatio: false, animation: false,
+        layout: { padding: { top: 22, bottom: 18, right: 46 } },
+        plugins: {
+          legend: { display: false }, datalabels: { clamp: true },
+          tooltip: { callbacks: { title: i => i[0].label, label: i => 'USD/JPY ' + i.raw.toFixed(2) } } }
+        ,
+        scales: {
+          x: { grid: { display: false }, border: { color: '#2a3752' },
+            ticks: { color: '#7e8aa3', font: { size: 9 }, maxTicksLimit: 6, maxRotation: 0 } },
+          y: { grid: { color: '#243149' }, border: { color: '#2a3752' }, ticks: { color: '#93a1bd', font: { size: 9.5 } } }
+        }
+      }
+    });
   });
 }
 
@@ -2177,18 +2808,37 @@ function ivPeriodLabel(s) {
   return s;
 }
 
+const IV_STATUS_COLOR = {
+  'MOF confirmed — daily breakdown': '#4cba7a',
+  'MOF confirmed — monthly aggregate': '#4cba7a',
+  'BOJ settlement estimate / market estimate': '#d9a441',
+  'Historical estimate': '#93a1bd',
+  'Pending MOF confirmation': '#e2564a',
+};
 function renderIvEpTable(episodes) {
   const fmt = v => v == null ? '—' : (v > 0 ? '+' : '') + v.toFixed(1);
-  document.getElementById('ivEpBody').innerHTML = episodes.map(ep => `
+  const fmtTn = v => v == null ? '—' : (v > 0 ? '+' : '') + v.toFixed(2);
+  const fmtEff = e => !e ? '—' : `${e.change_yen > 0 ? '+' : ''}${e.change_yen.toFixed(2)}¥`;
+  document.getElementById('ivEpBody').innerHTML = episodes.map(ep => {
+    const status = ep.data_status || (ep.confirmed === true ? 'MOF confirmed — monthly aggregate' : ep.confirmed === 'event' ? 'BOJ settlement estimate / market estimate' : 'Historical estimate');
+    const statusColor = IV_STATUS_COLOR[status] || 'var(--muted)';
+    const isProvisional = status === 'BOJ settlement estimate / market estimate' || status === 'Pending MOF confirmation';
+    const eff = ep.effects;
+    return `
     <tr style="border-bottom:1px solid var(--line)${ep.confirmed==='event' ? ';background:rgba(76,186,122,.08)' : ''}">
-      <td style="padding:6px 8px;white-space:nowrap">${esc(ivPeriodLabel(ep.start))}${ep.end!==ep.start ? ' – ' + esc(ivPeriodLabel(ep.end)) : ''}</td>
-      <td style="padding:6px 8px">${esc(ep.context)}${ep.confirmed==='event' ? ' <span class="npill">confirmed 3-Aug-26</span>' : ''}${ep.note ? `<div class="note" style="margin-top:2px">${esc(ep.note)}</div>` : ''}</td>
+      <td style="padding:6px 8px">${esc(ivPeriodLabel(ep.start))}${ep.end!==ep.start ? ' – ' + esc(ivPeriodLabel(ep.end)) : ''}<div style="font-size:11px;color:var(--muted);font-weight:400">${esc(ep.context)}</div></td>
       <td style="padding:6px 8px;color:${IV_COLOR[ep.direction]}">${esc(IV_LABEL[ep.direction]||ep.direction)}</td>
-      <td style="padding:6px 8px;text-align:center">${ep.coordinated ? 'Yes' : 'No'}</td>
-      <td style="padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums">${fmt(ep.total)}${ep.confirmed===false||ep.confirmed==='event' ? '?' : ''}</td>
-      <td style="padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums">${fmt(ep.japan)}</td>
-      <td style="padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums">${fmt(ep.nonjapan)}</td>
-    </tr>`).join('');
+      <td style="padding:6px 8px;color:var(--muted);font-size:11.5px">${ep.note ? esc(ep.note) : ''}</td>
+      <td style="padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums">${fmtTn(ep.japan_jpy_tn)}${isProvisional && ep.japan_jpy_tn != null ? '?' : ''}</td>
+      <td style="padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)" title="Approx. — converted from ¥ at contemporaneous USD/JPY; MOF only publishes yen amounts">${fmt(ep.japan)}${isProvisional ? '?' : ''}</td>
+      <td style="padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)">${ep.nonjapan ? fmt(ep.nonjapan) : '—'}</td>
+      <td style="padding:6px 8px;color:${statusColor};font-size:11.5px">${esc(status)}</td>
+      <td style="padding:6px 8px;font-size:11.5px">${esc(ep.coordination_tag || (ep.coordinated ? 'G7 coordinated' : 'Japan unilateral'))}</td>
+      <td style="padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums;font-size:11.5px">${eff && eff.d1 ? fmtEff(eff.d1) : '—'}</td>
+      <td style="padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums;font-size:11.5px">${eff && eff.d5 ? fmtEff(eff.d5) : '—'}</td>
+      <td style="padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums;font-size:11.5px">${eff && eff.d20 ? fmtEff(eff.d20) : '—'}</td>
+    </tr>`;
+  }).join('');
 }
 
 function renderIvOpTable(ops) {
@@ -2237,19 +2887,11 @@ function renderIvEvents(events) {
     </tr>`).join('');
 }
 
-function setIvWin(win, btn) {
-  _ivWin = win;
-  document.querySelectorAll('#ivWinBtns .tab').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  if (_ivData) ivRecentChart(_ivData);
-}
-
 fetch('./intervention_data.json?' + Date.now())
   .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
   .then(D => {
     _ivData = D;
     ivLongChart(D);
-    ivRecentChart(D);
     renderIvEpTable(D.episodes);
     renderIvOpTable(D.recent_ops);
     renderIvRule(D.imf_rule);
@@ -2258,6 +2900,323 @@ fetch('./intervention_data.json?' + Date.now())
     const el = document.getElementById('ivLongStatus'); if (el) el.textContent = '· data to ' + D.long_history[D.long_history.length-1].date;
   })
   .catch(e => { console.warn('intervention_data.json unavailable:', e); });
+
+// ── BOJ Balance Sheet / QT tab ─────────────────────────────────────────────
+(function(){
+  const GRID={color:"#243149"}, TICK={color:"#93a1bd",font:{size:10.5}};
+  const fmtMon = s => { const [y,m]=s.split('-'); return IV_MON[+m]+" '"+y.slice(2); };
+  const baseOpts = (yl, extra) => Object.assign({
+    responsive:true, maintainAspectRatio:false, animation:false,
+    plugins:{legend:{display:false}, tooltip:{mode:'index', intersect:false}},
+    scales:{
+      x:{grid:{display:false}, border:{color:'#2a3752'}, ticks:Object.assign({},TICK,{maxTicksLimit:14,maxRotation:0})},
+      y:{grid:GRID, border:{color:'#2a3752'}, ticks:TICK, title:{display:!!yl,text:yl,color:'#93a1bd'}}
+    }
+  }, extra||{});
+
+  function lineChart(id, labels, data, color, yl, fillA) {
+    const cv = document.getElementById(id); if (!cv) return;
+    new Chart(cv, {type:'line', data:{labels, datasets:[{data, borderColor:color,
+      backgroundColor: fillA ? color+fillA : 'transparent', fill: !!fillA,
+      borderWidth:1.6, pointRadius:0, tension:0.05}]}, options: baseOpts(yl)});
+  }
+  function barChart(id, labels, data, yl) {
+    const cv = document.getElementById(id); if (!cv) return;
+    new Chart(cv, {type:'bar', data:{labels, datasets:[{data,
+      backgroundColor: data.map(v => v==null ? 'transparent' : (v>=0 ? '#4cba7a' : '#e2564a')), borderRadius:2}]},
+      options: baseOpts(yl)});
+  }
+
+  Promise.all([
+    fetch('./boj_balance_sheet.json?' + Date.now()).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }),
+    fetch('./mof_issuance.json?' + Date.now()).then(r => r.ok ? r.json() : null).catch(() => null),
+    fetch('./market_data.json?' + Date.now()).then(r => r.ok ? r.json() : null).catch(() => null),
+    fetch('./superlong_data.json?' + Date.now()).then(r => r.ok ? r.json() : null).catch(() => null),
+    fetch('./auction_quality.json?' + Date.now()).then(r => r.ok ? r.json() : null).catch(() => null),
+  ])
+    .then(([D, M, MKT, SL, AQ]) => {
+      const months = D.months, labels = months.map(fmtMon);
+      let absorptionPct = null;
+      const L = D.latest;
+
+      document.getElementById('bsKpis').innerHTML = [
+        { v: `¥${L.total_assets_jpy_tn.toFixed(1)}tn`, l: `Total BOJ assets (${L.month})` },
+        { v: `¥${L.jgs_jpy_tn.toFixed(1)}tn`, l: `JGS holdings (${L.jgs_share_pct.toFixed(1)}% of assets)` },
+        { v: `¥${L.current_deposits_jpy_tn.toFixed(1)}tn`, l: 'Current-account deposits' },
+        { v: L.boj_share_of_jgb_pct != null ? L.boj_share_of_jgb_pct.toFixed(1)+'%' : '—', l: `BOJ share of outstanding JGB (${L.boj_share_of_jgb_pct_asof||'—'})` },
+        { v: L.assets_pct_gdp != null ? L.assets_pct_gdp.toFixed(1)+'%' : '—', l: `Total assets / nominal GDP (${L.assets_pct_gdp_asof||'—'})` },
+        { v: L.jgb_purchases_jpy_tn != null ? `¥${L.jgb_purchases_jpy_tn.toFixed(2)}tn` : '—', l: `Gross JGB purchases, latest mo. (${L.jgb_purchases_asof||'—'})` },
+      ].map(k => `<div class="kpi"><div class="v">${k.v}</div><div class="l">${k.l}</div></div>`).join('');
+
+      document.getElementById('bsAssetsStatus').textContent = '· data to ' + L.month;
+
+      lineChart('cBsAssets', labels, D.assets.total_assets, '#5aa0e6', '¥ tn', '22');
+      lineChart('cBsJgs', labels, D.assets.jgs, '#d9a441', '¥ tn', '22');
+      lineChart('cBsCab', labels, D.liabilities.current_deposits, '#b79ae8', '¥ tn', '20');
+      if (D.derived.jgb_redemptions_implied_jpy_tn) {
+        const decompCv = document.getElementById('cBsQtDecomp');
+        if (decompCv) {
+          const redemptionsNeg = D.derived.jgb_redemptions_implied_jpy_tn.map(v => v==null ? null : -v);
+          new Chart(decompCv, {
+            type: 'bar',
+            data: { labels, datasets: [
+              { type:'bar', label:'Gross purchases', data:D.operations.jgb_purchases_outright_jpy_tn, backgroundColor:'#4cba7a', borderRadius:2, order:2 },
+              { type:'bar', label:'Implied redemptions', data:redemptionsNeg, backgroundColor:'#e2564a', borderRadius:2, order:2 },
+              { type:'line', label:'Net change in JGS holdings', data:D.derived.jgs_change_mom_jpy_tn, borderColor:'#e8edf7', backgroundColor:'transparent', borderWidth:1.8, pointRadius:0, tension:0, order:1 },
+            ]},
+            options: Object.assign(baseOpts('¥ tn/mo'), {
+              plugins:{legend:{display:true, position:'top', labels:{color:'#93a1bd', font:{size:11}, boxWidth:10}}, tooltip:{mode:'index', intersect:false}},
+              scales:{x:{stacked:true, grid:{display:false}, border:{color:'#2a3752'}, ticks:Object.assign({},TICK,{maxTicksLimit:14,maxRotation:0})}, y:{stacked:true, grid:GRID, border:{color:'#2a3752'}, ticks:TICK, title:{display:true,text:'¥ tn/mo',color:'#93a1bd'}}}
+            })
+          });
+        }
+      }
+      if (M && M.months && M.months.length) {
+        const netCv = document.getElementById('cBsNetSupply');
+        if (netCv) {
+          const mByMonth = {};
+          M.months.forEach((m, i) => { mByMonth[m] = M.gross_issuance_jpy_tn[i]; });
+          const purchases = D.operations.jgb_purchases_outright_jpy_tn;
+          const mofIssuance = months.map(m => mByMonth[m] != null ? mByMonth[m] : null);
+          const netSupply = months.map((m, i) => mByMonth[m] != null && purchases[i] != null ? +(mByMonth[m] - purchases[i]).toFixed(2) : null);
+          absorptionPct = months.map((m, i) => mByMonth[m] != null && purchases[i] != null && mByMonth[m] > 0 ? +((purchases[i] / mByMonth[m]) * 100).toFixed(1) : null);
+          new Chart(netCv, {
+            data: { labels, datasets: [
+              { type:'bar', label:'Net supply to private sector', data:netSupply, backgroundColor: netSupply.map(v => v==null ? 'transparent' : (v>=0 ? '#5aa0e6' : '#e2564a')), borderRadius:2, order:2, yAxisID:'y' },
+              { type:'line', label:'BOJ absorption ratio (%)', data:absorptionPct, borderColor:'#d9a441', backgroundColor:'transparent', borderWidth:1.8, pointRadius:0, tension:0.05, spanGaps:true, order:1, yAxisID:'y1' },
+            ]},
+            options: Object.assign(baseOpts('¥ tn/mo'), {
+              plugins:{legend:{display:true, position:'top', labels:{color:'#93a1bd', font:{size:11}, boxWidth:10}}, tooltip:{mode:'index', intersect:false}},
+              scales:{
+                x:{grid:{display:false}, border:{color:'#2a3752'}, ticks:Object.assign({},TICK,{maxTicksLimit:14,maxRotation:0})},
+                y:{grid:GRID, border:{color:'#2a3752'}, ticks:TICK, title:{display:true,text:'¥ tn/mo',color:'#93a1bd'}},
+                y1:{position:'right', grid:{display:false}, border:{color:'#2a3752'}, ticks:Object.assign({},TICK,{callback:v=>v+'%'}), title:{display:true,text:'BOJ absorption ratio',color:'#93a1bd'}, min:0},
+              }
+            })
+          });
+          const lastM = M.meta.as_of_month;
+          document.getElementById('bsNetSupplyNote').innerHTML =
+            `Bars: MOF gross coupon-JGB issuance (auction offering amounts, Treasury Discount Bills excluded, as of ${esc(lastM)}) minus BOJ outright JGB purchases (DB=MD06). Line, right axis: BOJ absorption ratio = BOJ purchases ÷ MOF gross issuance. <b>Caveat:</b> this is a <i>gross</i> absorption requirement, not net of redemptions on either side — see the card just below for MOF's own new-money-vs-refunding split, the more accurate annual basis for true net duration supply. MOF issuance sourced from its own periodically-republished auction-history workbook, not a live daily feed, so the most recent month or two may lag; blank line-segments beyond ${esc(lastM)} mean MOF data isn't in yet, not zero purchases.`;
+
+          const plan = { newMoney: 29.6, filp: 13.0, gx: 2.3, refunding: 135.8, total: 180.7 };
+          const trueNet = plan.newMoney + plan.filp + plan.gx;
+          document.getElementById('bsIssuancePlanKpis').innerHTML = [
+            { v: `¥${plan.total.toFixed(1)}tn`, l: 'FY2026 gross issuance plan (total)' },
+            { v: `¥${plan.refunding.toFixed(1)}tn`, l: `Refunding bonds (${(plan.refunding/plan.total*100).toFixed(0)}% — replaces maturing debt, not new duration)` },
+            { v: `¥${plan.newMoney.toFixed(1)}tn`, l: `New-money financing bonds (${(plan.newMoney/plan.total*100).toFixed(0)}%)` },
+            { v: `¥${(plan.filp+plan.gx).toFixed(1)}tn`, l: 'FILP + GX transition bonds (also new duration)' },
+            { v: `¥${trueNet.toFixed(1)}tn/yr`, l: `≈ true new net duration to the market (~¥${(trueNet/12).toFixed(1)}tn/mo avg)` },
+          ].map(k => `<div class="kpi"><div class="v">${k.v}</div><div class="l">${k.l}</div></div>`).join('');
+
+          const mmCv = document.getElementById('cBsMaturityMix');
+          if (mmCv && M.by_tenor_jpy_tn) {
+            const bt = M.by_tenor_jpy_tn;
+            const WINDOW = 84; // last 7 years — full 500-month history is unreadable as a 5-category stacked bar
+            const mmMonths = M.months.slice(-WINDOW);
+            const idx0 = M.months.length - mmMonths.length;
+            const sum = (...keys) => mmMonths.map((_, i) => keys.reduce((s, k) => s + (bt[k] ? bt[k][idx0 + i] : 0), 0));
+            const buckets = [
+              { label:'1-3Y', color:'#5aa0e6', data: sum('2Y', '3Y (discount)') },
+              { label:'3-5Y', color:'#4cba7a', data: sum('5Y', 'GX 5Y') },
+              { label:'5-10Y', color:'#d9a441', data: sum('10Y', '10Y (inflation-linked)', 'GX 10Y') },
+              { label:'10-25Y', color:'#e0888a', data: sum('20Y') },
+              { label:'25Y+', color:'#b79ae8', data: sum('30Y', '40Y') },
+            ];
+            const mmLabels = mmMonths.map(fmtMon);
+            new Chart(mmCv, {
+              type: 'bar',
+              data: { labels: mmLabels, datasets: buckets.map(b => ({ label:b.label, data:b.data, backgroundColor:b.color, stack:'s', borderRadius:1 })) },
+              options: Object.assign(baseOpts('¥ tn/mo'), {
+                plugins:{legend:{display:true, position:'top', labels:{color:'#93a1bd', font:{size:11}, boxWidth:10}}, tooltip:{mode:'index', intersect:false}},
+                scales:{x:{stacked:true, grid:{display:false}, border:{color:'#2a3752'}, ticks:Object.assign({},TICK,{maxTicksLimit:14,maxRotation:0})}, y:{stacked:true, grid:GRID, border:{color:'#2a3752'}, ticks:TICK, title:{display:true,text:'¥ tn/mo',color:'#93a1bd'}}}
+              })
+            });
+          }
+          document.getElementById('bsMaturityMixNote').innerHTML =
+            `Showing the last 7 years — the full history back to ${esc(M.months[0])} is unreadable as a 5-category stacked bar. Buckets: 1-3Y (2Y, 3Y discount), 3-5Y (5Y, GX 5Y), 5-10Y (10Y, 10Y inflation-linked, GX 10Y), 10-25Y (20Y), 25Y+ (30Y, 40Y). Retail-only tenors (4Y, 6Y, 15Y floating) are excluded — MOF stopped issuing new supply on those programs years ago and they carry near-zero recent volume. Source: same MOF auction-history workbook as the issuance chart above, as of ${esc(M.meta.as_of_month)}.`;
+        }
+      }
+      if (D.derived.jgs_change_3m_jpy_tn) {
+        const paceCv = document.getElementById('cBsPace');
+        if (paceCv) {
+          new Chart(paceCv, {
+            type: 'line',
+            data: { labels, datasets: [
+              { label:'3m (distorted by redemption spikes)', data:D.derived.jgs_change_3m_jpy_tn, borderColor:'#6b7690', backgroundColor:'transparent', borderWidth:1, borderDash:[3,3], pointRadius:0, tension:0 },
+              { label:'6m (preferred)', data:D.derived.jgs_change_6m_jpy_tn, borderColor:'#5aa0e6', backgroundColor:'transparent', borderWidth:2.2, pointRadius:0, tension:0 },
+              { label:'12m (preferred)', data:D.derived.jgs_change_yoy_jpy_tn, borderColor:'#e8edf7', backgroundColor:'transparent', borderWidth:2.8, pointRadius:0, tension:0 },
+            ]},
+            options: Object.assign(baseOpts('¥ tn'), {
+              plugins:{legend:{display:true, position:'top', labels:{color:'#93a1bd', font:{size:11}, boxWidth:10}}, tooltip:{mode:'index', intersect:false}},
+            })
+          });
+        }
+      }
+
+      {
+        const njCv = document.getElementById('cBsNonJgb');
+        if (njCv) {
+          new Chart(njCv, {
+            type: 'line',
+            data: { labels, datasets: [
+              { label:'ETFs', data:D.assets.etf, borderColor:'#5aa0e6', backgroundColor:'transparent', borderWidth:1.8, pointRadius:0, tension:0.05, yAxisID:'y' },
+              { label:'Corporate bonds', data:D.assets.corporate_bonds, borderColor:'#4cba7a', backgroundColor:'transparent', borderWidth:1.8, pointRadius:0, tension:0.05, yAxisID:'y1' },
+              { label:'J-REITs', data:D.assets.jreit, borderColor:'#e0888a', backgroundColor:'transparent', borderWidth:1.8, pointRadius:0, tension:0.05, yAxisID:'y1' },
+            ]},
+            options: Object.assign(baseOpts('¥ tn'), {
+              plugins:{legend:{display:true, position:'top', labels:{color:'#93a1bd', font:{size:11}, boxWidth:10}}, tooltip:{mode:'index', intersect:false}},
+              scales:{
+                x:{grid:{display:false}, border:{color:'#2a3752'}, ticks:Object.assign({},TICK,{maxTicksLimit:14,maxRotation:0})},
+                y:{grid:GRID, border:{color:'#2a3752'}, ticks:TICK, title:{display:true,text:'ETFs, ¥ tn',color:'#93a1bd'}},
+                y1:{position:'right', grid:{display:false}, border:{color:'#2a3752'}, ticks:TICK, title:{display:true,text:'Corp bonds / J-REITs, ¥ tn',color:'#93a1bd'}},
+              }
+            })
+          });
+          const li2 = months.length - 1;
+          const paceRow = (key, label) => {
+            const series = D.assets[key];
+            const cur = series[li2], sixAgo = series[li2 - 6];
+            if (cur == null || sixAgo == null) return { v: '—', l: `${label} — pace unavailable` };
+            const paceMo = (sixAgo - cur) / 6;
+            const yearsStr = paceMo > 0.0005 ? `${(cur / (paceMo * 12)).toFixed(0)}y to unwind` : 'effectively flat';
+            return { v: `¥${cur.toFixed(2)}tn`, l: `${label} · ${paceMo >= 0 ? '−' : '+'}¥${Math.abs(paceMo).toFixed(3)}tn/mo · ${yearsStr}` };
+          };
+          document.getElementById('bsNonJgbKpis').innerHTML = [
+            paceRow('etf', 'ETFs'),
+            paceRow('corporate_bonds', 'Corporate bonds'),
+            paceRow('jreit', 'J-REITs'),
+          ].map(k => `<div class="kpi"><div class="v">${k.v}</div><div class="l">${k.l}</div></div>`).join('');
+        }
+      }
+      lineChart('cBsJgbShare', labels, D.derived.boj_share_of_jgb_outstanding_pct, '#4cba7a', '%');
+      lineChart('cBsGdp', labels, D.derived.total_assets_pct_gdp, '#5aa0e6', '% of GDP');
+
+      {
+        const ffCv = document.getElementById('cBsFreeFloat');
+        if (ffCv && D.derived.jgb_outstanding_total_jpy_tn) {
+          const outstanding = D.derived.jgb_outstanding_total_jpy_tn;
+          const bojHoldings = D.assets.jgs;
+          const freeFloat = months.map((m, i) => outstanding[i] != null && bojHoldings[i] != null ? +(outstanding[i] - bojHoldings[i]).toFixed(1) : null);
+          new Chart(ffCv, {
+            type: 'line',
+            data: { labels, datasets: [
+              { label:'Private-sector (free-float) holdings', data:freeFloat, borderColor:'#4cba7a', backgroundColor:'#4cba7a22', fill:true, borderWidth:1.8, pointRadius:0, tension:0.05 },
+              { label:'BOJ holdings', data:bojHoldings, borderColor:'#d9a441', backgroundColor:'transparent', borderWidth:1.8, pointRadius:0, tension:0.05 },
+            ]},
+            options: Object.assign(baseOpts('¥ tn'), {
+              plugins:{legend:{display:true, position:'top', labels:{color:'#93a1bd', font:{size:11}, boxWidth:10}}, tooltip:{mode:'index', intersect:false}},
+            })
+          });
+        }
+      }
+
+      if (absorptionPct && MKT && MKT.jgb && MKT.jgb.history) {
+        // Month-end 10Y/30Y yields, aligned to the BOJ months array
+        const yByMonth = {};
+        MKT.jgb.history.forEach(row => { yByMonth[row.date.slice(0, 7)] = row; });
+        const y10 = months.map(m => yByMonth[m] ? yByMonth[m].y10 : null);
+        const y30 = months.map(m => yByMonth[m] ? yByMonth[m].y30 : null);
+
+        const yieldsCv = document.getElementById('cBsImpactYields');
+        if (yieldsCv) {
+          new Chart(yieldsCv, {
+            data: { labels, datasets: [
+              { type:'line', label:'BOJ absorption ratio (%)', data:absorptionPct, borderColor:'#d9a441', backgroundColor:'transparent', borderWidth:1.6, pointRadius:0, tension:0.05, spanGaps:true, yAxisID:'y' },
+              { type:'line', label:'10Y yield', data:y10, borderColor:'#5aa0e6', backgroundColor:'transparent', borderWidth:1.6, pointRadius:0, tension:0.05, yAxisID:'y1' },
+              { type:'line', label:'30Y yield', data:y30, borderColor:'#e0888a', backgroundColor:'transparent', borderWidth:1.6, pointRadius:0, tension:0.05, yAxisID:'y1' },
+            ]},
+            options: Object.assign(baseOpts(''), {
+              plugins:{legend:{display:true, position:'top', labels:{color:'#93a1bd', font:{size:10.5}, boxWidth:9}}, tooltip:{mode:'index', intersect:false}},
+              scales:{
+                x:{grid:{display:false}, border:{color:'#2a3752'}, ticks:Object.assign({},TICK,{maxTicksLimit:10,maxRotation:0})},
+                y:{grid:GRID, border:{color:'#2a3752'}, ticks:Object.assign({},TICK,{callback:v=>v+'%'}), title:{display:true,text:'Absorption ratio',color:'#93a1bd'}},
+                y1:{position:'right', grid:{display:false}, border:{color:'#2a3752'}, ticks:Object.assign({},TICK,{callback:v=>v+'%'}), title:{display:true,text:'Yield',color:'#93a1bd'}},
+              }
+            })
+          });
+        }
+
+        // 30Y auction tail — monthly (last auction of the month, 30Y auctions ~monthly)
+        const tailCv = document.getElementById('cBsImpactTail');
+        if (tailCv && AQ && AQ.tenors && AQ.tenors['30Y']) {
+          const tailByMonth = {};
+          AQ.tenors['30Y'].forEach(a => { tailByMonth[a.month] = a.tail_bp; });
+          const tail30 = months.map(m => tailByMonth[m] != null ? tailByMonth[m] : null);
+          new Chart(tailCv, {
+            data: { labels, datasets: [
+              { type:'bar', label:'30Y tail (bp)', data:tail30, backgroundColor:'#8a94ad', borderRadius:2, order:2, yAxisID:'y' },
+              { type:'line', label:'BOJ absorption ratio (%)', data:absorptionPct, borderColor:'#d9a441', backgroundColor:'transparent', borderWidth:1.6, pointRadius:0, tension:0.05, spanGaps:true, order:1, yAxisID:'y1' },
+            ]},
+            options: Object.assign(baseOpts(''), {
+              plugins:{legend:{display:true, position:'top', labels:{color:'#93a1bd', font:{size:10.5}, boxWidth:9}}, tooltip:{mode:'index', intersect:false}},
+              scales:{
+                x:{grid:{display:false}, border:{color:'#2a3752'}, ticks:Object.assign({},TICK,{maxTicksLimit:10,maxRotation:0})},
+                y:{grid:GRID, border:{color:'#2a3752'}, ticks:TICK, title:{display:true,text:'Tail, bp',color:'#93a1bd'}},
+                y1:{position:'right', grid:{display:false}, border:{color:'#2a3752'}, ticks:Object.assign({},TICK,{callback:v=>v+'%'}), title:{display:true,text:'Absorption ratio',color:'#93a1bd'}},
+              }
+            })
+          });
+        }
+
+        // JSDA super-long net buying by investor type, monthly panel (players.superlong)
+        const flowsCv = document.getElementById('cBsImpactFlows');
+        const slPanel = SL && SL.players;
+        if (flowsCv && slPanel && slPanel.months) {
+          const slLabels = slPanel.months.map(fmtMon);
+          new Chart(flowsCv, {
+            data: { labels: slLabels, datasets: [
+              { type:'bar', label:'Foreign', data:slPanel.superlong.foreign, backgroundColor:'#e2564a', borderRadius:2, stack:'s' },
+              { type:'bar', label:'Life & non-life insurers', data:slPanel.superlong.life, backgroundColor:'#d9a441', borderRadius:2, stack:'s' },
+              { type:'bar', label:'Trust banks (pension)', data:slPanel.superlong.trust, backgroundColor:'#5aa0e6', borderRadius:2, stack:'s' },
+            ]},
+            options: Object.assign(baseOpts('¥ tn/mo, net buying'), {
+              plugins:{legend:{display:true, position:'top', labels:{color:'#93a1bd', font:{size:10.5}, boxWidth:9}}, tooltip:{mode:'index', intersect:false}},
+              scales:{x:{stacked:true, grid:{display:false}, border:{color:'#2a3752'}, ticks:Object.assign({},TICK,{maxTicksLimit:14,maxRotation:0})}, y:{stacked:true, grid:GRID, border:{color:'#2a3752'}, ticks:TICK, title:{display:true,text:'¥ tn/mo',color:'#93a1bd'}}}
+            })
+          });
+        }
+
+        document.getElementById('bsImpactNote').innerHTML =
+          `Left: BOJ absorption ratio (left axis) against JGB month-end 10Y/30Y yields (right axis). Right: 30Y auction tail in basis points (yield at the lowest accepted price minus yield at the weighted-average price — wider tail = weaker demand at the margin), against the same absorption ratio. Bottom: JSDA's own investor-type breakdown (公社債投資家別売買高) of net outright buying of super-long (>10Y) JGBs, by foreign investors, life &amp; non-life insurers, and trust banks (proxy for pension funds) — the three investor types most often cited as absorbing the duration BOJ has stepped back from. ` +
+          (AQ && AQ.tenors['30Y'].length ? `Auction data sourced from MOF's auction-history workbook (same source as the issuance figures above), as of ${esc(AQ.tenors['30Y'][AQ.tenors['30Y'].length - 1].date)}. ` : '') +
+          (SL ? `JSDA flow data as of ${esc(SL.meta.as_of)}. ` : '') +
+          `This is a first-pass correlation view, not a causal test — yields and flows move on many factors besides BOJ's own purchase pace.`;
+      }
+
+      // Asset composition — latest month donut + table
+      const li = months.length - 1;
+      const compRows = [
+        { label: 'Japanese Government Securities', v: D.assets.jgs[li], color: '#d9a441' },
+        { label: 'ETFs (pecuniary trusts)', v: D.assets.etf[li], color: '#5aa0e6' },
+        { label: 'Corporate bonds', v: D.assets.corporate_bonds[li], color: '#4cba7a' },
+        { label: 'J-REITs', v: D.assets.jreit[li], color: '#e0888a' },
+        { label: 'Loans', v: D.assets.loans[li], color: '#b79ae8' },
+        { label: 'Foreign currency assets', v: D.assets.fx_assets[li], color: '#e0a13c' },
+      ].filter(r => r.v != null);
+      const other = D.assets.total_assets[li] - compRows.reduce((s,r)=>s+r.v, 0);
+      compRows.push({ label: 'Other (gold, cash, deposits w/ agents, etc.)', v: Math.max(other,0), color: '#3a4a6b' });
+
+      document.getElementById('bsCompStatus').textContent = '· ' + months[li];
+      new Chart(document.getElementById('cBsComp'), {
+        type: 'doughnut',
+        data: { labels: compRows.map(r=>r.label), datasets: [{ data: compRows.map(r=>r.v), backgroundColor: compRows.map(r=>r.color), borderColor:'#171f31', borderWidth:2 }] },
+        options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ color:'#93a1bd', font:{size:10.5}, boxWidth:10, padding:8 } },
+          tooltip:{ callbacks:{ label: ctx => `${ctx.label}: ¥${ctx.raw.toFixed(1)}tn` } } } }
+      });
+      const total = D.assets.total_assets[li];
+      document.getElementById('bsCompTable').innerHTML =
+        '<thead><tr style="color:var(--muted);text-align:left;border-bottom:1px solid var(--line)"><th style="padding:6px 8px">Line item</th><th style="padding:6px 8px;text-align:right">¥tn</th><th style="padding:6px 8px;text-align:right">% of assets</th></tr></thead><tbody>' +
+        compRows.map(r => `<tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px"><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${r.color};margin-right:6px"></span>${esc(r.label)}</td><td style="padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums">${r.v.toFixed(1)}</td><td style="padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums">${(r.v/total*100).toFixed(1)}%</td></tr>`).join('') +
+        `<tr style="font-weight:600"><td style="padding:6px 8px">Total</td><td style="padding:6px 8px;text-align:right">${total.toFixed(1)}</td><td style="padding:6px 8px;text-align:right">100.0%</td></tr></tbody>`;
+
+      document.getElementById('bsSourceNote').innerHTML =
+        `Source: <a href="${D.meta.source_url}" target="_blank">BOJ "Accounts of the Bank of Japan"</a> (released ~10th/20th/month-end each month), pulled via the ` +
+        `<a href="${D.meta.api_url}" target="_blank">BOJ Time-Series Data Search API</a> (DB=BS01) as a clean end-of-month series back to ${months[0]}. ` +
+        `JGB-outstanding denominator (DB=FM05) and nominal-GDP denominator (Cabinet Office ESRI Quarterly Estimates of GDP) typically lag the BOJ accounts by 1-3 months — those two ratio charts will show a flat/missing tail until each source's next release. ` +
+        `Data generated ${D.meta.generated_at}, as of ${D.meta.as_of}. ${esc(D.meta.cross_check)}`;
+    })
+    .catch(e => { console.warn('boj_balance_sheet.json unavailable:', e); });
+})();
 
 // ── NISA tab ────────────────────────────────────────────────────────────────
 (function(){
@@ -2330,78 +3289,101 @@ fetch('./intervention_data.json?' + Date.now())
     });
 })();
 
-// ── Approval ratings tab ────────────────────────────────────────────────────
-(function(){
-  const mn = ["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-  const fmtM = s => { const [y,m]=s.split("-"); return `${mn[+m]} '${y.slice(2)}`; };
+// ── GPIF tab: quarterly return by asset class ────────────────────────────────
+// Built lazily (on first tab activation, see showTab) rather than eagerly at
+// page load: Chart.js sizes a canvas from its container's layout box at
+// creation time, and a canvas inside a display:none tab panel gets a 0-size
+// box that a later .resize() call cannot reliably recover from.
+function setGpifCur(cur){
+  document.querySelectorAll('.gpif-val').forEach(el => {
+    el.textContent = cur === 'usd' ? ('$' + el.dataset.usd) : ('¥' + el.dataset.jpy);
+  });
+  document.getElementById('gpifCurJpy').style.background = cur === 'jpy' ? 'var(--ink)' : 'transparent';
+  document.getElementById('gpifCurJpy').style.color = cur === 'jpy' ? 'var(--bg)' : 'var(--ink)';
+  document.getElementById('gpifCurJpy').style.fontWeight = cur === 'jpy' ? '600' : '400';
+  document.getElementById('gpifCurUsd').style.background = cur === 'usd' ? 'var(--ink)' : 'transparent';
+  document.getElementById('gpifCurUsd').style.color = cur === 'usd' ? 'var(--bg)' : 'var(--ink)';
+  document.getElementById('gpifCurUsd').style.fontWeight = cur === 'usd' ? '600' : '400';
+  const note = document.getElementById('gpifFxNote');
+  if (note) note.textContent = cur === 'usd'
+    ? 'Showing $bn, converted at each period\'s USD/JPY spot close — ¥159.08 (31 Mar 2026) and ¥162.61 (30 Jun 2026). GPIF reports and manages in yen; USD figures are for reference only and move with the exchange rate, not just the underlying portfolio.'
+    : 'Showing ¥bn (GPIF\'s original reporting currency).';
+}
+
+function initGpifChart(){
+  if (window.__gpifChartInit) return;
+  window.__gpifChartInit = true;
+  setGpifCur('jpy');
   const GRID={color:"#2a3752"}, TICK={color:"#93a1bd",font:{size:11}};
+  const el = document.getElementById('gpifReturnChart');
+  if (!el) return;
+  new Chart(el, {
+    type: 'line',
+    data: {
+      labels: ['Q1 FY24','Q2 FY24','Q3 FY24','Q4 FY24','Q1 FY25','Q2 FY25','Q3 FY25','Q4 FY25','Q1 FY26'],
+      datasets: [
+        { label:'Domestic bonds', data:[-2.39,1.42,-1.33,-2.20,-0.19,-1.36,-2.07,-1.57,-1.11], borderColor:'#d9a441', backgroundColor:'#d9a441', tension:0.25, borderWidth:2, pointRadius:3 },
+        { label:'Domestic equities', data:[1.75,-4.92,5.55,-3.50,7.48,11.02,8.89,3.60,14.48], borderColor:'#e2564a', backgroundColor:'#e2564a', tension:0.25, borderWidth:2, pointRadius:3 },
+        { label:'Foreign bonds', data:[5.50,-5.51,4.12,-2.01,1.56,2.96,7.14,0.26,3.13], borderColor:'#4a90d9', backgroundColor:'#4a90d9', tension:0.25, borderWidth:2, pointRadius:3 },
+        { label:'Foreign equities', data:[9.96,-5.35,8.96,-5.98,7.44,9.75,9.73,-1.72,16.94], borderColor:'#7fb3e8', backgroundColor:'#7fb3e8', tension:0.25, borderWidth:2, pointRadius:3 },
+        { label:'Total', data:[3.65,-3.57,4.31,-3.41,4.09,5.52,5.84,0.19,8.20], borderColor:'#e8edf7', backgroundColor:'#e8edf7', borderDash:[4,3], tension:0.25, borderWidth:2.5, pointRadius:2 },
+      ]
+    },
+    options: {
+      responsive:false,
+      plugins:{ legend:{position:'bottom', labels:{color:'#e8edf7', boxWidth:12, font:{size:11}}},
+        tooltip:{callbacks:{label:c=>c.dataset.label+': '+(c.raw>=0?'+':'')+c.raw+'%'}} },
+      scales:{ x:{grid:GRID, ticks:TICK}, y:{grid:GRID, ticks:{...TICK, callback:v=>v+'%'}, title:{display:true, text:'Quarterly return', color:'#93a1bd'}} }
+    }
+  });
 
-  fetch('./approval_data.json?' + Date.now())
-    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
-    .then(D => {
-      const c = D.cabinet, s = c.series;
-      const L = s[s.length-1], P = s.length>1 ? s[s.length-2] : L;
-      const net = L.approve - L.disapprove, netPrev = P.approve - P.disapprove;
-      const dNet = net - netPrev;
-      const parties = D.parties.items.slice().sort((a,b)=>b.support-a.support);
-      const ldp = parties.find(p=>p.name_en==="LDP");
-      const opp = parties.find(p=>p.name_en!=="LDP" && p.name_en!=="Komeito" && !/no party|unaffiliated|none/i.test(p.name_en));
-      const dApp = L.approve - P.approve, dDis = L.disapprove - P.disapprove;
-      const arrow = v => v>0?"▲":v<0?"▼":"■";
-      const cls = v => v>0?"up":v<0?"down":"flat";
-
-      document.getElementById('apvAsof').textContent = "· latest: " + c.pollster + " " + fmtM(c.latest_month);
-      document.getElementById('apvSeriesPill').textContent = c.pollster + " monthly";
-      document.getElementById('apvSeriesNote').textContent = c.series_source || "";
-
-      document.getElementById('apvKpis').innerHTML = `
-        <div class="kpi"><div class="v">${L.approve}%</div><div class="l">Cabinet approval</div><div class="d ${cls(dApp)}">${arrow(dApp)} ${Math.abs(dApp).toFixed(0)}pt vs prev · ${fmtM(L.month)}</div></div>
-        <div class="kpi"><div class="v">${L.disapprove}%</div><div class="l">Cabinet disapproval</div><div class="d ${cls(-dDis)}">${arrow(dDis)} ${Math.abs(dDis).toFixed(0)}pt vs prev</div></div>
-        <div class="kpi"><div class="v">${net>0?"+":""}${net}pt</div><div class="l">Net approval</div><div class="d ${cls(dNet)}">${arrow(dNet)} ${Math.abs(dNet).toFixed(0)}pt vs prev</div></div>
-        ${ldp?`<div class="kpi"><div class="v">${ldp.support}%</div><div class="l">Ruling LDP support</div><div class="d flat">${D.parties.pollster} · ${D.parties.survey_date}</div></div>`:""}
-        ${opp?`<div class="kpi"><div class="v">${opp.support}%</div><div class="l">Top opposition — ${opp.name_en}</div><div class="d flat">${opp.name_ja||""}</div></div>`:""}`;
-
-      // Approval vs disapproval trend
-      new Chart(document.getElementById('apvTrendChart'),{type:"line",
-        data:{labels:s.map(d=>fmtM(d.month)),datasets:[
-          {label:"Approve",data:s.map(d=>d.approve),borderColor:"#4cba7a",backgroundColor:"rgba(76,186,122,.10)",fill:true,tension:.25,pointRadius:2},
-          {label:"Disapprove",data:s.map(d=>d.disapprove),borderColor:"#e2564a",backgroundColor:"rgba(226,86,74,.08)",fill:true,tension:.25,pointRadius:2}]},
-        options:{responsive:true,plugins:{legend:{labels:{color:"#e8edf7",boxWidth:12}}},
-          scales:{x:{grid:GRID,ticks:TICK},y:{grid:GRID,ticks:TICK,title:{display:true,text:"%",color:"#93a1bd"}}}}});
-
-      // Party support horizontal bar
-      new Chart(document.getElementById('apvPartyChart'),{type:"bar",
-        data:{labels:parties.map(p=>p.name_en),datasets:[{data:parties.map(p=>p.support),
-          backgroundColor:parties.map(p=>p.color||"#8fa3c0"),borderRadius:3}]},
-        options:{indexAxis:"y",responsive:true,plugins:{legend:{display:false},
-          tooltip:{callbacks:{label:ctx=>` ${ctx.raw}%`}}},
-          scales:{x:{grid:GRID,ticks:{...TICK,callback:v=>v+"%"}},y:{grid:{display:false},ticks:TICK}}}});
-
-      // Net approval area
-      const netSeries = s.map(d=>d.approve-d.disapprove);
-      new Chart(document.getElementById('apvNetChart'),{type:"line",
-        data:{labels:s.map(d=>fmtM(d.month)),datasets:[{data:netSeries,
-          borderColor:"#d9a441",backgroundColor:"rgba(217,164,65,.12)",fill:true,tension:.25,pointRadius:2}]},
-        options:{responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.raw>0?"+":""}${ctx.raw}pt`}}},
-          scales:{x:{grid:GRID,ticks:TICK},y:{grid:GRID,ticks:{...TICK,callback:v=>(v>0?"+":"")+v}}}}});
-
-      // Party table
-      let rows = "<tr><th>Party</th><th style='text-align:right'>Support</th></tr>";
-      parties.forEach(p => { rows += `<tr><td><span class="pdot" style="background:${p.color||"#8fa3c0"}"></span>${esc(p.name_en)}${p.name_ja?` <span style="color:var(--muted)">${esc(p.name_ja)}</span>`:""}</td><td class="num">${p.support}%</td></tr>`; });
-      document.getElementById('apvPartyTable').innerHTML = rows;
-      document.getElementById('apvPartyNote').textContent = `${D.parties.pollster} · surveyed ${D.parties.survey_date}`;
-      if (D.notes) document.getElementById('apvContext').innerHTML = D.notes;
-
-      let src = "<tr><th>Source</th><th>Cadence</th><th>Role</th></tr>";
-      (D.sources||[]).forEach(x => { src += `<tr><td>${x.url?`<a href="${x.url}" target="_blank">${esc(x.name)}</a>`:esc(x.name)}</td><td>${esc(x.cadence||"")}</td><td>${esc(x.role||"")}</td></tr>`; });
-      document.getElementById('apvSrcTable').innerHTML = src;
-    })
-    .catch(e => {
-      console.warn('approval_data.json unavailable:', e);
-      document.getElementById('apvKpis').innerHTML =
-        '<div style="color:var(--muted);padding:20px">Approval data unavailable.</div>';
+  // Long-run allocation vs. policy threshold, FY2013-Q1 FY2026 (annual FY-end + 2 recent quarters, no gaps)
+  const allocLabels = ['FY13','FY14','FY15','FY16','FY17','FY18','FY19','FY20','FY21','FY22','FY23','FY24','Q1 FY25','FY25','Q1 FY26'];
+  const allocSeries = {
+    gpifDbChart: { name:'Domestic bonds',
+      actual: [55.43,39.39,37.55,31.68,27.50,26.30,23.87,25.92,26.33,26.79,26.95,27.64,26.13,26.91,25.59],
+      target: [60,35,35,35,35,35,35,25,25,25,25,25,25,25,25],
+      upper:  [68,45,45,45,45,45,45,32,32,32,32,32,31,31,31],
+      lower:  [52,25,25,25,25,25,25,18,18,18,18,18,19,19,19] },
+    gpifDeChart: { name:'Domestic equities',
+      actual: [16.47,22.00,21.75,23.28,25.14,23.55,22.87,24.58,24.49,24.49,24.33,23.94,24.28,23.81,24.60],
+      target: [12,25,25,25,25,25,25,25,25,25,25,25,25,25,25],
+      upper:  [18,34,34,34,34,34,34,33,33,33,33,33,31,31,31],
+      lower:  [6,16,16,16,16,16,16,17,17,17,17,17,19,19,19] },
+    gpifFbChart: { name:'Foreign bonds',
+      actual: [11.06,12.63,13.47,13.03,14.77,16.95,23.41,24.61,24.07,24.39,23.86,24.37,24.37,24.48,24.48],
+      target: [11,15,15,15,15,15,15,25,25,25,25,25,25,25,25],
+      upper:  [16,19,19,19,19,19,19,31,31,31,31,31,30,30,30],
+      lower:  [6,11,11,11,11,11,11,19,19,19,19,19,20,20,20] },
+    gpifFeChart: { name:'Foreign equities',
+      actual: [15.59,20.89,22.09,23.12,23.88,25.53,23.90,24.89,25.11,24.32,24.86,24.05,25.22,24.80,25.33],
+      target: [12,25,25,25,25,25,25,25,25,25,25,25,25,25,25],
+      upper:  [17,33,33,33,33,33,33,32,32,32,32,32,31,31,31],
+      lower:  [7,17,17,17,17,17,17,18,18,18,18,18,19,19,19] },
+  };
+  Object.entries(allocSeries).forEach(([canvasId, s]) => {
+    const c = document.getElementById(canvasId);
+    if (!c) return;
+    new Chart(c, {
+      type: 'line',
+      data: {
+        labels: allocLabels,
+        datasets: [
+          { label:'Actual', data:s.actual, borderColor:'#d9a441', backgroundColor:'#d9a441', tension:0.2, borderWidth:2.5, pointRadius:2.5 },
+          { label:'Target', data:s.target, borderColor:'#93a1bd', backgroundColor:'#93a1bd', borderDash:[6,3], borderWidth:1.5, pointRadius:0, tension:0 },
+          { label:'Upper limit', data:s.upper, borderColor:'#5a6a8a', backgroundColor:'#5a6a8a', borderDash:[2,3], borderWidth:1, pointRadius:0, tension:0 },
+          { label:'Lower limit', data:s.lower, borderColor:'#5a6a8a', backgroundColor:'#5a6a8a', borderDash:[2,3], borderWidth:1, pointRadius:0, tension:0 },
+        ]
+      },
+      options: {
+        responsive:false,
+        plugins:{ legend:{position:'bottom', labels:{color:'#e8edf7', boxWidth:10, font:{size:10}}},
+          tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.raw+'%'}} },
+        scales:{ x:{grid:GRID, ticks:{...TICK, font:{size:9.5}}}, y:{grid:GRID, ticks:{...TICK, callback:v=>v+'%'}, min:0} }
+      }
     });
-})();
+  });
+}
 
 </script>
 </body>
