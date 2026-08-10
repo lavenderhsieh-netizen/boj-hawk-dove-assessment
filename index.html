@@ -508,6 +508,22 @@
   <!-- CROSS-BORDER FLOWS (MoF) -->
   <div id="tab-crossborder" class="panel">
     <div style="margin-bottom:.8rem">
+      <h1 style="font-size:1.05rem;color:var(--ink)">Balance of payments — overview</h1>
+      <div class="sub" style="margin-top:.15rem">The headline current-account and direct-investment aggregates that sit above the securities-flow detail below. Source: MoF official Balance of Payments trend-data (revised basis).</div>
+    </div>
+    <div class="kpis" id="bopSummaryKpis"></div>
+    <div class="card full" style="margin-top:16px">
+      <h2>Current account balance — by component (SA) <span id="caStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">Goods, services, primary income (investment income earned abroad) and secondary income, stacked, ¥tn/month, seasonally adjusted. White line = current account balance. Japan's surplus has been carried mainly by primary income (the return on decades of accumulated foreign assets) even as the goods balance has swung negative in recent years. Source: MoF, 季節調整済み国際収支の推移, monthly.</div>
+      <canvas id="cCurrentAccount" style="max-height:360px;margin-top:12px"></canvas>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>Direct investment balance — outward vs inward <span id="fdiStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">Outward = Japanese residents' net direct investment abroad (capital outflow, positive bars); inward = non-residents' net direct investment into Japan (capital inflow, plotted as negative bars for visual netting). White line = net direct investment balance (outward − inward). Not seasonally adjusted, ¥tn/month. Distinct from the portfolio/securities flows tracked elsewhere on this tab — direct investment is FDI (control stakes, M&amp;A, reinvested earnings), not bond/equity portfolio buying. Source: MoF, 対外・対内直接投資総括表, monthly.</div>
+      <canvas id="cDirectInvestment" style="max-height:360px;margin-top:12px"></canvas>
+    </div>
+
+    <div style="margin:1.6rem 0 .8rem;border-top:1px solid var(--line);padding-top:1.1rem">
       <h1 style="font-size:1.05rem;color:var(--ink)">Outward — Japanese residents buying foreign assets</h1>
       <div class="sub" style="margin-top:.15rem">Japan &rarr; abroad. Positive = net buying (yen outflow); negative = net selling / repatriation.</div>
     </div>
@@ -1084,6 +1100,17 @@ function showTab(id, btn) {
   if (id === 'gpif' && typeof initGpifChart === 'function') {
     requestAnimationFrame(() => requestAnimationFrame(initGpifChart));
   }
+  // Any chart whose data fetch resolved (and so was created) while its tab panel
+  // was still display:none gets sized to a 0x0 canvas at creation time. Chart.js
+  // 4.x's .resize() recomputes from the canvas's current layout box, so calling
+  // it here — once the panel is visible — reliably recovers those charts without
+  // needing every tab to special-case its own lazy-init like GPIF above.
+  requestAnimationFrame(() => {
+    document.querySelectorAll('#tab-' + id + ' canvas').forEach(cv => {
+      const ch = Chart.getChart(cv);
+      if (ch) ch.resize();
+    });
+  });
 }
 
 
@@ -2625,6 +2652,80 @@ fetch('./mof_bop.json?' + Date.now())
   .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
   .then(B => { _bopData=B; renderBop(); })
   .catch(e => { console.warn('mof_bop.json unavailable:', e); });
+
+// Balance of payments overview: current account (SA, by component) + direct investment balance
+function renderBopSummary(S){
+  if(!S) return;
+  const GRID={color:"#2a3752"}, TICK={color:"#93a1bd",font:{size:10.5}};
+  const mn=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const tickCb=(v,i)=>{ const p=S.months[i].split('-'); const mi=+p[1];
+    if(mi===1||i===0) return [ "'"+p[0].slice(2) ]; return (mi%3===1)?mn[mi][0]:''; };
+
+  const kpiEl=document.getElementById('bopSummaryKpis');
+  if(kpiEl){
+    const ca=S.current_account.current_account, di=S.direct_investment.balance;
+    const lastCa=ca[ca.length-1], lastDi=di[di.length-1], asOf=S.meta.as_of;
+    kpiEl.innerHTML = [
+      {v:(lastCa>=0?'+':'')+'¥'+lastCa.toFixed(2)+'tn', l:'Current account balance (SA), '+asOf},
+      {v:(S.direct_investment.outward.at(-1)>=0?'+':'')+'¥'+S.direct_investment.outward.at(-1).toFixed(2)+'tn', l:'Outward direct investment, '+asOf},
+      {v:(S.direct_investment.inward_raw.at(-1)>=0?'+':'')+'¥'+S.direct_investment.inward_raw.at(-1).toFixed(2)+'tn', l:'Inward direct investment, '+asOf},
+      {v:(lastDi>=0?'+':'')+'¥'+lastDi.toFixed(2)+'tn', l:'Net direct investment balance, '+asOf},
+    ].map(k => `<div class="kpi"><div class="v">${k.v}</div><div class="l">${k.l}</div></div>`).join('');
+  }
+
+  const caCv=document.getElementById('cCurrentAccount');
+  if(caCv){
+    if(_caChart) _caChart.destroy();
+    const C=S.current_account;
+    _caChart=new Chart(caCv,{data:{labels:S.months, datasets:[
+      {type:'bar', label:'Goods', data:C.goods, backgroundColor:'#5aa0e6', stack:'ca', order:3},
+      {type:'bar', label:'Services', data:C.services, backgroundColor:'#7a8cc4', stack:'ca', order:3},
+      {type:'bar', label:'Primary income', data:C.primary_income, backgroundColor:'#d9a441', stack:'ca', order:3},
+      {type:'bar', label:'Secondary income', data:C.secondary_income, backgroundColor:'#5a6a8a', stack:'ca', order:3},
+      {type:'line', label:'Current account balance', data:C.current_account, borderColor:'#eef2f9', backgroundColor:'#eef2f9', borderWidth:2, pointRadius:0, pointHoverRadius:3, tension:0.12, order:0, clip:false},
+    ]},
+    options:{responsive:true, maintainAspectRatio:false, interaction:{mode:'index', intersect:false},
+      plugins:{legend:{position:'top', align:'start', labels:{boxWidth:11, boxHeight:11, padding:9, font:{size:10.5}, color:'#c7d0e0'}},
+        tooltip:{callbacks:{label:c=>c.dataset.label+': '+(c.parsed.y==null?'–':(c.parsed.y>=0?'+':'')+c.parsed.y.toFixed(2)+'tn')}}},
+      scales:{
+        y:{stacked:true, title:{display:true, text:'¥tn/month', color:'#93a1bd'},
+           grid:{color:x=>x.tick.value===0?'#7688a8':'#243149', lineWidth:x=>x.tick.value===0?1.3:1},
+           border:{color:'#2a3752'}, ticks:{...TICK, callback:v=>(v>0?'+':'')+v}},
+        x:{stacked:true, grid:{display:false}, border:{color:'#2a3752'}, ticks:{...TICK, autoSkip:false, maxRotation:0, callback:tickCb}}
+      }}});
+  }
+
+  const fdiCv=document.getElementById('cDirectInvestment');
+  if(fdiCv){
+    if(_fdiChart) _fdiChart.destroy();
+    const D=S.direct_investment;
+    _fdiChart=new Chart(fdiCv,{data:{labels:S.months, datasets:[
+      {type:'bar', label:'Outward (residents abroad)', data:D.outward, backgroundColor:'#e2564a', stack:'fdi', order:3},
+      {type:'bar', label:'Inward (non-residents into Japan)', data:D.inward_flipped, backgroundColor:'#8a94ad', stack:'fdi', order:3},
+      {type:'line', label:'Net direct investment balance', data:D.balance, borderColor:'#eef2f9', backgroundColor:'#eef2f9', borderWidth:2, pointRadius:0, pointHoverRadius:3, tension:0.12, order:0, clip:false},
+    ]},
+    options:{responsive:true, maintainAspectRatio:false, interaction:{mode:'index', intersect:false},
+      plugins:{legend:{position:'top', align:'start', labels:{boxWidth:11, boxHeight:11, padding:9, font:{size:10.5}, color:'#c7d0e0'}},
+        tooltip:{callbacks:{label:c=>{
+          const raw = c.dataset.label.startsWith('Inward') ? D.inward_raw[c.dataIndex] : c.parsed.y;
+          return c.dataset.label+': '+(raw==null?'–':(raw>=0?'+':'')+raw.toFixed(2)+'tn');
+        }}}},
+      scales:{
+        y:{stacked:true, title:{display:true, text:'¥tn/month', color:'#93a1bd'},
+           grid:{color:x=>x.tick.value===0?'#7688a8':'#243149', lineWidth:x=>x.tick.value===0?1.3:1},
+           border:{color:'#2a3752'}, ticks:{...TICK, callback:v=>(v>0?'+':'')+v}},
+        x:{stacked:true, grid:{display:false}, border:{color:'#2a3752'}, ticks:{...TICK, autoSkip:false, maxRotation:0, callback:tickCb}}
+      }}});
+  }
+
+  const caEl=document.getElementById('caStatus'); if(caEl) caEl.textContent='· data to '+S.meta.as_of;
+  const fdiEl=document.getElementById('fdiStatus'); if(fdiEl) fdiEl.textContent='· data to '+S.meta.as_of;
+}
+let _caChart=null, _fdiChart=null;
+fetch('./mof_bop_summary.json?' + Date.now())
+  .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
+  .then(renderBopSummary)
+  .catch(e => { console.warn('mof_bop_summary.json unavailable:', e); });
 
 // MoF weekly release: Portfolio Investment Assets (outward) vs Liabilities (inward), net, 2-line
 let _xbWeeklyData=null, _xbWeeklyChartObj=null;
