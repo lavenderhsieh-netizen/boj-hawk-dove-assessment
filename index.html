@@ -51,7 +51,7 @@
   #tab-gpif .gpif-ret-tbl tbody tr:not(.gpif-fy){border-bottom:1px solid var(--line)}
   #tab-gpif .gpif-ret-tbl tbody tr:not(.gpif-fy):nth-child(odd){background:rgba(255,255,255,.02)}
   #tab-gpif .gpif-ret-tbl tbody tr:hover:not(.gpif-fy){background:rgba(217,164,65,.06)}
-  #tab-gpif .gpif-ret-tbl tbody tr.gpif-fy{background:rgba(217,164,65,.10);border-top:1.5px solid var(--accent);border-bottom:1.5px solid var(--accent)}
+  #tab-gpif .gpif-ret-tbl tbody tr.gpif-fy{background:rgba(217,164,65,.10);border-top:1px dotted rgba(217,164,65,.55);border-bottom:1px dotted rgba(217,164,65,.55)}
   #tab-gpif .gpif-ret-tbl tbody tr.gpif-fy td:first-child{font-weight:700;color:var(--accent);letter-spacing:.2px}
   .npill{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 9px;border-radius:20px;background:rgba(217,164,65,.16);color:var(--accent)}
   /* forecasts tab */
@@ -599,8 +599,7 @@
       <h1 style="font-size:1.05rem;color:var(--ink)">Balance of payments — overview</h1>
       <div class="sub" style="margin-top:.15rem">The headline current-account and direct-investment aggregates behind the securities-flow detail above. Source: MoF official Balance of Payments trend-data (revised basis).</div>
     </div>
-    <div class="kpis" id="bopSummaryKpis"></div>
-    <div class="card full" style="margin-top:16px">
+    <div class="card full">
       <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:center">
         <div id="bopWinBtns" style="display:flex;gap:6px">
           <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setBopWin(12,this)">1Y</button>
@@ -2705,19 +2704,6 @@ function renderBopSummary(S){
   // Nomura-style axis: sparse year-only labels, no monthly clutter (Fig.10/11 convention)
   const tickCb=(v,i)=>{ const p=months[i].split('-'); const mi=+p[1];
     return (mi===1||i===0) ? "'"+p[0].slice(2) : ''; };
-
-  const kpiEl=document.getElementById('bopSummaryKpis');
-  if(kpiEl){
-    const ca=C.current_account, di=D.balance;
-    const lastCa=ca[ca.length-1], lastDi=di[di.length-1], asOf=S.meta.as_of;
-    const fmt=v=>(v==null?'–':(v>=0?'+':'')+(u==='$bn'?'$':'¥')+Math.abs(v).toFixed(dp)+u.slice(1));
-    kpiEl.innerHTML = [
-      {v:fmt(lastCa), l:'Current account balance ('+_bopAdj.toUpperCase()+'), '+asOf},
-      {v:fmt(D.outward.at(-1)), l:'Outward direct investment, '+asOf},
-      {v:fmt(D.inward_raw.at(-1)), l:'Inward direct investment, '+asOf},
-      {v:fmt(lastDi), l:'Net direct investment balance, '+asOf},
-    ].map(k => `<div class="kpi"><div class="v">${k.v}</div><div class="l">${k.l}</div></div>`).join('');
-  }
 
   const caCv=document.getElementById('cCurrentAccount');
   if(caCv){
