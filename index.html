@@ -626,7 +626,7 @@
       </div>
       <div class="card" style="margin:0">
         <h2>Direct investment balance — outward vs inward <span id="fdiStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
-        <div class="sub">Outward = Japanese residents' net direct investment abroad (capital outflow, positive bars); inward = non-residents' net direct investment into Japan (capital inflow, plotted as negative bars for visual netting). White line = net direct investment balance (outward − inward). Not seasonally adjusted (MoF publishes no SA version of FDI). Distinct from the portfolio/securities flows above — direct investment is FDI (control stakes, M&amp;A, reinvested earnings), not bond/equity portfolio buying. Source: MoF, 対外・対内直接投資総括表, monthly.</div>
+        <div class="sub">Outward = Japanese residents' net direct investment abroad (capital outflow, plotted as negative bars); inward = non-residents' net direct investment into Japan (capital inflow, positive bars). White line = net direct investment balance (inward − outward), + = net capital inflow to Japan. Not seasonally adjusted (MoF publishes no SA version of FDI). Distinct from the portfolio/securities flows above — direct investment is FDI (control stakes, M&amp;A, reinvested earnings), not bond/equity portfolio buying. Source: MoF, 対外・対内直接投資総括表, monthly.</div>
         <canvas id="cDirectInvestment" style="max-height:340px;margin-top:12px"></canvas>
       </div>
     </div>
@@ -2696,8 +2696,8 @@ function renderBopSummary(S){
     : (_bopCur==='usd' ? S.current_account_usd : S.current_account);
   const D0=S.direct_investment;
   const D=(_bopCur==='usd')
-    ? {outward:D0.outward_usd, inward_flipped:D0.inward_flipped_usd, inward_raw:D0.inward_raw_usd, balance:D0.balance_usd}
-    : {outward:D0.outward, inward_flipped:D0.inward_flipped, inward_raw:D0.inward_raw, balance:D0.balance};
+    ? {outward_flipped:D0.outward_flipped_usd, outward_raw:D0.outward_usd, inward:D0.inward_usd, balance:D0.balance_usd}
+    : {outward_flipped:D0.outward_flipped, outward_raw:D0.outward, inward:D0.inward, balance:D0.balance};
   const i0=_bopWin>0 ? Math.max(0, S.months.length-_bopWin) : 0;
   const months=S.months.slice(i0);
   const slice=arr=>arr.slice(i0);
@@ -2730,15 +2730,15 @@ function renderBopSummary(S){
   if(fdiCv){
     if(_fdiChart) _fdiChart.destroy();
     _fdiChart=new Chart(fdiCv,{data:{labels:months, datasets:[
-      {type:'bar', label:'Outward (residents abroad)', data:slice(D.outward), backgroundColor:'#e2564a', stack:'fdi', order:3},
-      {type:'bar', label:'Inward (non-residents into Japan)', data:slice(D.inward_flipped), backgroundColor:'#8a94ad', stack:'fdi', order:3},
+      {type:'bar', label:'Outward (residents abroad)', data:slice(D.outward_flipped), backgroundColor:'#e2564a', stack:'fdi', order:3},
+      {type:'bar', label:'Inward (non-residents into Japan)', data:slice(D.inward), backgroundColor:'#8a94ad', stack:'fdi', order:3},
       {type:'line', label:'Net direct investment balance', data:slice(D.balance), borderColor:'#eef2f9', backgroundColor:'#eef2f9', borderWidth:2, pointRadius:0, pointHoverRadius:3, tension:0.12, order:0, clip:false},
     ]},
     options:{responsive:true, maintainAspectRatio:false, interaction:{mode:'index', intersect:false},
       plugins:{legend:{position:'top', align:'start', labels:{boxWidth:11, boxHeight:11, padding:9, font:{size:10.5}, color:'#c7d0e0'}},
         tooltip:{callbacks:{label:c=>{
-          const invRaw = slice(D.inward_raw);
-          const raw = c.dataset.label.startsWith('Inward') ? invRaw[c.dataIndex] : c.parsed.y;
+          const outRaw = slice(D.outward_raw);
+          const raw = c.dataset.label.startsWith('Outward') ? outRaw[c.dataIndex] : c.parsed.y;
           return c.dataset.label+': '+(raw==null?'–':(raw>=0?'+':'')+raw.toFixed(dp)+u);
         }}}},
       scales:{

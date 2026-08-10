@@ -188,12 +188,15 @@ def main():
 
     outward = [TN(fdi_out.get(m)) for m in months]
     inward = [TN(fdi_in.get(m)) for m in months]
-    inward_flipped = [(-v if v is not None else None) for v in inward]
-    balance = [round(o - i, 3) if (o is not None and i is not None) else None
+    # Flow-consistent sign convention (2026-08-11, HanHan): residents' outward FDI is a capital
+    # OUTFLOW -> negative; non-residents' inward FDI is a capital INFLOW -> positive (already the
+    # raw sign from source). balance = inward - outward, + = net capital inflow to Japan.
+    outward_flipped = [(-v if v is not None else None) for v in outward]
+    balance = [round(i - o, 3) if (o is not None and i is not None) else None
                for o, i in zip(outward, inward)]
-    outward_usd = [usd(v, m) for v, m in zip(outward, months)]
-    inward_flipped_usd = [usd(v, m) for v, m in zip(inward_flipped, months)]
-    inward_raw_usd = [usd(v, m) for v, m in zip(inward, months)]
+    outward_flipped_usd = [usd(v, m) for v, m in zip(outward_flipped, months)]
+    outward_raw_usd = [usd(v, m) for v, m in zip(outward, months)]
+    inward_usd = [usd(v, m) for v, m in zip(inward, months)]
     balance_usd = [usd(v, m) for v, m in zip(balance, months)]
 
     doc = {
@@ -205,11 +208,12 @@ def main():
                                      "seasonally adjusted (原数値), same MoF table family, added 2026-08-11 "
                                      "at HanHan's request. + = current account surplus / net receipts.",
             "direct_investment_note": "Not seasonally adjusted (MoF does not publish an SA version of FDI). "
-                                       "Outward: + = residents' net investment abroad (capital outflow). Inward is "
-                                       "sourced as MoF's own + = net inflow, then sign-flipped for the chart so it "
-                                       "plots as a negative bar (opposite direction to outward), matching Nomura's "
-                                       "Fig.11 convention. direct_investment_balance = outward - inward "
-                                       "(residents' outward minus non-residents' inward).",
+                                       "Flow-consistent sign convention (updated 2026-08-11): residents' outward "
+                                       "FDI is a capital outflow, sign-flipped to plot as a negative bar; "
+                                       "non-residents' inward FDI is a capital inflow, plotted as-is (positive), "
+                                       "matching the sign convention used elsewhere on this dashboard (outflow = "
+                                       "negative, inflow = positive). direct_investment_balance = inward - outward "
+                                       "(+ = net capital inflow to Japan).",
             "usd_note": "_usd fields converted at each month's own USDJPY close (Yahoo Finance JPY=X, monthly), "
                         "$bn = ¥tn * 1000 / rate — same conversion convention as mof_flows.json.",
             "source": "Ministry of Finance Japan — official Balance of Payments trend-data CSVs "
@@ -224,12 +228,12 @@ def main():
         "current_account_nsa_usd": current_account_nsa_usd,
         "direct_investment": {
             "outward": outward,
-            "inward_flipped": inward_flipped,
-            "inward_raw": inward,
+            "outward_flipped": outward_flipped,
+            "inward": inward,
             "balance": balance,
-            "outward_usd": outward_usd,
-            "inward_flipped_usd": inward_flipped_usd,
-            "inward_raw_usd": inward_raw_usd,
+            "outward_usd": outward_raw_usd,
+            "outward_flipped_usd": outward_flipped_usd,
+            "inward_usd": inward_usd,
             "balance_usd": balance_usd,
         },
     }
