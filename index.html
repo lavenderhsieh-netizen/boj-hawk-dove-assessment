@@ -43,6 +43,9 @@
   .note{font-size:11.5px;color:var(--muted);margin-top:8px;line-height:1.5}
   .mbcard{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px 10px}
   .mbcard h3{color:var(--ink);font-size:14px;font-weight:600;margin:0 0 8px;text-align:center;letter-spacing:.2px}
+  .gpif-step{display:flex;align-items:center;gap:12px;background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:11px 14px;font-size:13px}
+  .gpif-badge{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12.5px;flex-shrink:0}
+  .gpif-arrow{text-align:center;color:var(--muted);font-size:15px;line-height:1;padding:3px 0}
   .mbcard canvas{max-height:270px}
   #tab-nisa .kpi .d{font-size:11.5px;margin-top:5px;font-weight:600}
   #tab-nisa .d.up{color:#4cba7a} #tab-nisa .d.flat{color:var(--muted)}
@@ -760,6 +763,32 @@
         </table>
       </div>
       <div class="note" style="margin-top:10px">Corrected 2026-08-09 — the reference-index values were previously assigned to the wrong asset-class rows (a table-reading-order error when the source PDF was first transcribed), producing implausible 10-18pt gaps that looked like a genuine anomaly. Re-checked directly against page 6 of GPIF's own Q1 FY2026 report (image, not just text extraction, since the PDF's table layout doesn't extract in reading order): the correct pairing shows GPIF tracking every one of its own benchmarks closely, as expected for a near-passive mandate — domestic bonds −1.15% (index) vs. −1.11% (realized), domestic equities +14.40% vs. +14.48%, foreign bonds +3.06% vs. +3.13%, foreign equities +17.56% vs. +16.94% — all within ~0.6pp, consistent with fees/timing/light hedging rather than any active-positioning story. Source: GPIF Q1 FY2026 quarterly report, page 6 ("Reference index: 1Q of fiscal 2026"), gpif.go.jp.</div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>Basic Portfolio revision process — governance &amp; approval flow</h2>
+      <div class="sub">To change the Basic Portfolio, GPIF and the Ministry of Health, Labour and Welfare (MHLW) follow a formal, multi-step approval chain — MHLW is legally required to act in the interests of beneficiaries throughout. GPIF reviews its policy portfolio every year and can in principle revise the Basic Portfolio ahead of the next scheduled five-year review (due 2029) if the Management Committee judges the investment environment has changed enough that GPIF can no longer expect to meet its required real return (nominal wage growth + 1.9%) — as of Aug 2026, officials say a full strategic review is not imminent, but the fund retains discretion to shift within its existing permissible ranges without one.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 28px;margin-top:18px;align-items:stretch">
+        <div style="display:flex;flex-direction:column;gap:0">
+          <div class="gpif-step"><div class="gpif-badge" style="background:var(--accent);color:var(--bg)">1</div><div><b>Government / MHLW</b> decides policy objectives</div></div>
+          <div class="gpif-arrow">↓</div>
+          <div class="gpif-step"><div class="gpif-badge" style="background:var(--accent);color:var(--bg)">2</div><div><b>MHLW</b> sets (or revises) the Medium-Term Objectives <span style="color:var(--muted)">中期目標</span></div></div>
+          <div class="gpif-arrow">↓</div>
+          <div class="gpif-step"><div class="gpif-badge" style="background:var(--accent);color:var(--bg)">3</div><div><b>GPIF</b> analyses expected returns, risk, actuarial assumptions and the model portfolio</div></div>
+          <div class="gpif-arrow">↓</div>
+          <div class="gpif-step"><div class="gpif-badge" style="background:var(--accent);color:var(--bg)">4</div><div><b>GPIF Management Committee</b> <span style="color:var(--muted)">経営委員会</span> deliberates and votes</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:0">
+          <div style="font-size:11px;color:var(--accent);font-weight:600;margin-bottom:4px">↖ continues from step 4</div>
+          <div class="gpif-step"><div class="gpif-badge" style="background:var(--dove);color:var(--bg)">5</div><div><b>GPIF</b> revises its Medium-term Plan, including the Basic Portfolio</div></div>
+          <div class="gpif-arrow">↓</div>
+          <div class="gpif-step"><div class="gpif-badge" style="background:var(--dove);color:var(--bg)">6</div><div><b>Social Security Council</b> <span style="color:var(--muted)">資金運用部会</span> reviews / advises</div></div>
+          <div class="gpif-arrow">↓</div>
+          <div class="gpif-step"><div class="gpif-badge" style="background:var(--dove);color:var(--bg)">7</div><div><b>Minister of Health, Labour and Welfare</b> approves the revised Medium-term Plan</div></div>
+          <div class="gpif-arrow">↓</div>
+          <div class="gpif-step" style="background:var(--card2);border-color:var(--accent)"><div class="gpif-badge" style="background:var(--ink);color:var(--bg)">8</div><div><b>New Basic Portfolio becomes effective</b></div></div>
+        </div>
+      </div>
+      <div class="note" style="margin-top:12px">Sourced from GPIF's own "Medium-Term Objectives" and "Operation Policy" documents (gpif.go.jp/en/info/) and Japan's Act on General Rules for Incorporated Administrative Agencies, which sets MHLW's fiduciary duty to beneficiaries. Reuters (13 Jul, 6 Aug 2026) separately reports that, as of Aug 2026, GPIF and government officials describe any formal Basic Portfolio review as not imminent — the more practical near-term lever is GPIF using its existing discretion to shift within permissible ranges around current targets, without triggering this full revision chain.</div>
     </div>
   </div>
 
