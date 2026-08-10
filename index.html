@@ -2657,9 +2657,9 @@ fetch('./mof_bop.json?' + Date.now())
 function renderBopSummary(S){
   if(!S) return;
   const GRID={color:"#2a3752"}, TICK={color:"#93a1bd",font:{size:10.5}};
-  const mn=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  // Nomura-style axis: sparse year-only labels, no monthly clutter (Fig.10/11 convention)
   const tickCb=(v,i)=>{ const p=S.months[i].split('-'); const mi=+p[1];
-    if(mi===1||i===0) return [ "'"+p[0].slice(2) ]; return (mi%3===1)?mn[mi][0]:''; };
+    return (mi===1||i===0) ? "'"+p[0].slice(2) : ''; };
 
   const kpiEl=document.getElementById('bopSummaryKpis');
   if(kpiEl){
