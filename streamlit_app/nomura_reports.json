@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-08-09T16:05:27Z",
+  "scraped_at": "2026-08-10T16:08:41Z",
   "analysts": [
     "Kyohei Morita",
     "Tomoaki Shishido",
@@ -19,24 +19,32 @@
   "reports": {
     "Kyohei Morita": [
       {
+        "title": "Japan: July 2026 Economy Watchers Survey - Grassroots sentiment improves, number of comments about hot weather down y-y",
+        "url": "https://go.nomuranow.com/research/japi/publication/1315183?appname=GRPUI",
+        "date": "AUG 6, 2026",
+        "summary": "SONAL VARMA, TING LU, EUBEN PARACUELLES, AURODEEP NANDI, JEONG WOO PARK, KYOHEI MORITA, ANDREW TICEHURST",
+        "analyst": "Kyohei Morita",
+        "coverage": "Japan Macro / BOJ"
+      },
+      {
+        "title": "Japan Economic Weekly - Points to watch ahead of BOJ's September MPM",
+        "url": "https://go.nomuranow.com/research/japi/publication/1315051?appname=GRPUI",
+        "date": "AUG 6, 2026",
+        "summary": "SONAL VARMA, TING LU, EUBEN PARACUELLES, AURODEEP NANDI, JEONG WOO PARK, KYOHEI MORITA, ANDREW TICEHURST",
+        "analyst": "Kyohei Morita",
+        "coverage": "Japan Macro / BOJ"
+      },
+      {
+        "title": "Japan: Results of 2025 CPI rebasing - Core and core-core CPI inflation figures largely unchanged, no surprises",
+        "url": "https://go.nomuranow.com/research/japi/publication/1315027?appname=GRPUI",
+        "date": "AUG 6, 2026",
+        "summary": "SONAL VARMA, TING LU, EUBEN PARACUELLES, AURODEEP NANDI, JEONG WOO PARK, KYOHEI MORITA, ANDREW TICEHURST",
+        "analyst": "Kyohei Morita",
+        "coverage": "Japan Macro / BOJ"
+      },
+      {
         "title": "Japan: Monthly Labor Survey for June 2026 - Steady underlying wage hikes and growth in summer bonuses at SMEs",
         "url": "https://go.nomuranow.com/research/japi/publication/1313616?appname=GRPUI",
-        "date": "AUG 6, 2026",
-        "summary": "SONAL VARMA, TING LU, EUBEN PARACUELLES, AURODEEP NANDI, JEONG WOO PARK, KYOHEI MORITA, ANDREW TICEHURST",
-        "analyst": "Kyohei Morita",
-        "coverage": "Japan Macro / BOJ"
-      },
-      {
-        "title": "Japan Macro Report - Probability of September BOJ rate hike, near-term scenarios",
-        "url": "https://go.nomuranow.com/research/japi/publication/1312917?appname=GRPUI",
-        "date": "AUG 6, 2026",
-        "summary": "SONAL VARMA, TING LU, EUBEN PARACUELLES, AURODEEP NANDI, JEONG WOO PARK, KYOHEI MORITA, ANDREW TICEHURST",
-        "analyst": "Kyohei Morita",
-        "coverage": "Japan Macro / BOJ"
-      },
-      {
-        "title": "[Webcast] - MacroBrew@Nomura - Japan : Beyond the BOJ decision – Macro & Market Implications",
-        "url": "https://go.nomuranow.com/research/japi/publication/1312663?appname=GRPUI",
         "date": "AUG 6, 2026",
         "summary": "SONAL VARMA, TING LU, EUBEN PARACUELLES, AURODEEP NANDI, JEONG WOO PARK, KYOHEI MORITA, ANDREW TICEHURST",
         "analyst": "Kyohei Morita",
@@ -61,6 +69,22 @@
     ],
     "Tomoaki Shishido": [
       {
+        "title": "Yen RV Analytics - 10 Aug 2026",
+        "url": "https://go.nomuranow.com/research/japi/publication/1315098?appname=GRPUI",
+        "date": "AUG 10, 2026",
+        "summary": "TOMOAKI SHISHIDO, YUJIRO GOTO, TOMOCHIKA KITAOKA",
+        "analyst": "Tomoaki Shishido",
+        "coverage": "Japan Rates"
+      },
+      {
+        "title": "Yen Rates Daily Monitor - 10 Aug 2026",
+        "url": "https://go.nomuranow.com/research/japi/publication/1315083?appname=GRPUI",
+        "date": "AUG 10, 2026",
+        "summary": "TOMOAKI SHISHIDO, YUJIRO GOTO, TOMOCHIKA KITAOKA",
+        "analyst": "Tomoaki Shishido",
+        "coverage": "Japan Rates"
+      },
+      {
         "title": "Yen RV Analytics - 07 Aug 2026",
         "url": "https://go.nomuranow.com/research/japi/publication/1314588?appname=GRPUI",
         "date": "AUG 7, 2026",
@@ -77,32 +101,16 @@
         "coverage": "Japan Rates"
       },
       {
-        "title": "Yen RV Analytics - 06 Aug 2026",
-        "url": "https://go.nomuranow.com/research/japi/publication/1314116?appname=GRPUI",
-        "date": "AUG 6, 2026",
-        "summary": "TOMOAKI SHISHIDO, YUJIRO GOTO, TOMOCHIKA KITAOKA",
-        "analyst": "Tomoaki Shishido",
-        "coverage": "Japan Rates"
-      },
-      {
-        "title": "Yen Rates Daily Monitor - 06 Aug 2026",
-        "url": "https://go.nomuranow.com/research/japi/publication/1314091?appname=GRPUI",
-        "date": "AUG 6, 2026",
-        "summary": "TOMOAKI SHISHIDO, YUJIRO GOTO, TOMOCHIKA KITAOKA",
-        "analyst": "Tomoaki Shishido",
-        "coverage": "Japan Rates"
-      },
-      {
-        "title": "Yen RV Analytics - 05 Aug 2026",
-        "url": "https://go.nomuranow.com/research/japi/publication/1313681?appname=GRPUI",
-        "date": "AUG 5, 2026",
-        "summary": "TOMOAKI SHISHIDO, YUJIRO GOTO, TOMOCHIKA KITAOKA",
-        "analyst": "Tomoaki Shishido",
-        "coverage": "Japan Rates"
-      },
-      {
         "title": "Japan Macro Report - Steps taken by Takaichi administration and market reaction/assessment",
         "url": "https://go.nomuranow.com/research/japi/publication/1310892?appname=GRPUI",
+        "date": "JUL 24, 2026",
+        "summary": "TOMOAKI SHISHIDO, YUJIRO GOTO, TOMOCHIKA KITAOKA",
+        "analyst": "Tomoaki Shishido",
+        "coverage": "Japan Rates"
+      },
+      {
+        "title": "Japan Macro Report - Analysis of coordinated US-Japan intervention and market scenarios",
+        "url": "https://go.nomuranow.com/research/japi/publication/1315018?appname=GRPUI",
         "date": "JUL 24, 2026",
         "summary": "TOMOAKI SHISHIDO, YUJIRO GOTO, TOMOCHIKA KITAOKA",
         "analyst": "Tomoaki Shishido",
@@ -143,10 +151,26 @@
         "coverage": "Japan FX"
       },
       {
+        "title": "JPY Intraday Comment - The market views current JPY-supportive factors as insufficient to sustain yen appreciation",
+        "url": "https://go.nomuranow.com/research/japi/publication/1315169?appname=GRPUI",
+        "date": "AUG 7, 2026",
+        "summary": "YUJIRO GOTO, YUSUKE MIYAIRI, CFA, TOMOKI HIDESHIMA, YUKI KODERA",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
+        "title": "Japan Macro Report - Analysis of coordinated US-Japan intervention and market scenarios",
+        "url": "https://go.nomuranow.com/research/japi/publication/1315018?appname=GRPUI",
+        "date": "AUG 7, 2026",
+        "summary": "YUJIRO GOTO, YUSUKE MIYAIRI, CFA, TOMOKI HIDESHIMA, YUKI KODERA",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
         "title": "JPY Weekly - Continued vigilance on future joint actions",
         "url": "https://go.nomuranow.com/research/japi/publication/1314860?appname=GRPUI",
         "date": "AUG 7, 2026",
-        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, ALBERT LEUNG more...",
+        "summary": "YUJIRO GOTO, YUSUKE MIYAIRI, CFA, TOMOKI HIDESHIMA, YUKI KODERA",
         "analyst": "Yujiro Goto",
         "coverage": "Japan FX"
       },
@@ -154,7 +178,7 @@
         "title": "Nomura Pulse Check - US-Japan joint FX intervention and USD/JPY",
         "url": "https://go.nomuranow.com/research/japi/publication/1314787?appname=GRPUI",
         "date": "AUG 7, 2026",
-        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, ALBERT LEUNG more...",
+        "summary": "YUJIRO GOTO, YUSUKE MIYAIRI, CFA, TOMOKI HIDESHIMA, YUKI KODERA",
         "analyst": "Yujiro Goto",
         "coverage": "Japan FX"
       },
@@ -162,64 +186,32 @@
         "title": "JPY Intraday Comment - Key considerations for using Foreign Exchange Fund Special Account to fund tax cut policy",
         "url": "https://go.nomuranow.com/research/japi/publication/1314255?appname=GRPUI",
         "date": "AUG 7, 2026",
-        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, ALBERT LEUNG more...",
+        "summary": "YUJIRO GOTO, YUSUKE MIYAIRI, CFA, TOMOKI HIDESHIMA, YUKI KODERA",
         "analyst": "Yujiro Goto",
         "coverage": "Japan FX"
       },
       {
-        "title": "JPY Intraday Comment - Bessent’s consecutive verbal interventions",
-        "url": "https://go.nomuranow.com/research/japi/publication/1313801?appname=GRPUI",
-        "date": "AUG 7, 2026",
-        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, ALBERT LEUNG more...",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
-        "title": "JPY Intraday Comment - Looking at past episodes of coordinated intervention",
-        "url": "https://go.nomuranow.com/research/japi/publication/1313256?appname=GRPUI",
-        "date": "AUG 7, 2026",
-        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, ALBERT LEUNG more...",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
-        "title": "Key focus and themes - Less USD supportive factors; higher convictions on long CNH and short IDR",
-        "url": "https://go.nomuranow.com/research/japi/publication/1312580?appname=GRPUI",
-        "date": "JUL 31, 2026",
-        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, ALBERT LEUNG more...",
+        "title": "JPY Monthly Flow Monitor - Pension funds’ net selling of foreign equities amid declines in yen terms in July",
+        "url": "https://go.nomuranow.com/research/japi/publication/1315100?appname=GRPUI",
+        "date": "",
+        "summary": "YUJIRO GOTO, YUSUKE MIYAIRI, CFA, TOMOKI HIDESHIMA, YUKI KODERA",
         "analyst": "Yujiro Goto",
         "coverage": "Japan FX"
       }
     ],
     "Masaki Kuwahara": [
       {
-        "title": "Yen RV Analytics - 07 Aug 2026",
-        "url": "https://go.nomuranow.com/research/japi/publication/1314588?appname=GRPUI",
-        "date": "AUG 7, 2026",
+        "title": "Yen RV Analytics - 10 Aug 2026",
+        "url": "https://go.nomuranow.com/research/japi/publication/1315098?appname=GRPUI",
+        "date": "AUG 10, 2026",
         "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, ZHAOQI LIU, YUNA MINEGISHI",
         "analyst": "Masaki Kuwahara",
         "coverage": "Japan Macro"
       },
       {
-        "title": "Yen Rates Daily Monitor - 07 Aug 2026",
-        "url": "https://go.nomuranow.com/research/japi/publication/1314564?appname=GRPUI",
-        "date": "AUG 7, 2026",
-        "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, ZHAOQI LIU, YUNA MINEGISHI",
-        "analyst": "Masaki Kuwahara",
-        "coverage": "Japan Macro"
-      },
-      {
-        "title": "Yen RV Analytics - 06 Aug 2026",
-        "url": "https://go.nomuranow.com/research/japi/publication/1314116?appname=GRPUI",
-        "date": "AUG 6, 2026",
-        "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, ZHAOQI LIU, YUNA MINEGISHI",
-        "analyst": "Masaki Kuwahara",
-        "coverage": "Japan Macro"
-      },
-      {
-        "title": "Yen Rates Daily Monitor - 06 Aug 2026",
-        "url": "https://go.nomuranow.com/research/japi/publication/1314091?appname=GRPUI",
-        "date": "AUG 6, 2026",
+        "title": "Yen Rates Daily Monitor - 10 Aug 2026",
+        "url": "https://go.nomuranow.com/research/japi/publication/1315083?appname=GRPUI",
+        "date": "AUG 10, 2026",
         "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, ZHAOQI LIU, YUNA MINEGISHI",
         "analyst": "Masaki Kuwahara",
         "coverage": "Japan Macro"
@@ -227,6 +219,22 @@
       {
         "title": "Japan Economic Weekly - We revise our BOJ scenarios, now expect rate hikes in October 2026, March 2027, and July 2027",
         "url": "https://go.nomuranow.com/research/japi/publication/1312920?appname=GRPUI",
+        "date": "AUG 3, 2026",
+        "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, ZHAOQI LIU, YUNA MINEGISHI",
+        "analyst": "Masaki Kuwahara",
+        "coverage": "Japan Macro"
+      },
+      {
+        "title": "Japan Economic Weekly - Points to watch ahead of BOJ's September MPM",
+        "url": "https://go.nomuranow.com/research/japi/publication/1315051?appname=GRPUI",
+        "date": "AUG 3, 2026",
+        "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, ZHAOQI LIU, YUNA MINEGISHI",
+        "analyst": "Masaki Kuwahara",
+        "coverage": "Japan Macro"
+      },
+      {
+        "title": "Fiscal Insight - FY2027 budget request by the Ministry of Defense is reportedly JPY8.9trn",
+        "url": "https://go.nomuranow.com/research/japi/publication/1314992?appname=GRPUI",
         "date": "AUG 3, 2026",
         "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, ZHAOQI LIU, YUNA MINEGISHI",
         "analyst": "Masaki Kuwahara",
@@ -325,6 +333,22 @@
         "coverage": "Japan Macro / Fiscal"
       },
       {
+        "title": "Japan Economic Weekly - Points to watch ahead of BOJ's September MPM",
+        "url": "https://go.nomuranow.com/research/japi/publication/1315051?appname=GRPUI",
+        "date": "AUG 3, 2026",
+        "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, ZHAOQI LIU, YUNA MINEGISHI",
+        "analyst": "Uichiro Nozaki",
+        "coverage": "Japan Macro / Fiscal"
+      },
+      {
+        "title": "Japan: Results of 2025 CPI rebasing - Core and core-core CPI inflation figures largely unchanged, no surprises",
+        "url": "https://go.nomuranow.com/research/japi/publication/1315027?appname=GRPUI",
+        "date": "AUG 3, 2026",
+        "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, ZHAOQI LIU, YUNA MINEGISHI",
+        "analyst": "Uichiro Nozaki",
+        "coverage": "Japan Macro / Fiscal"
+      },
+      {
         "title": "Japan: Monthly Labor Survey for June 2026 - Steady underlying wage hikes and growth in summer bonuses at SMEs",
         "url": "https://go.nomuranow.com/research/japi/publication/1313616?appname=GRPUI",
         "date": "AUG 3, 2026",
@@ -335,22 +359,6 @@
       {
         "title": "Japan: Forecasts for 2026 Q2 first preliminary GDP estimates - We forecast a real GDP growth estimate of +2.2% q-q annualized",
         "url": "https://go.nomuranow.com/research/japi/publication/1312367?appname=GRPUI",
-        "date": "AUG 3, 2026",
-        "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, ZHAOQI LIU, YUNA MINEGISHI",
-        "analyst": "Uichiro Nozaki",
-        "coverage": "Japan Macro / Fiscal"
-      },
-      {
-        "title": "Japan: FY26 Minimum wage hikes - Weighted national average increase of ¥55, second largest ever after record high in FY25",
-        "url": "https://go.nomuranow.com/research/japi/publication/1311920?appname=GRPUI",
-        "date": "AUG 3, 2026",
-        "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, ZHAOQI LIU, YUNA MINEGISHI",
-        "analyst": "Uichiro Nozaki",
-        "coverage": "Japan Macro / Fiscal"
-      },
-      {
-        "title": "Japan Economic Weekly - Focusing on comments about pace of rate hikes and BOJ independence at Governor Ueda's press conference",
-        "url": "https://go.nomuranow.com/research/japi/publication/1310893?appname=GRPUI",
         "date": "AUG 3, 2026",
         "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, ZHAOQI LIU, YUNA MINEGISHI",
         "analyst": "Uichiro Nozaki",
@@ -374,5 +382,5 @@
       }
     ]
   },
-  "total": 43
+  "total": 44
 }
