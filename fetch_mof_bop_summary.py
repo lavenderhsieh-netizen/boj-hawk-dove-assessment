@@ -15,6 +15,13 @@ preliminary press-release PDF used elsewhere; these are the actual
     Jan 1996–present. Columns (0-indexed after the 4 label cols):
     4=Current account, 5=Goods&services, 6=Goods(trade balance), 7=Exports,
     8=Imports, 9=Services, 10=Primary income, 11=Secondary income.
+  - .../bp_trend/bpnet/sbp/s-1/6s-1-4.csv  "国際収支総括表（月次）" — the SAME table,
+    "Not seasonally adjusted" (原数値), same column layout. Added 2026-08-11
+    (HanHan asked "possible to have NSA version?"). Found by reading bpnet.htm's
+    own CSV list: 6s-1-* is the un-adjusted family (calendar/fiscal/quarter/month),
+    6s-a-* is explicitly labelled "季節調整済" — the SA-only variant used above.
+    There is no separate NSA URL for direct investment; that series is already
+    NSA-only at the source (MoF doesn't seasonally adjust FDI), see below.
   - .../bp_trend/bpfdi/fdi/6d-0-4.csv  "対外直接投資総括表（月次）" — Outward FDI
     (Direct Investment Assets), monthly, NOT seasonally adjusted. Row[6] = Net total.
   - .../bp_trend/bpfdi/fdi/6d-1-4.csv  "対内直接投資総括表（月次）" — Inward FDI
@@ -30,6 +37,12 @@ as MoF's own + = net inflow (liabilities increase); plotted as a NEGATIVE bar
 (opposite direction to outward) so the two visually net against each other,
 matching Nomura's Fig.11 convention. direct_investment_balance = outward - inward.
 
+USD conversion (added 2026-08-11): monthly USDJPY close from Yahoo Finance
+(JPY=X, interval=1mo, range=max — same `usdjpy_monthly()` pattern already used
+in fetch_mof_flows.py), $bn = ¥tn * 1000 / rate. Every ¥tn series above also
+gets a `_usd` sibling with identical shape. Months with no Yahoo close use the
+nearest earlier month's rate (same fallback as fetch_mof_flows.py).
+
 Output: mof_bop_summary.json (root + streamlit_app/ copies), independent of
 mof_bop.json (which has its own delicate outbound_sov-preservation logic —
 see fetch_mof_bop.py's own comments; do not merge this into that file).
@@ -40,11 +53,14 @@ import urllib.request, csv, io, json, os, datetime
 
 BASE = "https://www.mof.go.jp/policy/international_policy/reference/balance_of_payments/bp_trend/{path}"
 CA_URL = BASE.format(path="bpnet/sbp/s-a/6s-a-2.csv")
+CA_NSA_URL = BASE.format(path="bpnet/sbp/s-1/6s-1-4.csv")
 FDI_OUT_URL = BASE.format(path="bpfdi/fdi/6d-0-4.csv")
 FDI_IN_URL = BASE.format(path="bpfdi/fdi/6d-1-4.csv")
 UA = {"User-Agent": "Mozilla/5.0"}
 HERE = os.path.dirname(os.path.abspath(__file__))
 START = "2015-01"   # matches Nomura Fig.10's chart window; source goes back to 1996 if ever wanted
+CA_KEYS = ("current_account", "goods_services", "goods", "exports",
+           "imports", "services", "primary_income", "secondary_income")
 
 MN = {"Jan":1,"Feb":2,"Mar":3,"Apr":4,"May":5,"Jun":6,
       "Jul":7,"Aug":8,"Sep":9,"Oct":10,"Nov":11,"Dec":12}
@@ -77,10 +93,10 @@ def month_tag(row):
     return f"{_last_year}-{MN[mon]:02d}"
 
 
-def fetch_current_account():
+def fetch_current_account(url):
     global _last_year
     _last_year = None
-    rows = rows_of(CA_URL)
+    rows = rows_of(url)
     out = {}
     for row in rows:
         if len(row) < 12 or not row[3]:
@@ -104,6 +120,27 @@ def fetch_current_account():
     return out
 
 
+def usdjpy_monthly():
+    """Monthly USDJPY close from Yahoo, {YYYY-MM: rate}. Empty dict on failure.
+    Same pattern as fetch_mof_flows.py's usdjpy_monthly(), but range=max since
+    this series needs to cover the full 2015-present window (flows only needs
+    ~4y)."""
+    try:
+        j = json.loads(get("https://query1.finance.yahoo.com/v8/finance/chart/JPY=X?interval=1mo&range=max").decode())
+        res = j["chart"]["result"][0]
+        ts, cl = res["timestamp"], res["indicators"]["quote"][0]["close"]
+        out = {}
+        for t, c in zip(ts, cl):
+            if c is None:
+                continue
+            d = datetime.datetime.fromtimestamp(t, datetime.UTC)
+            out[f"{d.year}-{d.month:02d}"] = round(float(c), 3)
+        return out
+    except Exception as e:
+        print("usdjpy fetch failed:", e)
+        return {}
+
+
 def fetch_fdi_net(url):
     global _last_year
     _last_year = None
@@ -123,44 +160,77 @@ def fetch_fdi_net(url):
 
 
 def main():
-    ca = fetch_current_account()
+    ca = fetch_current_account(CA_URL)
+    ca_nsa = fetch_current_account(CA_NSA_URL)
     fdi_out = fetch_fdi_net(FDI_OUT_URL)
     fdi_in = fetch_fdi_net(FDI_IN_URL)
 
-    months = sorted(set(ca) | set(fdi_out) | set(fdi_in))
+    months = sorted(set(ca) | set(ca_nsa) | set(fdi_out) | set(fdi_in))
     TN = lambda v: round(v / 10000.0, 3) if v is not None else None  # 億円 -> ¥tn
 
-    current_account = {k: [TN(ca.get(m, {}).get(k)) for m in months]
-                        for k in ("current_account", "goods_services", "goods", "exports",
-                                  "imports", "services", "primary_income", "secondary_income")}
+    fx = usdjpy_monthly()
+    def rate(tag):
+        if tag in fx:
+            return fx[tag]
+        earlier = [v for k, v in sorted(fx.items()) if k <= tag]
+        return earlier[-1] if earlier else (sorted(fx.values())[len(fx) // 2] if fx else None)
+    def usd(v, tag):
+        r = rate(tag)
+        return round(v * 1000.0 / r, 2) if (v is not None and r) else None
+
+    def ca_block(src):
+        jpy = {k: [TN(src.get(m, {}).get(k)) for m in months] for k in CA_KEYS}
+        usdv = {k: [usd(v, m) for v, m in zip(jpy[k], months)] for k in CA_KEYS}
+        return jpy, usdv
+
+    current_account, current_account_usd = ca_block(ca)
+    current_account_nsa, current_account_nsa_usd = ca_block(ca_nsa)
+
     outward = [TN(fdi_out.get(m)) for m in months]
     inward = [TN(fdi_in.get(m)) for m in months]
+    inward_flipped = [(-v if v is not None else None) for v in inward]
     balance = [round(o - i, 3) if (o is not None and i is not None) else None
                for o, i in zip(outward, inward)]
+    outward_usd = [usd(v, m) for v, m in zip(outward, months)]
+    inward_flipped_usd = [usd(v, m) for v, m in zip(inward_flipped, months)]
+    inward_raw_usd = [usd(v, m) for v, m in zip(inward, months)]
+    balance_usd = [usd(v, m) for v, m in zip(balance, months)]
 
     doc = {
         "meta": {
             "as_of": months[-1] if months else None,
             "generated_at": datetime.datetime.now(datetime.UTC).replace(microsecond=0).isoformat(),
-            "unit": "JPY tn",
-            "current_account_note": "Seasonally adjusted. + = current account surplus / net receipts.",
-            "direct_investment_note": "Not seasonally adjusted. Outward: + = residents' net investment abroad "
-                                       "(capital outflow). Inward is sourced as MoF's own + = net inflow, then "
-                                       "sign-flipped for the chart so it plots as a negative bar (opposite "
-                                       "direction to outward), matching Nomura's Fig.11 convention. "
-                                       "direct_investment_balance = outward - inward (residents' outward minus non-residents' inward).",
+            "unit": "JPY tn (or USD bn in the _usd fields)",
+            "current_account_note": "current_account = seasonally adjusted; current_account_nsa = not "
+                                     "seasonally adjusted (原数値), same MoF table family, added 2026-08-11 "
+                                     "at HanHan's request. + = current account surplus / net receipts.",
+            "direct_investment_note": "Not seasonally adjusted (MoF does not publish an SA version of FDI). "
+                                       "Outward: + = residents' net investment abroad (capital outflow). Inward is "
+                                       "sourced as MoF's own + = net inflow, then sign-flipped for the chart so it "
+                                       "plots as a negative bar (opposite direction to outward), matching Nomura's "
+                                       "Fig.11 convention. direct_investment_balance = outward - inward "
+                                       "(residents' outward minus non-residents' inward).",
+            "usd_note": "_usd fields converted at each month's own USDJPY close (Yahoo Finance JPY=X, monthly), "
+                        "$bn = ¥tn * 1000 / rate — same conversion convention as mof_flows.json.",
             "source": "Ministry of Finance Japan — official Balance of Payments trend-data CSVs "
-                      "(季節調整済み国際収支の推移 / 対外・対内直接投資総括表), monthly, revised basis "
+                      "(国際収支総括表 SA + NSA / 対外・対内直接投資総括表), monthly, revised basis "
                       "(not the preliminary press-release PDF)",
             "source_url": "https://www.mof.go.jp/policy/international_policy/reference/balance_of_payments/data.htm",
         },
         "months": months,
         "current_account": current_account,
+        "current_account_usd": current_account_usd,
+        "current_account_nsa": current_account_nsa,
+        "current_account_nsa_usd": current_account_nsa_usd,
         "direct_investment": {
             "outward": outward,
-            "inward_flipped": [(-v if v is not None else None) for v in inward],
+            "inward_flipped": inward_flipped,
             "inward_raw": inward,
             "balance": balance,
+            "outward_usd": outward_usd,
+            "inward_flipped_usd": inward_flipped_usd,
+            "inward_raw_usd": inward_raw_usd,
+            "balance_usd": balance_usd,
         },
     }
     for dest in (os.path.join(HERE, "mof_bop_summary.json"),
@@ -168,7 +238,8 @@ def main():
         os.makedirs(os.path.dirname(dest), exist_ok=True)
         json.dump(doc, open(dest, "w"), ensure_ascii=False, indent=1)
     print(f"months {len(months)} ({months[0] if months else '-'}..{months[-1] if months else '-'}) "
-          f"-> mof_bop_summary.json  CA latest={current_account['current_account'][-1] if months else None} "
+          f"-> mof_bop_summary.json  CA(SA) latest={current_account['current_account'][-1] if months else None} "
+          f"CA(NSA) latest={current_account_nsa['current_account'][-1] if months else None} "
           f"FDI bal latest={balance[-1] if months else None}")
 
 
