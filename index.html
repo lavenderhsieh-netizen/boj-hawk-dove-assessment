@@ -1151,6 +1151,11 @@
       <div class="note">Wealth Advisor's monthly fund-flow flash report — the practical way to see NISA-driven concentration without tracking all ~2,700 eligible funds. Not NISA-specific, but these are overwhelmingly where NISA money lands. <span id="nisaFundFlowGapNote"></span></div>
       <div style="height:640px"><canvas id="nisaFundFlowChart"></canvas></div>
     </div>
+    <div class="card full">
+      <h2 id="nisaInvTrustTitle">Portfolio investment flows by investment trust management companies</h2>
+      <div class="note">The toshin-fund channel — the closest direct FX read-through of NISA-driven household money going into foreign assets, since NISA purchases largely flow through these funds. Same MoF International Transactions in Securities series as the Cross-border flows tab; history here only goes back to 2021-04 (MoF's own release history), shorter than the 2005-2026 range on a Bloomberg/Macrobond terminal.</div>
+      <canvas id="cNisaInvTrust" style="max-height:340px;margin-top:12px"></canvas>
+    </div>
     <div class="grid2">
       <div class="card">
         <h2>Quota split (2026 Q1)</h2>
@@ -3485,6 +3490,7 @@ fetch('./intervention_data.json?' + Date.now())
         "FSA and JSDA publish as PDF (not API). The JSDA 10-firm monthly pulse refreshes on the 18th; the FSA whole-market headline is hand-updated around quarter-end.";
 
     if (nisaFundFlowD) buildNisaFundFlowChart(nisaFundFlowD);
+    if (typeof xbStackedChart === 'function') xbStackedChart('cNisaInvTrust', 'nisaInvTrustTitle', 'invtrust');
   }
 
   let nisaFundFlowRows = null, nisaFundFlowChart_ = null, nisaFundFlowCcy = 'jpy', nisaFxRate = null;
