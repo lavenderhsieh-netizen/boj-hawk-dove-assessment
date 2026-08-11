@@ -543,10 +543,9 @@
       <div class="mbcard"><h3 id="xbTitle_trust_bank"></h3><canvas id="cXb_trust_bank"></canvas></div>
       <div class="mbcard"><h3 id="xbTitle_trust_pension"></h3><canvas id="cXb_trust_pension"></canvas></div>
       <div class="mbcard"><h3 id="xbTitle_life"></h3><canvas id="cXb_life"></canvas></div>
-      <div class="mbcard"><h3 id="xbTitle_invtrust"></h3><canvas id="cXb_invtrust"></canvas></div>
     </div>
     <div class="card full" style="margin-top:16px">
-      <div class="note">Trust a/c (pension) is the big structural outbound bid (GPIF & pension money); banks (banking a/c) swing with the yen-hedging / repatriation cycle; life insurers' foreign-bond appetite reads against their JGB super-long demand on the JSDA tab. Investment trusts (投資信託) is the toshin-fund channel — the closest direct FX read-through of NISA-driven household money going into foreign assets, since NISA purchases largely flow through these funds.</div>
+      <div class="note">Trust a/c (pension) is the big structural outbound bid (GPIF & pension money); banks (banking a/c) swing with the yen-hedging / repatriation cycle; life insurers' foreign-bond appetite reads against their JGB super-long demand on the JSDA tab.</div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>Seasonality — monthly net buying by fiscal year (from April)</h2>
@@ -833,6 +832,11 @@
 
   <!-- INTERVENTION -->
   <div id="tab-intervention" class="panel">
+    <div class="card full">
+      <h2>USD/JPY level before &amp; after each intervention round <span id="ivSnapStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">Per-round snapshot: the pre-intervention peak (yen-weakest point) vs. the post-intervention trough, with the ¥ move and % drop labeled directly on each chart. Gold dots mark individual MOF operation days within the window.</div>
+      <div id="ivSnapGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:14px"></div>
+    </div>
     <div class="card full" id="ivRuleCard">
       <h2>IMF free-floating classification criterion — not an intervention constraint <span id="ivRuleQuota" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
       <div class="sub" id="ivRuleText"></div>
@@ -861,11 +865,6 @@
         <tbody id="ivEventBody"></tbody>
       </table>
       </div>
-    </div>
-    <div class="card full">
-      <h2>USD/JPY level before &amp; after each intervention round <span id="ivSnapStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
-      <div class="sub">Per-round snapshot: the pre-intervention peak (yen-weakest point) vs. the post-intervention trough, with the ¥ move and % drop labeled directly on each chart. Gold dots mark individual MOF operation days within the window.</div>
-      <div id="ivSnapGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:14px"></div>
     </div>
     <div class="card full">
       <h2>Intervention episodes — official/estimate status, ¥ &amp; approx. US$, effectiveness</h2>
@@ -2665,14 +2664,14 @@ fetch('./mof_inbound.json?' + Date.now())
   .catch(e => { console.warn('mof_inbound.json unavailable:', e); });
 function renderXb(){ if(!_xbData) return;
   xbAllChart();
-  ['banks','trust_bank','trust_pension','life','invtrust'].forEach(k=>xbStackedChart('cXb_'+k,'xbTitle_'+k, k));
+  ['banks','trust_bank','trust_pension','life'].forEach(k=>xbStackedChart('cXb_'+k,'xbTitle_'+k, k));
   ['total','trust_pension','life'].forEach(k=>xbFyChart('cXbSeas_'+k,'xbSeasT_'+k, k, 'seas'));
   ['total','trust_pension','life'].forEach(k=>xbFyChart('cXbCum_'+k,'xbCumT_'+k, k, 'cum')); }
 function setXbWin(win, btn){ _xbWin=win;
   document.querySelectorAll('#xbWinBtns .tab').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
   xbAllChart(); xbInChart();
-  ['banks','trust_bank','trust_pension','life','invtrust'].forEach(k=>xbStackedChart('cXb_'+k,'xbTitle_'+k, k)); }
+  ['banks','trust_bank','trust_pension','life'].forEach(k=>xbStackedChart('cXb_'+k,'xbTitle_'+k, k)); }
 function setXbCur(cur, btn){ _xbCur=cur;
   document.querySelectorAll('#xbCurBtns .tab').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
