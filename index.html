@@ -592,6 +592,13 @@
     <div style="margin:1.6rem 0 .8rem;border-top:1px solid var(--line);padding-top:1.1rem">
       <h1 style="font-size:1.05rem;color:var(--ink)">Both directions, weekly</h1>
     </div>
+    <div id="xbWeeklyWinBtns" style="display:flex;gap:6px;margin-bottom:10px">
+      <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbWeeklyWin(26,this)">6M</button>
+      <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbWeeklyWin(52,this)">1Y</button>
+      <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbWeeklyWin(104,this)">2Y</button>
+      <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbWeeklyWin(156,this)">3Y</button>
+      <button class="tab active" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbWeeklyWin(0,this)">All</button>
+    </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
       <div class="card">
         <h2>Japanese investors' net purchases of foreign securities <span style="font-size:12px;color:var(--muted);font-weight:400">(weekly)</span></h2>
@@ -2797,8 +2804,13 @@ fetch('./mof_bop_summary.json?' + Date.now())
 
 // MoF weekly release: Assets (outward) & Liabilities (inward), each split Equity vs Long-term debt —
 // two side-by-side panels matching Nomura's own Fig. 16/17 weekly-flow chart layout.
-let _xbWeeklyData=null, _xbWeeklyOutObj=null, _xbWeeklyInObj=null;
-function _xbWeeklyPanel(canvasId, eqData, ltdData, W, u, dp){
+let _xbWeeklyData=null, _xbWeeklyOutObj=null, _xbWeeklyInObj=null, _xbWeeklyWin=0;
+function setXbWeeklyWin(win, btn){ _xbWeeklyWin=win;
+  document.querySelectorAll('#xbWeeklyWinBtns .tab').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  xbWeeklyChart();
+}
+function _xbWeeklyPanel(canvasId, weeks, weekLabels, eqData, ltdData, u, dp){
   const cv=document.getElementById(canvasId); if(!cv) return null;
   const datasets=[
     {label:'Equities', data:eqData, borderColor:'#e04b4b', backgroundColor:'#e04b4b',
@@ -2806,11 +2818,11 @@ function _xbWeeklyPanel(canvasId, eqData, ltdData, W, u, dp){
     {label:'Long-term debt', data:ltdData, borderColor:'#8b96ab', backgroundColor:'#8b96ab',
      borderWidth:1.5, pointRadius:0, pointHoverRadius:3, tension:0.1, order:1},
   ];
-  return new Chart(cv, {type:'line', data:{labels:W.weeks, datasets},
+  return new Chart(cv, {type:'line', data:{labels:weeks, datasets},
     options:{responsive:true, maintainAspectRatio:false, interaction:{mode:'index', intersect:false},
       plugins:{legend:{position:'top', align:'start', labels:{boxWidth:11, boxHeight:11, padding:8, font:{size:10}, color:'#c7d0e0'}},
         tooltip:{callbacks:{
-          title:it=>{const i=it[0].dataIndex; return 'Week '+(W.week_labels[i]||W.weeks[i]);},
+          title:it=>{const i=it[0].dataIndex; return 'Week '+(weekLabels[i]||weeks[i]);},
           label:c=>c.dataset.label+': '+(c.parsed.y==null?'–':(c.parsed.y>=0?'+':'')+c.parsed.y.toFixed(dp)+u)}}},
       scales:{
         y:{title:{display:true, text:u+', net buying', color:'#93a1bd', font:{size:10.5}},
@@ -2818,7 +2830,7 @@ function _xbWeeklyPanel(canvasId, eqData, ltdData, W, u, dp){
            border:{color:'#2a3752'}, ticks:{color:'#93a1bd', font:{size:10}, callback:v=>(v>0?'+':'')+v}},
         x:{grid:{display:false}, border:{color:'#2a3752'},
            ticks:{autoSkip:true, maxTicksLimit:12, maxRotation:0, color:'#7e8aa3', font:{size:9.5},
-             callback:(v,i)=>W.weeks[i]?W.weeks[i].slice(0,7):''}}
+             callback:(v,i)=>weeks[i]?weeks[i].slice(0,7):''}}
       }
     }
   });
@@ -2827,12 +2839,14 @@ function xbWeeklyChart(){
   const W=_xbWeeklyData; if(!W) return;
   const usd=(_xbCur==='usd');
   const u=usd?'$bn':'¥tn', dp=usd?1:2;
-  const assetsEq=usd?W.assets_eq_usd:W.assets_eq, assetsLtd=usd?W.assets_ltd_usd:W.assets_ltd;
-  const liabEq=usd?W.liab_eq_usd:W.liab_eq, liabLtd=usd?W.liab_ltd_usd:W.liab_ltd;
+  const i0=_xbWeeklyWin>0 ? Math.max(0, W.weeks.length-_xbWeeklyWin) : 0;
+  const weeks=W.weeks.slice(i0), weekLabels=W.week_labels.slice(i0);
+  const assetsEq=(usd?W.assets_eq_usd:W.assets_eq).slice(i0), assetsLtd=(usd?W.assets_ltd_usd:W.assets_ltd).slice(i0);
+  const liabEq=(usd?W.liab_eq_usd:W.liab_eq).slice(i0), liabLtd=(usd?W.liab_ltd_usd:W.liab_ltd).slice(i0);
   if(_xbWeeklyOutObj){ _xbWeeklyOutObj.destroy(); }
   if(_xbWeeklyInObj){ _xbWeeklyInObj.destroy(); }
-  _xbWeeklyOutObj=_xbWeeklyPanel('cXbWeeklyOut', assetsEq, assetsLtd, W, u, dp);
-  _xbWeeklyInObj=_xbWeeklyPanel('cXbWeeklyIn', liabEq, liabLtd, W, u, dp);
+  _xbWeeklyOutObj=_xbWeeklyPanel('cXbWeeklyOut', weeks, weekLabels, assetsEq, assetsLtd, u, dp);
+  _xbWeeklyInObj=_xbWeeklyPanel('cXbWeeklyIn', weeks, weekLabels, liabEq, liabLtd, u, dp);
   const el=document.getElementById('xbWeeklyStatus'); if(el && W.meta) el.textContent='· data to '+W.meta.as_of;
 }
 fetch('./mof_weekly.json?' + Date.now())
