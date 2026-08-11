@@ -1149,6 +1149,11 @@
       <div class="note">Top-10 securities firms (JSDA), ¥ trillion/month. Note the <b>January spike</b> each year as investors front-load the annual quota, then the fade through spring.</div>
       <canvas id="nisaMonChart"></canvas>
     </div>
+    <div class="card full">
+      <h2>Top 20 funds by net monthly inflow <span class="npill" id="nisaFundFlowMonth"></span></h2>
+      <div class="note">Wealth Advisor's monthly fund-flow flash report — the practical way to see NISA-driven concentration without tracking all ~2,700 eligible funds. Not NISA-specific, but these are overwhelmingly where NISA money lands. <span id="nisaFundFlowGapNote"></span></div>
+      <div style="height:640px"><canvas id="nisaFundFlowChart"></canvas></div>
+    </div>
     <div class="grid2">
       <div class="card">
         <h2>Quota split (2026 Q1)</h2>
@@ -1192,6 +1197,9 @@ function showTab(id, btn) {
   btn.classList.add('active');
   if (id === 'gpif' && typeof initGpifChart === 'function') {
     requestAnimationFrame(() => requestAnimationFrame(initGpifChart));
+  }
+  if (id === 'nisa' && typeof window.__buildNisaTab === 'function') {
+    requestAnimationFrame(() => requestAnimationFrame(window.__buildNisaTab));
   }
   // Any chart whose data fetch resolved (and so was created) while its tab panel
   // was still display:none gets sized to a 0x0 canvas at creation time. Chart.js
@@ -3494,6 +3502,13 @@ fetch('./intervention_data.json?' + Date.now())
 })();
 
 // ── NISA tab ────────────────────────────────────────────────────────────────
+// Chart construction is deferred to first tab activation (see showTab's
+// nisa special-case below) rather than run eagerly on this fetch resolving:
+// this tab isn't the default-active one, so its canvases start out inside a
+// display:none panel, and Chart.js sizes a canvas from its container's
+// layout box at creation time — a 0-size box at creation can't be reliably
+// recovered by a later .resize() call. Same rationale/pattern already used
+// for the GPIF tab's initGpifChart().
 (function(){
   const YEN = "¥";
   const mn = ["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -3504,9 +3519,13 @@ fetch('./intervention_data.json?' + Date.now())
   const baseOpts = yl => ({responsive:true,plugins:{legend:{display:false}},
     scales:{x:{grid:GRID,ticks:TICK},y:{grid:GRID,ticks:TICK,title:{display:!!yl,text:yl,color:"#93a1bd"}}}});
 
-  fetch('./nisa_data.json?' + Date.now())
-    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
-    .then(D => {
+  let nisaD = null, nisaFundFlowD = null;
+
+  function buildNisaTab(){
+    if (window.__nisaChartsInit) return;
+    if (!nisaD) return; // wait for the fetch(es) to resolve; called again once they do
+    window.__nisaChartsInit = true;
+    const D = nisaD;
       document.getElementById('nisaAsof').textContent = "· data as of " + D.meta.as_of;
       const wm = D.whole_market_fsa;
       const cum = wm.cumulative_purchase_jpy_tn.series;
@@ -3532,7 +3551,7 @@ fetch('./intervention_data.json?' + Date.now())
 
       const jan = d => d.date.endsWith("-01");
       new Chart(document.getElementById('nisaMonChart'),{type:"bar",data:{labels:mon.map(d=>fmtD(d.date)),
-        datasets:[{data:mon.map(d=>d.value/10000),backgroundColor:mon.map(d=>jan(d)?"#e2564a":"#4a7fc0"),borderRadius:3}]},options:baseOpts("¥ tn/mo")});
+        datasets:[{data:mon.map(d=>d.value/10000),backgroundColor:mon.map(d=>jan(d)?"#e2564a":"#4a7fc0"),borderRadius:3}]},options:{...baseOpts("¥ tn/mo"),animation:false}});
 
       new Chart(document.getElementById('nisaQuotaChart'),{type:"doughnut",data:{labels:["Growth quota","Tsumitate quota"],
         datasets:[{data:[alloc.growth_quota_share,alloc.tsumitate_quota_share],backgroundColor:["#e2564a","#4a90d9"],borderColor:"#171f31",borderWidth:2}]},
@@ -3556,12 +3575,62 @@ fetch('./intervention_data.json?' + Date.now())
       document.getElementById('nisaSrcTable').innerHTML = rows;
       document.getElementById('nisaSrcNote').innerHTML =
         "FSA and JSDA publish as PDF (not API). The JSDA 10-firm monthly pulse refreshes on the 18th; the FSA whole-market headline is hand-updated around quarter-end.";
+
+    if (nisaFundFlowD) buildNisaFundFlowChart(nisaFundFlowD);
+  }
+
+  function buildNisaFundFlowChart(fd){
+    const months = Object.keys(fd.months).sort();
+    const latest = months[months.length - 1];
+    const rows = fd.months[latest];
+    document.getElementById('nisaFundFlowMonth').textContent = fmtD(latest);
+    const prevIdx = months.indexOf(latest) - 1;
+    const gap = prevIdx >= 0 && (() => {
+      const [py, pm] = months[prevIdx].split("-").map(Number);
+      const [ly, lm] = latest.split("-").map(Number);
+      return (ly * 12 + lm) - (py * 12 + pm) > 1;
+    })();
+    document.getElementById('nisaFundFlowGapNote').textContent = gap ?
+      "(note: a monthly edition is missing between the two most recent months on file — a genuine publication gap, not backfilled.)" : "";
+
+    new Chart(document.getElementById('nisaFundFlowChart'), {
+      type: "bar",
+      data: {
+        labels: rows.map(r => r.fund.length > 28 ? r.fund.slice(0, 27) + "…" : r.fund),
+        datasets: [{ data: rows.map(r => r.flow_1m_100m_jpy / 100), backgroundColor: "#7fb3e8", borderRadius: 3 }]
+      },
+      options: {
+        indexAxis: "y", responsive: true, maintainAspectRatio: false, animation: false,
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `¥${c.raw.toFixed(0)} bn net inflow` } } },
+        scales: {
+          x: { grid: GRID, ticks: TICK, title: { display: true, text: "¥ billion / month", color: "#93a1bd" } },
+          y: { grid: GRID, ticks: { ...TICK, font: { size: 10 }, autoSkip: false } }
+        }
+      }
+    });
+  }
+
+  fetch('./nisa_data.json?' + Date.now())
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(D => {
+      nisaD = D;
+      if (document.getElementById('tab-nisa').classList.contains('active')) buildNisaTab();
     })
     .catch(e => {
       console.warn('nisa_data.json unavailable:', e);
       document.getElementById('nisaKpis').innerHTML =
         '<div style="color:var(--muted);padding:20px">NISA data unavailable.</div>';
     });
+
+  fetch('./nisa_fund_flows.json?' + Date.now())
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(fd => {
+      nisaFundFlowD = fd;
+      if (window.__nisaChartsInit) buildNisaFundFlowChart(fd);
+    })
+    .catch(e => console.warn('nisa_fund_flows.json unavailable:', e));
+
+  window.__buildNisaTab = buildNisaTab;
 })();
 
 // ── GPIF tab: quarterly return by asset class ────────────────────────────────
