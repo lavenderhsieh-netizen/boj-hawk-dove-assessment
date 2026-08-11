@@ -144,8 +144,6 @@
   .foot a,.note a{color:var(--dove2)}
   #loading{text-align:center;color:var(--muted);padding:60px;font-size:14px}
   @media(max-width:860px){.grid2{grid-template-columns:1fr}}
-  @media(max-width:960px){#ivSnapGrid{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:620px){#ivSnapGrid{grid-template-columns:1fr}}
   /* markets */
   .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
   .mkpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;display:flex;flex-direction:column;gap:4px}
@@ -832,11 +830,6 @@
 
   <!-- INTERVENTION -->
   <div id="tab-intervention" class="panel">
-    <div class="card full">
-      <h2>USD/JPY level before &amp; after each intervention round <span id="ivSnapStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
-      <div class="sub">Per-round snapshot: the pre-intervention peak (yen-weakest point) vs. the post-intervention trough, with the ¥ move and % drop labeled directly on each chart. Gold dots mark individual MOF operation days within the window.</div>
-      <div id="ivSnapGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:14px"></div>
-    </div>
     <div class="card full" id="ivRuleCard">
       <h2>IMF free-floating classification criterion — not an intervention constraint <span id="ivRuleQuota" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
       <div class="sub" id="ivRuleText"></div>
@@ -2999,93 +2992,6 @@ function ivLongChart(D) {
   });
 }
 
-function ivDropBracketPlugin(peakIdx, troughIdx, dropYen) {
-  return {
-    id: 'ivDropBracket',
-    afterDatasetsDraw(chart) {
-      const meta = chart.getDatasetMeta(0);
-      const p = meta.data[peakIdx], t = meta.data[troughIdx];
-      if (!p || !t) return;
-      const { ctx, chartArea } = chart;
-      if (!chartArea) return;
-      const bx = Math.min(chartArea.right - 4, Math.max(p.x, t.x) + 16);
-      ctx.save();
-      ctx.strokeStyle = '#e2564a';
-      ctx.lineWidth = 1.5;
-      ctx.setLineDash([]);
-      ctx.beginPath();
-      ctx.moveTo(bx, p.y); ctx.lineTo(bx, t.y);
-      ctx.moveTo(bx - 5, p.y); ctx.lineTo(bx + 5, p.y);
-      ctx.moveTo(bx - 5, t.y); ctx.lineTo(bx + 5, t.y);
-      ctx.stroke();
-      ctx.fillStyle = '#e2564a';
-      ctx.font = '700 11px sans-serif';
-      ctx.textAlign = bx + 40 > chartArea.right ? 'right' : 'left';
-      ctx.fillText(`−${dropYen.toFixed(2)}`, ctx.textAlign === 'right' ? bx - 8 : bx + 8, (p.y + t.y) / 2 + 4);
-      ctx.restore();
-    }
-  };
-}
-
-function renderIvSnapshots(D) {
-  const grid = document.getElementById('ivSnapGrid');
-  if (!grid) return;
-  const snaps = D.episode_snapshots || [];
-  const statusEl = document.getElementById('ivSnapStatus');
-  if (statusEl) statusEl.textContent = snaps.length ? `· ${snaps.length} rounds, ${esc(snaps[0].window_start)} to ${esc(snaps[snaps.length-1].window_end)}` : '';
-
-  grid.innerHTML = snaps.map((s, i) => `
-    <div class="mbcard" style="margin-bottom:0">
-      <h3>${esc(s.label)}</h3>
-      <div style="font-size:11px;color:var(--muted);text-align:center;margin:-4px 0 8px">
-        ¥${s.total_jpy_tn}tn / $${s.total_usd_bn}bn total · peak ${esc(s.peak.date)} (${s.peak.value.toFixed(2)}) → trough ${esc(s.trough.date)} (${s.trough.value.toFixed(2)})
-      </div>
-      <div style="text-align:center;font-size:20px;font-weight:700;color:#e2564a;margin-bottom:8px">−${s.drop_yen.toFixed(2)}¥ <span style="font-size:14px;font-weight:600;color:#eb9d90">(−${s.drop_pct.toFixed(2)}%)</span></div>
-      <canvas id="cIvSnap${i}" style="max-height:180px"></canvas>
-      <div class="note" style="margin-top:6px">${s.ops.map(o => `${esc(o.date)}: ¥${o.jpy_tn}tn/$${o.usd_bn}bn${o.official ? '' : ' (est.)'}`).join(' · ')}</div>
-    </div>`).join('');
-
-  snaps.forEach((s, i) => {
-    const cv = document.getElementById('cIvSnap' + i);
-    if (!cv) return;
-    const labels = s.points.map(p => p.date);
-    const opDates = new Set(s.ops.map(o => o.date));
-    const peakIdx = labels.indexOf(s.peak.date);
-    const troughIdx = labels.indexOf(s.trough.date);
-    new Chart(cv, {
-      type: 'line',
-      data: { labels, datasets: [{
-        data: s.points.map(p => p.value),
-        borderColor: '#5aa0e6', backgroundColor: 'rgba(90,160,230,.18)', fill: true,
-        borderWidth: 1.6, tension: 0,
-        pointRadius: labels.map((d, idx) => idx === peakIdx || idx === troughIdx ? 5 : (opDates.has(d) ? 3 : 0)),
-        pointBackgroundColor: labels.map((d, idx) => idx === troughIdx ? '#e2564a' : (idx === peakIdx ? '#eef2f9' : (opDates.has(d) ? '#d9a441' : '#5aa0e6'))),
-        datalabels: {
-          display: ctx => ctx.dataIndex === peakIdx || ctx.dataIndex === troughIdx,
-          color: ctx => ctx.dataIndex === troughIdx ? '#e2564a' : '#eef2f9',
-          font: { size: 10, weight: '700' },
-          anchor: ctx => ctx.dataIndex === troughIdx ? 'end' : 'start',
-          align: ctx => ctx.dataIndex === troughIdx ? 'bottom' : 'top', offset: 4,
-          formatter: v => v.toFixed(2)
-        }
-      }] },
-      plugins: [ChartDataLabels, ivDropBracketPlugin(peakIdx, troughIdx, s.drop_yen)],
-      options: {
-        responsive: true, maintainAspectRatio: false, animation: false,
-        layout: { padding: { top: 22, bottom: 18, right: 46 } },
-        plugins: {
-          legend: { display: false }, datalabels: { clamp: true },
-          tooltip: { callbacks: { title: i => i[0].label, label: i => 'USD/JPY ' + i.raw.toFixed(2) } } }
-        ,
-        scales: {
-          x: { grid: { display: false }, border: { color: '#2a3752' },
-            ticks: { color: '#7e8aa3', font: { size: 9 }, maxTicksLimit: 6, maxRotation: 0 } },
-          y: { grid: { color: '#243149' }, border: { color: '#2a3752' }, ticks: { color: '#93a1bd', font: { size: 9.5 } } }
-        }
-      }
-    });
-  });
-}
 
 const IV_MON = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 function ivPeriodLabel(s) {
@@ -3177,7 +3083,6 @@ fetch('./intervention_data.json?' + Date.now())
   .then(D => {
     _ivData = D;
     ivLongChart(D);
-    renderIvSnapshots(D);
     renderIvEpTable(D.episodes);
     renderIvOpTable(D.recent_ops);
     renderIvRule(D.imf_rule);
