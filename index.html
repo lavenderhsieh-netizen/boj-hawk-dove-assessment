@@ -265,7 +265,7 @@
   <button class="tab" onclick="showTab('news',this)">News</button>
   <button class="tab" onclick="showTab('markets',this)">Markets &amp; bonds</button>
   <button class="tab" onclick="showTab('seasonality',this)">Seasonality</button>
-  <button class="tab" onclick="showTab('nisa',this)" style="display:none" data-hidden="redesign">NISA</button>
+  <button class="tab" onclick="showTab('nisa',this)">NISA</button>
   <button class="tab" onclick="showTab('method',this)">Methodology</button>
 </div>
 
@@ -543,9 +543,10 @@
       <div class="mbcard"><h3 id="xbTitle_trust_bank"></h3><canvas id="cXb_trust_bank"></canvas></div>
       <div class="mbcard"><h3 id="xbTitle_trust_pension"></h3><canvas id="cXb_trust_pension"></canvas></div>
       <div class="mbcard"><h3 id="xbTitle_life"></h3><canvas id="cXb_life"></canvas></div>
+      <div class="mbcard"><h3 id="xbTitle_invtrust"></h3><canvas id="cXb_invtrust"></canvas></div>
     </div>
     <div class="card full" style="margin-top:16px">
-      <div class="note">Trust a/c (pension) is the big structural outbound bid (GPIF & pension money); banks (banking a/c) swing with the yen-hedging / repatriation cycle; life insurers' foreign-bond appetite reads against their JGB super-long demand on the JSDA tab.</div>
+      <div class="note">Trust a/c (pension) is the big structural outbound bid (GPIF & pension money); banks (banking a/c) swing with the yen-hedging / repatriation cycle; life insurers' foreign-bond appetite reads against their JGB super-long demand on the JSDA tab. Investment trusts (投資信託) is the toshin-fund channel — the closest direct FX read-through of NISA-driven household money going into foreign assets, since NISA purchases largely flow through these funds.</div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>Seasonality — monthly net buying by fiscal year (from April)</h2>
@@ -2651,14 +2652,14 @@ fetch('./mof_inbound.json?' + Date.now())
   .catch(e => { console.warn('mof_inbound.json unavailable:', e); });
 function renderXb(){ if(!_xbData) return;
   xbAllChart();
-  ['banks','trust_bank','trust_pension','life'].forEach(k=>xbStackedChart('cXb_'+k,'xbTitle_'+k, k));
+  ['banks','trust_bank','trust_pension','life','invtrust'].forEach(k=>xbStackedChart('cXb_'+k,'xbTitle_'+k, k));
   ['total','trust_pension','life'].forEach(k=>xbFyChart('cXbSeas_'+k,'xbSeasT_'+k, k, 'seas'));
   ['total','trust_pension','life'].forEach(k=>xbFyChart('cXbCum_'+k,'xbCumT_'+k, k, 'cum')); }
 function setXbWin(win, btn){ _xbWin=win;
   document.querySelectorAll('#xbWinBtns .tab').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
   xbAllChart(); xbInChart();
-  ['banks','trust_bank','trust_pension','life'].forEach(k=>xbStackedChart('cXb_'+k,'xbTitle_'+k, k)); }
+  ['banks','trust_bank','trust_pension','life','invtrust'].forEach(k=>xbStackedChart('cXb_'+k,'xbTitle_'+k, k)); }
 function setXbCur(cur, btn){ _xbCur=cur;
   document.querySelectorAll('#xbCurBtns .tab').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
