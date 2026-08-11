@@ -607,12 +607,18 @@
     <div style="margin:1.6rem 0 .8rem;border-top:1px solid var(--line);padding-top:1.1rem">
       <h1 style="font-size:1.05rem;color:var(--ink)">Both directions, weekly</h1>
     </div>
-    <div id="xbWeeklyWinBtns" style="display:flex;gap:6px;margin-bottom:10px">
-      <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbWeeklyWin(26,this)">6M</button>
-      <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbWeeklyWin(52,this)">1Y</button>
-      <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbWeeklyWin(104,this)">2Y</button>
-      <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbWeeklyWin(156,this)">3Y</button>
-      <button class="tab active" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbWeeklyWin(0,this)">All</button>
+    <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-bottom:10px">
+      <div id="xbWeeklyWinBtns" style="display:flex;gap:6px">
+        <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbWeeklyWin(26,this)">6M</button>
+        <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbWeeklyWin(52,this)">1Y</button>
+        <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbWeeklyWin(104,this)">2Y</button>
+        <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbWeeklyWin(156,this)">3Y</button>
+        <button class="tab active" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbWeeklyWin(0,this)">All</button>
+      </div>
+      <div id="xbWeeklySmoothBtns" style="display:flex;gap:6px">
+        <button class="tab active" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbWeeklySmooth('raw',this)">Weekly</button>
+        <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbWeeklySmooth('avg',this)">3M rolling avg</button>
+      </div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
       <div class="card">
@@ -626,7 +632,7 @@
         <canvas id="cXbWeeklyIn" style="max-height:340px;margin-top:12px"></canvas>
       </div>
     </div>
-    <div class="sub" style="margin-top:8px">Same MoF release as the monthly panels above, at <b>weekly</b> frequency, split into Equity &amp; investment fund shares vs. Long-term debt securities (Nomura's own Fig. 16/17 chart format). Positive = net buying; negative = net selling / repatriation. Source: MoF International Transactions in Securities (Weekly; based on reports from designated major investors).</div>
+    <div class="sub" style="margin-top:8px">Same MoF release as the monthly panels above, at <b>weekly</b> frequency, split into Equity &amp; investment fund shares vs. Long-term debt securities (Nomura's own Fig. 16/17 chart format). Positive = net buying (green-tinted area); negative = net selling / repatriation (red-tinted area). "3M rolling avg" smooths to a trailing 13-week mean (shown only once 13 weeks of history are available — no partial-window averages). Source: MoF International Transactions in Securities (Weekly; based on reports from designated major investors).</div>
 
     <div style="margin:1.6rem 0 .8rem;border-top:1px solid var(--line);padding-top:1.1rem">
       <h1 style="font-size:1.05rem;color:var(--ink)">Balance of payments — overview</h1>
@@ -2838,19 +2844,38 @@ fetch('./mof_bop_summary.json?' + Date.now())
 
 // MoF weekly release: Assets (outward) & Liabilities (inward), each split Equity vs Long-term debt —
 // two side-by-side panels matching Nomura's own Fig. 16/17 weekly-flow chart layout.
-let _xbWeeklyData=null, _xbWeeklyOutObj=null, _xbWeeklyInObj=null, _xbWeeklyWin=0;
+let _xbWeeklyData=null, _xbWeeklyOutObj=null, _xbWeeklyInObj=null, _xbWeeklyWin=0, _xbWeeklySmooth='raw';
 function setXbWeeklyWin(win, btn){ _xbWeeklyWin=win;
   document.querySelectorAll('#xbWeeklyWinBtns .tab').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
   xbWeeklyChart();
 }
-function _xbWeeklyPanel(canvasId, weeks, weekLabels, eqData, ltdData, u, dp){
+function setXbWeeklySmooth(mode, btn){ _xbWeeklySmooth=mode;
+  document.querySelectorAll('#xbWeeklySmoothBtns .tab').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  xbWeeklyChart();
+}
+const XBW_ROLL_N=13; // ~3 months of weekly data
+function xbwRollingMean(arr, n){
+  const out=new Array(arr.length).fill(null);
+  for(let i=n-1;i<arr.length;i++){
+    let sum=0, ok=true;
+    for(let j=i-n+1;j<=i;j++){ const v=arr[j]; if(v==null){ ok=false; break; } sum+=v; }
+    out[i]=ok?Math.round((sum/n)*1000)/1000:null;
+  }
+  return out;
+}
+function _xbWeeklyPanel(canvasId, weeks, weekLabels, eqData, ltdData, u, dp, smoothLabel){
   const cv=document.getElementById(canvasId); if(!cv) return null;
+  const posFill='rgba(76,186,122,0.18)', negFill='rgba(226,86,74,0.18)';
+  const signFill=ctx=>{ const v=ctx.p1?.parsed?.y ?? ctx.p0?.parsed?.y; return (v!=null && v<0) ? negFill : posFill; };
   const datasets=[
-    {label:'Equities', data:eqData, borderColor:'#e04b4b', backgroundColor:'#e04b4b',
-     borderWidth:1.5, pointRadius:0, pointHoverRadius:3, tension:0.1, order:0},
-    {label:'Long-term debt', data:ltdData, borderColor:'#8b96ab', backgroundColor:'#8b96ab',
-     borderWidth:1.5, pointRadius:0, pointHoverRadius:3, tension:0.1, order:1},
+    {label:'Equities'+smoothLabel, data:eqData, borderColor:'#e04b4b', backgroundColor:'#e04b4b',
+     borderWidth:1.5, pointRadius:0, pointHoverRadius:3, tension:0.1, order:0,
+     fill:{target:'origin'}, segment:{backgroundColor:signFill}},
+    {label:'Long-term debt'+smoothLabel, data:ltdData, borderColor:'#8b96ab', backgroundColor:'#8b96ab',
+     borderWidth:1.5, pointRadius:0, pointHoverRadius:3, tension:0.1, order:1,
+     fill:{target:'origin'}, segment:{backgroundColor:signFill}},
   ];
   return new Chart(cv, {type:'line', data:{labels:weeks, datasets},
     options:{responsive:true, maintainAspectRatio:false, interaction:{mode:'index', intersect:false},
@@ -2861,7 +2886,7 @@ function _xbWeeklyPanel(canvasId, weeks, weekLabels, eqData, ltdData, u, dp){
       scales:{
         y:{title:{display:true, text:u+', net buying', color:'#93a1bd', font:{size:10.5}},
            grid:{color:x=>x.tick.value===0?'#7688a8':'#243149', lineWidth:x=>x.tick.value===0?1.3:1},
-           border:{color:'#2a3752'}, ticks:{color:'#93a1bd', font:{size:10}, callback:v=>(v>0?'+':'')+v}},
+           border:{color:'#2a3752'}, ticks:{color:'#93a1bd', font:{size:10}, callback:v=>(v>0?'+':'')+(Math.round(v*100)/100)}},
         x:{grid:{display:false}, border:{color:'#2a3752'},
            ticks:{autoSkip:true, maxTicksLimit:12, maxRotation:0, color:'#7e8aa3', font:{size:9.5},
              callback:(v,i)=>weeks[i]?weeks[i].slice(0,7):''}}
@@ -2873,15 +2898,21 @@ function xbWeeklyChart(){
   const W=_xbWeeklyData; if(!W) return;
   const usd=(_xbCur==='usd');
   const u=usd?'$bn':'¥tn', dp=usd?1:2;
+  const smooth=(_xbWeeklySmooth==='avg');
+  const smoothLabel=smooth?' (3M avg)':'';
+  // roll BEFORE windowing so the earliest visible points still have trailing history
+  const roll=arr=>smooth?xbwRollingMean(arr,XBW_ROLL_N):arr;
+  const assetsEqFull=roll(usd?W.assets_eq_usd:W.assets_eq), assetsLtdFull=roll(usd?W.assets_ltd_usd:W.assets_ltd);
+  const liabEqFull=roll(usd?W.liab_eq_usd:W.liab_eq), liabLtdFull=roll(usd?W.liab_ltd_usd:W.liab_ltd);
   const i0=_xbWeeklyWin>0 ? Math.max(0, W.weeks.length-_xbWeeklyWin) : 0;
   const weeks=W.weeks.slice(i0), weekLabels=W.week_labels.slice(i0);
-  const assetsEq=(usd?W.assets_eq_usd:W.assets_eq).slice(i0), assetsLtd=(usd?W.assets_ltd_usd:W.assets_ltd).slice(i0);
-  const liabEq=(usd?W.liab_eq_usd:W.liab_eq).slice(i0), liabLtd=(usd?W.liab_ltd_usd:W.liab_ltd).slice(i0);
+  const assetsEq=assetsEqFull.slice(i0), assetsLtd=assetsLtdFull.slice(i0);
+  const liabEq=liabEqFull.slice(i0), liabLtd=liabLtdFull.slice(i0);
   if(_xbWeeklyOutObj){ _xbWeeklyOutObj.destroy(); }
   if(_xbWeeklyInObj){ _xbWeeklyInObj.destroy(); }
-  _xbWeeklyOutObj=_xbWeeklyPanel('cXbWeeklyOut', weeks, weekLabels, assetsEq, assetsLtd, u, dp);
-  _xbWeeklyInObj=_xbWeeklyPanel('cXbWeeklyIn', weeks, weekLabels, liabEq, liabLtd, u, dp);
-  const el=document.getElementById('xbWeeklyStatus'); if(el && W.meta) el.textContent='· data to '+W.meta.as_of;
+  _xbWeeklyOutObj=_xbWeeklyPanel('cXbWeeklyOut', weeks, weekLabels, assetsEq, assetsLtd, u, dp, smoothLabel);
+  _xbWeeklyInObj=_xbWeeklyPanel('cXbWeeklyIn', weeks, weekLabels, liabEq, liabLtd, u, dp, smoothLabel);
+  const el=document.getElementById('xbWeeklyStatus'); if(el && W.meta) el.textContent='· data to '+W.meta.as_of+(smooth?' · 3M rolling avg':'');
 }
 fetch('./mof_weekly.json?' + Date.now())
   .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
