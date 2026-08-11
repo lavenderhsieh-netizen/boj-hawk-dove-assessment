@@ -565,13 +565,28 @@
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>Where Japan buys foreign sovereign bonds — by destination <span id="bopOutStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
-      <div class="sub">Residents' monthly net purchase of foreign sovereign bonds (¥bn), stacked by destination country — where the yen outflow is going. The white line is the total across all countries. Source: Bank of Japan Time-Series Data Search — Balance of Payments, sovereign bonds by country (net), the continuously-revised database (matches sell-side research); MoF's own preliminary press-release PDF is a first-release snapshot that's never updated in place, so it drifts from this over time.</div>
+      <div class="sub">Residents' monthly net purchase of foreign sovereign bonds (¥bn), stacked by destination country — where the yen outflow is going. The white line is always the whole-market total (all countries, including those hidden by a "Top N" filter below). Source: MoF Balance of Payments monthly (Portfolio Investment Assets, Country Breakdown of Sovereign Bonds), preliminary basis — see footnote below the table for the revision caveat.</div>
+      <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:12px">
+        <div style="display:flex;gap:6px" id="bopOutBasisBtns">
+          <button class="tab active" data-basis="outbound_sov" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setBopOutBasis('outbound_sov',this)">Long-term only</button>
+          <button class="tab" data-basis="outbound_sov_total" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setBopOutBasis('outbound_sov_total',this)">Long-term + short-term</button>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center">
+          <span style="font-size:12px;color:var(--muted)">Show:</span>
+          <select id="bopOutTopNSel" onchange="setBopOutTopN(this.value)" style="background:var(--card2,#1d2739);color:var(--ink);border:1px solid var(--line);border-radius:7px;padding:4px 8px;font-size:12px">
+            <option value="0">All countries</option>
+            <option value="5">Top 5 by size</option>
+            <option value="8">Top 8 by size</option>
+          </select>
+        </div>
+      </div>
       <canvas id="cBopOutbound" style="max-height:360px;margin-top:12px"></canvas>
     </div>
     <div class="card full" style="margin-top:16px">
-      <h2>Japan, outward portfolio investment, sovereign bonds, long-term, net — by country <span id="bopOutTableStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
-      <div class="sub">Same series as the chart above, in table form — last 8 months, ¥bn. Blue = net buying, red = net selling. Source: Bank of Japan Time-Series Data Search — Balance of Payments, sovereign bonds by country (net), monthly.</div>
+      <h2>Japan, outward portfolio investment, sovereign bonds, net — by country <span id="bopOutTableStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">Same series and controls as the chart above, in table form — last 8 months, ¥bn. Blue = net buying, red = net selling. "Top N by size" ranks countries by the magnitude of their most recent month's value. Source: MoF Balance of Payments monthly, preliminary basis (see footnote below).</div>
       <div style="overflow-x:auto;margin-top:12px"><table id="bopOutTable" style="width:100%;border-collapse:collapse;font-size:12.5px"></table></div>
+      <div class="sub" style="margin-top:10px">Preliminary/unrevised basis: MoF occasionally revises these figures after initial release without updating the static PDF in place, so a given month can later drift from continuously-revised sell-side sources (Mizuho/Nomura/SMBC) — seen once so far (Jan-2026, ~30-35% gap), tracked closely and consistent otherwise.</div>
     </div>
 
     <div style="margin:1.6rem 0 .8rem;border-top:1px solid var(--line);padding-top:1.1rem">
@@ -2645,13 +2660,30 @@ fetch('./mof_flows.json?' + Date.now())
 
 // MoF BOP: securities flows by country (inbound = foreign→JGBs; outbound = Japan→foreign sovereigns)
 const XB_CTRY={china:'#e2564a', us:'#5aa0e6', uk:'#d9a441', germany:'#4cba7a', france:'#b79ae8', australia:'#e08fb0', others:'rgba(124,136,160,0.55)'};
-function bopChart(cvId, statusId, B, sec){
+// Outbound-sovereign-bonds card: basis toggle (long-term-only vs long-term+short-term) + "Top N by size" filter
+let _bopOutBasis='outbound_sov', _bopOutTopN=0;
+function setBopOutBasis(basis, btn){
+  _bopOutBasis=basis;
+  document.querySelectorAll('#bopOutBasisBtns .tab').forEach(b=>b.classList.toggle('active', b===btn));
+  renderBop();
+}
+function setBopOutTopN(v){ _bopOutTopN=+v||0; renderBop(); }
+function bopOutOrder(D, months){
+  const order=D.order.filter(k=>k!=='total');
+  if(!_bopOutTopN || _bopOutTopN<=0 || _bopOutTopN>=order.length) return order;
+  const S=D.series, lastIdx=months.length-1;
+  const scored=order.map(k=>({k, mag:Math.abs((S[k]&&S[k][lastIdx]!=null)?S[k][lastIdx]:0)}));
+  scored.sort((a,b)=>b.mag-a.mag);
+  return scored.slice(0,_bopOutTopN).map(s=>s.k);
+}
+function bopChart(cvId, statusId, B, sec, orderOverride){
   const cv=document.getElementById(cvId); if(!cv||!B[sec]) return;
   const U=_xbUnit(); const D=B[sec], S=(U.m==='monthly_usd'&&D.series_usd)?D.series_usd:D.series, lab=D.labels;
   const unitLabel = (U.m==='monthly_usd') ? '$mn, net buying' : '¥bn, net buying';
   const suffix = (U.m==='monthly_usd') ? 'mn' : 'bn';
+  const order = orderOverride || D.order;
   const mn=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-  const datasets=D.order.map(k=>({type:'bar', label:lab[k], data:S[k],
+  const datasets=order.map(k=>({type:'bar', label:lab[k], data:S[k],
     backgroundColor:XB_CTRY[k]||'#8a94ad', borderColor:XB_CTRY[k]||'#8a94ad', borderWidth:0, stack:'c',
     categoryPercentage:0.9, barPercentage:0.98, order:3}));
   datasets.push({type:'line', label:'Whole-market total', data:S.total,
@@ -2676,14 +2708,15 @@ function bopChart(cvId, statusId, B, sec){
   });
   const el=document.getElementById(statusId); if(el && B.meta) el.textContent='· data to '+B.meta.as_of;
 }
-function bopOutTable(B, nMonths){
-  const tbl=document.getElementById('bopOutTable'); if(!tbl||!B.outbound_sov) return;
-  const U=_xbUnit(); const D=B.outbound_sov, S=(U.m==='monthly_usd'&&D.series_usd)?D.series_usd:D.series, lab=D.labels;
+function bopOutTable(B, nMonths, sec, orderOverride){
+  const tbl=document.getElementById('bopOutTable'); if(!tbl||!B[sec]) return;
+  const U=_xbUnit(); const D=B[sec], S=(U.m==='monthly_usd'&&D.series_usd)?D.series_usd:D.series, lab=D.labels;
   const scale = (U.m==='monthly_usd') ? 25 : 2500;
   const mn=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   const i0=Math.max(0, B.months.length-nMonths);
   const months=B.months.slice(i0);
-  const rows=D.order.map(k=>({key:k, label:lab[k]||k, vals:S[k].slice(i0)}));
+  const order = orderOverride || D.order;
+  const rows=order.map(k=>({key:k, label:lab[k]||k, vals:S[k].slice(i0)}));
   const cell=(v,strong)=>{
     if(v==null) return '<td style="padding:.3rem .5rem;text-align:right;color:#5a6580">–</td>';
     const mag=Math.min(Math.abs(v)/scale,1);
@@ -2710,8 +2743,9 @@ function bopOutTable(B, nMonths){
 let _bopData=null;
 function renderBop(){ if(!_bopData) return;
   bopChart('cBopInbound','bopInStatus', _bopData, 'inbound');
-  bopChart('cBopOutbound','bopOutStatus', _bopData, 'outbound_sov');
-  bopOutTable(_bopData, 8); }
+  const D=_bopData[_bopOutBasis], order=D?bopOutOrder(D,_bopData.months):null;
+  bopChart('cBopOutbound','bopOutStatus', _bopData, _bopOutBasis, order);
+  bopOutTable(_bopData, 8, _bopOutBasis, order); }
 fetch('./mof_bop.json?' + Date.now())
   .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
   .then(B => { _bopData=B; renderBop(); })

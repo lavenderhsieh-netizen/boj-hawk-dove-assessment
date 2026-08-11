@@ -109,24 +109,30 @@ def extract(lines, header, net_idx, countries):
                 out[key] = nums[net_idx]
     return out, total
 
-def extract_sovereign(lines, net_idx, countries):
+def extract_sovereign_multi(lines, countries):
     """Outbound sovereign-bond table (Assets, Country Breakdown of Sovereign Bonds).
 
     Different layout from the inbound table: the Japanese label + numbers sit on
     one line and the English country name is on the FOLLOWING line by itself. So
     we pair each 9-column number row with the next english-only line. The table
     has no explicit Total row, so the total is the sum of ALL rows (every country
-    plus その他/Others) at the long-term-net column."""
+    plus その他/Others) at each net column.
+
+    Row layout (9 numbers): [0]=TotalAcq [1]=TotalDisp [2]=TotalNet
+    [3]=LTAcq [4]=LTDisp [5]=LTNet [6]=STAcq [7]=STDisp [8]=STNet.
+    Returns two (out, total) pairs: one for Sovereign Total (LT+ST) net,
+    one for Sovereign Long-term-only net -- same single pass over the PDF."""
     block = table_block(lines, header="Country Breakdown of Sovereign Bonds", n=50)
-    out, total, seen_any = {}, 0, False
+    out_tot, out_lt, total_tot, total_lt, seen_any = {}, {}, 0, 0, False
     for i, l in enumerate(block):
         if "備考" in l or "(Notes)" in l or "Notes)" in l:
             break                                    # end of the sovereign table
         en, nums = parse_row(l)
         if len(nums) < 9:                            # not a data row (headers etc.)
             continue
-        val = nums[net_idx]
-        total += val if isinstance(val, int) else 0
+        val_tot, val_lt = nums[2], nums[5]
+        total_tot += val_tot if isinstance(val_tot, int) else 0
+        total_lt += val_lt if isinstance(val_lt, int) else 0
         seen_any = True
         name = ""                                    # number-line `en` is ― placeholder
         for j in range(i + 1, min(i + 3, len(block))):   # english is on a following line
@@ -134,14 +140,17 @@ def extract_sovereign(lines, net_idx, countries):
             if en2 and not nums2:
                 name = en2; break
         for sub, key, _ in countries:
-            if sub in name and key not in out:
-                out[key] = val
-    return out, (total if seen_any else None)
+            if sub in name and key not in out_tot:
+                out_tot[key] = val_tot
+                out_lt[key] = val_lt
+    if not seen_any:
+        return out_tot, None, out_lt, None
+    return out_tot, total_tot, out_lt, total_lt
 
 def main():
     today = datetime.date.today()
     y, m = START
-    months, inbound, outbound = [], [], []
+    months, inbound, outbound_tot, outbound_lt = [], [], [], []
     while (y, m) <= (today.year, today.month):
         ym = f"{y}{m:02d}"; tag = f"{y}-{m:02d}"
         pdf_path = os.path.join(SRC, f"bppi{ym}.pdf")
@@ -156,14 +165,16 @@ def main():
             lines = to_text(data).splitlines()
             # inbound: Liabilities country breakdown, LT-debt net = col index 8
             inb, inb_tot = extract(lines, "Portfolio Investment Liabilities, Country Breakdown", 8, INBOUND_COUNTRIES)
-            # outbound: Assets sovereign-bond country breakdown, Sovereign LT net = col index 5
-            outb, outb_tot = extract_sovereign(lines, 5, OUTBOUND_COUNTRIES)
-            if inb_tot is None and outb_tot is None:
+            # outbound: Assets sovereign-bond country breakdown -- both Sovereign(Total) and
+            # Sovereign(Long-term-only) net, one pass (see extract_sovereign_multi's docstring)
+            outb_tot_d, outb_tot_tot, outb_lt_d, outb_lt_tot = extract_sovereign_multi(lines, OUTBOUND_COUNTRIES)
+            if inb_tot is None and outb_tot_tot is None:
                 raise ValueError("no tables parsed")
             months.append(tag)
             inbound.append({"total": inb_tot, **inb})
-            outbound.append({"total": outb_tot, **outb})
-            print(f"{tag}: inbound tot {inb_tot}, outbound-sov tot {outb_tot}")
+            outbound_tot.append({"total": outb_tot_tot, **outb_tot_d})
+            outbound_lt.append({"total": outb_lt_tot, **outb_lt_d})
+            print(f"{tag}: inbound tot {inb_tot}, outbound-sov tot(LT+ST) {outb_tot_tot}, outbound-sov tot(LT-only) {outb_lt_tot}")
         except Exception as e:
             print(f"{tag}: skip ({e})")
         m += 1
@@ -190,54 +201,43 @@ def main():
             out["others"].append(conv(tot-named) if isinstance(tot, int) else None)
         return out
 
-    # outbound_sov: DO NOT regenerate from the MoF preliminary PDF anymore (2026-08-10).
-    # That PDF's by-country sovereign-bond table is a first-release snapshot that MoF/BOJ
-    # revise later without ever updating the static PDF in place -- it drifted materially
-    # from what Nomura/Mizuho/SMBC actually show (e.g. US Jan-2026: PDF=293.2 vs Mizuho=444,
-    # a 34% gap). The authoritative, continuously-revised source is BOJ's Time-Series Data
-    # Search site (stat-search.boj.or.jp, series BP01'BPPI6D1N{country}) -- confirmed via
-    # MoF's own bppi.htm page, which explicitly says to use BOJ's site for this table. That
-    # site is a legacy CGI system behind bot protection that blocks headless curl/requests,
-    # so it can't be refreshed by this unattended script; it was pulled via interactive
-    # browser automation on 2026-08-10 and gave US Jan-2026 = 450.6 (1.5% off Mizuho's 444,
-    # vs the PDF's 34% miss). We keep whatever outbound_sov block is already in mof_bop.json
-    # (from that manual pull) untouched here, rather than clobbering it with the worse PDF
-    # data on every automated run. If it needs extending to newer months, redo the BOJ
-    # browser pull (see boj-hawk-dove-assessment/AGENTS.md) -- don't just re-enable this
-    # PDF-based path.
-    existing_outbound_sov = None
-    for src in (os.path.join(HERE, "mof_bop.json"),
-                os.path.join(HERE, "streamlit_app", "mof_bop.json")):
-        if os.path.exists(src):
-            try:
-                existing_outbound_sov = json.load(open(src))["outbound_sov"]
-                break
-            except Exception:
-                pass
-
+    # outbound_sov[_total]: regenerated straight from the MoF preliminary PDF (both LT-only
+    # and LT+ST columns of the same "Country Breakdown of Sovereign Bonds" table, see
+    # extract_sovereign_multi). This REPLACES the 2026-08-10 manual-BOJ-pull freeze (that
+    # approach only ever captured one metric -- Sovereign Total -- while the dashboard's own
+    # label claimed "long-term"; HanHan's 2026-08-11 Macrobond cross-check (US Jun-2026
+    # -883.0bn) confirmed the frozen number was actually Total, not LT, a real label/data
+    # mismatch). Cross-checked Feb-Jun 2026: the PDF's Total column matches the frozen BOJ
+    # values almost exactly (e.g. Jun US -967.4bn PDF vs -967.36bn frozen), so PDF-Total is a
+    # reliable stand-in for the BOJ-revised series in recent months -- the one prior outlier
+    # (Jan-2026, PDF=293.2/300.4 vs Mizuho=444 vs BOJ=450.6) is a real risk of this being
+    # preliminary/unrevised data, flagged in the card's own footnote rather than hidden.
     doc = {
         "meta": {"as_of": months[-1] if months else None,
                  "generated_at": datetime.datetime.now(datetime.UTC).replace(microsecond=0).isoformat(),
                  "unit": "JPY bn", "unit_usd": "$mn", "sign": "+ = net purchase",
                  "source": "MoF Balance of Payments monthly (bppiYYYYMM.pdf) — Portfolio Investment Assets/Liabilities, Country Breakdown",
                  "source_url": "https://www.mof.go.jp/policy/international_policy/reference/balance_of_payments/bppi.htm",
-                 "outbound_sov_source": "outbound_sov is frozen from a manual BOJ Time-Series Data Search pull (2026-08-10) — see comment above main()'s doc-building step; this script no longer regenerates it from the PDF."},
+                 "outbound_sov_source": "outbound_sov = Sovereign (Long-term only) net; outbound_sov_total = Sovereign (Long-term + Short-term) net. Both parsed from MoF's own preliminary PDF, same table, auto-refreshed on every run (2026-08-11) -- see comment above main()'s doc-building step. Preliminary/unrevised basis: MoF/BOJ occasionally revise these figures later without updating the static PDF in place, so a given month can drift from continuously-revised sell-side sources (Mizuho/Nomura/SMBC) -- seen once (Jan-2026, ~30-35% gap), otherwise tracked closely in spot checks since."},
         "months": months,
         "inbound": {"order": [c[1] for c in INBOUND_COUNTRIES] + ["others"],
                     "labels": {c[1]: c[2] for c in INBOUND_COUNTRIES} | {"others": "Others"},
                     "series": series(inbound, INBOUND_COUNTRIES),
                     "series_usd": series(inbound, INBOUND_COUNTRIES, usd=True)},
-        "outbound_sov": existing_outbound_sov if existing_outbound_sov is not None else {
-                         "order": [c[1] for c in OUTBOUND_COUNTRIES] + ["others"],
+        "outbound_sov": {"order": [c[1] for c in OUTBOUND_COUNTRIES] + ["others"],
                          "labels": {c[1]: c[2] for c in OUTBOUND_COUNTRIES} | {"others": "Others"},
-                         "series": series(outbound, OUTBOUND_COUNTRIES),
-                         "series_usd": series(outbound, OUTBOUND_COUNTRIES, usd=True)},
+                         "series": series(outbound_lt, OUTBOUND_COUNTRIES),
+                         "series_usd": series(outbound_lt, OUTBOUND_COUNTRIES, usd=True)},
+        "outbound_sov_total": {"order": [c[1] for c in OUTBOUND_COUNTRIES] + ["others"],
+                         "labels": {c[1]: c[2] for c in OUTBOUND_COUNTRIES} | {"others": "Others"},
+                         "series": series(outbound_tot, OUTBOUND_COUNTRIES),
+                         "series_usd": series(outbound_tot, OUTBOUND_COUNTRIES, usd=True)},
     }
     for dest in (os.path.join(HERE, "mof_bop.json"),
                  os.path.join(HERE, "streamlit_app", "mof_bop.json")):
         os.makedirs(os.path.dirname(dest), exist_ok=True)
         json.dump(doc, open(dest, "w"), ensure_ascii=False, indent=1)
-    print(f"months {len(months)} ({months[0] if months else '-'}..{months[-1] if months else '-'}) -> mof_bop.json (outbound_sov preserved from manual BOJ pull, not regenerated)")
+    print(f"months {len(months)} ({months[0] if months else '-'}..{months[-1] if months else '-'}) -> mof_bop.json (outbound_sov = LT-only, outbound_sov_total = LT+ST, both regenerated from PDF)")
 
 if __name__ == "__main__":
     main()
