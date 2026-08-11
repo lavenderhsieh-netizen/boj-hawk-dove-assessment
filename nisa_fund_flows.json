@@ -1,0 +1,1425 @@
+{
+  "meta": {
+    "title": "NISA-relevant fund flows — top 20 by monthly net inflow",
+    "source": "Wealth Advisor 投資信託への資金流出入速報 (monthly flash report)",
+    "source_url": "https://www.wealthadvisor.co.jp/fund/fund_flow/summary.html",
+    "unit": "JPY 100mn (億円)",
+    "note": "Top-20 funds by net monthly inflow, all public equity/balanced/bond funds (not NISA-specific, but these funds are overwhelmingly where NISA money lands — see workspace notes). Not every calendar month has a published edition; genuine gaps are left as gaps, not estimated."
+  },
+  "months": {
+    "2025-12": [
+      {
+        "rank": 1,
+        "fund": "eMAXIS Slim全世界株式(オール･カントリー)",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 90420,
+        "flow_1m_100m_jpy": 2875,
+        "flow_3m_100m_jpy": 6917,
+        "flow_6m_100m_jpy": 12166,
+        "flow_1y_100m_jpy": 24542
+      },
+      {
+        "rank": 2,
+        "fund": "eMAXIS Slim米国株式(S&P500)",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 98365,
+        "flow_1m_100m_jpy": 1623,
+        "flow_3m_100m_jpy": 4361,
+        "flow_6m_100m_jpy": 7555,
+        "flow_1y_100m_jpy": 19432
+      },
+      {
+        "rank": 3,
+        "fund": "インベスコ 世界厳選株式＜H無＞(毎月決算型)",
+        "company": "ｲﾝﾍﾞｽｺｱｾｯﾄ",
+        "aum_100m_jpy": 31179,
+        "flow_1m_100m_jpy": 1355,
+        "flow_3m_100m_jpy": 4162,
+        "flow_6m_100m_jpy": 8908,
+        "flow_1y_100m_jpy": 14188
+      },
+      {
+        "rank": 4,
+        "fund": "グロース・オポチュニティD(毎月・予想分配型・H無)",
+        "company": "ﾌｨﾃﾞﾘﾃｨ投信",
+        "aum_100m_jpy": 7651,
+        "flow_1m_100m_jpy": 1119,
+        "flow_3m_100m_jpy": 2976,
+        "flow_6m_100m_jpy": 4760,
+        "flow_1y_100m_jpy": 6260
+      },
+      {
+        "rank": 5,
+        "fund": "資本効率化フォーカス・ジャパン",
+        "company": "三井住友DSｱｾｯﾄ",
+        "aum_100m_jpy": 603,
+        "flow_1m_100m_jpy": 594,
+        "flow_3m_100m_jpy": null,
+        "flow_6m_100m_jpy": null,
+        "flow_1y_100m_jpy": null
+      },
+      {
+        "rank": 6,
+        "fund": "グロース・オポチュニティB(H無)",
+        "company": "ﾌｨﾃﾞﾘﾃｨ投信",
+        "aum_100m_jpy": 4238,
+        "flow_1m_100m_jpy": 483,
+        "flow_3m_100m_jpy": 1148,
+        "flow_6m_100m_jpy": 1826,
+        "flow_1y_100m_jpy": 2621
+      },
+      {
+        "rank": 7,
+        "fund": "iFreeNEXT FANG+インデックス",
+        "company": "大和ｱｾｯﾄ",
+        "aum_100m_jpy": 10047,
+        "flow_1m_100m_jpy": 427,
+        "flow_3m_100m_jpy": 1396,
+        "flow_6m_100m_jpy": 2323,
+        "flow_1y_100m_jpy": 4509
+      },
+      {
+        "rank": 8,
+        "fund": "ROBOPROファンド",
+        "company": "SBI岡三ｱｾｯﾄ",
+        "aum_100m_jpy": 2330,
+        "flow_1m_100m_jpy": 424,
+        "flow_3m_100m_jpy": 902,
+        "flow_6m_100m_jpy": 1526,
+        "flow_1y_100m_jpy": 1863
+      },
+      {
+        "rank": 9,
+        "fund": "ピクテ・ゴールド(H無)",
+        "company": "ﾋﾟｸﾃｼﾞｬﾊﾟﾝ",
+        "aum_100m_jpy": 8348,
+        "flow_1m_100m_jpy": 421,
+        "flow_3m_100m_jpy": 1731,
+        "flow_6m_100m_jpy": 2950,
+        "flow_1y_100m_jpy": 4435
+      },
+      {
+        "rank": 10,
+        "fund": "ティー・ロウ・プライス C・アプリシエーションB(H無)",
+        "company": "ﾃｨｰﾛｳﾌﾟﾗｲｽ",
+        "aum_100m_jpy": 2297,
+        "flow_1m_100m_jpy": 355,
+        "flow_3m_100m_jpy": null,
+        "flow_6m_100m_jpy": null,
+        "flow_1y_100m_jpy": null
+      },
+      {
+        "rank": 11,
+        "fund": "ニュートン・パワー・イノベーション(H無)",
+        "company": "三井住友DSｱｾｯﾄ",
+        "aum_100m_jpy": 4228,
+        "flow_1m_100m_jpy": 350,
+        "flow_3m_100m_jpy": 1373,
+        "flow_6m_100m_jpy": 2016,
+        "flow_1y_100m_jpy": 2163
+      },
+      {
+        "rank": 12,
+        "fund": "楽天・プラス・オールカントリー株式インデックス・F",
+        "company": "楽天投信",
+        "aum_100m_jpy": 6155,
+        "flow_1m_100m_jpy": 307,
+        "flow_3m_100m_jpy": 697,
+        "flow_6m_100m_jpy": 1193,
+        "flow_1y_100m_jpy": 2339
+      },
+      {
+        "rank": 13,
+        "fund": "楽天・プラス・S&P500インデックス・ファンド",
+        "company": "楽天投信",
+        "aum_100m_jpy": 8422,
+        "flow_1m_100m_jpy": 299,
+        "flow_3m_100m_jpy": 730,
+        "flow_6m_100m_jpy": 1247,
+        "flow_1y_100m_jpy": 3080
+      },
+      {
+        "rank": 14,
+        "fund": "三菱UFJ 純金ファンド",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 7995,
+        "flow_1m_100m_jpy": 285,
+        "flow_3m_100m_jpy": 947,
+        "flow_6m_100m_jpy": 1663,
+        "flow_1y_100m_jpy": 2571
+      },
+      {
+        "rank": 15,
+        "fund": "WCM 世界成長株厳選ファンド(予想分配金提示型)",
+        "company": "朝日ﾗｲﾌｱｾｯﾄ",
+        "aum_100m_jpy": 1848,
+        "flow_1m_100m_jpy": 269,
+        "flow_3m_100m_jpy": 877,
+        "flow_6m_100m_jpy": 1562,
+        "flow_1y_100m_jpy": 1782
+      },
+      {
+        "rank": 16,
+        "fund": "ニッセイ・S米国グロース株式メガ10＜購・換無＞",
+        "company": "ﾆｯｾｲｱｾｯﾄ",
+        "aum_100m_jpy": 339,
+        "flow_1m_100m_jpy": 213,
+        "flow_3m_100m_jpy": null,
+        "flow_6m_100m_jpy": null,
+        "flow_1y_100m_jpy": null
+      },
+      {
+        "rank": 17,
+        "fund": "eMAXIS Slim国内株式(TOPIX)",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 4527,
+        "flow_1m_100m_jpy": 212,
+        "flow_3m_100m_jpy": 512,
+        "flow_6m_100m_jpy": 717,
+        "flow_1y_100m_jpy": 1201
+      },
+      {
+        "rank": 18,
+        "fund": "次世代米国代表株ファンド",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 2075,
+        "flow_1m_100m_jpy": 194,
+        "flow_3m_100m_jpy": 168,
+        "flow_6m_100m_jpy": 163,
+        "flow_1y_100m_jpy": 430
+      },
+      {
+        "rank": 19,
+        "fund": "あおぞら・新グローバル分散F(限追)2025-10",
+        "company": "あおぞら投信",
+        "aum_100m_jpy": 679,
+        "flow_1m_100m_jpy": 187,
+        "flow_3m_100m_jpy": 679,
+        "flow_6m_100m_jpy": null,
+        "flow_1y_100m_jpy": null
+      },
+      {
+        "rank": 20,
+        "fund": "SBI・iシェアーズ・ゴールド(H無)",
+        "company": "SBIｱｾｯﾄ",
+        "aum_100m_jpy": 2219,
+        "flow_1m_100m_jpy": 179,
+        "flow_3m_100m_jpy": 583,
+        "flow_6m_100m_jpy": 1006,
+        "flow_1y_100m_jpy": 1412
+      }
+    ],
+    "2026-01": [
+      {
+        "rank": 1,
+        "fund": "eMAXIS Slim全世界株式(オール･カントリー)",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 97267,
+        "flow_1m_100m_jpy": 5890,
+        "flow_3m_100m_jpy": 10716,
+        "flow_6m_100m_jpy": 16528,
+        "flow_1y_100m_jpy": 26657
+      },
+      {
+        "rank": 2,
+        "fund": "eMAXIS Slim米国株式(S&P500)",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 100388,
+        "flow_1m_100m_jpy": 2948,
+        "flow_3m_100m_jpy": 5881,
+        "flow_6m_100m_jpy": 9580,
+        "flow_1y_100m_jpy": 18316
+      },
+      {
+        "rank": 3,
+        "fund": "ピクテ・ゴールド(H無)",
+        "company": "ﾋﾟｸﾃｼﾞｬﾊﾟﾝ",
+        "aum_100m_jpy": 11495,
+        "flow_1m_100m_jpy": 1194,
+        "flow_3m_100m_jpy": 1988,
+        "flow_6m_100m_jpy": 3760,
+        "flow_1y_100m_jpy": 5468
+      },
+      {
+        "rank": 4,
+        "fund": "インベスコ 世界厳選株式＜H無＞(毎月決算型)",
+        "company": "ｲﾝﾍﾞｽｺｱｾｯﾄ",
+        "aum_100m_jpy": 31928,
+        "flow_1m_100m_jpy": 1080,
+        "flow_3m_100m_jpy": 3807,
+        "flow_6m_100m_jpy": 8488,
+        "flow_1y_100m_jpy": 14722
+      },
+      {
+        "rank": 5,
+        "fund": "グロース・オポチュニティD(毎月・予想分配型・H無)",
+        "company": "ﾌｨﾃﾞﾘﾃｨ投信",
+        "aum_100m_jpy": 8270,
+        "flow_1m_100m_jpy": 989,
+        "flow_3m_100m_jpy": 3023,
+        "flow_6m_100m_jpy": 5279,
+        "flow_1y_100m_jpy": 6909
+      },
+      {
+        "rank": 6,
+        "fund": "SBI・iシェアーズ・ゴールド(H無)",
+        "company": "SBIｱｾｯﾄ",
+        "aum_100m_jpy": 3391,
+        "flow_1m_100m_jpy": 675,
+        "flow_3m_100m_jpy": 935,
+        "flow_6m_100m_jpy": 1565,
+        "flow_1y_100m_jpy": 2013
+      },
+      {
+        "rank": 7,
+        "fund": "三菱UFJ 純金ファンド",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 9989,
+        "flow_1m_100m_jpy": 477,
+        "flow_3m_100m_jpy": 1085,
+        "flow_6m_100m_jpy": 1960,
+        "flow_1y_100m_jpy": 2935
+      },
+      {
+        "rank": 8,
+        "fund": "ROBOPROファンド",
+        "company": "SBI岡三ｱｾｯﾄ",
+        "aum_100m_jpy": 2784,
+        "flow_1m_100m_jpy": 476,
+        "flow_3m_100m_jpy": 1147,
+        "flow_6m_100m_jpy": 1786,
+        "flow_1y_100m_jpy": 2295
+      },
+      {
+        "rank": 9,
+        "fund": "eMAXIS Slim国内株式(TOPIX)",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 5192,
+        "flow_1m_100m_jpy": 458,
+        "flow_3m_100m_jpy": 812,
+        "flow_6m_100m_jpy": 1139,
+        "flow_1y_100m_jpy": 1568
+      },
+      {
+        "rank": 10,
+        "fund": "楽天・プラス・オールカントリー株式インデックス・F",
+        "company": "楽天投信",
+        "aum_100m_jpy": 6669,
+        "flow_1m_100m_jpy": 450,
+        "flow_3m_100m_jpy": 953,
+        "flow_6m_100m_jpy": 1492,
+        "flow_1y_100m_jpy": 2508
+      },
+      {
+        "rank": 11,
+        "fund": "iFreeNEXT FANG+インデックス",
+        "company": "大和ｱｾｯﾄ",
+        "aum_100m_jpy": 9984,
+        "flow_1m_100m_jpy": 449,
+        "flow_3m_100m_jpy": 1277,
+        "flow_6m_100m_jpy": 2600,
+        "flow_1y_100m_jpy": 3858
+      },
+      {
+        "rank": 12,
+        "fund": "楽天・プラス・S&P500インデックス・ファンド",
+        "company": "楽天投信",
+        "aum_100m_jpy": 8748,
+        "flow_1m_100m_jpy": 408,
+        "flow_3m_100m_jpy": 921,
+        "flow_6m_100m_jpy": 1501,
+        "flow_1y_100m_jpy": 2886
+      },
+      {
+        "rank": 13,
+        "fund": "WCM 世界成長株厳選ファンド(予想分配金提示型)",
+        "company": "朝日ﾗｲﾌｱｾｯﾄ",
+        "aum_100m_jpy": 2236,
+        "flow_1m_100m_jpy": 383,
+        "flow_3m_100m_jpy": 889,
+        "flow_6m_100m_jpy": 1780,
+        "flow_1y_100m_jpy": 2136
+      },
+      {
+        "rank": 14,
+        "fund": "国内債券SMTBセレクション(SMA専用)",
+        "company": "三井住友TAM",
+        "aum_100m_jpy": 3821,
+        "flow_1m_100m_jpy": 379,
+        "flow_3m_100m_jpy": 477,
+        "flow_6m_100m_jpy": 1001,
+        "flow_1y_100m_jpy": 1152
+      },
+      {
+        "rank": 15,
+        "fund": "グローバル･ロボティクス株式ファンド(年2)",
+        "company": "ｱﾓｰｳﾞｧ･ｱｾｯﾄ",
+        "aum_100m_jpy": 6621,
+        "flow_1m_100m_jpy": 332,
+        "flow_3m_100m_jpy": 341,
+        "flow_6m_100m_jpy": 262,
+        "flow_1y_100m_jpy": 620
+      },
+      {
+        "rank": 16,
+        "fund": "あおぞら・新グローバル分散F(限追)2026-01",
+        "company": "あおぞら投信",
+        "aum_100m_jpy": 300,
+        "flow_1m_100m_jpy": 300,
+        "flow_3m_100m_jpy": null,
+        "flow_6m_100m_jpy": null,
+        "flow_1y_100m_jpy": null
+      },
+      {
+        "rank": 17,
+        "fund": "ニュートン・パワー・イノベーション(H無)",
+        "company": "三井住友DSｱｾｯﾄ",
+        "aum_100m_jpy": 4919,
+        "flow_1m_100m_jpy": 292,
+        "flow_3m_100m_jpy": 1062,
+        "flow_6m_100m_jpy": 2194,
+        "flow_1y_100m_jpy": 2364
+      },
+      {
+        "rank": 18,
+        "fund": "グロース・オポチュニティB(H無)",
+        "company": "ﾌｨﾃﾞﾘﾃｨ投信",
+        "aum_100m_jpy": 4405,
+        "flow_1m_100m_jpy": 262,
+        "flow_3m_100m_jpy": 1140,
+        "flow_6m_100m_jpy": 1915,
+        "flow_1y_100m_jpy": 2707
+      },
+      {
+        "rank": 19,
+        "fund": "ハイベータ日本株フォーカス・ファンド",
+        "company": "大和ｱｾｯﾄ",
+        "aum_100m_jpy": 259,
+        "flow_1m_100m_jpy": 258,
+        "flow_3m_100m_jpy": null,
+        "flow_6m_100m_jpy": null,
+        "flow_1y_100m_jpy": null
+      },
+      {
+        "rank": 20,
+        "fund": "Tracers NASDAQ100ゴールドプラス",
+        "company": "ｱﾓｰｳﾞｧ･ｱｾｯﾄ",
+        "aum_100m_jpy": 1989,
+        "flow_1m_100m_jpy": 240,
+        "flow_3m_100m_jpy": 451,
+        "flow_6m_100m_jpy": 930,
+        "flow_1y_100m_jpy": 1187
+      }
+    ],
+    "2026-02": [
+      {
+        "rank": 1,
+        "fund": "eMAXIS Slim全世界株式(オール･カントリー)",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 102847,
+        "flow_1m_100m_jpy": 3193,
+        "flow_3m_100m_jpy": 11933,
+        "flow_6m_100m_jpy": 18024,
+        "flow_1y_100m_jpy": 28038
+      },
+      {
+        "rank": 2,
+        "fund": "eMAXIS Slim米国株式(S&P500)",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 102652,
+        "flow_1m_100m_jpy": 1635,
+        "flow_3m_100m_jpy": 6191,
+        "flow_6m_100m_jpy": 10077,
+        "flow_1y_100m_jpy": 18080
+      },
+      {
+        "rank": 3,
+        "fund": "インベスコ 世界厳選株式＜H無＞(毎月決算型)",
+        "company": "ｲﾝﾍﾞｽｺｱｾｯﾄ",
+        "aum_100m_jpy": 33415,
+        "flow_1m_100m_jpy": 1239,
+        "flow_3m_100m_jpy": 3677,
+        "flow_6m_100m_jpy": 8136,
+        "flow_1y_100m_jpy": 15239
+      },
+      {
+        "rank": 4,
+        "fund": "ピクテ・ゴールド(H無)",
+        "company": "ﾋﾟｸﾃｼﾞｬﾊﾟﾝ",
+        "aum_100m_jpy": 12008,
+        "flow_1m_100m_jpy": 778,
+        "flow_3m_100m_jpy": 2380,
+        "flow_6m_100m_jpy": 4222,
+        "flow_1y_100m_jpy": 5991
+      },
+      {
+        "rank": 5,
+        "fund": "グロース・オポチュニティD(毎月・予想分配型・H無)",
+        "company": "ﾌｨﾃﾞﾘﾃｨ投信",
+        "aum_100m_jpy": 8546,
+        "flow_1m_100m_jpy": 672,
+        "flow_3m_100m_jpy": 2785,
+        "flow_6m_100m_jpy": 5380,
+        "flow_1y_100m_jpy": 7155
+      },
+      {
+        "rank": 6,
+        "fund": "WCM 世界成長株厳選ファンド(予想分配金提示型)",
+        "company": "朝日ﾗｲﾌｱｾｯﾄ",
+        "aum_100m_jpy": 2669,
+        "flow_1m_100m_jpy": 422,
+        "flow_3m_100m_jpy": 1076,
+        "flow_6m_100m_jpy": 2017,
+        "flow_1y_100m_jpy": 2520
+      },
+      {
+        "rank": 7,
+        "fund": "三菱UFJ 純金ファンド",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 10341,
+        "flow_1m_100m_jpy": 389,
+        "flow_3m_100m_jpy": 1146,
+        "flow_6m_100m_jpy": 2164,
+        "flow_1y_100m_jpy": 3146
+      },
+      {
+        "rank": 8,
+        "fund": "あおぞら・新グローバル分散F(限追)2026-01",
+        "company": "あおぞら投信",
+        "aum_100m_jpy": 689,
+        "flow_1m_100m_jpy": 386,
+        "flow_3m_100m_jpy": null,
+        "flow_6m_100m_jpy": null,
+        "flow_1y_100m_jpy": null
+      },
+      {
+        "rank": 9,
+        "fund": "ハイベータ日本株フォーカス・ファンド",
+        "company": "大和ｱｾｯﾄ",
+        "aum_100m_jpy": 666,
+        "flow_1m_100m_jpy": 358,
+        "flow_3m_100m_jpy": null,
+        "flow_6m_100m_jpy": null,
+        "flow_1y_100m_jpy": null
+      },
+      {
+        "rank": 10,
+        "fund": "eMAXIS Slim国内株式(TOPIX)",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 6108,
+        "flow_1m_100m_jpy": 358,
+        "flow_3m_100m_jpy": 1026,
+        "flow_6m_100m_jpy": 1427,
+        "flow_1y_100m_jpy": 1847
+      },
+      {
+        "rank": 11,
+        "fund": "ROBOPROファンド",
+        "company": "SBI岡三ｱｾｯﾄ",
+        "aum_100m_jpy": 3210,
+        "flow_1m_100m_jpy": 346,
+        "flow_3m_100m_jpy": 1245,
+        "flow_6m_100m_jpy": 1951,
+        "flow_1y_100m_jpy": 2599
+      },
+      {
+        "rank": 12,
+        "fund": "楽天・プラス・オールカントリー株式インデックス・F",
+        "company": "楽天投信",
+        "aum_100m_jpy": 7155,
+        "flow_1m_100m_jpy": 321,
+        "flow_3m_100m_jpy": 1076,
+        "flow_6m_100m_jpy": 1643,
+        "flow_1y_100m_jpy": 2644
+      },
+      {
+        "rank": 13,
+        "fund": "SBI・iシェアーズ・ゴールド(H無)",
+        "company": "SBIｱｾｯﾄ",
+        "aum_100m_jpy": 3661,
+        "flow_1m_100m_jpy": 276,
+        "flow_3m_100m_jpy": 1124,
+        "flow_6m_100m_jpy": 1733,
+        "flow_1y_100m_jpy": 2193
+      },
+      {
+        "rank": 14,
+        "fund": "楽天・プラス・S&P500インデックス・ファンド",
+        "company": "楽天投信",
+        "aum_100m_jpy": 9043,
+        "flow_1m_100m_jpy": 239,
+        "flow_3m_100m_jpy": 943,
+        "flow_6m_100m_jpy": 1560,
+        "flow_1y_100m_jpy": 2829
+      },
+      {
+        "rank": 15,
+        "fund": "(ラップ専用)SBI・ゴールド",
+        "company": "SBIｱｾｯﾄ",
+        "aum_100m_jpy": 333,
+        "flow_1m_100m_jpy": 236,
+        "flow_3m_100m_jpy": 235,
+        "flow_6m_100m_jpy": 196,
+        "flow_1y_100m_jpy": 116
+      },
+      {
+        "rank": 16,
+        "fund": "ニュートン・パワー・イノベーション(H無)",
+        "company": "三井住友DSｱｾｯﾄ",
+        "aum_100m_jpy": 5506,
+        "flow_1m_100m_jpy": 210,
+        "flow_3m_100m_jpy": 851,
+        "flow_6m_100m_jpy": 2249,
+        "flow_1y_100m_jpy": 2511
+      },
+      {
+        "rank": 17,
+        "fund": "(ラップ専用)SBI・先進国株式",
+        "company": "SBIｱｾｯﾄ",
+        "aum_100m_jpy": 364,
+        "flow_1m_100m_jpy": 191,
+        "flow_3m_100m_jpy": 199,
+        "flow_6m_100m_jpy": 182,
+        "flow_1y_100m_jpy": 151
+      },
+      {
+        "rank": 18,
+        "fund": "のむラップ･ファンド(積極型)",
+        "company": "野村ｱｾｯﾄ",
+        "aum_100m_jpy": 5751,
+        "flow_1m_100m_jpy": 167,
+        "flow_3m_100m_jpy": 511,
+        "flow_6m_100m_jpy": 795,
+        "flow_1y_100m_jpy": 1205
+      },
+      {
+        "rank": 19,
+        "fund": "ノムラ･ジャパン･オープン",
+        "company": "野村ｱｾｯﾄ",
+        "aum_100m_jpy": 2971,
+        "flow_1m_100m_jpy": 164,
+        "flow_3m_100m_jpy": 376,
+        "flow_6m_100m_jpy": 535,
+        "flow_1y_100m_jpy": 576
+      },
+      {
+        "rank": 20,
+        "fund": "eMAXIS Slim全世界株式(除く日本)",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 10170,
+        "flow_1m_100m_jpy": 163,
+        "flow_3m_100m_jpy": 519,
+        "flow_6m_100m_jpy": 872,
+        "flow_1y_100m_jpy": 1599
+      }
+    ],
+    "2026-03": [
+      {
+        "rank": 1,
+        "fund": "eMAXIS Slim全世界株式(オール･カントリー)",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 98583,
+        "flow_1m_100m_jpy": 2905,
+        "flow_3m_100m_jpy": 11972,
+        "flow_6m_100m_jpy": 18882,
+        "flow_1y_100m_jpy": 29076
+      },
+      {
+        "rank": 2,
+        "fund": "インベスコ 世界厳選株式＜H無＞(毎月決算型)",
+        "company": "ｲﾝﾍﾞｽｺｱｾｯﾄ",
+        "aum_100m_jpy": 31954,
+        "flow_1m_100m_jpy": 1805,
+        "flow_3m_100m_jpy": 4128,
+        "flow_6m_100m_jpy": 8290,
+        "flow_1y_100m_jpy": 16131
+      },
+      {
+        "rank": 3,
+        "fund": "eMAXIS Slim米国株式(S&P500)",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 98113,
+        "flow_1m_100m_jpy": 1359,
+        "flow_3m_100m_jpy": 5940,
+        "flow_6m_100m_jpy": 10298,
+        "flow_1y_100m_jpy": 17665
+      },
+      {
+        "rank": 4,
+        "fund": "マテリアル・イノベーション戦略株式(H無)",
+        "company": "三井住友DSｱｾｯﾄ",
+        "aum_100m_jpy": 1244,
+        "flow_1m_100m_jpy": 1266,
+        "flow_3m_100m_jpy": null,
+        "flow_6m_100m_jpy": null,
+        "flow_1y_100m_jpy": null
+      },
+      {
+        "rank": 5,
+        "fund": "日経225ノーロードオープン",
+        "company": "ｱｾﾏﾈOne",
+        "aum_100m_jpy": 3975,
+        "flow_1m_100m_jpy": 683,
+        "flow_3m_100m_jpy": 441,
+        "flow_6m_100m_jpy": 462,
+        "flow_1y_100m_jpy": -507
+      },
+      {
+        "rank": 6,
+        "fund": "ピクテ・ゴールド(H無)",
+        "company": "ﾋﾟｸﾃｼﾞｬﾊﾟﾝ",
+        "aum_100m_jpy": 11267,
+        "flow_1m_100m_jpy": 536,
+        "flow_3m_100m_jpy": 2501,
+        "flow_6m_100m_jpy": 4231,
+        "flow_1y_100m_jpy": 6291
+      },
+      {
+        "rank": 7,
+        "fund": "楽天 日本株4.3倍ブル",
+        "company": "楽天投信",
+        "aum_100m_jpy": 853,
+        "flow_1m_100m_jpy": 499,
+        "flow_3m_100m_jpy": 212,
+        "flow_6m_100m_jpy": 155,
+        "flow_1y_100m_jpy": -477
+      },
+      {
+        "rank": 8,
+        "fund": "eMAXIS Slim国内株式(日経平均)",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 3360,
+        "flow_1m_100m_jpy": 458,
+        "flow_3m_100m_jpy": 757,
+        "flow_6m_100m_jpy": 1073,
+        "flow_1y_100m_jpy": 1054
+      },
+      {
+        "rank": 9,
+        "fund": "WCM 世界成長株厳選ファンド(予想分配金提示型)",
+        "company": "朝日ﾗｲﾌｱｾｯﾄ",
+        "aum_100m_jpy": 2685,
+        "flow_1m_100m_jpy": 449,
+        "flow_3m_100m_jpy": 1255,
+        "flow_6m_100m_jpy": 2132,
+        "flow_1y_100m_jpy": 2945
+      },
+      {
+        "rank": 10,
+        "fund": "eMAXIS Slim国内株式(TOPIX)",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 5887,
+        "flow_1m_100m_jpy": 426,
+        "flow_3m_100m_jpy": 1237,
+        "flow_6m_100m_jpy": 1749,
+        "flow_1y_100m_jpy": 2183
+      },
+      {
+        "rank": 11,
+        "fund": "ノムラ･ジャパン･オープン",
+        "company": "野村ｱｾｯﾄ",
+        "aum_100m_jpy": 2974,
+        "flow_1m_100m_jpy": 377,
+        "flow_3m_100m_jpy": 650,
+        "flow_6m_100m_jpy": 893,
+        "flow_1y_100m_jpy": 957
+      },
+      {
+        "rank": 12,
+        "fund": "あおぞら・新グローバル分散F(限追)2026-01",
+        "company": "あおぞら投信",
+        "aum_100m_jpy": 1046,
+        "flow_1m_100m_jpy": 374,
+        "flow_3m_100m_jpy": 1061,
+        "flow_6m_100m_jpy": null,
+        "flow_1y_100m_jpy": null
+      },
+      {
+        "rank": 13,
+        "fund": "ROBOPROファンド",
+        "company": "SBI岡三ｱｾｯﾄ",
+        "aum_100m_jpy": 3429,
+        "flow_1m_100m_jpy": 373,
+        "flow_3m_100m_jpy": 1194,
+        "flow_6m_100m_jpy": 2095,
+        "flow_1y_100m_jpy": 2926
+      },
+      {
+        "rank": 14,
+        "fund": "SBI 日本株4.3ブル",
+        "company": "SBIｱｾｯﾄ",
+        "aum_100m_jpy": 609,
+        "flow_1m_100m_jpy": 355,
+        "flow_3m_100m_jpy": 182,
+        "flow_6m_100m_jpy": 75,
+        "flow_1y_100m_jpy": -397
+      },
+      {
+        "rank": 15,
+        "fund": "楽天・プラス・オールカントリー株式インデックス・F",
+        "company": "楽天投信",
+        "aum_100m_jpy": 6966,
+        "flow_1m_100m_jpy": 315,
+        "flow_3m_100m_jpy": 1084,
+        "flow_6m_100m_jpy": 1781,
+        "flow_1y_100m_jpy": 2776
+      },
+      {
+        "rank": 16,
+        "fund": "グロース・オポチュニティD(毎月・予想分配型・H無)",
+        "company": "ﾌｨﾃﾞﾘﾃｨ投信",
+        "aum_100m_jpy": 7988,
+        "flow_1m_100m_jpy": 313,
+        "flow_3m_100m_jpy": 1980,
+        "flow_6m_100m_jpy": 4957,
+        "flow_1y_100m_jpy": 7191
+      },
+      {
+        "rank": 17,
+        "fund": "三菱UFJ 純金ファンド",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 9484,
+        "flow_1m_100m_jpy": 304,
+        "flow_3m_100m_jpy": 1160,
+        "flow_6m_100m_jpy": 2108,
+        "flow_1y_100m_jpy": 3255
+      },
+      {
+        "rank": 18,
+        "fund": "(ダイワFW)日本債券セレクト",
+        "company": "大和ｱｾｯﾄ",
+        "aum_100m_jpy": 7814,
+        "flow_1m_100m_jpy": 292,
+        "flow_3m_100m_jpy": 492,
+        "flow_6m_100m_jpy": 804,
+        "flow_1y_100m_jpy": 1051
+      },
+      {
+        "rank": 19,
+        "fund": "たわらノーロード日経225",
+        "company": "ｱｾﾏﾈOne",
+        "aum_100m_jpy": 3497,
+        "flow_1m_100m_jpy": 275,
+        "flow_3m_100m_jpy": 397,
+        "flow_6m_100m_jpy": 569,
+        "flow_1y_100m_jpy": 621
+      },
+      {
+        "rank": 20,
+        "fund": "(ダイワFW)ヘッジファンドセレクト",
+        "company": "大和ｱｾｯﾄ",
+        "aum_100m_jpy": 5491,
+        "flow_1m_100m_jpy": 248,
+        "flow_3m_100m_jpy": 426,
+        "flow_6m_100m_jpy": 771,
+        "flow_1y_100m_jpy": 1028
+      }
+    ],
+    "2026-05": [
+      {
+        "rank": 1,
+        "fund": "eMAXIS Slim全世界株式(オール･カントリー)",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 122380,
+        "flow_1m_100m_jpy": 3437,
+        "flow_3m_100m_jpy": 9296,
+        "flow_6m_100m_jpy": 21232,
+        "flow_1y_100m_jpy": 31967
+      },
+      {
+        "rank": 2,
+        "fund": "eMAXIS Slim米国株式(S&P500)",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 120296,
+        "flow_1m_100m_jpy": 1732,
+        "flow_3m_100m_jpy": 4632,
+        "flow_6m_100m_jpy": 10832,
+        "flow_1y_100m_jpy": 17793
+      },
+      {
+        "rank": 3,
+        "fund": "インベスコ 世界厳選株式＜H無＞(毎月決算型)",
+        "company": "ｲﾝﾍﾞｽｺｱｾｯﾄ",
+        "aum_100m_jpy": 38196,
+        "flow_1m_100m_jpy": 1156,
+        "flow_3m_100m_jpy": 4281,
+        "flow_6m_100m_jpy": 7960,
+        "flow_1y_100m_jpy": 16628
+      },
+      {
+        "rank": 4,
+        "fund": "モルガン・スタンレー フィジカルAI株式ファンド",
+        "company": "大和ｱｾｯﾄ",
+        "aum_100m_jpy": 1373,
+        "flow_1m_100m_jpy": 642,
+        "flow_3m_100m_jpy": null,
+        "flow_6m_100m_jpy": null,
+        "flow_1y_100m_jpy": null
+      },
+      {
+        "rank": 5,
+        "fund": "グロース・オポチュニティD(毎月・予想分配型・H無)",
+        "company": "ﾌｨﾃﾞﾘﾃｨ投信",
+        "aum_100m_jpy": 11315,
+        "flow_1m_100m_jpy": 574,
+        "flow_3m_100m_jpy": 1230,
+        "flow_6m_100m_jpy": 4018,
+        "flow_1y_100m_jpy": 7908
+      },
+      {
+        "rank": 6,
+        "fund": "WCM 世界成長株厳選ファンド(予想分配金提示型)",
+        "company": "朝日ﾗｲﾌｱｾｯﾄ",
+        "aum_100m_jpy": 4002,
+        "flow_1m_100m_jpy": 521,
+        "flow_3m_100m_jpy": 1364,
+        "flow_6m_100m_jpy": 2439,
+        "flow_1y_100m_jpy": 3807
+      },
+      {
+        "rank": 7,
+        "fund": "成長戦略フォーカス・ジャパン",
+        "company": "三井住友DSｱｾｯﾄ",
+        "aum_100m_jpy": 487,
+        "flow_1m_100m_jpy": 487,
+        "flow_3m_100m_jpy": null,
+        "flow_6m_100m_jpy": null,
+        "flow_1y_100m_jpy": null
+      },
+      {
+        "rank": 8,
+        "fund": "ベイリー・ギフォード世界成長企業戦略/SMT.LN",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 1148,
+        "flow_1m_100m_jpy": 440,
+        "flow_3m_100m_jpy": 673,
+        "flow_6m_100m_jpy": 656,
+        "flow_1y_100m_jpy": 556
+      },
+      {
+        "rank": 9,
+        "fund": "ノムラ・エマージング・オープン",
+        "company": "野村ｱｾｯﾄ",
+        "aum_100m_jpy": 1731,
+        "flow_1m_100m_jpy": 327,
+        "flow_3m_100m_jpy": null,
+        "flow_6m_100m_jpy": null,
+        "flow_1y_100m_jpy": null
+      },
+      {
+        "rank": 10,
+        "fund": "楽天・プラス・オールカントリー株式インデックス・F",
+        "company": "楽天投信",
+        "aum_100m_jpy": 8830,
+        "flow_1m_100m_jpy": 322,
+        "flow_3m_100m_jpy": 936,
+        "flow_6m_100m_jpy": 2012,
+        "flow_1y_100m_jpy": 3048
+      },
+      {
+        "rank": 11,
+        "fund": "東京海上･宇宙関連株式ファンド(H無)",
+        "company": "東京海上ｱｾｯﾄ",
+        "aum_100m_jpy": 5314,
+        "flow_1m_100m_jpy": 311,
+        "flow_3m_100m_jpy": 550,
+        "flow_6m_100m_jpy": 1029,
+        "flow_1y_100m_jpy": 1975
+      },
+      {
+        "rank": 12,
+        "fund": "野村 世界業種別投資シリーズ(半導体)",
+        "company": "野村ｱｾｯﾄ",
+        "aum_100m_jpy": 9481,
+        "flow_1m_100m_jpy": 306,
+        "flow_3m_100m_jpy": 444,
+        "flow_6m_100m_jpy": 763,
+        "flow_1y_100m_jpy": 456
+      },
+      {
+        "rank": 13,
+        "fund": "マテリアル・イノベーション戦略株式(H無)",
+        "company": "三井住友DSｱｾｯﾄ",
+        "aum_100m_jpy": 2382,
+        "flow_1m_100m_jpy": 298,
+        "flow_3m_100m_jpy": 2078,
+        "flow_6m_100m_jpy": null,
+        "flow_1y_100m_jpy": null
+      },
+      {
+        "rank": 14,
+        "fund": "SBI NASDAQ100インデックス・ファンド",
+        "company": "SBIｱｾｯﾄ",
+        "aum_100m_jpy": 300,
+        "flow_1m_100m_jpy": 294,
+        "flow_3m_100m_jpy": null,
+        "flow_6m_100m_jpy": null,
+        "flow_1y_100m_jpy": null
+      },
+      {
+        "rank": 15,
+        "fund": "野村 日本株インデックス(一任口座)",
+        "company": "野村ｱｾｯﾄ",
+        "aum_100m_jpy": 982,
+        "flow_1m_100m_jpy": 284,
+        "flow_3m_100m_jpy": 275,
+        "flow_6m_100m_jpy": 227,
+        "flow_1y_100m_jpy": 151
+      },
+      {
+        "rank": 16,
+        "fund": "キャピタル･G･Hインカム債券F(米ドル売り円買い)",
+        "company": "ｷｬﾋﾟﾀﾙ",
+        "aum_100m_jpy": 683,
+        "flow_1m_100m_jpy": 283,
+        "flow_3m_100m_jpy": 289,
+        "flow_6m_100m_jpy": 304,
+        "flow_1y_100m_jpy": 325
+      },
+      {
+        "rank": 17,
+        "fund": "楽天・プラス・NASDAQ-100インデックス・ファンド",
+        "company": "楽天投信",
+        "aum_100m_jpy": 2526,
+        "flow_1m_100m_jpy": 273,
+        "flow_3m_100m_jpy": 388,
+        "flow_6m_100m_jpy": 611,
+        "flow_1y_100m_jpy": 866
+      },
+      {
+        "rank": 18,
+        "fund": "ニュートン・パワー・イノベーション(H無)",
+        "company": "三井住友DSｱｾｯﾄ",
+        "aum_100m_jpy": 6795,
+        "flow_1m_100m_jpy": 270,
+        "flow_3m_100m_jpy": 748,
+        "flow_6m_100m_jpy": 1599,
+        "flow_1y_100m_jpy": 3268
+      },
+      {
+        "rank": 19,
+        "fund": "あおぞら・新グローバル分散F(限追)2026-04",
+        "company": "あおぞら投信",
+        "aum_100m_jpy": 423,
+        "flow_1m_100m_jpy": 240,
+        "flow_3m_100m_jpy": null,
+        "flow_6m_100m_jpy": null,
+        "flow_1y_100m_jpy": null
+      },
+      {
+        "rank": 20,
+        "fund": "楽天・プラス・S&P500インデックス・ファンド",
+        "company": "楽天投信",
+        "aum_100m_jpy": 10897,
+        "flow_1m_100m_jpy": 238,
+        "flow_3m_100m_jpy": 682,
+        "flow_6m_100m_jpy": 1626,
+        "flow_1y_100m_jpy": 2741
+      }
+    ],
+    "2026-06": [
+      {
+        "rank": 1,
+        "fund": "eMAXIS Slim全世界株式(オール･カントリー)",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 127440,
+        "flow_1m_100m_jpy": 4120,
+        "flow_3m_100m_jpy": 10489,
+        "flow_6m_100m_jpy": 22473,
+        "flow_1y_100m_jpy": 34632
+      },
+      {
+        "rank": 2,
+        "fund": "eMAXIS Slim米国株式(S&P500)",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 122755,
+        "flow_1m_100m_jpy": 2066,
+        "flow_3m_100m_jpy": 5326,
+        "flow_6m_100m_jpy": 11271,
+        "flow_1y_100m_jpy": 18822
+      },
+      {
+        "rank": 3,
+        "fund": "インベスコ 世界厳選株式＜H無＞(毎月決算型)",
+        "company": "ｲﾝﾍﾞｽｺｱｾｯﾄ",
+        "aum_100m_jpy": 39596,
+        "flow_1m_100m_jpy": 1419,
+        "flow_3m_100m_jpy": 3884,
+        "flow_6m_100m_jpy": 8022,
+        "flow_1y_100m_jpy": 16930
+      },
+      {
+        "rank": 4,
+        "fund": "グロース・オポチュニティD(毎月・予想分配型・H無)",
+        "company": "ﾌｨﾃﾞﾘﾃｨ投信",
+        "aum_100m_jpy": 12134,
+        "flow_1m_100m_jpy": 1019,
+        "flow_3m_100m_jpy": 1934,
+        "flow_6m_100m_jpy": 3915,
+        "flow_1y_100m_jpy": 8677
+      },
+      {
+        "rank": 5,
+        "fund": "野村 世界業種別投資シリーズ(半導体)",
+        "company": "野村ｱｾｯﾄ",
+        "aum_100m_jpy": 10073,
+        "flow_1m_100m_jpy": 748,
+        "flow_3m_100m_jpy": 1152,
+        "flow_6m_100m_jpy": 1464,
+        "flow_1y_100m_jpy": 1309
+      },
+      {
+        "rank": 6,
+        "fund": "日興FW･日本債券ファンド",
+        "company": "三井住友DSｱｾｯﾄ",
+        "aum_100m_jpy": 7105,
+        "flow_1m_100m_jpy": 650,
+        "flow_3m_100m_jpy": 691,
+        "flow_6m_100m_jpy": 720,
+        "flow_1y_100m_jpy": 1948
+      },
+      {
+        "rank": 7,
+        "fund": "eMAXIS 日経半導体株インデックス",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 1238,
+        "flow_1m_100m_jpy": 549,
+        "flow_3m_100m_jpy": 741,
+        "flow_6m_100m_jpy": 846,
+        "flow_1y_100m_jpy": 846
+      },
+      {
+        "rank": 8,
+        "fund": "WCM 世界成長株厳選ファンド(予想分配金提示型)",
+        "company": "朝日ﾗｲﾌｱｾｯﾄ",
+        "aum_100m_jpy": 4580,
+        "flow_1m_100m_jpy": 546,
+        "flow_3m_100m_jpy": 1457,
+        "flow_6m_100m_jpy": 2715,
+        "flow_1y_100m_jpy": 4278
+      },
+      {
+        "rank": 9,
+        "fund": "東京海上･宇宙関連株式ファンド(H無)",
+        "company": "東京海上ｱｾｯﾄ",
+        "aum_100m_jpy": 5270,
+        "flow_1m_100m_jpy": 488,
+        "flow_3m_100m_jpy": 961,
+        "flow_6m_100m_jpy": 1381,
+        "flow_1y_100m_jpy": 2384
+      },
+      {
+        "rank": 10,
+        "fund": "SBI NASDAQ100インデックス・ファンド",
+        "company": "SBIｱｾｯﾄ",
+        "aum_100m_jpy": 766,
+        "flow_1m_100m_jpy": 460,
+        "flow_3m_100m_jpy": null,
+        "flow_6m_100m_jpy": null,
+        "flow_1y_100m_jpy": null
+      },
+      {
+        "rank": 11,
+        "fund": "モルガン・スタンレー フィジカルAI株式ファンド",
+        "company": "大和ｱｾｯﾄ",
+        "aum_100m_jpy": 1832,
+        "flow_1m_100m_jpy": 458,
+        "flow_3m_100m_jpy": 1750,
+        "flow_6m_100m_jpy": null,
+        "flow_1y_100m_jpy": null
+      },
+      {
+        "rank": 12,
+        "fund": "楽天・プラス・NASDAQ-100インデックス・ファンド",
+        "company": "楽天投信",
+        "aum_100m_jpy": 2940,
+        "flow_1m_100m_jpy": 400,
+        "flow_3m_100m_jpy": 738,
+        "flow_6m_100m_jpy": 939,
+        "flow_1y_100m_jpy": 1236
+      },
+      {
+        "rank": 13,
+        "fund": "楽天・プラス・オールカントリー株式インデックス・F",
+        "company": "楽天投信",
+        "aum_100m_jpy": 9284,
+        "flow_1m_100m_jpy": 388,
+        "flow_3m_100m_jpy": 1008,
+        "flow_6m_100m_jpy": 2093,
+        "flow_1y_100m_jpy": 3285
+      },
+      {
+        "rank": 14,
+        "fund": "eMAXIS Slim国内株式(日経平均)",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 5055,
+        "flow_1m_100m_jpy": 328,
+        "flow_3m_100m_jpy": 413,
+        "flow_6m_100m_jpy": 1169,
+        "flow_1y_100m_jpy": 1454
+      },
+      {
+        "rank": 15,
+        "fund": "あおぞら・新グローバル分散F(限追)2026-04",
+        "company": "あおぞら投信",
+        "aum_100m_jpy": 738,
+        "flow_1m_100m_jpy": 314,
+        "flow_3m_100m_jpy": 735,
+        "flow_6m_100m_jpy": null,
+        "flow_1y_100m_jpy": null
+      },
+      {
+        "rank": 16,
+        "fund": "ノムラ･ジャパン･オープン",
+        "company": "野村ｱｾｯﾄ",
+        "aum_100m_jpy": 4472,
+        "flow_1m_100m_jpy": 298,
+        "flow_3m_100m_jpy": 715,
+        "flow_6m_100m_jpy": 1365,
+        "flow_1y_100m_jpy": 1674
+      },
+      {
+        "rank": 17,
+        "fund": "ノムラ・エマージング・オープン",
+        "company": "野村ｱｾｯﾄ",
+        "aum_100m_jpy": 2114,
+        "flow_1m_100m_jpy": 288,
+        "flow_3m_100m_jpy": 1829,
+        "flow_6m_100m_jpy": null,
+        "flow_1y_100m_jpy": null
+      },
+      {
+        "rank": 18,
+        "fund": "楽天・プラス・S&P500インデックス・ファンド",
+        "company": "楽天投信",
+        "aum_100m_jpy": 11212,
+        "flow_1m_100m_jpy": 279,
+        "flow_3m_100m_jpy": 740,
+        "flow_6m_100m_jpy": 1606,
+        "flow_1y_100m_jpy": 2852
+      },
+      {
+        "rank": 19,
+        "fund": "(ダイワFW)日本債券セレクト",
+        "company": "大和ｱｾｯﾄ",
+        "aum_100m_jpy": 8429,
+        "flow_1m_100m_jpy": 278,
+        "flow_3m_100m_jpy": 642,
+        "flow_6m_100m_jpy": 1135,
+        "flow_1y_100m_jpy": 1656
+      },
+      {
+        "rank": 20,
+        "fund": "情報エレクトロニクスファンド",
+        "company": "野村ｱｾｯﾄ",
+        "aum_100m_jpy": 2326,
+        "flow_1m_100m_jpy": 269,
+        "flow_3m_100m_jpy": 463,
+        "flow_6m_100m_jpy": 730,
+        "flow_1y_100m_jpy": 825
+      }
+    ],
+    "2026-07": [
+      {
+        "rank": 1,
+        "fund": "eMAXIS Slim全世界株式(オール･カントリー)",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 130157,
+        "flow_1m_100m_jpy": 4465,
+        "flow_3m_100m_jpy": 12012,
+        "flow_6m_100m_jpy": 21066,
+        "flow_1y_100m_jpy": 37576
+      },
+      {
+        "rank": 2,
+        "fund": "eMAXIS Slim米国株式(S&P500)",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 123646,
+        "flow_1m_100m_jpy": 2171,
+        "flow_3m_100m_jpy": 5958,
+        "flow_6m_100m_jpy": 10501,
+        "flow_1y_100m_jpy": 20071
+      },
+      {
+        "rank": 3,
+        "fund": "インベスコ 世界厳選株式＜H無＞(毎月決算型)",
+        "company": "ｲﾝﾍﾞｽｺｱｾｯﾄ",
+        "aum_100m_jpy": 41685,
+        "flow_1m_100m_jpy": 1587,
+        "flow_3m_100m_jpy": 4160,
+        "flow_6m_100m_jpy": 8527,
+        "flow_1y_100m_jpy": 17018
+      },
+      {
+        "rank": 4,
+        "fund": "フィデリティ・G・オポチュニティD(毎月・予想・H無)",
+        "company": "ﾌｨﾃﾞﾘﾃｨ投信",
+        "aum_100m_jpy": 12004,
+        "flow_1m_100m_jpy": 1141,
+        "flow_3m_100m_jpy": 2733,
+        "flow_6m_100m_jpy": 4064,
+        "flow_1y_100m_jpy": 9346
+      },
+      {
+        "rank": 5,
+        "fund": "野村 構造変化日本株ファンド",
+        "company": "野村ｱｾｯﾄ",
+        "aum_100m_jpy": 1101,
+        "flow_1m_100m_jpy": 1107,
+        "flow_3m_100m_jpy": null,
+        "flow_6m_100m_jpy": null,
+        "flow_1y_100m_jpy": null
+      },
+      {
+        "rank": 6,
+        "fund": "WCM 世界成長株厳選ファンド(予想分配金提示型)",
+        "company": "朝日ﾗｲﾌｱｾｯﾄ",
+        "aum_100m_jpy": 5023,
+        "flow_1m_100m_jpy": 839,
+        "flow_3m_100m_jpy": 1905,
+        "flow_6m_100m_jpy": 3169,
+        "flow_1y_100m_jpy": 4951
+      },
+      {
+        "rank": 7,
+        "fund": "JPモルガン・米国テクノロジー株式ファンド",
+        "company": "JPﾓﾙｶﾞﾝ･ｱｾｯﾄ",
+        "aum_100m_jpy": 641,
+        "flow_1m_100m_jpy": 641,
+        "flow_3m_100m_jpy": null,
+        "flow_6m_100m_jpy": null,
+        "flow_1y_100m_jpy": null
+      },
+      {
+        "rank": 8,
+        "fund": "国内債券インデックス（ラップ向け）",
+        "company": "ｲﾝﾍﾞｽｺｱｾｯﾄ",
+        "aum_100m_jpy": 1402,
+        "flow_1m_100m_jpy": 532,
+        "flow_3m_100m_jpy": 600,
+        "flow_6m_100m_jpy": 662,
+        "flow_1y_100m_jpy": 716
+      },
+      {
+        "rank": 9,
+        "fund": "日経225ノーロードオープン",
+        "company": "ｱｾﾏﾈOne",
+        "aum_100m_jpy": 5010,
+        "flow_1m_100m_jpy": 508,
+        "flow_3m_100m_jpy": 642,
+        "flow_6m_100m_jpy": 495,
+        "flow_1y_100m_jpy": 392
+      },
+      {
+        "rank": 10,
+        "fund": "グローバル･ロボティクス株式ファンド(年2)",
+        "company": "ｱﾓｰｳﾞｧ･ｱｾｯﾄ",
+        "aum_100m_jpy": 7560,
+        "flow_1m_100m_jpy": 473,
+        "flow_3m_100m_jpy": 715,
+        "flow_6m_100m_jpy": 919,
+        "flow_1y_100m_jpy": 1183
+      },
+      {
+        "rank": 11,
+        "fund": "eMAXIS Slim国内株式(日経平均)",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 5063,
+        "flow_1m_100m_jpy": 429,
+        "flow_3m_100m_jpy": 886,
+        "flow_6m_100m_jpy": 1408,
+        "flow_1y_100m_jpy": 1934
+      },
+      {
+        "rank": 12,
+        "fund": "楽天 日本株4.3倍ブル",
+        "company": "楽天投信",
+        "aum_100m_jpy": 1414,
+        "flow_1m_100m_jpy": 404,
+        "flow_3m_100m_jpy": 278,
+        "flow_6m_100m_jpy": 61,
+        "flow_1y_100m_jpy": -225
+      },
+      {
+        "rank": 13,
+        "fund": "楽天・プラス・オールカントリー株式インデックス・F",
+        "company": "楽天投信",
+        "aum_100m_jpy": 9539,
+        "flow_1m_100m_jpy": 380,
+        "flow_3m_100m_jpy": 1088,
+        "flow_6m_100m_jpy": 2024,
+        "flow_1y_100m_jpy": 3514
+      },
+      {
+        "rank": 14,
+        "fund": "SBI 日本株4.3ブル",
+        "company": "SBIｱｾｯﾄ",
+        "aum_100m_jpy": 1114,
+        "flow_1m_100m_jpy": 359,
+        "flow_3m_100m_jpy": 324,
+        "flow_6m_100m_jpy": 195,
+        "flow_1y_100m_jpy": -78
+      },
+      {
+        "rank": 15,
+        "fund": "ノムラ･ジャパン･オープン",
+        "company": "野村ｱｾｯﾄ",
+        "aum_100m_jpy": 4507,
+        "flow_1m_100m_jpy": 284,
+        "flow_3m_100m_jpy": 779,
+        "flow_6m_100m_jpy": 1539,
+        "flow_1y_100m_jpy": 1950
+      },
+      {
+        "rank": 16,
+        "fund": "マテリアル・イノベーション戦略株式(H無)",
+        "company": "三井住友DSｱｾｯﾄ",
+        "aum_100m_jpy": 2595,
+        "flow_1m_100m_jpy": 280,
+        "flow_3m_100m_jpy": 815,
+        "flow_6m_100m_jpy": null,
+        "flow_1y_100m_jpy": null
+      },
+      {
+        "rank": 17,
+        "fund": "楽天・プラス・S&P500インデックス・ファンド",
+        "company": "楽天投信",
+        "aum_100m_jpy": 11372,
+        "flow_1m_100m_jpy": 279,
+        "flow_3m_100m_jpy": 794,
+        "flow_6m_100m_jpy": 1478,
+        "flow_1y_100m_jpy": 2978
+      },
+      {
+        "rank": 18,
+        "fund": "eMAXIS Slim国内株式(TOPIX)",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 7659,
+        "flow_1m_100m_jpy": 278,
+        "flow_3m_100m_jpy": 675,
+        "flow_6m_100m_jpy": 1664,
+        "flow_1y_100m_jpy": 2802
+      },
+      {
+        "rank": 19,
+        "fund": "(ダイワFW)ヘッジファンドセレクト",
+        "company": "大和ｱｾｯﾄ",
+        "aum_100m_jpy": 5977,
+        "flow_1m_100m_jpy": 276,
+        "flow_3m_100m_jpy": 386,
+        "flow_6m_100m_jpy": 791,
+        "flow_1y_100m_jpy": 1366
+      },
+      {
+        "rank": 20,
+        "fund": "eMAXIS Slim全世界株式(除く日本)",
+        "company": "三菱UFJｱｾｯﾄ",
+        "aum_100m_jpy": 12075,
+        "flow_1m_100m_jpy": 212,
+        "flow_3m_100m_jpy": 626,
+        "flow_6m_100m_jpy": 1127,
+        "flow_1y_100m_jpy": 1958
+      }
+    ]
+  }
+}
