@@ -869,14 +869,14 @@
     </div>
     <div class="card full">
       <h2>Intervention episodes — official/estimate status, ¥ &amp; approx. US$, effectiveness</h2>
-      <div class="sub">Episode/campaign subtotals (not individual daily ops — see the day-by-day table below). <b>Data status</b> distinguishes MOF-confirmed official figures from settlement-based market estimates — settlement estimates are <i>not</i> final MOF figures until MOF's quarterly release confirms them. All US$ amounts are approximate conversions at contemporaneous USD/JPY (MOF only publishes yen amounts) — never official MOF figures in their own right. 1d/5d/20d effect = USD/JPY change vs. the last trading day before the episode's first operation (positive = yen weakened despite the intervention, negative = yen strengthened), computed from the same daily USD/JPY history that drives the chart below; only available for single/multi-day episodes with an exact start date.</div>
+      <div class="sub">Episode/campaign subtotals (not individual daily ops — see the day-by-day table below). <b>Data status</b> distinguishes MOF-confirmed official figures from settlement-based market estimates — settlement estimates are <i>not</i> final MOF figures until MOF's quarterly release confirms them. All US$ amounts are approximate conversions at contemporaneous USD/JPY (MOF only publishes yen amounts) — never official MOF figures in their own right. <b>USD/JPY before → after</b> = the last close strictly before the episode's first operation date vs. the close ~5 trading days after its last operation date, with the resulting % change (negative = yen strengthened); only available for episodes with an exact start/end date — most pre-2022 episodes are recorded as month-level campaigns with no single before/after anchor day, shown as "—".</div>
       <div style="overflow-x:auto;margin-top:10px">
       <table id="ivEpTable" style="width:100%;border-collapse:collapse;font-size:12.5px;table-layout:fixed">
         <colgroup>
-          <col style="width:10%"><col style="width:10%"><col style="width:24%">
-          <col style="width:7%"><col style="width:8%"><col style="width:8%">
-          <col style="width:11%"><col style="width:10%">
-          <col style="width:4%"><col style="width:4%"><col style="width:4%">
+          <col style="width:9%"><col style="width:9%"><col style="width:21%">
+          <col style="width:6%"><col style="width:7%"><col style="width:7%">
+          <col style="width:10%"><col style="width:9%">
+          <col style="width:14%"><col style="width:8%">
         </colgroup>
         <thead><tr style="color:var(--muted);text-align:left;border-bottom:1px solid var(--line)">
           <th style="padding:6px 8px">Date / episode</th><th style="padding:6px 8px">Direction</th>
@@ -886,9 +886,8 @@
           <th style="padding:6px 8px;text-align:right">Foreign/coordinated US$bn</th>
           <th style="padding:6px 8px">Data status</th>
           <th style="padding:6px 8px">Coordination</th>
-          <th style="padding:6px 8px;text-align:right">1d effect</th>
-          <th style="padding:6px 8px;text-align:right">5d effect</th>
-          <th style="padding:6px 8px;text-align:right">20d effect</th>
+          <th style="padding:6px 8px;text-align:right">USD/JPY before → after</th>
+          <th style="padding:6px 8px;text-align:right">% change</th>
         </tr></thead>
         <tbody id="ivEpBody"></tbody>
       </table>
@@ -1150,7 +1149,13 @@
       <canvas id="nisaMonChart"></canvas>
     </div>
     <div class="card full">
-      <h2>Top 20 funds by net monthly inflow <span class="npill" id="nisaFundFlowMonth"></span></h2>
+      <h2 style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+        <span>Top 20 funds by net monthly inflow <span class="npill" id="nisaFundFlowMonth"></span></span>
+        <span style="display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;font-size:12px;font-weight:600">
+          <button id="nisaFundFlowCcyJpy" onclick="setNisaFundFlowCcy('jpy')" style="padding:4px 12px;border:none;cursor:pointer;background:var(--ink);color:var(--bg)">¥</button>
+          <button id="nisaFundFlowCcyUsd" onclick="setNisaFundFlowCcy('usd')" style="padding:4px 12px;border:none;cursor:pointer;background:transparent;color:var(--ink)">$</button>
+        </span>
+      </h2>
       <div class="note">Wealth Advisor's monthly fund-flow flash report — the practical way to see NISA-driven concentration without tracking all ~2,700 eligible funds. Not NISA-specific, but these are overwhelmingly where NISA money lands. <span id="nisaFundFlowGapNote"></span></div>
       <div style="height:640px"><canvas id="nisaFundFlowChart"></canvas></div>
     </div>
@@ -3100,12 +3105,12 @@ const IV_STATUS_COLOR = {
 function renderIvEpTable(episodes) {
   const fmt = v => v == null ? '—' : (v > 0 ? '+' : '') + v.toFixed(1);
   const fmtTn = v => v == null ? '—' : (v > 0 ? '+' : '') + v.toFixed(2);
-  const fmtEff = e => !e ? '—' : `${e.change_yen > 0 ? '+' : ''}${e.change_yen.toFixed(2)}¥`;
   document.getElementById('ivEpBody').innerHTML = episodes.map(ep => {
     const status = ep.data_status || (ep.confirmed === true ? 'MOF confirmed — monthly aggregate' : ep.confirmed === 'event' ? 'BOJ settlement estimate / market estimate' : 'Historical estimate');
     const statusColor = IV_STATUS_COLOR[status] || 'var(--muted)';
     const isProvisional = status === 'BOJ settlement estimate / market estimate' || status === 'Pending MOF confirmation';
-    const eff = ep.effects;
+    const ba = ep.before_after;
+    const pctColor = ba ? (ba.change_pct < 0 ? '#4cba7a' : '#e2564a') : 'var(--muted)';
     return `
     <tr style="border-bottom:1px solid var(--line)${ep.confirmed==='event' ? ';background:rgba(76,186,122,.08)' : ''}">
       <td style="padding:6px 8px">${esc(ivPeriodLabel(ep.start))}${ep.end!==ep.start ? ' – ' + esc(ivPeriodLabel(ep.end)) : ''}<div style="font-size:11px;color:var(--muted);font-weight:400">${esc(ep.context)}</div></td>
@@ -3116,9 +3121,8 @@ function renderIvEpTable(episodes) {
       <td style="padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)">${ep.nonjapan ? fmt(ep.nonjapan) : '—'}</td>
       <td style="padding:6px 8px;color:${statusColor};font-size:11.5px">${esc(status)}</td>
       <td style="padding:6px 8px;font-size:11.5px">${esc(ep.coordination_tag || (ep.coordinated ? 'G7 coordinated' : 'Japan unilateral'))}</td>
-      <td style="padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums;font-size:11.5px">${eff && eff.d1 ? fmtEff(eff.d1) : '—'}</td>
-      <td style="padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums;font-size:11.5px">${eff && eff.d5 ? fmtEff(eff.d5) : '—'}</td>
-      <td style="padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums;font-size:11.5px">${eff && eff.d20 ? fmtEff(eff.d20) : '—'}</td>
+      <td style="padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums;font-size:11.5px">${ba ? `${ba.before.value.toFixed(2)} → ${ba.after.value.toFixed(2)}` : '—'}</td>
+      <td style="padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums;font-size:11.5px;color:${pctColor};font-weight:600">${ba ? `${ba.change_pct > 0 ? '+' : ''}${ba.change_pct.toFixed(2)}%` : '—'}</td>
     </tr>`;
   }).join('');
 }
@@ -3579,10 +3583,50 @@ fetch('./intervention_data.json?' + Date.now())
     if (nisaFundFlowD) buildNisaFundFlowChart(nisaFundFlowD);
   }
 
+  let nisaFundFlowRows = null, nisaFundFlowChart_ = null, nisaFundFlowCcy = 'jpy', nisaFxRate = null;
+
+  function drawNisaFundFlowChart(){
+    if (!nisaFundFlowRows) return;
+    const rows = nisaFundFlowRows;
+    const usd = nisaFundFlowCcy === 'usd' && nisaFxRate;
+    const toUnit = r => usd ? (r.flow_1m_100m_jpy / 100) / nisaFxRate : r.flow_1m_100m_jpy / 100;
+    const unitLabel = usd ? '$ billion / month' : '¥ billion / month';
+    const ccySym = usd ? '$' : '¥';
+
+    if (nisaFundFlowChart_) nisaFundFlowChart_.destroy();
+    nisaFundFlowChart_ = new Chart(document.getElementById('nisaFundFlowChart'), {
+      type: "bar",
+      data: {
+        labels: rows.map(r => r.fund.length > 28 ? r.fund.slice(0, 27) + "…" : r.fund),
+        datasets: [{ data: rows.map(toUnit), backgroundColor: "#7fb3e8", borderRadius: 3 }]
+      },
+      options: {
+        indexAxis: "y", responsive: true, maintainAspectRatio: false, animation: false,
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${ccySym}${c.raw.toFixed(usd ? 2 : 0)} bn net inflow` } } },
+        scales: {
+          x: { grid: GRID, ticks: TICK, title: { display: true, text: unitLabel, color: "#93a1bd" } },
+          y: { grid: GRID, ticks: { ...TICK, font: { size: 10 }, autoSkip: false } }
+        }
+      }
+    });
+  }
+
+  window.setNisaFundFlowCcy = function(ccy){
+    nisaFundFlowCcy = ccy;
+    const jpyBtn = document.getElementById('nisaFundFlowCcyJpy'), usdBtn = document.getElementById('nisaFundFlowCcyUsd');
+    if (jpyBtn && usdBtn){
+      jpyBtn.style.background = ccy === 'jpy' ? 'var(--ink)' : 'transparent';
+      jpyBtn.style.color = ccy === 'jpy' ? 'var(--bg)' : 'var(--ink)';
+      usdBtn.style.background = ccy === 'usd' ? 'var(--ink)' : 'transparent';
+      usdBtn.style.color = ccy === 'usd' ? 'var(--bg)' : 'var(--ink)';
+    }
+    drawNisaFundFlowChart();
+  };
+
   function buildNisaFundFlowChart(fd){
     const months = Object.keys(fd.months).sort();
     const latest = months[months.length - 1];
-    const rows = fd.months[latest];
+    nisaFundFlowRows = fd.months[latest];
     document.getElementById('nisaFundFlowMonth').textContent = fmtD(latest);
     const prevIdx = months.indexOf(latest) - 1;
     const gap = prevIdx >= 0 && (() => {
@@ -3593,21 +3637,18 @@ fetch('./intervention_data.json?' + Date.now())
     document.getElementById('nisaFundFlowGapNote').textContent = gap ?
       "(note: a monthly edition is missing between the two most recent months on file — a genuine publication gap, not backfilled.)" : "";
 
-    new Chart(document.getElementById('nisaFundFlowChart'), {
-      type: "bar",
-      data: {
-        labels: rows.map(r => r.fund.length > 28 ? r.fund.slice(0, 27) + "…" : r.fund),
-        datasets: [{ data: rows.map(r => r.flow_1m_100m_jpy / 100), backgroundColor: "#7fb3e8", borderRadius: 3 }]
-      },
-      options: {
-        indexAxis: "y", responsive: true, maintainAspectRatio: false, animation: false,
-        plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `¥${c.raw.toFixed(0)} bn net inflow` } } },
-        scales: {
-          x: { grid: GRID, ticks: TICK, title: { display: true, text: "¥ billion / month", color: "#93a1bd" } },
-          y: { grid: GRID, ticks: { ...TICK, font: { size: 10 }, autoSkip: false } }
+    drawNisaFundFlowChart();
+
+    fetch('./market_data.json?' + Date.now())
+      .then(r => r.ok ? r.json() : null)
+      .then(M => {
+        const hist = M && M.fx && M.fx.history;
+        if (hist && hist.length) {
+          nisaFxRate = hist[hist.length - 1].value;
+          if (nisaFundFlowCcy === 'usd') drawNisaFundFlowChart();
         }
-      }
-    });
+      })
+      .catch(() => {});
   }
 
   fetch('./nisa_data.json?' + Date.now())

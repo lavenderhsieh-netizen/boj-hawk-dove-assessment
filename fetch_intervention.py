@@ -33,6 +33,12 @@ from datetime import datetime, timedelta, timezone
 
 import requests
 
+try:
+    import yfinance as yf
+    HAS_YFINANCE = True
+except ImportError:
+    HAS_YFINANCE = False
+
 FRED_KEY = os.environ.get("FRED_API_KEY", "")
 UA = {"User-Agent": "Mozilla/5.0"}
 
@@ -53,25 +59,32 @@ def fred_series(series_id, start):
     return hist
 
 
-def yahoo_recent(days_range="1mo"):
-    """Best-effort supplement for the last few days FRED hasn't posted yet."""
-    try:
-        url = f"https://query1.finance.yahoo.com/v8/finance/chart/JPY=X?range={days_range}&interval=1d"
-        r = requests.get(url, headers=UA, timeout=20)
-        r.raise_for_status()
-        res = r.json()["chart"]["result"][0]
-        ts = res["timestamp"]
-        closes = res["indicators"]["quote"][0]["close"]
-        out = []
-        for t, c in zip(ts, closes):
-            if c is None:
-                continue
-            d = datetime.fromtimestamp(t, tz=timezone.utc).strftime("%Y-%m-%d")
-            out.append({"date": d, "value": round(float(c), 2)})
-        return out
-    except Exception as e:
-        print(f"  ! yahoo_recent failed (non-fatal): {e}")
+def yahoo_jpy_history():
+    """Full-history daily USD/JPY closes from Yahoo Finance (JPY=X).
+
+    Yahoo's JPY=X only goes back to 1996-10-30 (FRED DEXJPUS is used for the
+    1985-1996 stretch instead), but for every date it does cover it tracks
+    live spot — unlike FRED DEXJPUS, which was found 2026-08-08 to be running
+    several business days behind its FRED siblings (see fetch_market.py's
+    fetch_fx() docstring). The intervention tab's per-round before/after
+    snapshots (episode_snapshots) all fall in 2022-2026, squarely inside
+    Yahoo's accurate range, so this replaces the old "FRED + crude last-30-day
+    Yahoo splice" approach that could misidentify the peak/trough day right
+    around a fresh operation if FRED's lag hadn't caught up yet.
+    """
+    if not HAS_YFINANCE:
         return []
+    t = yf.Ticker("JPY=X")
+    hist_df = t.history(period="max")
+    out = [{"date": d.strftime("%Y-%m-%d"), "value": round(float(v), 2)}
+           for d, v in zip(hist_df.index, hist_df["Close"])]
+    try:
+        live = t.fast_info.get("last_price")
+        if live and out:
+            out[-1] = {"date": out[-1]["date"], "value": round(float(live), 2)}
+    except Exception:
+        pass
+    return out
 
 
 # ── Historical intervention episodes, 1985-2026 ──────────────────────────────
@@ -291,6 +304,50 @@ DIPLOMATIC_EVENTS = [
               "specific date."),
 ]
 
+import re
+
+
+def episode_before_after(ep, long_hist, tail_days=5):
+    """USD/JPY level immediately before an episode started vs. shortly after it
+    ended, plus the % change — the "before/after" framing HanHan asked for in
+    place of the old (always-blank — 'effects' was never populated) 1d/5d/20d
+    'effect' columns. Simple and literal, deliberately distinct from the
+    peak/trough search build_episode_snapshots() does for the snapshot cards
+    above: 'before' = last close strictly before the episode's first
+    operation date; 'after' = the close `tail_days` trading days after the
+    episode's last operation date (or the last available close if the window
+    runs past the end of history).
+
+    Only computable for episodes with an exact start/end date (YYYY-MM-DD) —
+    most of the pre-2022 episodes are recorded as YYYY-MM month ranges (multi-
+    month campaigns with no single before/after anchor day), so those
+    correctly return None rather than a fabricated before/after pair.
+    """
+    if not re.match(r"^\d{4}-\d{2}-\d{2}$", ep["start"]) or not re.match(r"^\d{4}-\d{2}-\d{2}$", ep["end"]):
+        return None
+    dates = [p["date"] for p in long_hist]
+    by_date = {p["date"]: p["value"] for p in long_hist}
+
+    before_candidates = [d for d in dates if d < ep["start"]]
+    if not before_candidates:
+        return None
+    before_date = before_candidates[-1]
+
+    after_candidates = [d for d in dates if d >= ep["end"]]
+    if not after_candidates:
+        return None
+    after_idx = min(tail_days, len(after_candidates) - 1)
+    after_date = after_candidates[after_idx]
+
+    before_val, after_val = by_date[before_date], by_date[after_date]
+    return {
+        "before": {"date": before_date, "value": before_val},
+        "after": {"date": after_date, "value": after_val},
+        "change_yen": round(after_val - before_val, 2),
+        "change_pct": round((after_val - before_val) / before_val * 100, 2),
+    }
+
+
 def build_episode_snapshots(recent_hist, recent_ops, gap_days=14, lead_days=5, tail_days=12):
     """Group RECENT_OPS into intervention rounds (ops within `gap_days` of each
     other) and, for each round, slice a zoomed daily USD/JPY window around it
@@ -343,35 +400,49 @@ def build_episode_snapshots(recent_hist, recent_ops, gap_days=14, lead_days=5, t
 
 
 def main():
-    print("Fetching long-run USD/JPY history (FRED DEXJPUS, 1985-present)...")
-    long_hist = fred_series("DEXJPUS", "1985-01-01")
-    if len(long_hist) < 5000:
-        raise ValueError(f"long_history too short: {len(long_hist)} points")
-    print(f"  {len(long_hist)} points, {long_hist[0]['date']} to {long_hist[-1]['date']}")
+    print("Fetching long-run USD/JPY history (FRED DEXJPUS, 1985-1996-10-29)...")
+    fred_hist = fred_series("DEXJPUS", "1985-01-01")
+    if len(fred_hist) < 2000:
+        raise ValueError(f"FRED history too short: {len(fred_hist)} points")
+    print(f"  {len(fred_hist)} points, {fred_hist[0]['date']} to {fred_hist[-1]['date']}")
+
+    print("Fetching accurate 1996-present USD/JPY history (Yahoo Finance JPY=X)...")
+    yahoo_hist = yahoo_jpy_history()
+    if len(yahoo_hist) < 2000:
+        raise ValueError(f"Yahoo history too short ({len(yahoo_hist)} points) — "
+                          "refusing to build episode_snapshots off a stale/incomplete FX series.")
+    print(f"  {len(yahoo_hist)} points, {yahoo_hist[0]['date']} to {yahoo_hist[-1]['date']}")
+
+    yahoo_start = yahoo_hist[0]["date"]
+    long_hist = [p for p in fred_hist if p["date"] < yahoo_start] + yahoo_hist
+    long_hist.sort(key=lambda p: p["date"])
+    print(f"  spliced long_history: {len(long_hist)} points, {long_hist[0]['date']} to {long_hist[-1]['date']} "
+          f"(FRED before {yahoo_start}, Yahoo from {yahoo_start} on)")
 
     recent_hist = [p for p in long_hist if p["date"] >= "2020-01-01"]
-
-    print("Splicing latest Yahoo Finance closes on top of FRED's lag...")
-    yahoo = yahoo_recent("1mo")
-    have = {p["date"] for p in recent_hist}
-    added = 0
-    for p in yahoo:
-        if p["date"] not in have and p["date"] > long_hist[-1]["date"]:
-            recent_hist.append(p)
-            added += 1
-    recent_hist.sort(key=lambda p: p["date"])
-    print(f"  added {added} supplementary day(s); recent_history now to {recent_hist[-1]['date']}")
 
     print("Building per-episode intervention snapshots...")
     episode_snapshots = build_episode_snapshots(recent_hist, RECENT_OPS)
     print(f"  {len(episode_snapshots)} snapshot(s)")
+
+    print("Computing before/after USD/JPY level + % change per episode (exact-date episodes only)...")
+    episodes_out = []
+    n_with_ba = 0
+    for ep in EPISODES:
+        ep = dict(ep)
+        ba = episode_before_after(ep, long_hist)
+        ep["before_after"] = ba
+        if ba:
+            n_with_ba += 1
+        episodes_out.append(ep)
+    print(f"  {n_with_ba}/{len(episodes_out)} episodes have an exact-date before/after")
 
     out = {
         "updated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "sources": SOURCES,
         "long_history": long_hist,
         "recent_history": recent_hist,
-        "episodes": EPISODES,
+        "episodes": episodes_out,
         "recent_ops": RECENT_OPS,
         "episode_snapshots": episode_snapshots,
         "imf_rule": IMF_RULE,
