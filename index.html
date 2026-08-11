@@ -592,11 +592,19 @@
     <div style="margin:1.6rem 0 .8rem;border-top:1px solid var(--line);padding-top:1.1rem">
       <h1 style="font-size:1.05rem;color:var(--ink)">Both directions, weekly</h1>
     </div>
-    <div class="card full">
-      <h2>Weekly cross-border flows — net purchases <span id="xbWeeklyStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
-      <div class="sub">The same MoF release behind the monthly panels above, at <b>weekly</b> frequency for a faster read on the flow: residents' net purchase of foreign securities ("Japan &rarr; abroad") vs. non-residents' net purchase of Japanese securities ("Foreign &rarr; Japan"), both totals across equity + LT bonds + ST bonds. Positive = net buying; negative = net selling / repatriation. Respects the &yen;/$ toggle above. Source: MoF International Transactions in Securities (Weekly; based on reports from designated major investors).</div>
-      <canvas id="cXbWeekly" style="max-height:360px;margin-top:12px"></canvas>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div class="card">
+        <h2>Japanese investors' net purchases of foreign securities <span style="font-size:12px;color:var(--muted);font-weight:400">(weekly)</span></h2>
+        <div class="sub">Japan &rarr; abroad = capital outflow from Japan. Equities vs. long-term debt, net. Respects the &yen;/$ toggle above.</div>
+        <canvas id="cXbWeeklyOut" style="max-height:340px;margin-top:12px"></canvas>
+      </div>
+      <div class="card">
+        <h2>Foreign investors' net purchases of Japanese securities <span id="xbWeeklyStatus" style="font-size:12px;color:var(--muted);font-weight:400">(weekly)</span></h2>
+        <div class="sub">Foreign &rarr; Japan = capital inflow to Japan. Equities vs. long-term debt, net. Respects the &yen;/$ toggle above.</div>
+        <canvas id="cXbWeeklyIn" style="max-height:340px;margin-top:12px"></canvas>
+      </div>
     </div>
+    <div class="sub" style="margin-top:8px">Same MoF release as the monthly panels above, at <b>weekly</b> frequency, split into Equity &amp; investment fund shares vs. Long-term debt securities (Nomura's own Fig. 16/17 chart format). Positive = net buying; negative = net selling / repatriation. Source: MoF International Transactions in Securities (Weekly; based on reports from designated major investors).</div>
 
     <div style="margin:1.6rem 0 .8rem;border-top:1px solid var(--line);padding-top:1.1rem">
       <h1 style="font-size:1.05rem;color:var(--ink)">Balance of payments — overview</h1>
@@ -2787,21 +2795,18 @@ fetch('./mof_bop_summary.json?' + Date.now())
   .then(renderBopSummary)
   .catch(e => { console.warn('mof_bop_summary.json unavailable:', e); });
 
-// MoF weekly release: Portfolio Investment Assets (outward) vs Liabilities (inward), net, 2-line
-let _xbWeeklyData=null, _xbWeeklyChartObj=null;
-function xbWeeklyChart(){
-  const cv=document.getElementById('cXbWeekly'); const W=_xbWeeklyData; if(!cv||!W) return;
-  const usd=(_xbCur==='usd');
-  const assets=usd?W.assets_net_usd:W.assets_net, liab=usd?W.liab_net_usd:W.liab_net;
-  const u=usd?'$bn':'¥tn', dp=usd?1:2;
+// MoF weekly release: Assets (outward) & Liabilities (inward), each split Equity vs Long-term debt —
+// two side-by-side panels matching Nomura's own Fig. 16/17 weekly-flow chart layout.
+let _xbWeeklyData=null, _xbWeeklyOutObj=null, _xbWeeklyInObj=null;
+function _xbWeeklyPanel(canvasId, eqData, ltdData, W, u, dp){
+  const cv=document.getElementById(canvasId); if(!cv) return null;
   const datasets=[
-    {label:'Japan → abroad (Assets, net)', data:assets, borderColor:'#5aa0e6', backgroundColor:'#5aa0e6',
-     borderWidth:1.5, pointRadius:0, pointHoverRadius:3, tension:0.1, order:1},
-    {label:'Foreign → Japan (Liabilities, net)', data:liab, borderColor:'#d9a441', backgroundColor:'#d9a441',
+    {label:'Equities', data:eqData, borderColor:'#e04b4b', backgroundColor:'#e04b4b',
      borderWidth:1.5, pointRadius:0, pointHoverRadius:3, tension:0.1, order:0},
+    {label:'Long-term debt', data:ltdData, borderColor:'#8b96ab', backgroundColor:'#8b96ab',
+     borderWidth:1.5, pointRadius:0, pointHoverRadius:3, tension:0.1, order:1},
   ];
-  if(_xbWeeklyChartObj){ _xbWeeklyChartObj.destroy(); }
-  _xbWeeklyChartObj=new Chart(cv, {type:'line', data:{labels:W.weeks, datasets},
+  return new Chart(cv, {type:'line', data:{labels:W.weeks, datasets},
     options:{responsive:true, maintainAspectRatio:false, interaction:{mode:'index', intersect:false},
       plugins:{legend:{position:'top', align:'start', labels:{boxWidth:11, boxHeight:11, padding:8, font:{size:10}, color:'#c7d0e0'}},
         tooltip:{callbacks:{
@@ -2817,6 +2822,17 @@ function xbWeeklyChart(){
       }
     }
   });
+}
+function xbWeeklyChart(){
+  const W=_xbWeeklyData; if(!W) return;
+  const usd=(_xbCur==='usd');
+  const u=usd?'$bn':'¥tn', dp=usd?1:2;
+  const assetsEq=usd?W.assets_eq_usd:W.assets_eq, assetsLtd=usd?W.assets_ltd_usd:W.assets_ltd;
+  const liabEq=usd?W.liab_eq_usd:W.liab_eq, liabLtd=usd?W.liab_ltd_usd:W.liab_ltd;
+  if(_xbWeeklyOutObj){ _xbWeeklyOutObj.destroy(); }
+  if(_xbWeeklyInObj){ _xbWeeklyInObj.destroy(); }
+  _xbWeeklyOutObj=_xbWeeklyPanel('cXbWeeklyOut', assetsEq, assetsLtd, W, u, dp);
+  _xbWeeklyInObj=_xbWeeklyPanel('cXbWeeklyIn', liabEq, liabLtd, W, u, dp);
   const el=document.getElementById('xbWeeklyStatus'); if(el && W.meta) el.textContent='· data to '+W.meta.as_of;
 }
 fetch('./mof_weekly.json?' + Date.now())
