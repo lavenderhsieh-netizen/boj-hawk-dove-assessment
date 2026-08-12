@@ -1153,6 +1153,11 @@
       <div style="height:640px"><canvas id="nisaFundFlowChart"></canvas></div>
     </div>
     <div class="card full">
+      <h2>Top NISA funds — net monthly inflow over time <span class="npill" id="nisaFundFlowTSMonths"></span></h2>
+      <div class="note" id="nisaFundFlowTSNote">Same Wealth Advisor source as the snapshot above, followed through time instead of ranked for a single month. Gold bars are the <b>full top-20 list's combined net inflow</b> each month (the total household-money signal); the lines are the individual funds that stayed in the top 20 in every month on file — the persistent core of NISA demand, as opposed to funds that rotate in and out of the ranking.</div>
+      <div style="height:420px;margin-top:10px"><canvas id="nisaFundFlowTSChart"></canvas></div>
+    </div>
+    <div class="card full">
       <h2 id="nisaInvTrustTitle">Portfolio investment flows by investment trust management companies</h2>
       <div class="note">The toshin-fund channel — the closest direct FX read-through of NISA-driven household money going into foreign assets, since NISA purchases largely flow through these funds. Same MoF International Transactions in Securities series as the Cross-border flows tab; history here only goes back to 2021-04 (MoF's own release history), shorter than the 2005-2026 range on a Bloomberg/Macrobond terminal.</div>
       <canvas id="cNisaInvTrust" style="max-height:340px;margin-top:12px"></canvas>
@@ -3584,6 +3589,7 @@ fetch('./intervention_data.json?' + Date.now())
       "(note: a monthly edition is missing between the two most recent months on file — a genuine publication gap, not backfilled.)" : "";
 
     drawNisaFundFlowChart();
+    buildNisaFundFlowTSChart(fd, months);
 
     fetch('./market_data.json?' + Date.now())
       .then(r => r.ok ? r.json() : null)
@@ -3595,6 +3601,56 @@ fetch('./intervention_data.json?' + Date.now())
         }
       })
       .catch(() => {});
+  }
+
+  const NISA_TS_COLORS = ["#d9a441","#4a90d9","#e2564a","#4cba7a","#b07fd9","#e0a03e"];
+
+  function buildNisaFundFlowTSChart(fd, months){
+    document.getElementById('nisaFundFlowTSMonths').textContent = `${fmtD(months[0])} – ${fmtD(months[months.length-1])}`;
+
+    // funds present in every month on file = the persistent top-20 core
+    const counts = {};
+    months.forEach(m => fd.months[m].forEach(r => { counts[r.fund] = (counts[r.fund]||0) + 1; }));
+    const persistent = Object.keys(counts).filter(f => counts[f] === months.length)
+      .sort((a,b) => counts[b] - counts[a] || (fd.months[months[months.length-1]].find(r=>r.fund===a)||{}).rank - (fd.months[months[months.length-1]].find(r=>r.fund===b)||{}).rank)
+      .slice(0, 6);
+
+    const totalByMonth = months.map(m => fd.months[m].reduce((s,r) => s + r.flow_1m_100m_jpy, 0) / 10); // ¥bn
+    const fundSeries = persistent.map((fund, i) => ({
+      fund,
+      values: months.map(m => {
+        const row = fd.months[m].find(r => r.fund === fund);
+        return row ? row.flow_1m_100m_jpy / 10 : null;
+      }),
+      color: NISA_TS_COLORS[i % NISA_TS_COLORS.length]
+    }));
+
+    const shortName = f => f.length > 22 ? f.slice(0, 21) + "…" : f;
+
+    if (window.__nisaFundFlowTSChart_) window.__nisaFundFlowTSChart_.destroy();
+    window.__nisaFundFlowTSChart_ = new Chart(document.getElementById('nisaFundFlowTSChart'), {
+      data: {
+        labels: months.map(fmtD),
+        datasets: [
+          { type: "bar", label: "Top-20 total", data: totalByMonth, backgroundColor: "rgba(217,164,65,.28)", borderRadius: 3, order: 2 },
+          ...fundSeries.map(s => ({
+            type: "line", label: shortName(s.fund), data: s.values, borderColor: s.color,
+            backgroundColor: s.color, tension: .2, pointRadius: 2, borderWidth: 1.6, spanGaps: false, order: 1
+          }))
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, animation: false,
+        plugins: {
+          legend: { labels: { color: "#e8edf7", boxWidth: 12, font: { size: 10.5 } } },
+          tooltip: { callbacks: { label: c => `${c.dataset.label}: ¥${c.raw.toFixed(1)} bn` } }
+        },
+        scales: {
+          x: { grid: GRID, ticks: TICK },
+          y: { grid: GRID, ticks: TICK, title: { display: true, text: "¥ bn / month", color: "#93a1bd" } }
+        }
+      }
+    });
   }
 
   fetch('./nisa_data.json?' + Date.now())
