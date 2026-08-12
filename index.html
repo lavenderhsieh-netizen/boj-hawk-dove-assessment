@@ -335,10 +335,17 @@
       <div class="note" id="jgbHoldersNote">Source: BOJ Flow of Funds Accounts, Preliminary Figures — "Government bonds and treasury bills" (item Db, central government securities and FILP bonds), by holder sector, assets side. BOJ only publishes a stable download link for the latest quarter (no archived history at a fixed URL), so this is a snapshot, refreshed each quarter <code>fetch_jgb_holders.py</code> is re-run — the chart below covers the multi-year trend. "Other" is a residual (nonfinancial corporations, general government's own holdings, local governments, private nonprofit institutions, other financial intermediaries/auxiliaries) — each individually small.</div>
     </div>
     <div class="card full">
-      <h2>JGB holdings by holder type — the multi-year shift</h2>
-      <div class="sub">Same series as the snapshot above, plotted as % of total across the quarters BOJ's own releases happen to still be archived for. <b>Not a smooth annual series</b> — BOJ doesn't keep a stable download link for past quarters, so this uses whichever historical snapshots of their release are recoverable from the Internet Archive; the gaps between bars (2016→2017, 2019→2021, 2021→2025) are real spacing gaps in what's recoverable, not a design choice.</div>
+      <h2>JGB holdings by holder type — the multi-year shift <span style="font-size:12px;color:var(--muted);font-weight:400">· excl. T-Bills</span></h2>
+      <div class="sub">Same series as the snapshot above (item Db, "Central government securities and FILP bonds" — this excludes Treasury discount bills/T-Bills, item Da, which trade more like money-market paper), plotted as % of total, every quarter since end-1997.</div>
       <div style="height:380px;margin-top:16px"><canvas id="chart-jgb-holders-history"></canvas></div>
-      <div class="note">The BOJ's own share (blue) rose from ~39% at end-2016 to a peak of ~52% at end-March 2025 as QQE/YCC purchases continued, then <b>fell to 47.9% by end-March 2026</b> — the first sub-50% reading in 3.5 years, matching contemporaneous reporting (Nikkei Asia, 19 Mar 2026, "Bank of Japan's share of JGB holdings dips below 50%") as QT reduces net purchases. Banks' share nearly halved over the same window (21.3%→13.1%) during the QQE years, then stabilized/ticked up slightly as QT created room. Source and methodology identical to the snapshot card above (BOJ Flow of Funds, item Db). Historical points recovered via web.archive.org captures of <code>sjpre.xlsx</code>: Dec-2016, Sep-2017, Dec-2019, Dec-2021, Mar-2025, Mar-2026 (current).</div>
+      <div class="note">The BOJ's own share (gold) rose from ~11% pre-QQE (Mar-2013) to a peak of ~52% at end-March 2025 as QQE/YCC purchases continued, then <b>fell to 47.9% by end-March 2026</b> — the first sub-50% reading in 3.5 years, matching contemporaneous reporting (Nikkei Asia, 19 Mar 2026, "Bank of Japan's share of JGB holdings dips below 50%") as QT reduces net purchases. Banks' share fell from ~28% pre-QQE to ~13% as QQE purchases absorbed their JGB holdings, then stabilized/ticked up slightly as QT created room. Source: BOJ Time-Series Data Search API (<a href="https://www.stat-search.boj.or.jp/index_en.html" target="_blank">stat-search.boj.or.jp</a>), DB=FF (Flow of Funds, Quarterly), series <code>FOF_FFAS&lt;sector&gt;A311</code> ("Central government securities and FILP bonds", Stock, Assets side) — a genuine continuous quarterly series, not archive-recovered snapshots. Refresh with <code>fetch_jgb_holders_timeseries.py</code>.</div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>Household financial assets by type — the balance sheet <span id="hhAssetsStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">The household side of the same picture: Japanese households hold JGBs directly only via a small sliver of their overall savings (~2% of the JGB market, per the snapshot above) — most household savings sit in bank deposits, and most of their bond/equity exposure is intermediated through banks, insurance companies and pension funds. This chart shows what households' own ¥2,000tn+ balance sheet is actually made of.</div>
+      <div class="kpis" id="hhAssetsKpis" style="margin-top:12px"></div>
+      <div style="height:380px;margin-top:16px"><canvas id="chart-household-assets"></canvas></div>
+      <div class="note" id="hhAssetsNote">Source: BOJ Flow of Funds Accounts, Time-Series Data Search API, DB=FF, sector "Households" (FFAS430), Stock, Assets side — quarterly since end-1997. "Investment trust beneficiary certificates" and "Equity" are shown separately (both sit within the broader "Equity and investment fund shares" item) since NISA-era flows are concentrated in funds, not direct stock-picking. "Debt securities" is small and includes JGBs directly held (a sub-item, not broken out here — see the JGB holders chart above for that cut). "Other" is a residual: loans as creditor, financial derivatives, deposits money, trade credits, outward securities investment — each individually small. Refresh with <code>fetch_household_assets.py</code>.</div>
     </div>
   </div>
 
@@ -3918,7 +3925,7 @@ fetch('./jgb_holders.json?' + Date.now())
   })
   .catch(e => { console.warn('jgb_holders.json unavailable:', e); });
 
-// JGB holdings by holder type — multi-year history (recovered via web.archive.org)
+// JGB holdings by holder type — multi-year history (real quarterly time series, BOJ API)
 let _jgbHoldersHistChart = null;
 fetch('./jgb_holders_history.json?' + Date.now())
   .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
@@ -3932,27 +3939,84 @@ fetch('./jgb_holders_history.json?' + Date.now())
     const datasets = order.map(name => ({
       label: name,
       data: rows.map(r => r.total_jpy_tn ? +((r[name] || 0) / r.total_jpy_tn * 100).toFixed(1) : null),
+      borderColor: JGB_HOLDER_COLORS[name] || 'rgba(124,136,160,0.55)',
       backgroundColor: JGB_HOLDER_COLORS[name] || 'rgba(124,136,160,0.55)',
-      borderWidth: 0, stack: 'h'
+      fill: true, pointRadius: 0, borderWidth: 1, tension: 0
     }));
     if (_jgbHoldersHistChart) _jgbHoldersHistChart.destroy();
     _jgbHoldersHistChart = new Chart(cv, {
-      type: 'bar',
+      type: 'line',
       data: { labels, datasets },
       options: {
         responsive: true, maintainAspectRatio: false, animation: false,
+        interaction: { mode: 'index', intersect: false },
         plugins: {
           legend: { position: 'top', align: 'start', labels: { boxWidth: 11, boxHeight: 11, padding: 8, font: { size: 10.5 }, color: '#c7d0e0' } },
           tooltip: { callbacks: { label: c => `${c.dataset.label}: ${c.parsed.y}%` } }
         },
         scales: {
-          x: { stacked: true, grid: { display: false }, ticks: { color: '#93a1bd' } },
+          x: { stacked: true, grid: { display: false }, ticks: { color: '#93a1bd', autoSkip: true, maxTicksLimit: 16 } },
           y: { stacked: true, min: 0, max: 100, grid: { color: 'rgba(148,163,196,0.12)' }, ticks: { color: '#93a1bd', callback: v => v + '%' }, title: { display: true, text: '% of total JGBs + FILP bonds', color: '#93a1bd' } }
         }
       }
     });
   })
   .catch(e => { console.warn('jgb_holders_history.json unavailable:', e); });
+
+// Household financial assets by type — quarterly time series (BOJ Flow of Funds API)
+const HH_ASSET_COLORS = {
+  'Currency and deposits': '#5aa0e6',
+  'Insurance, pensions & standardized guarantees': '#8e7cc3',
+  'Equity': '#e2564a',
+  'Investment trust beneficiary certificates': '#d9a441',
+  'Debt securities': '#4cba7a',
+  'Other': 'rgba(124,136,160,0.55)',
+};
+let _hhAssetsChart = null;
+fetch('./household_assets.json?' + Date.now())
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(rows => {
+    if (!rows || !rows.length) return;
+    const latest = rows[rows.length - 1];
+    const statusEl = document.getElementById('hhAssetsStatus');
+    if (statusEl) statusEl.textContent = '· ' + latest.as_of;
+    const equity = latest['Equity'], itc = latest['Investment trust beneficiary certificates'];
+    const kpis = document.getElementById('hhAssetsKpis');
+    if (kpis) kpis.innerHTML = `
+      <div class="kpi"><div class="v">¥${latest.total_jpy_tn.toFixed(0)}tn</div><div class="l">Total household financial assets</div></div>
+      <div class="kpi"><div class="v">${(latest['Currency and deposits']/latest.total_jpy_tn*100).toFixed(1)}%</div><div class="l">In cash &amp; deposits</div></div>
+      <div class="kpi"><div class="v">${((equity+itc)/latest.total_jpy_tn*100).toFixed(1)}%</div><div class="l">In equity + investment trusts</div></div>
+      <div class="kpi"><div class="v">¥${latest['of which: JGBs (excl. T-Bills)'].toFixed(1)}tn</div><div class="l">Of which: JGBs held directly</div></div>`;
+    const cv = document.getElementById('chart-household-assets');
+    if (!cv) return;
+    const labels = rows.map(r => r.as_of.replace('End of ', ''));
+    const order = ['Currency and deposits','Insurance, pensions & standardized guarantees','Equity',
+      'Investment trust beneficiary certificates','Debt securities','Other'];
+    const datasets = order.map(name => ({
+      label: name,
+      data: rows.map(r => r[name]),
+      borderColor: HH_ASSET_COLORS[name], backgroundColor: HH_ASSET_COLORS[name],
+      fill: true, pointRadius: 0, borderWidth: 1, tension: 0
+    }));
+    if (_hhAssetsChart) _hhAssetsChart.destroy();
+    _hhAssetsChart = new Chart(cv, {
+      type: 'line',
+      data: { labels, datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false, animation: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { position: 'top', align: 'start', labels: { boxWidth: 11, boxHeight: 11, padding: 8, font: { size: 10.5 }, color: '#c7d0e0' } },
+          tooltip: { callbacks: { label: c => `${c.dataset.label}: ¥${c.parsed.y.toFixed(1)}tn` } }
+        },
+        scales: {
+          x: { stacked: true, grid: { display: false }, ticks: { color: '#93a1bd', autoSkip: true, maxTicksLimit: 16 } },
+          y: { stacked: true, min: 0, grid: { color: 'rgba(148,163,196,0.12)' }, ticks: { color: '#93a1bd', callback: v => '¥' + v + 'tn' }, title: { display: true, text: '¥tn', color: '#93a1bd' } }
+        }
+      }
+    });
+  })
+  .catch(e => { console.warn('household_assets.json unavailable:', e); });
 
 </script>
 </body>
