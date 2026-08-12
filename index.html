@@ -1124,18 +1124,6 @@
   <div id="tab-nisa" class="panel">
     <div class="sub" style="margin-bottom:16px">Household investment under the 少額投資非課税制度. Two layers: the <b>FSA whole-market headline</b> (official, quarterly, all institutions) and the <b>JSDA 10-firm survey</b> (timely monthly pulse + asset allocation). <span id="nisaAsof" style="color:var(--muted)"></span></div>
     <div class="kpis" id="nisaKpis"></div>
-    <div class="grid2">
-      <div class="card">
-        <h2>Cumulative purchase — whole market (FSA)</h2>
-        <div class="note">Official headline. Cumulative buys across all institutions, ¥ trillion.</div>
-        <canvas id="nisaCumChart"></canvas>
-      </div>
-      <div class="card">
-        <h2>Accounts — whole market (FSA)</h2>
-        <div class="note">Total NISA accounts, millions.</div>
-        <canvas id="nisaAcctChart"></canvas>
-      </div>
-    </div>
     <div class="card full">
       <h2>10-firm monthly gross buys <span class="npill">timely</span></h2>
       <div class="note">Top-10 securities firms (JSDA), ¥ trillion/month. Note the <b>January spike</b> each year as investors front-load the annual quota, then the fade through spring.</div>
@@ -1168,6 +1156,18 @@
       <div style="height:170px;margin-top:10px"><canvas id="navFlowIndexChart"></canvas></div>
       <div style="height:170px;margin-top:10px"><canvas id="navFlowDailyChart"></canvas></div>
       <div style="height:170px;margin-top:10px"><canvas id="navFlowRollChart"></canvas></div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h2>Cumulative purchase — whole market (FSA)</h2>
+        <div class="note">Official headline. Cumulative buys across all institutions, ¥ trillion.</div>
+        <canvas id="nisaCumChart"></canvas>
+      </div>
+      <div class="card">
+        <h2>Accounts — whole market (FSA)</h2>
+        <div class="note">Total NISA accounts, millions.</div>
+        <canvas id="nisaAcctChart"></canvas>
+      </div>
     </div>
     <div class="grid2">
       <div class="card">
