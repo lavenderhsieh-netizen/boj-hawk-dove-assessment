@@ -344,8 +344,8 @@
       <h2>JGB gross issuance plan by maturity — FY2026 vs. FY2027E <span style="font-size:12px;color:var(--muted);font-weight:400">· Nomura estimate</span></h2>
       <div class="sub">FY2026 is MOF's own plan (after the March 2026 PD meeting); FY2027 is not yet MOF's own published plan — it's Nomura's forward estimate, shown here as an illustrative early read on next fiscal year's issuance mix, not confirmed policy.</div>
       <div class="kpis" id="jgbPlanKpis" style="margin-top:12px"></div>
-      <canvas id="cJgbIssuancePlan" style="max-height:340px;margin-top:10px"></canvas>
-      <div class="note">Bars = gross issuance by bucket, ¥tn/FY. "Liquidity enhancement" = BOJ-style re-opening auctions across 3 remaining-maturity buckets (11-39y / 5-11y / 1-5y). "CT" = Climate Transition (GX) bonds, 10y + 5y tranches. 1yTB shown on an annual basis (MOF/Nomura convention shows the year's Treasury Discount Bill issuance concentrated in the March row rather than spread monthly). Annual totals cross-checked component-by-component against the underlying monthly grid (tenors, 10yJGBi, and all 4 liquidity-enhancement sub-columns each reconcile exactly to the published FY totals) before being charted — the monthly grid itself is not reproduced here. Source: Nomura, "Market issuance" (JGB market issuance plan estimate note), citing MOF; chart current as of the FY2027-initial estimate shown in that note (2026-08-12).</div>
+      <div style="overflow-x:auto;margin-top:12px"><table id="jgbPlanTable"></table></div>
+      <div class="note">Rows = gross issuance by bucket, ¥tn/FY. "Liquidity enhancement" = BOJ-style re-opening auctions across 3 remaining-maturity buckets (11-39y / 5-11y / 1-5y). "CT" = Climate Transition (GX) bonds, 10y + 5y tranches. 1yTB shown on an annual basis (MOF/Nomura convention shows the year's Treasury Discount Bill issuance concentrated in the March row rather than spread monthly). Annual totals cross-checked component-by-component against the underlying monthly grid (tenors, 10yJGBi, and all 4 liquidity-enhancement sub-columns each reconcile exactly to the published FY totals) before being tabulated — the monthly grid itself is not reproduced here. Source: Nomura, "Market issuance" (JGB market issuance plan estimate note), citing MOF; table current as of the FY2027-initial estimate shown in that note (2026-08-12).</div>
     </div>
   </div>
 
@@ -3812,12 +3812,12 @@ function initGpifChart(){
 }
 
 // JGB gross issuance plan by maturity, FY2026 vs FY2027E — Nomura estimate note (transcribed 2026-08-12)
-// Annual totals reconciled component-by-component against the note's monthly grid before charting.
+// Annual totals reconciled component-by-component against the note's monthly grid before tabulating.
+// Rendered as a table (Nomura-note layout: rows = tenor/bucket, columns = FY) rather than a chart, per HanHan's ask.
 // Runs immediately on page load (not gated behind a tab click) since it doesn't depend on fetched D data.
 (function(){
-  const GRID={color:"#2a3752"}, TICK={color:"#93a1bd",font:{size:11}};
-  const c = document.getElementById('cJgbIssuancePlan');
-  if (!c) return;
+  const t = document.getElementById('jgbPlanTable');
+  if (!t) return;
   const jp = {
     labels: ['40y','30y','20y','10y','5y','2y','TB (1y+6m)','10y JGBi','Liquidity enh.','CT (GX bonds)'],
     fy2026: [1.8, 7.2, 8.4, 31.2, 30.0, 33.6, 40.8, 1.0, 27.0, 1.0],
@@ -3829,22 +3829,16 @@ function initGpifChart(){
     <div class="kpi"><div class="v">¥${jp.fy2027Total.toFixed(1)}tn</div><div class="l">FY2027E grand total (Nomura estimate)</div></div>
     <div class="kpi"><div class="v">+¥${(jp.fy2027Total - jp.fy2026Total).toFixed(1)}tn</div><div class="l">Implied YoY change</div></div>
     <div class="kpi"><div class="v">+${(jp.fy2027[6]-jp.fy2026[6]).toFixed(1)}tn</div><div class="l">Biggest single mover: TB issuance</div></div>`;
-  new Chart(c, {
-    type: 'bar',
-    data: {
-      labels: jp.labels,
-      datasets: [
-        { label:'FY2026 (MOF plan)', data: jp.fy2026, backgroundColor:'#4a7fd9', borderRadius:3 },
-        { label:'FY2027E (Nomura est.)', data: jp.fy2027, backgroundColor:'#d9a441', borderRadius:3 },
-      ]
-    },
-    options: {
-      responsive:false, animation:false,
-      plugins:{ legend:{position:'bottom', labels:{color:'#e8edf7', boxWidth:10, font:{size:11}}},
-        tooltip:{callbacks:{label:c=>c.dataset.label+': ¥'+c.raw.toFixed(1)+'tn'}} },
-      scales:{ x:{grid:GRID, ticks:{...TICK, font:{size:10.5}}}, y:{grid:GRID, ticks:{...TICK, callback:v=>'¥'+v+'tn'}, title:{display:true, text:'¥tn, gross issuance for the fiscal year', color:'#93a1bd'}} }
-    }
-  });
+  const rows = jp.labels.map((label,i) => {
+    const a = jp.fy2026[i], b = jp.fy2027[i], d = b - a;
+    const dStr = (d>=0?'+':'') + d.toFixed(1);
+    const dColor = d>0 ? 'var(--hawk2)' : (d<0 ? 'var(--dove2)' : 'var(--muted)');
+    return `<tr><td>${label}</td><td style="text-align:right">${a.toFixed(1)}</td><td style="text-align:right">${b.toFixed(1)}</td><td style="text-align:right;color:${dColor}">${dStr}</td></tr>`;
+  }).join('');
+  const totalD = jp.fy2027Total - jp.fy2026Total;
+  const totalRow = `<tr style="font-weight:700"><td>Grand total</td><td style="text-align:right">${jp.fy2026Total.toFixed(1)}</td><td style="text-align:right">${jp.fy2027Total.toFixed(1)}</td><td style="text-align:right;color:${totalD>0?'var(--hawk2)':'var(--dove2)'}">${(totalD>=0?'+':'')+totalD.toFixed(1)}</td></tr>`;
+  t.innerHTML = `<thead><tr><th>Bucket</th><th style="text-align:right">FY2026 initial<br>(MOF plan, ¥tn)</th><th style="text-align:right">FY2027 initial<br>(Nomura est., ¥tn)</th><th style="text-align:right">Change (¥tn)</th></tr></thead>
+    <tbody>${rows}${totalRow}</tbody>`;
 })();
 
 </script>
