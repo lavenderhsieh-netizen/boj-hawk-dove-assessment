@@ -1155,6 +1155,12 @@
       <div style="height:420px;margin-top:10px"><canvas id="nisaFundFlowTSChart"></canvas></div>
     </div>
     <div class="card full">
+      <h2>How representative is the top-20? — coverage vs. industry-wide flow</h2>
+      <div class="note">Top-20 total ÷ Investment Trusts Association's industry-wide total, by month. &gt;100% months mean funds outside the top-20 saw net outflows that month — a concentration signal, not an error.</div>
+      <div class="kpis" id="nisaCoverageKpis" style="margin-top:10px"></div>
+      <div style="height:260px;margin-top:12px"><canvas id="nisaCoverageChart"></canvas></div>
+    </div>
+    <div class="card full">
       <h2 style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
         <span>Retail fund-flow proxy, classified — domestic vs. foreign equity mandate <span class="npill" id="nisaGeoMonths"></span></span>
       </h2>
@@ -3676,6 +3682,8 @@ fetch('./intervention_data.json?' + Date.now())
       return row ? conv(row.flow_bn) : null;
     }) : null;
 
+    buildNisaCoverageChart(months, totalByMonth, toushinByMonth);
+
     const shortName = f => f.length > 22 ? f.slice(0, 21) + "…" : f;
 
     if (window.__nisaFundFlowTSChart_) window.__nisaFundFlowTSChart_.destroy();
@@ -3704,6 +3712,46 @@ fetch('./intervention_data.json?' + Date.now())
         scales: {
           x: { grid: GRID, ticks: TICK },
           y: { grid: GRID, ticks: TICK, title: { display: true, text: unitLabel, color: "#93a1bd" } }
+        }
+      }
+    });
+  }
+
+  function buildNisaCoverageChart(months, totalByMonth, toushinByMonth){
+    if (!toushinByMonth) return;
+    const cov = months.map((m, i) => {
+      const t = totalByMonth[i], d = toushinByMonth[i];
+      return (t == null || d == null || d === 0) ? null : t / d * 100;
+    });
+    const vals = cov.filter(v => v != null).sort((a,b) => a-b);
+    if (vals.length) {
+      const avg = vals.reduce((s,v) => s+v, 0) / vals.length;
+      const med = vals[Math.floor(vals.length/2)];
+      document.getElementById('nisaCoverageKpis').innerHTML = [
+        { v: `${med.toFixed(0)}%`, l: 'Median coverage' },
+        { v: `${avg.toFixed(0)}%`, l: 'Average coverage' },
+        { v: `${vals[0].toFixed(0)}–${vals[vals.length-1].toFixed(0)}%`, l: 'Range' },
+      ].map(k => `<div class="kpi"><div class="v">${k.v}</div><div class="l">${k.l}</div></div>`).join('');
+    }
+    if (window.__nisaCoverageChart_) window.__nisaCoverageChart_.destroy();
+    window.__nisaCoverageChart_ = new Chart(document.getElementById('nisaCoverageChart'), {
+      type: 'line',
+      data: {
+        labels: months.map(fmtD),
+        datasets: [
+          { label: 'Coverage', data: cov, borderColor: '#d9a441', backgroundColor: '#d9a441', tension: .2, pointRadius: 2, borderWidth: 1.8, spanGaps: false },
+          { label: '100% line', data: months.map(() => 100), borderColor: 'rgba(232,237,247,.35)', borderDash: [4,3], pointRadius: 0, borderWidth: 1 }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, animation: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: c => c.dataset.label === '100% line' ? null : `${c.raw.toFixed(0)}%` } }
+        },
+        scales: {
+          x: { grid: GRID, ticks: TICK },
+          y: { grid: GRID, ticks: TICK, title: { display: true, text: '%', color: '#93a1bd' } }
         }
       }
     });
