@@ -341,11 +341,14 @@
       </table></div>
     </div>
     <div class="card full" style="margin-top:16px">
-      <h2>JGB gross issuance plan by maturity — FY2026 vs. FY2027E <span style="font-size:12px;color:var(--muted);font-weight:400">· Nomura estimate</span></h2>
+      <h2>JGB gross issuance plan by maturity — FY2026 vs. FY2027E <span style="font-size:12px;color:var(--muted);font-weight:400">· Nomura estimate, by month</span></h2>
       <div class="sub">FY2026 is MOF's own plan (after the March 2026 PD meeting); FY2027 is not yet MOF's own published plan — it's Nomura's forward estimate, shown here as an illustrative early read on next fiscal year's issuance mix, not confirmed policy.</div>
       <div class="kpis" id="jgbPlanKpis" style="margin-top:12px"></div>
-      <div style="overflow-x:auto;margin-top:12px"><table id="jgbPlanTable"></table></div>
-      <div class="note">Rows = gross issuance by bucket, ¥tn/FY. "Liquidity enhancement" = BOJ-style re-opening auctions across 3 remaining-maturity buckets (11-39y / 5-11y / 1-5y). "CT" = Climate Transition (GX) bonds, 10y + 5y tranches. 1yTB shown on an annual basis (MOF/Nomura convention shows the year's Treasury Discount Bill issuance concentrated in the March row rather than spread monthly). Annual totals cross-checked component-by-component against the underlying monthly grid (tenors, 10yJGBi, and all 4 liquidity-enhancement sub-columns each reconcile exactly to the published FY totals) before being tabulated — the monthly grid itself is not reproduced here. Source: Nomura, "Market issuance" (JGB market issuance plan estimate note), citing MOF; table current as of the FY2027-initial estimate shown in that note (2026-08-12).</div>
+      <div style="margin-top:16px;font-weight:700">FY2026 initial (after PD meeting in March 2026)</div>
+      <div style="overflow-x:auto;margin-top:8px"><table id="jgbPlanTable2026" style="font-size:12px"></table></div>
+      <div style="margin-top:20px;font-weight:700">FY2027 initial</div>
+      <div style="overflow-x:auto;margin-top:8px"><table id="jgbPlanTable2027" style="font-size:12px"></table></div>
+      <div class="note">Rows = one calendar month of gross issuance by bucket, ¥tn. "Liquidity enh." columns = BOJ-style re-opening auctions across 3 remaining-maturity buckets (11-39y / 5-11y / 1-5y); the 1-5y bucket gets a second auction in alternating months, combined into one figure here. "CT" = Climate Transition (GX) bonds, 10y + 5y tranches, shown combined. 1yTB shown lump-sum in March only (MOF/Nomura convention concentrates the year's Treasury Discount Bill issuance in that row rather than spreading it monthly). Every column's monthly figures reconcile to the published FY total (cross-checked bucket-by-bucket); Total/Grand total rows carry small ±0.1-0.3tn rounding noise vs. the sum of the displayed monthly figures, since each cell is independently rounded to 1 decimal in the source note. Source: Nomura, "Market issuance" (JGB market issuance plan estimate note), citing MOF; table current as of the FY2027-initial estimate shown in that note (2026-08-12).</div>
     </div>
   </div>
 
@@ -3811,34 +3814,71 @@ function initGpifChart(){
   });
 }
 
-// JGB gross issuance plan by maturity, FY2026 vs FY2027E — Nomura estimate note (transcribed 2026-08-12)
-// Annual totals reconciled component-by-component against the note's monthly grid before tabulating.
-// Rendered as a table (Nomura-note layout: rows = tenor/bucket, columns = FY) rather than a chart, per HanHan's ask.
+// JGB gross issuance plan by maturity, FY2026 vs FY2027E — Nomura estimate note (transcribed 2026-08-12, expanded to monthly grid 2026-08-12)
+// Full monthly grid transcribed from the Nomura note photo (zoomed/cropped for legibility) and cross-checked
+// column-by-column against every published FY total before use — see AGENTS.md for the reconciliation notes.
+// Rendered as two tables (one per FY, row = month) matching the Nomura note's own layout, per HanHan's ask.
 // Runs immediately on page load (not gated behind a tab click) since it doesn't depend on fetched D data.
 (function(){
-  const t = document.getElementById('jgbPlanTable');
-  if (!t) return;
-  const jp = {
-    labels: ['40y','30y','20y','10y','5y','2y','TB (1y+6m)','10y JGBi','Liquidity enh.','CT (GX bonds)'],
-    fy2026: [1.8, 7.2, 8.4, 31.2, 30.0, 33.6, 40.8, 1.0, 27.0, 1.0],
-    fy2027: [1.8, 7.2, 8.4, 31.2, 31.2, 34.8, 44.4, 1.0, 27.0, 1.0],
-    fy2026Total: 168.5, fy2027Total: 174.5
+  const t26 = document.getElementById('jgbPlanTable2026');
+  const t27 = document.getElementById('jgbPlanTable2027');
+  if (!t26 || !t27) return;
+  // cols: [40y, 30y, 20y, 10y, 5y, 2y, 1yTB, 10yJGBi, LE 11-39, LE 5-11, LE 1-5(combined), CT(combined), Total, Grand total]
+  const fy2026 = {
+    year0: 2026, year1: 2027,
+    rows: [
+      ['Apr', 0,   0.6, 0.7, 2.6, 2.5, 2.8, 0,    0,    0.90, 0.25, 0.65, 0,    10.1, 10.1],
+      ['May', 0.3, 0.6, 0.7, 2.6, 2.5, 2.8, 0,    0.25, 1.35, 0,    1.35, 0.25, 11.1, 11.4],
+      ['Jun', 0,   0.6, 0.7, 2.6, 2.5, 2.8, 0,    0,    0.90, 0.25, 0.65, 0,    10.1, 10.1],
+      ['Jul', 0.3, 0.6, 0.7, 2.6, 2.5, 2.8, 0,    0,    1.35, 0,    1.35, 0,    10.9, 10.9],
+      ['Aug', 0,   0.6, 0.7, 2.6, 2.5, 2.8, 0,    0.25, 0.90, 0.25, 0.65, 0.25, 10.4, 10.6],
+      ['Sep', 0.3, 0.6, 0.7, 2.6, 2.5, 2.8, 0,    0,    1.35, 0,    1.35, 0,    10.9, 10.9],
+      ['Oct', 0,   0.6, 0.7, 2.6, 2.5, 2.8, 0,    0,    0.90, 0.25, 0.65, 0,    10.1, 10.1],
+      ['Nov', 0.3, 0.6, 0.7, 2.6, 2.5, 2.8, 0,    0.25, 1.35, 0,    1.35, 0.25, 11.1, 11.4],
+      ['Dec', 0,   0.6, 0.7, 2.6, 2.5, 2.8, 0,    0,    0.90, 0.25, 0.65, 0,    10.1, 10.1],
+      ['Jan', 0.3, 0.6, 0.7, 2.6, 2.5, 2.8, 0,    0,    1.35, 0,    1.35, 0,    10.9, 10.9],
+      ['Feb', 0,   0.6, 0.7, 2.6, 2.5, 2.8, 0,    0.25, 0.90, 0.25, 0.65, 0.25, 10.4, 10.6],
+      ['Mar', 0.3, 0.6, 0.7, 2.6, 2.5, 2.8, 40.8, 0,    1.35, 0,    1.35, 0,    51.7, 51.7],
+    ],
+    total: [1.8, 7.2, 8.4, 31.2, 30.0, 33.6, 40.8, 1.0, 13.5, 1.5, 12.0, 1.0, 167.5, 168.5]
+  };
+  const fy2027 = {
+    year0: 2027, year1: 2028,
+    rows: [
+      ['Apr', 0,   0.6, 0.7, 2.6, 2.6, 2.9, 0,    0,    0.90, 0.25, 0.65, 0,    10.3, 10.3],
+      ['May', 0.3, 0.6, 0.7, 2.6, 2.6, 2.9, 0,    0.25, 1.35, 0,    1.35, 0.25, 11.3, 11.6],
+      ['Jun', 0,   0.6, 0.7, 2.6, 2.6, 2.9, 0,    0,    0.90, 0.25, 0.65, 0,    10.3, 10.3],
+      ['Jul', 0.3, 0.6, 0.7, 2.6, 2.6, 2.9, 0,    0,    1.35, 0,    1.35, 0,    11.1, 11.1],
+      ['Aug', 0,   0.6, 0.7, 2.6, 2.6, 2.9, 0,    0.25, 0.90, 0.25, 0.65, 0.25, 10.6, 10.8],
+      ['Sep', 0.3, 0.6, 0.7, 2.6, 2.6, 2.9, 0,    0,    1.35, 0,    1.35, 0,    11.1, 11.1],
+      ['Oct', 0,   0.6, 0.7, 2.6, 2.6, 2.9, 0,    0,    0.90, 0.25, 0.65, 0,    10.3, 10.3],
+      ['Nov', 0.3, 0.6, 0.7, 2.6, 2.6, 2.9, 0,    0.25, 1.35, 0,    1.35, 0.25, 11.3, 11.6],
+      ['Dec', 0,   0.6, 0.7, 2.6, 2.6, 2.9, 0,    0,    0.90, 0.25, 0.65, 0,    10.3, 10.3],
+      ['Jan', 0.3, 0.6, 0.7, 2.6, 2.6, 2.9, 0,    0,    1.35, 0,    1.35, 0,    11.1, 11.1],
+      ['Feb', 0,   0.6, 0.7, 2.6, 2.6, 2.9, 0,    0.25, 0.90, 0.25, 0.65, 0.25, 10.6, 10.8],
+      ['Mar', 0.3, 0.6, 0.7, 2.6, 2.6, 2.9, 44.4, 0,    1.35, 0,    1.35, 0,    55.5, 55.5],
+    ],
+    total: [1.8, 7.2, 8.4, 31.2, 31.2, 34.8, 44.4, 1.0, 13.5, 1.5, 12.0, 1.0, 173.5, 174.5]
   };
   document.getElementById('jgbPlanKpis').innerHTML = `
-    <div class="kpi"><div class="v">¥${jp.fy2026Total.toFixed(1)}tn</div><div class="l">FY2026 grand total (MOF plan)</div></div>
-    <div class="kpi"><div class="v">¥${jp.fy2027Total.toFixed(1)}tn</div><div class="l">FY2027E grand total (Nomura estimate)</div></div>
-    <div class="kpi"><div class="v">+¥${(jp.fy2027Total - jp.fy2026Total).toFixed(1)}tn</div><div class="l">Implied YoY change</div></div>
-    <div class="kpi"><div class="v">+${(jp.fy2027[6]-jp.fy2026[6]).toFixed(1)}tn</div><div class="l">Biggest single mover: TB issuance</div></div>`;
-  const rows = jp.labels.map((label,i) => {
-    const a = jp.fy2026[i], b = jp.fy2027[i], d = b - a;
-    const dStr = (d>=0?'+':'') + d.toFixed(1);
-    const dColor = d>0 ? 'var(--hawk2)' : (d<0 ? 'var(--dove2)' : 'var(--muted)');
-    return `<tr><td>${label}</td><td style="text-align:right">${a.toFixed(1)}</td><td style="text-align:right">${b.toFixed(1)}</td><td style="text-align:right;color:${dColor}">${dStr}</td></tr>`;
-  }).join('');
-  const totalD = jp.fy2027Total - jp.fy2026Total;
-  const totalRow = `<tr style="font-weight:700"><td>Grand total</td><td style="text-align:right">${jp.fy2026Total.toFixed(1)}</td><td style="text-align:right">${jp.fy2027Total.toFixed(1)}</td><td style="text-align:right;color:${totalD>0?'var(--hawk2)':'var(--dove2)'}">${(totalD>=0?'+':'')+totalD.toFixed(1)}</td></tr>`;
-  t.innerHTML = `<thead><tr><th>Bucket</th><th style="text-align:right">FY2026 initial<br>(MOF plan, ¥tn)</th><th style="text-align:right">FY2027 initial<br>(Nomura est., ¥tn)</th><th style="text-align:right">Change (¥tn)</th></tr></thead>
-    <tbody>${rows}${totalRow}</tbody>`;
+    <div class="kpi"><div class="v">¥${fy2026.total[13].toFixed(1)}tn</div><div class="l">FY2026 grand total (MOF plan)</div></div>
+    <div class="kpi"><div class="v">¥${fy2027.total[13].toFixed(1)}tn</div><div class="l">FY2027E grand total (Nomura estimate)</div></div>
+    <div class="kpi"><div class="v">+¥${(fy2027.total[13] - fy2026.total[13]).toFixed(1)}tn</div><div class="l">Implied YoY change</div></div>
+    <div class="kpi"><div class="v">+¥${(fy2027.total[6] - fy2026.total[6]).toFixed(1)}tn</div><div class="l">Biggest single mover: 1yTB issuance</div></div>`;
+  const colHeads = ['Month','40y','30y','20y','10y','5y','2y','1yTB','10yJGBi','LE 11-39','LE 5-11','LE 1-5','CT','Total','Grand total'];
+  function fmt(v){ return v ? v.toFixed(2).replace(/0$/,'').replace(/\.$/,'') : '–'; }
+  function renderTable(fy){
+    const head = `<thead><tr>${colHeads.map((h,i)=>`<th${i>0?' style="text-align:right"':''}>${h}</th>`).join('')}</tr></thead>`;
+    const body = fy.rows.map((r,i) => {
+      const label = i===0 ? `${fy.year0} ${r[0]}` : (r[0]==='Jan' ? `${fy.year1} ${r[0]}` : r[0]);
+      const cells = r.slice(1).map(v => `<td style="text-align:right">${fmt(v)}</td>`).join('');
+      return `<tr><td>${label}</td>${cells}</tr>`;
+    }).join('');
+    const totalRow = `<tr style="font-weight:700;border-top:2px solid var(--line)"><td>FY${fy.year0} Total</td>${fy.total.map(v=>`<td style="text-align:right">${v.toFixed(1)}</td>`).join('')}</tr>`;
+    return head + `<tbody>${body}${totalRow}</tbody>`;
+  }
+  t26.innerHTML = renderTable(fy2026);
+  t27.innerHTML = renderTable(fy2027);
 })();
 
 </script>
