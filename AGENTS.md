@@ -1,5 +1,13 @@
 # Japan Macro / BOJ Hawk-Dove Dashboard — project notes
 
+## NISA tab — USD toggle added to the fund-flow time-series chart (2026-08-12)
+
+HanHan: "For Japan nisa tab. Can I have USD option toggle as well" — the NISA tab's "Top 20 funds" snapshot chart already had a ¥/$ toggle (`nisaFundFlowCcyJpy`/`nisaFundFlowCcyUsd`, built 2026-08-11 alongside the fund-flow tracker itself); the "Top NISA funds — net monthly inflow over time" chart directly below it (same underlying Wealth Advisor data, just plotted as a time series instead of a single-month ranking) didn't have one.
+
+Added a second toggle button pair (`nisaFundFlowTSCcyJpy`/`nisaFundFlowTSCcyUsd`) to that chart's header, wired to the **same shared `nisaFundFlowCcy` state** as the snapshot chart rather than an independent one — clicking either toggle updates both button pairs and redraws both charts, so the whole NISA fund-flow section stays in one currency. `buildNisaFundFlowTSChart()` gained a `conv()` helper (divides by `nisaFxRate` when `nisaFundFlowCcy==='usd'`) applied to all three series (top-20 total, the 6 persistent-fund lines, and the Investment Trusts Association ground-truth line) plus updated axis label/tooltip formatting (`$ bn` vs `¥ bn`, 2 vs 1 decimal places — same convention as the snapshot chart). Reused the already-fetched `nisaFxRate` (loaded async from `market_data.json` when the snapshot chart first builds) rather than a second FX fetch.
+
+Verified live via `agent-browser` on `localhost:8501`: toggling either button pair switches both charts to USD and back, axis/tooltip units update correctly, both button pairs stay visually in sync, zero console errors. Confirmed on the public URL via `curl`. Committed to git.
+
 ## JGB gross issuance plan by maturity, FY2026 vs FY2027E — added 2026-08-12
 
 HanHan sent a photo of a Nomura research table ("An estimate of JGB market issuance plan", Source: MOF, Nomura) — a monthly grid by tenor/bucket for FY2026 initial and FY2027 initial. Flagged first (same category as the standing Bloomberg-terminal rule — work-related proprietary broker access, shouldn't land on a public dashboard unlabeled); she confirmed "let's include fy 27 and put Nomura estimate", i.e. proceed for this instance with clear "Nomura estimate" attribution rather than treating it as public MOF data.
