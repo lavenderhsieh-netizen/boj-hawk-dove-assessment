@@ -1151,8 +1151,14 @@
       <div style="height:640px"><canvas id="nisaFundFlowChart"></canvas></div>
     </div>
     <div class="card full">
-      <h2>Top NISA funds — net monthly inflow over time <span class="npill" id="nisaFundFlowTSMonths"></span></h2>
-      <div class="note" id="nisaFundFlowTSNote">Same Wealth Advisor source as the snapshot above, followed through time instead of ranked for a single month. Gold bars are the <b>full top-20 list's combined net inflow</b> each month (the total household-money signal); the thin colored lines are the individual funds that stayed in the top 20 in every month on file — the persistent core of NISA demand, as opposed to funds that rotate in and out of the ranking. The <b>thick white dashed line</b> is an independent ground-truth check: the Investment Trusts Association of Japan's own official monthly net-flow total across the <b>entire ~5,300-fund public stock-trust universe</b> (not just the top 20), published with a ~1-month lag. It sits consistently above the top-20 total, as expected — the top 20 are the biggest slice of NISA-driven demand, not literally all of it.</div>
+      <h2 style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+        <span>Top NISA funds — net monthly inflow over time <span class="npill" id="nisaFundFlowTSMonths"></span></span>
+        <span style="display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;font-size:12px;font-weight:600">
+          <button id="nisaFundFlowTSCcyJpy" onclick="setNisaFundFlowCcy('jpy')" style="padding:4px 12px;border:none;cursor:pointer;background:var(--ink);color:var(--bg)">¥</button>
+          <button id="nisaFundFlowTSCcyUsd" onclick="setNisaFundFlowCcy('usd')" style="padding:4px 12px;border:none;cursor:pointer;background:transparent;color:var(--ink)">$</button>
+        </span>
+      </h2>
+      <div class="note" id="nisaFundFlowTSNote">Same Wealth Advisor source as the snapshot above, followed through time instead of ranked for a single month. Gold bars are the <b>full top-20 list's combined net inflow</b> each month (the total household-money signal); the thin colored lines are the individual funds that stayed in the top 20 in every month on file — the persistent core of NISA demand, as opposed to funds that rotate in and out of the ranking. The <b>thick white dashed line</b> is an independent ground-truth check: the Investment Trusts Association of Japan's own official monthly net-flow total across the <b>entire ~5,300-fund public stock-trust universe</b> (not just the top 20), published with a ~1-month lag. It sits consistently above the top-20 total, as expected — the top 20 are the biggest slice of NISA-driven demand, not literally all of it. Currency toggle here is shared with the snapshot chart above — switching either one switches both.</div>
       <div style="height:420px;margin-top:10px"><canvas id="nisaFundFlowTSChart"></canvas></div>
     </div>
     <div class="card full">
@@ -3574,14 +3580,16 @@ fetch('./intervention_data.json?' + Date.now())
 
   window.setNisaFundFlowCcy = function(ccy){
     nisaFundFlowCcy = ccy;
-    const jpyBtn = document.getElementById('nisaFundFlowCcyJpy'), usdBtn = document.getElementById('nisaFundFlowCcyUsd');
-    if (jpyBtn && usdBtn){
-      jpyBtn.style.background = ccy === 'jpy' ? 'var(--ink)' : 'transparent';
-      jpyBtn.style.color = ccy === 'jpy' ? 'var(--bg)' : 'var(--ink)';
-      usdBtn.style.background = ccy === 'usd' ? 'var(--ink)' : 'transparent';
-      usdBtn.style.color = ccy === 'usd' ? 'var(--bg)' : 'var(--ink)';
-    }
+    ['nisaFundFlowCcyJpy','nisaFundFlowTSCcyJpy'].forEach(id => {
+      const btn = document.getElementById(id);
+      if (btn){ btn.style.background = ccy === 'jpy' ? 'var(--ink)' : 'transparent'; btn.style.color = ccy === 'jpy' ? 'var(--bg)' : 'var(--ink)'; }
+    });
+    ['nisaFundFlowCcyUsd','nisaFundFlowTSCcyUsd'].forEach(id => {
+      const btn = document.getElementById(id);
+      if (btn){ btn.style.background = ccy === 'usd' ? 'var(--ink)' : 'transparent'; btn.style.color = ccy === 'usd' ? 'var(--bg)' : 'var(--ink)'; }
+    });
     drawNisaFundFlowChart();
+    if (nisaFundFlowD) buildNisaFundFlowTSChart(nisaFundFlowD, Object.keys(nisaFundFlowD.months).sort());
   };
 
   function buildNisaFundFlowChart(fd){
@@ -3607,7 +3615,10 @@ fetch('./intervention_data.json?' + Date.now())
         const hist = M && M.fx && M.fx.history;
         if (hist && hist.length) {
           nisaFxRate = hist[hist.length - 1].value;
-          if (nisaFundFlowCcy === 'usd') drawNisaFundFlowChart();
+          if (nisaFundFlowCcy === 'usd') {
+            drawNisaFundFlowChart();
+            if (nisaFundFlowD) buildNisaFundFlowTSChart(nisaFundFlowD, Object.keys(nisaFundFlowD.months).sort());
+          }
         }
       })
       .catch(() => {});
@@ -3619,6 +3630,11 @@ fetch('./intervention_data.json?' + Date.now())
   function buildNisaFundFlowTSChart(fd, months){
     document.getElementById('nisaFundFlowTSMonths').textContent = `${fmtD(months[0])} – ${fmtD(months[months.length-1])}`;
 
+    const usd = nisaFundFlowCcy === 'usd' && nisaFxRate;
+    const conv = v => v === null || v === undefined ? null : (usd ? v / nisaFxRate : v);
+    const unitLabel = usd ? '$ bn / month' : '¥ bn / month';
+    const ccySym = usd ? '$' : '¥';
+
     // funds present in every month on file = the persistent top-20 core
     const counts = {};
     months.forEach(m => fd.months[m].forEach(r => { counts[r.fund] = (counts[r.fund]||0) + 1; }));
@@ -3626,19 +3642,19 @@ fetch('./intervention_data.json?' + Date.now())
       .sort((a,b) => counts[b] - counts[a] || (fd.months[months[months.length-1]].find(r=>r.fund===a)||{}).rank - (fd.months[months[months.length-1]].find(r=>r.fund===b)||{}).rank)
       .slice(0, 6);
 
-    const totalByMonth = months.map(m => fd.months[m].reduce((s,r) => s + r.flow_1m_100m_jpy, 0) / 10); // ¥bn
+    const totalByMonth = months.map(m => conv(fd.months[m].reduce((s,r) => s + r.flow_1m_100m_jpy, 0) / 10)); // ¥bn, converted
     const fundSeries = persistent.map((fund, i) => ({
       fund,
       values: months.map(m => {
         const row = fd.months[m].find(r => r.fund === fund);
-        return row ? row.flow_1m_100m_jpy / 10 : null;
+        return row ? conv(row.flow_1m_100m_jpy / 10) : null;
       }),
       color: NISA_TS_COLORS[i % NISA_TS_COLORS.length]
     }));
 
     const toushinByMonth = toushinD ? months.map(m => {
       const row = toushinD.series.find(r => r.date === m);
-      return row ? row.flow_bn : null;
+      return row ? conv(row.flow_bn) : null;
     }) : null;
 
     const shortName = f => f.length > 22 ? f.slice(0, 21) + "…" : f;
@@ -3664,11 +3680,11 @@ fetch('./intervention_data.json?' + Date.now())
         responsive: true, maintainAspectRatio: false, animation: false,
         plugins: {
           legend: { labels: { color: "#e8edf7", boxWidth: 12, font: { size: 10.5 } } },
-          tooltip: { callbacks: { label: c => `${c.dataset.label}: ¥${c.raw.toFixed(1)} bn` } }
+          tooltip: { callbacks: { label: c => `${c.dataset.label}: ${ccySym}${c.raw.toFixed(usd ? 2 : 1)} bn` } }
         },
         scales: {
           x: { grid: GRID, ticks: TICK },
-          y: { grid: GRID, ticks: TICK, title: { display: true, text: "¥ bn / month", color: "#93a1bd" } }
+          y: { grid: GRID, ticks: TICK, title: { display: true, text: unitLabel, color: "#93a1bd" } }
         }
       }
     });
