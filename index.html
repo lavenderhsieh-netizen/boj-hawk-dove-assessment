@@ -332,7 +332,13 @@
       <div class="sub">The demand-side counterpart to the issuance plan above — who actually holds the ¥1,000tn+ stock of JGBs and FILP bonds outstanding, not just who's buying at each auction.</div>
       <div class="kpis" id="jgbHoldersKpis" style="margin-top:12px"></div>
       <div style="height:340px;margin-top:16px"><canvas id="chart-jgb-holders"></canvas></div>
-      <div class="note" id="jgbHoldersNote">Source: BOJ Flow of Funds Accounts, Preliminary Figures — "Government bonds and treasury bills" (item Db, central government securities and FILP bonds), by holder sector, assets side. BOJ only publishes a stable download link for the latest quarter (no archived history at a fixed URL), so this is a snapshot, refreshed each quarter <code>fetch_jgb_holders.py</code> is re-run. "Other" is a residual (nonfinancial corporations, general government's own holdings, local governments, private nonprofit institutions, other financial intermediaries/auxiliaries) — each individually small.</div>
+      <div class="note" id="jgbHoldersNote">Source: BOJ Flow of Funds Accounts, Preliminary Figures — "Government bonds and treasury bills" (item Db, central government securities and FILP bonds), by holder sector, assets side. BOJ only publishes a stable download link for the latest quarter (no archived history at a fixed URL), so this is a snapshot, refreshed each quarter <code>fetch_jgb_holders.py</code> is re-run — the chart below covers the multi-year trend. "Other" is a residual (nonfinancial corporations, general government's own holdings, local governments, private nonprofit institutions, other financial intermediaries/auxiliaries) — each individually small.</div>
+    </div>
+    <div class="card full">
+      <h2>JGB holdings by holder type — the multi-year shift</h2>
+      <div class="sub">Same series as the snapshot above, plotted as % of total across the quarters BOJ's own releases happen to still be archived for. <b>Not a smooth annual series</b> — BOJ doesn't keep a stable download link for past quarters, so this uses whichever historical snapshots of their release are recoverable from the Internet Archive; the gaps between bars (2016→2017, 2019→2021, 2021→2025) are real spacing gaps in what's recoverable, not a design choice.</div>
+      <div style="height:380px;margin-top:16px"><canvas id="chart-jgb-holders-history"></canvas></div>
+      <div class="note">The BOJ's own share (blue) rose from ~39% at end-2016 to a peak of ~52% at end-March 2025 as QQE/YCC purchases continued, then <b>fell to 47.9% by end-March 2026</b> — the first sub-50% reading in 3.5 years, matching contemporaneous reporting (Nikkei Asia, 19 Mar 2026, "Bank of Japan's share of JGB holdings dips below 50%") as QT reduces net purchases. Banks' share nearly halved over the same window (21.3%→13.1%) during the QQE years, then stabilized/ticked up slightly as QT created room. Source and methodology identical to the snapshot card above (BOJ Flow of Funds, item Db). Historical points recovered via web.archive.org captures of <code>sjpre.xlsx</code>: Dec-2016, Sep-2017, Dec-2019, Dec-2021, Mar-2025, Mar-2026 (current).</div>
     </div>
   </div>
 
@@ -3911,6 +3917,42 @@ fetch('./jgb_holders.json?' + Date.now())
     });
   })
   .catch(e => { console.warn('jgb_holders.json unavailable:', e); });
+
+// JGB holdings by holder type — multi-year history (recovered via web.archive.org)
+let _jgbHoldersHistChart = null;
+fetch('./jgb_holders_history.json?' + Date.now())
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(rows => {
+    const cv = document.getElementById('chart-jgb-holders-history');
+    if (!cv || !rows || !rows.length) return;
+    const labels = rows.map(r => r.as_of.replace('End of ', ''));
+    const order = ['Bank of Japan','Banks','Insurance companies','Public pensions (incl. GPIF)',
+      'Pension funds (corporate/other)','Investment trusts','Overseas (foreign investors)','Households',
+      'Other (nonfin. corp, gov\'t, other financial intermediaries)'];
+    const datasets = order.map(name => ({
+      label: name,
+      data: rows.map(r => r.total_jpy_tn ? +((r[name] || 0) / r.total_jpy_tn * 100).toFixed(1) : null),
+      backgroundColor: JGB_HOLDER_COLORS[name] || 'rgba(124,136,160,0.55)',
+      borderWidth: 0, stack: 'h'
+    }));
+    if (_jgbHoldersHistChart) _jgbHoldersHistChart.destroy();
+    _jgbHoldersHistChart = new Chart(cv, {
+      type: 'bar',
+      data: { labels, datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false, animation: false,
+        plugins: {
+          legend: { position: 'top', align: 'start', labels: { boxWidth: 11, boxHeight: 11, padding: 8, font: { size: 10.5 }, color: '#c7d0e0' } },
+          tooltip: { callbacks: { label: c => `${c.dataset.label}: ${c.parsed.y}%` } }
+        },
+        scales: {
+          x: { stacked: true, grid: { display: false }, ticks: { color: '#93a1bd' } },
+          y: { stacked: true, min: 0, max: 100, grid: { color: 'rgba(148,163,196,0.12)' }, ticks: { color: '#93a1bd', callback: v => v + '%' }, title: { display: true, text: '% of total JGBs + FILP bonds', color: '#93a1bd' } }
+        }
+      }
+    });
+  })
+  .catch(e => { console.warn('jgb_holders_history.json unavailable:', e); });
 
 </script>
 </body>

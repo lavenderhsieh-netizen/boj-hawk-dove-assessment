@@ -1,0 +1,80 @@
+[
+  {
+    "as_of": "End of December 2016",
+    "total_jpy_tn": 958.08,
+    "Bank of Japan": 370.83,
+    "Insurance companies": 204.77,
+    "Banks": 203.58,
+    "Overseas (foreign investors)": 53.1,
+    "Public pensions (incl. GPIF)": 49.22,
+    "Pension funds (corporate/other)": 31.7,
+    "Other (nonfin. corp, gov't, other financial intermediaries)": 27.05,
+    "Households": 12.73,
+    "Investment trusts": 5.1
+  },
+  {
+    "as_of": "End of September 2017",
+    "total_jpy_tn": 978.6,
+    "Bank of Japan": 413.42,
+    "Insurance companies": 202.32,
+    "Banks": 168.84,
+    "Overseas (foreign investors)": 59.71,
+    "Public pensions (incl. GPIF)": 46.33,
+    "Other (nonfin. corp, gov't, other financial intermediaries)": 40.25,
+    "Pension funds (corporate/other)": 30.33,
+    "Households": 12.21,
+    "Investment trusts": 5.19
+  },
+  {
+    "as_of": "End of December 2019",
+    "total_jpy_tn": 1037.38,
+    "Bank of Japan": 485.19,
+    "Insurance companies": 218.91,
+    "Banks": 133.7,
+    "Overseas (foreign investors)": 78.57,
+    "Public pensions (incl. GPIF)": 42.98,
+    "Pension funds (corporate/other)": 31.79,
+    "Other (nonfin. corp, gov't, other financial intermediaries)": 23.5,
+    "Households": 13.53,
+    "Investment trusts": 9.21
+  },
+  {
+    "as_of": "End of December 2021",
+    "total_jpy_tn": 1074.23,
+    "Bank of Japan": 516.23,
+    "Insurance companies": 218.3,
+    "Banks": 122.92,
+    "Overseas (foreign investors)": 85.32,
+    "Public pensions (incl. GPIF)": 45.09,
+    "Pension funds (corporate/other)": 31.18,
+    "Other (nonfin. corp, gov't, other financial intermediaries)": 26.12,
+    "Investment trusts": 16.33,
+    "Households": 12.74
+  },
+  {
+    "as_of": "End of March 2025",
+    "total_jpy_tn": 1054.48,
+    "Bank of Japan": 545.6,
+    "Insurance companies": 179.63,
+    "Banks": 113.51,
+    "Overseas (foreign investors)": 63.32,
+    "Public pensions (incl. GPIF)": 62.98,
+    "Pension funds (corporate/other)": 31.49,
+    "Other (nonfin. corp, gov't, other financial intermediaries)": 26.72,
+    "Households": 15.86,
+    "Investment trusts": 15.37
+  },
+  {
+    "as_of": "End of March 2026",
+    "total_jpy_tn": 1013.76,
+    "Bank of Japan": 485.43,
+    "Insurance companies": 155.33,
+    "Banks": 133.28,
+    "Overseas (foreign investors)": 82.01,
+    "Public pensions (incl. GPIF)": 73.45,
+    "Pension funds (corporate/other)": 31.66,
+    "Households": 20.04,
+    "Other (nonfin. corp, gov't, other financial intermediaries)": 17.04,
+    "Investment trusts": 15.52
+  }
+]

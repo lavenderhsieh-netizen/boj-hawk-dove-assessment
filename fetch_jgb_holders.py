@@ -50,8 +50,8 @@ def cell(ws, row, col_letter):
     return v if isinstance(v, (int, float)) else 0
 
 
-def extract():
-    wb = openpyxl.load_workbook(XLSX, data_only=True)
+def extract(path=None):
+    wb = openpyxl.load_workbook(path or XLSX, data_only=True)
 
     # As-of date, e.g. "End of March 2026(Preliminary)"
     as_of = None
