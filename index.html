@@ -1142,7 +1142,7 @@
     </div>
     <div class="card full">
       <h2>Top NISA funds — net monthly inflow over time <span class="npill" id="nisaFundFlowTSMonths"></span></h2>
-      <div class="note" id="nisaFundFlowTSNote">Same Wealth Advisor source as the snapshot above, followed through time instead of ranked for a single month. Gold bars are the <b>full top-20 list's combined net inflow</b> each month (the total household-money signal); the lines are the individual funds that stayed in the top 20 in every month on file — the persistent core of NISA demand, as opposed to funds that rotate in and out of the ranking.</div>
+      <div class="note" id="nisaFundFlowTSNote">Same Wealth Advisor source as the snapshot above, followed through time instead of ranked for a single month. Gold bars are the <b>full top-20 list's combined net inflow</b> each month (the total household-money signal); the thin colored lines are the individual funds that stayed in the top 20 in every month on file — the persistent core of NISA demand, as opposed to funds that rotate in and out of the ranking. The <b>thick white dashed line</b> is an independent ground-truth check: the Investment Trusts Association of Japan's own official monthly net-flow total across the <b>entire ~5,300-fund public stock-trust universe</b> (not just the top 20), published with a ~1-month lag. It sits consistently above the top-20 total, as expected — the top 20 are the biggest slice of NISA-driven demand, not literally all of it.</div>
       <div style="height:420px;margin-top:10px"><canvas id="nisaFundFlowTSChart"></canvas></div>
     </div>
     <div class="card full">
@@ -3604,6 +3604,7 @@ fetch('./intervention_data.json?' + Date.now())
   }
 
   const NISA_TS_COLORS = ["#d9a441","#4a90d9","#e2564a","#4cba7a","#b07fd9","#e0a03e"];
+  let toushinD = null;
 
   function buildNisaFundFlowTSChart(fd, months){
     document.getElementById('nisaFundFlowTSMonths').textContent = `${fmtD(months[0])} – ${fmtD(months[months.length-1])}`;
@@ -3625,6 +3626,11 @@ fetch('./intervention_data.json?' + Date.now())
       color: NISA_TS_COLORS[i % NISA_TS_COLORS.length]
     }));
 
+    const toushinByMonth = toushinD ? months.map(m => {
+      const row = toushinD.series.find(r => r.date === m);
+      return row ? row.flow_bn : null;
+    }) : null;
+
     const shortName = f => f.length > 22 ? f.slice(0, 21) + "…" : f;
 
     if (window.__nisaFundFlowTSChart_) window.__nisaFundFlowTSChart_.destroy();
@@ -3632,11 +3638,16 @@ fetch('./intervention_data.json?' + Date.now())
       data: {
         labels: months.map(fmtD),
         datasets: [
-          { type: "bar", label: "Top-20 total", data: totalByMonth, backgroundColor: "rgba(217,164,65,.28)", borderRadius: 3, order: 2 },
+          { type: "bar", label: "Top-20 total", data: totalByMonth, backgroundColor: "rgba(217,164,65,.28)", borderRadius: 3, order: 3 },
           ...fundSeries.map(s => ({
             type: "line", label: shortName(s.fund), data: s.values, borderColor: s.color,
-            backgroundColor: s.color, tension: .2, pointRadius: 2, borderWidth: 1.6, spanGaps: false, order: 1
-          }))
+            backgroundColor: s.color, tension: .2, pointRadius: 2, borderWidth: 1.6, spanGaps: false, order: 2
+          })),
+          ...(toushinByMonth ? [{
+            type: "line", label: "Industry-wide (投信協会)", data: toushinByMonth, borderColor: "#e8edf7",
+            backgroundColor: "#e8edf7", borderDash: [6, 3], tension: .15, pointRadius: 3, pointStyle: "rectRot",
+            borderWidth: 2.2, spanGaps: false, order: 1
+          }] : [])
         ]
       },
       options: {
@@ -3672,6 +3683,14 @@ fetch('./intervention_data.json?' + Date.now())
       if (window.__nisaChartsInit) buildNisaFundFlowChart(fd);
     })
     .catch(e => console.warn('nisa_fund_flows.json unavailable:', e));
+
+  fetch('./toushin_flows.json?' + Date.now())
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(td => {
+      toushinD = td;
+      if (nisaFundFlowD) buildNisaFundFlowTSChart(nisaFundFlowD, Object.keys(nisaFundFlowD.months).sort());
+    })
+    .catch(e => console.warn('toushin_flows.json unavailable:', e));
 
   fetch('./nisa_nav_flow.json?' + Date.now())
     .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
