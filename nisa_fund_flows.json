@@ -4,7 +4,7 @@
     "source": "Wealth Advisor 投資信託への資金流出入速報 (monthly flash report)",
     "source_url": "https://www.wealthadvisor.co.jp/fund/fund_flow/summary.html",
     "unit": "JPY 100mn (億円)",
-    "note": "Top-20 funds by net monthly inflow, all public equity/balanced/bond funds (not NISA-specific, but these funds are overwhelmingly where NISA money lands — see workspace notes). Not every calendar month has a published edition; genuine gaps are left as gaps, not estimated."
+    "note": "Top-20 funds by net monthly inflow, all public equity/balanced/bond funds (not NISA-specific). Used as a partial proxy for where NISA money flows, but total flow across these 20 funds alone is comparable to or larger than published NISA-specific flow figures (JSDA/FSA), so this should NOT be read as majority-of-NISA coverage — see workspace notes. Not every calendar month has a published edition; genuine gaps are left as gaps, not estimated."
   },
   "months": {
     "2024-07": [
