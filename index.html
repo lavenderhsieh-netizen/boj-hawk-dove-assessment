@@ -1150,6 +1150,14 @@
       <div style="height:420px;margin-top:10px"><canvas id="nisaFundFlowTSChart"></canvas></div>
     </div>
     <div class="card full">
+      <h2 style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+        <span>Individual funds, classified — domestic vs. foreign equity <span class="npill" id="nisaGeoMonths"></span></span>
+      </h2>
+      <div class="note">Every fund that has appeared in the Wealth Advisor top-20 monthly-inflow list (111 distinct funds, Jul 2024–Jul 2026) classified by name into domestic-Japan equity, US equity, other-developed-ex-Japan equity, emerging-market equity, global all-country (~95% foreign/~5% Japan by MSCI ACWI weight), global/thematic funds of mixed geography, and non-equity (bonds/gold/REIT/wrap). Classification is rule-based on each fund's own stated mandate in its name (e.g. "日本株"/"日経"/"TOPIX" → domestic; "米国"/"S&P500"/"NASDAQ" → US; "先進国株式" → developed ex-Japan; "オールカントリー" → global all-country) — every one of the 111 names resolved to a category, none left unclassified. This is a <b>different universe</b> from the JSDA 41%-domestic-stock figure quoted earlier: Wealth Advisor only tracks investment-trust (fund) flows, not the direct individual-stock purchases that make up ~45% of total NISA money (growth-quota stock buys, which are mechanically ~100% domestic since NISA doesn't permit direct foreign-stock purchases) — so this chart answers "within fund flows specifically, how domestic vs. foreign," a narrower and complementary question. Read: domestic-equity funds' share of top-20 flow was near-zero through most of 2024–2025 and has risen to ~20% by mid-2026, while foreign/global-mixed equity funds remain the larger slice most months.</div>
+      <div class="kpis" id="nisaGeoKpis" style="margin-top:10px"></div>
+      <div style="height:360px;margin-top:12px"><canvas id="nisaGeoChart"></canvas></div>
+    </div>
+    <div class="card full">
       <h2 id="nisaInvTrustTitle">Portfolio investment flows by investment trust management companies</h2>
       <div class="note">The toshin-fund channel — the closest direct FX read-through of NISA-driven household money going into foreign assets, since NISA purchases largely flow through these funds. Same MoF International Transactions in Securities series as the Cross-border flows tab; history here only goes back to 2021-04 (MoF's own release history), shorter than the 2005-2026 range on a Bloomberg/Macrobond terminal.</div>
       <canvas id="cNisaInvTrust" style="max-height:340px;margin-top:12px"></canvas>
@@ -3473,6 +3481,7 @@ fetch('./intervention_data.json?' + Date.now())
         "FSA and JSDA publish as PDF (not API). The JSDA 10-firm monthly pulse refreshes on the 18th; the FSA whole-market headline is hand-updated around quarter-end.";
 
     if (nisaFundFlowD) buildNisaFundFlowChart(nisaFundFlowD);
+    if (nisaFundFlowD) buildNisaGeoChart(nisaFundFlowD);
     if (typeof xbStackedChart === 'function') xbStackedChart('cNisaInvTrust', 'nisaInvTrustTitle', 'invtrust');
     if (navFlowD) buildNavFlowChart(navFlowD);
   }
@@ -3665,6 +3674,91 @@ fetch('./intervention_data.json?' + Date.now())
     });
   }
 
+  // Fund-name-based geography classification — 111 distinct funds seen in the top-20 tracker, zero left unclassified.
+  const NISA_GEO_RULES = [
+    [/全世界株式\(除く日本\)/, 'global_ex_jp'],
+    [/オールカントリー|オール[･・]カントリー/, 'global_incl_jp'],
+    [/先進国株式|先進国株/, 'dm_ex_jp'],
+    [/先進国債券/, 'bond_foreign'],
+    [/新興国|エマージング/, 'em_eq'],
+    [/インド/, 'em_eq'],
+    [/欧州/, 'dm_ex_jp'],
+    [/米国|アメリカ|S&P500|S＆P500|NASDAQ|ナスダック|FANG/, 'us_eq'],
+    [/外国株式|外国株インデックス/, 'dm_ex_jp'],
+    [/HSBC G[･・]ターゲット利回り債券|G[･・]Hインカム債券|シュローダー好利回りCB/, 'bond_foreign'],
+    [/フィデリティ[･・]G[･・]オポチュニティ|グロース[･・]オポチュニティ|One\/ウエリントン|ティー[･・]ロウ[･・]プライス|ドナルド[･・]スミス|GS ワールド[･・]シフト|One\/フィデリティ[･・]ブルーチップ|netWIN GSテクノロジー/, 'global_mixed'],
+    [/ニッポン中小型株/, 'domestic_eq'],
+    [/楽天[･・]全米株式/, 'us_eq'],
+    [/ニュートン[･・]パワー[･・]イノベーション|東京海上[･・]宇宙関連株式|マテリアル[･・]イノベーション戦略株式|情報エレクトロニクスファンド/, 'global_mixed'],
+    [/ROBOPRO/, 'alt_wrap'],
+    [/DCマイセレクション/, 'alt_wrap'],
+    [/キャピタル[･・]G[･・]Hインカム債券/, 'bond_foreign'],
+    [/グローバル|世界(?!割安成長株[BD])/, 'global_mixed'],
+    [/世界割安成長株|世界成長株|世界業種別|世界優良企業/, 'global_mixed'],
+    [/日本株|国内株式|日経|ジャパン|TOPIX|日本新鋭|日本バリュー/, 'domestic_eq'],
+    [/国内債券/, 'bond_domestic'],
+    [/日本債券/, 'bond_domestic'],
+    [/ゴールド|純金/, 'commodity'],
+    [/リート|REIT/, 'reit'],
+    [/ヘッジファンド|ラップ|FW\)|分散/, 'alt_wrap'],
+    [/半導体/, 'global_mixed'],
+    [/ロボティクス|フィジカルAI|次世代AI/, 'global_mixed'],
+    [/インフラ/, 'alt_wrap'],
+  ];
+  function nisaGeoClassify(name){
+    for (const [re, cat] of NISA_GEO_RULES) if (re.test(name)) return cat;
+    return 'other';
+  }
+  const NISA_GEO_BUCKET = {
+    domestic_eq: 'domestic_eq', us_eq: 'foreign_eq', dm_ex_jp: 'foreign_eq', em_eq: 'foreign_eq',
+    global_ex_jp: 'foreign_eq', global_mixed: 'foreign_eq', global_incl_jp: 'global_incl_jp',
+    bond_domestic: 'non_equity', bond_foreign: 'non_equity', commodity: 'non_equity', reit: 'non_equity', alt_wrap: 'non_equity',
+  };
+  const NISA_GEO_COLORS = { domestic_eq: '#d9a441', global_incl_jp: '#5aa0e6', foreign_eq: '#e2564a', non_equity: 'rgba(148,163,196,0.35)' };
+  const NISA_GEO_LABELS = { domestic_eq: 'Domestic (Japan) equity funds', global_incl_jp: 'Global all-country (~95% foreign / ~5% Japan)', foreign_eq: 'Foreign equity funds (US / developed ex-JP / EM / global-mixed)', non_equity: 'Non-equity (bonds, gold, REIT, wrap)' };
+
+  function buildNisaGeoChart(fd){
+    const months = Object.keys(fd.months).filter(m => fd.months[m].reduce((s,r)=>s+r.flow_1m_100m_jpy,0) > 0).sort();
+    if (!months.length) return;
+    document.getElementById('nisaGeoMonths').textContent = `${fmtD(months[0])} – ${fmtD(months[months.length-1])}`;
+    const byMonth = months.map(m => {
+      const rows = fd.months[m];
+      const tot = rows.reduce((s,r)=>s+r.flow_1m_100m_jpy,0);
+      const b = { domestic_eq:0, global_incl_jp:0, foreign_eq:0, non_equity:0 };
+      rows.forEach(r => { const bk = NISA_GEO_BUCKET[nisaGeoClassify(r.fund)]; b[bk] += r.flow_1m_100m_jpy; });
+      return { tot, pct: Object.fromEntries(Object.keys(b).map(k => [k, tot ? b[k]/tot*100 : 0])) };
+    });
+    const latest = byMonth[byMonth.length - 1];
+    const kpis = document.getElementById('nisaGeoKpis');
+    if (kpis) kpis.innerHTML = `
+      <div class="kpi"><div class="v">${latest.pct.domestic_eq.toFixed(1)}%</div><div class="l">Domestic-equity funds, latest month</div></div>
+      <div class="kpi"><div class="v">${latest.pct.foreign_eq.toFixed(1)}%</div><div class="l">Foreign-equity funds (non-all-country)</div></div>
+      <div class="kpi"><div class="v">${latest.pct.global_incl_jp.toFixed(1)}%</div><div class="l">Global all-country funds</div></div>
+      <div class="kpi"><div class="v">${latest.pct.non_equity.toFixed(1)}%</div><div class="l">Non-equity (bonds/gold/REIT/wrap)</div></div>`;
+    const order = ['domestic_eq','global_incl_jp','foreign_eq','non_equity'];
+    const datasets = order.map(k => ({
+      label: NISA_GEO_LABELS[k], data: byMonth.map(b => b.pct[k]),
+      backgroundColor: NISA_GEO_COLORS[k], borderColor: NISA_GEO_COLORS[k], fill: true, pointRadius: 0, borderWidth: 1, tension: 0
+    }));
+    if (window.__nisaGeoChart_) window.__nisaGeoChart_.destroy();
+    window.__nisaGeoChart_ = new Chart(document.getElementById('nisaGeoChart'), {
+      type: 'line',
+      data: { labels: months.map(fmtD), datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false, animation: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { position: 'top', align: 'start', labels: { boxWidth: 11, boxHeight: 11, padding: 8, font: { size: 10.5 }, color: '#e8edf7' } },
+          tooltip: { callbacks: { label: c => `${c.dataset.label}: ${c.parsed.y.toFixed(1)}%` } }
+        },
+        scales: {
+          x: { stacked: true, grid: GRID, ticks: TICK },
+          y: { stacked: true, min: 0, max: 100, grid: GRID, ticks: { ...TICK, callback: v => v + '%' }, title: { display: true, text: '% of top-20 fund inflow that month', color: '#93a1bd' } }
+        }
+      }
+    });
+  }
+
   fetch('./nisa_data.json?' + Date.now())
     .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
     .then(D => {
@@ -3681,7 +3775,7 @@ fetch('./intervention_data.json?' + Date.now())
     .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
     .then(fd => {
       nisaFundFlowD = fd;
-      if (window.__nisaChartsInit) buildNisaFundFlowChart(fd);
+      if (window.__nisaChartsInit) { buildNisaFundFlowChart(fd); buildNisaGeoChart(fd); }
     })
     .catch(e => console.warn('nisa_fund_flows.json unavailable:', e));
 
