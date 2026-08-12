@@ -1108,13 +1108,21 @@
     </div>
     <div class="card full">
       <h2 style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
-        <span>Top 20 funds by net monthly inflow <span class="npill" id="nisaFundFlowMonth"></span></span>
-        <span style="display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;font-size:12px;font-weight:600">
-          <button id="nisaFundFlowCcyJpy" onclick="setNisaFundFlowCcy('jpy')" style="padding:4px 12px;border:none;cursor:pointer;background:var(--ink);color:var(--bg)">¥</button>
-          <button id="nisaFundFlowCcyUsd" onclick="setNisaFundFlowCcy('usd')" style="padding:4px 12px;border:none;cursor:pointer;background:transparent;color:var(--ink)">$</button>
+        <span id="nisaFundFlowTitle">Top 20 funds by net monthly inflow <span class="npill" id="nisaFundFlowMonth"></span></span>
+        <span style="display:inline-flex;gap:8px;flex-wrap:wrap">
+          <span style="display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;font-size:12px;font-weight:600">
+            <button id="nisaFundFlowHz1m" onclick="setNisaFundFlowHorizon('1m',this)" style="padding:4px 10px;border:none;cursor:pointer;background:var(--ink);color:var(--bg)">1M</button>
+            <button id="nisaFundFlowHz3m" onclick="setNisaFundFlowHorizon('3m',this)" style="padding:4px 10px;border:none;cursor:pointer;background:transparent;color:var(--ink)">3M</button>
+            <button id="nisaFundFlowHz6m" onclick="setNisaFundFlowHorizon('6m',this)" style="padding:4px 10px;border:none;cursor:pointer;background:transparent;color:var(--ink)">6M</button>
+            <button id="nisaFundFlowHz1y" onclick="setNisaFundFlowHorizon('1y',this)" style="padding:4px 10px;border:none;cursor:pointer;background:transparent;color:var(--ink)">1Y</button>
+          </span>
+          <span style="display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;font-size:12px;font-weight:600">
+            <button id="nisaFundFlowCcyJpy" onclick="setNisaFundFlowCcy('jpy')" style="padding:4px 12px;border:none;cursor:pointer;background:var(--ink);color:var(--bg)">¥</button>
+            <button id="nisaFundFlowCcyUsd" onclick="setNisaFundFlowCcy('usd')" style="padding:4px 12px;border:none;cursor:pointer;background:transparent;color:var(--ink)">$</button>
+          </span>
         </span>
       </h2>
-      <div class="note">Wealth Advisor's monthly fund-flow flash report — the practical way to see NISA-driven concentration without tracking all ~2,700 eligible funds. Not NISA-specific, but these are overwhelmingly where NISA money lands. <span id="nisaFundFlowGapNote"></span></div>
+      <div class="note">Wealth Advisor's monthly fund-flow flash report — the practical way to see NISA-driven concentration without tracking all ~2,700 eligible funds. Not NISA-specific, but these are overwhelmingly where NISA money lands. 1M/3M/6M/1Y re-ranks and re-sizes the same 20 funds by that trailing window's own cumulative net inflow (as reported in the same source PDF) — it does not change which 20 funds are shown, since the universe itself is fixed to the latest month's top-20-by-1-month list. <span id="nisaFundFlowGapNote"></span></div>
       <div style="height:640px"><canvas id="nisaFundFlowChart"></canvas></div>
     </div>
     <div class="card full">
@@ -3483,14 +3491,17 @@ fetch('./intervention_data.json?' + Date.now())
     });
   }
 
-  let nisaFundFlowRows = null, nisaFundFlowChart_ = null, nisaFundFlowCcy = 'jpy', nisaFxRate = null;
+  let nisaFundFlowRows = null, nisaFundFlowChart_ = null, nisaFundFlowCcy = 'jpy', nisaFxRate = null, nisaFundFlowHorizon = '1m';
+  const NISA_HZ_LABEL = {'1m':'1-month','3m':'3-month','6m':'6-month','1y':'1-year'};
+  const NISA_HZ_TITLE = {'1m':'net monthly inflow','3m':'net 3-month inflow','6m':'net 6-month inflow','1y':'net 1-year inflow'};
 
   function drawNisaFundFlowChart(){
     if (!nisaFundFlowRows) return;
-    const rows = nisaFundFlowRows;
+    const field = 'flow_' + nisaFundFlowHorizon + '_100m_jpy';
+    const rows = [...nisaFundFlowRows].sort((a, b) => (b[field] || 0) - (a[field] || 0));
     const usd = nisaFundFlowCcy === 'usd' && nisaFxRate;
-    const toUnit = r => usd ? (r.flow_1m_100m_jpy / 100) / nisaFxRate : r.flow_1m_100m_jpy / 100;
-    const unitLabel = usd ? '$ billion / month' : '¥ billion / month';
+    const toUnit = r => usd ? (r[field] / 100) / nisaFxRate : r[field] / 100;
+    const unitLabel = (usd ? '$ billion / ' : '¥ billion / ') + NISA_HZ_LABEL[nisaFundFlowHorizon] + ' window';
     const ccySym = usd ? '$' : '¥';
 
     if (nisaFundFlowChart_) nisaFundFlowChart_.destroy();
@@ -3502,7 +3513,7 @@ fetch('./intervention_data.json?' + Date.now())
       },
       options: {
         indexAxis: "y", responsive: true, maintainAspectRatio: false, animation: false,
-        plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${ccySym}${c.raw.toFixed(usd ? 2 : 0)} bn net inflow` } } },
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${ccySym}${c.raw.toFixed(usd ? 2 : 0)} bn net inflow (${NISA_HZ_LABEL[nisaFundFlowHorizon]})` } } },
         scales: {
           x: { grid: GRID, ticks: TICK, title: { display: true, text: unitLabel, color: "#93a1bd" } },
           y: { grid: GRID, ticks: { ...TICK, font: { size: 10 }, autoSkip: false } }
@@ -3510,6 +3521,24 @@ fetch('./intervention_data.json?' + Date.now())
       }
     });
   }
+
+  window.setNisaFundFlowHorizon = function(hz, btn){
+    nisaFundFlowHorizon = hz;
+    ['nisaFundFlowHz1m','nisaFundFlowHz3m','nisaFundFlowHz6m','nisaFundFlowHz1y'].forEach(id => {
+      const b = document.getElementById(id);
+      if (!b) return;
+      const active = b === btn;
+      b.style.background = active ? 'var(--ink)' : 'transparent';
+      b.style.color = active ? 'var(--bg)' : 'var(--ink)';
+    });
+    const titleEl = document.getElementById('nisaFundFlowTitle');
+    if (titleEl) {
+      const pill = document.getElementById('nisaFundFlowMonth');
+      titleEl.innerHTML = `Top 20 funds by ${NISA_HZ_TITLE[hz]} `;
+      if (pill) titleEl.appendChild(pill);
+    }
+    drawNisaFundFlowChart();
+  };
 
   window.setNisaFundFlowCcy = function(ccy){
     nisaFundFlowCcy = ccy;
