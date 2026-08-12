@@ -1095,6 +1095,11 @@
       <canvas id="nisaMonChart"></canvas>
     </div>
     <div class="card full">
+      <h2>Cumulative NISA buys — YTD by year</h2>
+      <div class="note">Cumulative 10-firm (JSDA) gross buys within each calendar year, ¥ trillion — same "YTD line per year" read as the classic sell-side NISA-flow chart. <b>Caveat:</b> this dataset only has monthly granularity from Jan-2025 onward (top-10 securities-firm survey), so it shows 2025 vs 2026 YTD, not a multi-year 2021-2026 history — a broader MOF-sourced monthly series would be needed to extend further back.</div>
+      <canvas id="nisaCumYtdChart"></canvas>
+    </div>
+    <div class="card full">
       <h2 style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
         <span>Top 20 funds by net monthly inflow <span class="npill" id="nisaFundFlowMonth"></span></span>
         <span style="display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;font-size:12px;font-weight:600">
@@ -3397,6 +3402,24 @@ fetch('./intervention_data.json?' + Date.now())
       const jan = d => d.date.endsWith("-01");
       new Chart(document.getElementById('nisaMonChart'),{type:"bar",data:{labels:mon.map(d=>fmtD(d.date)),
         datasets:[{data:mon.map(d=>d.value/10000),backgroundColor:mon.map(d=>jan(d)?"#e2564a":"#4a7fc0"),borderRadius:3}]},options:{...baseOpts("¥ tn/mo"),animation:false}});
+
+      const byYear = {};
+      mon.forEach(d => { const [y,m]=d.date.split("-"); (byYear[y]=byYear[y]||[]).push({m:+m,v:d.value/10000}); });
+      const ytdYears = Object.keys(byYear).sort();
+      const YTD_YR_COLORS = {"2025":"#7fa8d9","2026":"#e2564a"};
+      const ytdMonthLabels = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+      const ytdDatasets = ytdYears.map(y => {
+        const arr = new Array(12).fill(null);
+        let running = 0;
+        byYear[y].sort((a,b)=>a.m-b.m).forEach(d => { running += d.v; arr[d.m-1] = +running.toFixed(2); });
+        const isLatest = y === ytdYears[ytdYears.length-1];
+        return {label:y, data:arr, borderColor:YTD_YR_COLORS[y]||"#93a1bd",
+          backgroundColor:"transparent", borderWidth:isLatest?3:2, tension:.2, pointRadius:2, spanGaps:false};
+      });
+      new Chart(document.getElementById('nisaCumYtdChart'),{type:"line",data:{labels:ytdMonthLabels,datasets:ytdDatasets},
+        options:{responsive:true,animation:false,
+          plugins:{legend:{display:true,labels:{color:"#e8edf7"}}},
+          scales:{x:{grid:GRID,ticks:TICK},y:{grid:GRID,ticks:TICK,title:{display:true,text:"¥ tn, cumulative",color:"#93a1bd"}}}}});
 
       new Chart(document.getElementById('nisaQuotaChart'),{type:"doughnut",data:{labels:["Growth quota","Tsumitate quota"],
         datasets:[{data:[alloc.growth_quota_share,alloc.tsumitate_quota_share],backgroundColor:["#e2564a","#4a90d9"],borderColor:"#171f31",borderWidth:2}]},
