@@ -327,6 +327,13 @@
       <div style="overflow-x:auto;margin-top:8px"><table id="jgbPlanTable2027" style="font-size:12px"></table></div>
       <div class="note">Rows = one calendar month of gross issuance by bucket, ¥tn. "Liquidity enh." columns = BOJ-style re-opening auctions across 3 remaining-maturity buckets (11-39y / 5-11y / 1-5y); the 1-5y bucket gets a second auction in alternating months, combined into one figure here. "CT" = Climate Transition (GX) bonds, 10y + 5y tranches, shown combined. 1yTB shown lump-sum in March only (MOF/Nomura convention concentrates the year's Treasury Discount Bill issuance in that row rather than spreading it monthly). Every column's monthly figures reconcile to the published FY total (cross-checked bucket-by-bucket); Total/Grand total rows carry small ±0.1-0.3tn rounding noise vs. the sum of the displayed monthly figures, since each cell is independently rounded to 1 decimal in the source note. Source: Nomura, "Market issuance" (JGB market issuance plan estimate note), citing MOF; table current as of the FY2027-initial estimate shown in that note (2026-08-12).</div>
     </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>JGB holdings by holder type — who owns the market? <span id="jgbHoldersStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">The demand-side counterpart to the issuance plan above — who actually holds the ¥1,000tn+ stock of JGBs and FILP bonds outstanding, not just who's buying at each auction.</div>
+      <div class="kpis" id="jgbHoldersKpis" style="margin-top:12px"></div>
+      <div style="height:340px;margin-top:16px"><canvas id="chart-jgb-holders"></canvas></div>
+      <div class="note" id="jgbHoldersNote">Source: BOJ Flow of Funds Accounts, Preliminary Figures — "Government bonds and treasury bills" (item Db, central government securities and FILP bonds), by holder sector, assets side. BOJ only publishes a stable download link for the latest quarter (no archived history at a fixed URL), so this is a snapshot, refreshed each quarter <code>fetch_jgb_holders.py</code> is re-run. "Other" is a residual (nonfinancial corporations, general government's own holdings, local governments, private nonprofit institutions, other financial intermediaries/auxiliaries) — each individually small.</div>
+    </div>
   </div>
 
   <!-- MARKETS & BONDS -->
@@ -3822,6 +3829,59 @@ function initGpifChart(){
   t26.innerHTML = renderTable(fy2026);
   t27.innerHTML = renderTable(fy2027);
 })();
+
+// JGB holdings by holder type — BOJ Flow of Funds snapshot (Auctions & fiscal tab)
+const JGB_HOLDER_COLORS = {
+  'Bank of Japan': '#d9a441',
+  'Banks': '#5aa0e6',
+  'Insurance companies': '#4cba7a',
+  'Public pensions (incl. GPIF)': '#b79ae8',
+  'Pension funds (corporate/other)': '#8e7cc3',
+  'Investment trusts': '#e08fb0',
+  'Overseas (foreign investors)': '#e2564a',
+  'Households': '#6fd1c5',
+};
+let _jgbHoldersChart = null;
+fetch('./jgb_holders.json?' + Date.now())
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(D => {
+    const statusEl = document.getElementById('jgbHoldersStatus');
+    if (statusEl) statusEl.textContent = '· ' + D.as_of;
+    const boj = D.holders.find(h => h.name === 'Bank of Japan');
+    const overseas = D.holders.find(h => h.name.startsWith('Overseas'));
+    const banks = D.holders.find(h => h.name === 'Banks');
+    const kpis = document.getElementById('jgbHoldersKpis');
+    if (kpis) kpis.innerHTML = `
+      <div class="kpi"><div class="v">¥${D.total_jpy_tn.toFixed(0)}tn</div><div class="l">Total JGBs + FILP bonds outstanding</div></div>
+      <div class="kpi"><div class="v">${boj ? boj.pct.toFixed(1) : '–'}%</div><div class="l">Held by the Bank of Japan</div></div>
+      <div class="kpi"><div class="v">${banks ? banks.pct.toFixed(1) : '–'}%</div><div class="l">Held by banks</div></div>
+      <div class="kpi"><div class="v">${overseas ? overseas.pct.toFixed(1) : '–'}%</div><div class="l">Held by foreign investors</div></div>`;
+    const cv = document.getElementById('chart-jgb-holders');
+    if (!cv) return;
+    const labels = D.holders.map(h => h.name);
+    const vals = D.holders.map(h => h.jpy_tn);
+    const colors = D.holders.map(h => JGB_HOLDER_COLORS[h.name] || 'rgba(124,136,160,0.55)');
+    if (_jgbHoldersChart) _jgbHoldersChart.destroy();
+    _jgbHoldersChart = new Chart(cv, {
+      type: 'bar',
+      data: { labels, datasets: [{ data: vals, backgroundColor: colors, borderWidth: 0, borderRadius: 3 }] },
+      options: {
+        indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: c => {
+            const h = D.holders[c.dataIndex];
+            return `¥${h.jpy_tn.toFixed(1)}tn (${h.pct}% of total)`;
+          } } }
+        },
+        scales: {
+          x: { title: { display: true, text: '¥tn', color: '#93a1bd' }, grid: { color: 'rgba(148,163,196,0.12)' }, ticks: { color: '#93a1bd' } },
+          y: { grid: { display: false }, ticks: { color: '#c7d0e0', font: { size: 11.5 } } }
+        }
+      }
+    });
+  })
+  .catch(e => { console.warn('jgb_holders.json unavailable:', e); });
 
 </script>
 </body>
