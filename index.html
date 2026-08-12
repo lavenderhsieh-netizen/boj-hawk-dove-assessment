@@ -3994,7 +3994,8 @@ fetch('./household_assets.json?' + Date.now())
       'Investment trust beneficiary certificates','Debt securities','Other'];
     const datasets = order.map(name => ({
       label: name,
-      data: rows.map(r => r[name]),
+      data: rows.map(r => r[name] / r.total_jpy_tn * 100),
+      raw: rows.map(r => r[name]),
       borderColor: HH_ASSET_COLORS[name], backgroundColor: HH_ASSET_COLORS[name],
       fill: true, pointRadius: 0, borderWidth: 1, tension: 0
     }));
@@ -4007,11 +4008,11 @@ fetch('./household_assets.json?' + Date.now())
         interaction: { mode: 'index', intersect: false },
         plugins: {
           legend: { position: 'top', align: 'start', labels: { boxWidth: 11, boxHeight: 11, padding: 8, font: { size: 10.5 }, color: '#c7d0e0' } },
-          tooltip: { callbacks: { label: c => `${c.dataset.label}: ¥${c.parsed.y.toFixed(1)}tn` } }
+          tooltip: { callbacks: { label: c => `${c.dataset.label}: ${c.parsed.y.toFixed(1)}% (¥${c.dataset.raw[c.dataIndex].toFixed(1)}tn)` } }
         },
         scales: {
           x: { stacked: true, grid: { display: false }, ticks: { color: '#93a1bd', autoSkip: true, maxTicksLimit: 16 } },
-          y: { stacked: true, min: 0, grid: { color: 'rgba(148,163,196,0.12)' }, ticks: { color: '#93a1bd', callback: v => '¥' + v + 'tn' }, title: { display: true, text: '¥tn', color: '#93a1bd' } }
+          y: { stacked: true, min: 0, max: 100, grid: { color: 'rgba(148,163,196,0.12)' }, ticks: { color: '#93a1bd', callback: v => v + '%' }, title: { display: true, text: '% of total household financial assets', color: '#93a1bd' } }
         }
       }
     });
