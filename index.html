@@ -1157,6 +1157,13 @@
       <div class="note">The toshin-fund channel — the closest direct FX read-through of NISA-driven household money going into foreign assets, since NISA purchases largely flow through these funds. Same MoF International Transactions in Securities series as the Cross-border flows tab; history here only goes back to 2021-04 (MoF's own release history), shorter than the 2005-2026 range on a Bloomberg/Macrobond terminal.</div>
       <canvas id="cNisaInvTrust" style="max-height:340px;margin-top:12px"></canvas>
     </div>
+    <div class="card full">
+      <h2>Bottom-up fund-flow proxy — 17 top NISA funds, daily NAV basis <span class="npill" id="navFlowAsOf"></span></h2>
+      <div class="note">A modelled proxy, not a reported flow: AUM-weighted composite NAV index (top) built from each fund's own daily reinvest-adjusted return, then estimated daily net flow (middle) = AUM change minus what that price return alone would explain, and its 20-trading-day rolling sum (bottom) — the one worth watching day-to-day. Real-world noise (distributions, fee timing, FX-hedge rebalancing) can look like flow on any single day; consistent sign across sessions is more trustworthy than the exact ¥ amount. Static snapshot from directly-scraped asset-manager NAV feeds (18 of the top 20 funds by inflow, 2 inaccessible — see <code>japan-nisa-tracker/fund_nav_daily/README.md</code>), not on a daily automation; re-run <code>fetch_nisa_nav_flow.py</code> to refresh. Cross-check against the "Top 20 funds" and investment-trust charts above: same underlying household-flow story, different data source and frequency.</div>
+      <div style="height:170px;margin-top:10px"><canvas id="navFlowIndexChart"></canvas></div>
+      <div style="height:170px;margin-top:10px"><canvas id="navFlowDailyChart"></canvas></div>
+      <div style="height:170px;margin-top:10px"><canvas id="navFlowRollChart"></canvas></div>
+    </div>
     <div class="grid2">
       <div class="card">
         <h2>Quota split (2026 Q1)</h2>
@@ -3433,7 +3440,7 @@ fetch('./intervention_data.json?' + Date.now())
   const baseOpts = yl => ({responsive:true,plugins:{legend:{display:false}},
     scales:{x:{grid:GRID,ticks:TICK},y:{grid:GRID,ticks:TICK,title:{display:!!yl,text:yl,color:"#93a1bd"}}}});
 
-  let nisaD = null, nisaFundFlowD = null;
+  let nisaD = null, nisaFundFlowD = null, navFlowD = null;
 
   function buildNisaTab(){
     if (window.__nisaChartsInit) return;
@@ -3492,6 +3499,34 @@ fetch('./intervention_data.json?' + Date.now())
 
     if (nisaFundFlowD) buildNisaFundFlowChart(nisaFundFlowD);
     if (typeof xbStackedChart === 'function') xbStackedChart('cNisaInvTrust', 'nisaInvTrustTitle', 'invtrust');
+    if (navFlowD) buildNavFlowChart(navFlowD);
+  }
+
+  function buildNavFlowChart(fd){
+    const s = fd.series;
+    document.getElementById('navFlowAsOf').textContent = "· " + fd.n_funds_latest + " funds · as of " + fmtD(fd.as_of);
+    const labels = s.map(d => fmtD(d.date));
+
+    new Chart(document.getElementById('navFlowIndexChart'), {
+      type: "line",
+      data: { labels, datasets: [{ data: s.map(d => d.index), borderColor: "#d9a441", backgroundColor: "rgba(217,164,65,.08)", fill: true, tension: .15, pointRadius: 0, borderWidth: 1.4 }] },
+      options: { ...baseOpts("index"), maintainAspectRatio: false, animation: false,
+        plugins: { legend: { display: false }, title: { display: true, text: "AUM-weighted composite NAV index (rebased, since Jan-24)", color: "#e8edf7", align: "start", font: { size: 12 } } } }
+    });
+
+    new Chart(document.getElementById('navFlowDailyChart'), {
+      type: "bar",
+      data: { labels, datasets: [{ data: s.map(d => d.flow_bn), backgroundColor: s.map(d => d.flow_bn >= 0 ? "#3eb87a" : "#e05c5c"), borderRadius: 1 }] },
+      options: { ...baseOpts("¥ bn/day"), maintainAspectRatio: false, animation: false,
+        plugins: { legend: { display: false }, title: { display: true, text: "Estimated daily net flow", color: "#e8edf7", align: "start", font: { size: 12 } } } }
+    });
+
+    new Chart(document.getElementById('navFlowRollChart'), {
+      type: "line",
+      data: { labels, datasets: [{ data: s.map(d => d.roll20_bn), borderColor: "#6ea8e8", backgroundColor: "rgba(110,168,232,.15)", fill: true, tension: .15, pointRadius: 0, borderWidth: 1.4 }] },
+      options: { ...baseOpts("¥ bn / 20d"), maintainAspectRatio: false, animation: false,
+        plugins: { legend: { display: false }, title: { display: true, text: `${fd.roll_window}-trading-day rolling sum — the one worth watching`, color: "#e8edf7", align: "start", font: { size: 12 } } } }
+    });
   }
 
   let nisaFundFlowRows = null, nisaFundFlowChart_ = null, nisaFundFlowCcy = 'jpy', nisaFxRate = null;
@@ -3581,6 +3616,14 @@ fetch('./intervention_data.json?' + Date.now())
       if (window.__nisaChartsInit) buildNisaFundFlowChart(fd);
     })
     .catch(e => console.warn('nisa_fund_flows.json unavailable:', e));
+
+  fetch('./nisa_nav_flow.json?' + Date.now())
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(fd => {
+      navFlowD = fd;
+      if (window.__nisaChartsInit) buildNavFlowChart(fd);
+    })
+    .catch(e => console.warn('nisa_nav_flow.json unavailable:', e));
 
   window.__buildNisaTab = buildNisaTab;
 })();
