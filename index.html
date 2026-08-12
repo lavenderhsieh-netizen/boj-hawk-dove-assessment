@@ -1107,11 +1107,15 @@
 
   <!-- NISA -->
   <div id="tab-nisa" class="panel">
-    <div class="sub" style="margin-bottom:16px">Household investment under the 少額投資非課税制度. Two layers: the <b>FSA whole-market headline</b> (official, quarterly, all institutions) and the <b>JSDA 10-firm survey</b> (timely monthly pulse + asset allocation). <span id="nisaAsof" style="color:var(--muted)"></span></div>
+    <div class="sub" style="margin-bottom:16px">Household investment under the 少額投資非課税制度. The tab combines the <b>FSA whole-market headline</b> (official, all institutions; generally semiannual — Jun-end and Dec-end releases, Mar-2025 was an ad hoc exception), the <b>JSDA 10-firm survey</b> (timely monthly pulse + asset allocation, industry-survey not whole-market), and separate retail/macro proxies for fund and cross-border flows. Proxy series are not NISA-exclusive — labeled as such throughout. <span id="nisaAsof" style="color:var(--muted)"></span></div>
+    <div class="card full" style="border-left:3px solid #d9a441;background:rgba(217,164,65,0.08)">
+      <h2 style="margin-bottom:6px">Policy Watch — JGBs and NISA</h2>
+      <div class="note"><b>Current rule: direct JGB holdings are NOT NISA-eligible.</b> Per JSDA's own NISA FAQ, deposits, government bonds, and corporate bonds are excluded from both the growth and tsumitate quotas today. Everything below is proposal-stage, not enacted law — treat status tags literally: <b>DISCUSSION</b> (Nov 2025 Diet debate on a domestic-investment quota) → <b>BILL</b> (opposition DPP's "国債NISA法案" filed to the Upper House 10 Jul 2026 — not an LDP or government bill) → Finance Minister Katayama's tone has warmed markedly since (Jul 2026) and LDP's own tax research commission has begun examining it, but the realistic legislative track per Japanese tax-policy commentary is the FY2027–29 annual tax-reform cycle, not the DPP bill passing as filed — the ruling coalition lacks an Upper House majority. Kodomo NISA (ages 0-17, tsumitate-only, launching Jan 2027) is a separate, already-confirmed change on the normal government-bill track — do not conflate the two. The single biggest unresolved design question for JGB-NISA: would JGB purchases consume the <i>existing</i> ¥3.6mn annual allowance (substitution risk away from equities/funds) or a <i>separate</i> allowance (genuinely incremental demand)?</div>
+    </div>
     <div class="kpis" id="nisaKpis"></div>
     <div class="card full">
-      <h2>10-firm monthly gross buys <span class="npill">timely</span></h2>
-      <div class="note">Top-10 securities firms (JSDA), ¥ trillion/month. Note the <b>January spike</b> each year as investors front-load the annual quota, then the fade through spring.</div>
+      <h2>10-firm monthly gross buys — seasonality <span class="npill">timely</span></h2>
+      <div class="note" id="nisaMonSeasNote">Top-10 securities firms (JSDA), ¥ trillion/month, one line per calendar year. Note the <b>January spike</b> each year as investors front-load the annual quota, then the fade through spring.</div>
       <canvas id="nisaMonChart"></canvas>
     </div>
     <div class="card full">
@@ -1121,7 +1125,7 @@
     </div>
     <div class="card full">
       <h2 style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
-        <span id="nisaFundFlowTitle">Top 20 funds by net monthly inflow <span class="npill" id="nisaFundFlowMonth"></span></span>
+        <span id="nisaFundFlowTitle">Latest-month top-20 retail funds — ranked by net monthly inflow <span class="npill" id="nisaFundFlowMonth"></span></span>
         <span style="display:inline-flex;gap:8px;flex-wrap:wrap">
           <span style="display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;font-size:12px;font-weight:600">
             <button id="nisaFundFlowHz1m" onclick="setNisaFundFlowHorizon('1m',this)" style="padding:4px 10px;border:none;cursor:pointer;background:var(--ink);color:var(--bg)">1M</button>
@@ -1135,31 +1139,32 @@
           </span>
         </span>
       </h2>
-      <div class="note">Wealth Advisor's monthly fund-flow flash report — the practical way to see NISA-driven concentration without tracking all ~2,700 eligible funds. Not NISA-specific, but these are overwhelmingly where NISA money lands. 1M/3M/6M/1Y re-ranks and re-sizes the same 20 funds by that trailing window's own cumulative net inflow (as reported in the same source PDF) — it does not change which 20 funds are shown, since the universe itself is fixed to the latest month's top-20-by-1-month list. <span id="nisaFundFlowGapNote"></span></div>
+      <div class="note"><b>Retail fund-flow proxy — NISA-sensitive, not NISA-exclusive.</b> Wealth Advisor's monthly fund-flow ranking is a useful indicator of the products attracting Japanese retail money, many of which are heavily used in NISA — but it measures total fund flow (also captures taxable-account and iDeCo purchases), not NISA-account-specific flow, and should not be read as measured NISA purchases. <b>Universe is fixed to the latest month's 1M top-20; the 3M/6M/1Y toggles only re-rank and re-size that same fixed set by their own trailing-window inflow (as reported in the same source PDF) — they do not rebuild the top-20 for that window</b>, so a fund that was large 6-12 months ago but has since dropped out of the latest month's top-20 won't appear even on the 6M/1Y views. Bars are colored by domestic-vs-foreign classification (same rule-based tagging as the "Individual funds, classified" chart below — hover a bar for its category). <span id="nisaFundFlowGapNote"></span></div>
+      <div id="nisaFundFlowLegend" style="display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin:6px 0 2px"></div>
       <div style="height:640px"><canvas id="nisaFundFlowChart"></canvas></div>
     </div>
     <div class="card full">
       <h2 style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
-        <span>Top NISA funds — net monthly inflow over time <span class="npill" id="nisaFundFlowTSMonths"></span></span>
+        <span>Major NISA-popular retail funds — net monthly inflow over time <span class="npill" id="nisaFundFlowTSMonths"></span></span>
         <span style="display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;font-size:12px;font-weight:600">
           <button id="nisaFundFlowTSCcyJpy" onclick="setNisaFundFlowCcy('jpy')" style="padding:4px 12px;border:none;cursor:pointer;background:var(--ink);color:var(--bg)">¥</button>
           <button id="nisaFundFlowTSCcyUsd" onclick="setNisaFundFlowCcy('usd')" style="padding:4px 12px;border:none;cursor:pointer;background:transparent;color:var(--ink)">$</button>
         </span>
       </h2>
-      <div class="note" id="nisaFundFlowTSNote">Same Wealth Advisor source as the snapshot above, followed through time instead of ranked for a single month. Gold bars are the <b>full top-20 list's combined net inflow</b> each month (the total household-money signal); the thin colored lines are the individual funds that stayed in the top 20 in every month on file — the persistent core of NISA demand, as opposed to funds that rotate in and out of the ranking. The <b>thick white dashed line</b> is an independent ground-truth check: the Investment Trusts Association of Japan's own official monthly net-flow total across the <b>entire ~5,300-fund public stock-trust universe</b> (not just the top 20), published with a ~1-month lag. It sits consistently above the top-20 total, as expected — the top 20 are the biggest slice of NISA-driven demand, not literally all of it. Currency toggle here is shared with the snapshot chart above — switching either one switches both.</div>
+      <div class="note" id="nisaFundFlowTSNote"><b>Fund-flow data are market-wide, not account-type-specific</b> — same Wealth Advisor retail-flow proxy as the snapshot above, followed through time instead of ranked for a single month. Gold bars are the <b>full top-20 list's combined net inflow</b> each month (a retail fund-demand signal, not a measured NISA figure); the thin colored lines are the individual funds that stayed in the top 20 in every month on file — the persistent core of retail flow, as opposed to funds that rotate in and out of the ranking. The <b>thick white dashed line</b> is an independent cross-check: the Investment Trusts Association of Japan's own official monthly net-flow total across the <b>entire ~5,300-fund public stock-trust universe</b> (not just the top 20; public investment trusts, coverage of ETFs/fund-of-funds double-counting not independently verified), published with a ~1-month lag. It sits consistently above the top-20 total, as expected — the top 20 capture an important concentration of retail fund demand in products commonly used through NISA, but this is neither exhaustive nor NISA-exclusive. Currency toggle here is shared with the snapshot chart above — switching either one switches both.</div>
       <div style="height:420px;margin-top:10px"><canvas id="nisaFundFlowTSChart"></canvas></div>
     </div>
     <div class="card full">
       <h2 style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
-        <span>Individual funds, classified — domestic vs. foreign equity <span class="npill" id="nisaGeoMonths"></span></span>
+        <span>Retail fund-flow proxy, classified — domestic vs. foreign equity mandate <span class="npill" id="nisaGeoMonths"></span></span>
       </h2>
-      <div class="note">Every fund that has appeared in the Wealth Advisor top-20 monthly-inflow list (111 distinct funds, Jul 2024–Jul 2026) classified by name into domestic-Japan equity, US equity, other-developed-ex-Japan equity, emerging-market equity, global all-country (~95% foreign/~5% Japan by MSCI ACWI weight), global/thematic funds of mixed geography, and non-equity (bonds/gold/REIT/wrap). Classification is rule-based on each fund's own stated mandate in its name (e.g. "日本株"/"日経"/"TOPIX" → domestic; "米国"/"S&P500"/"NASDAQ" → US; "先進国株式" → developed ex-Japan; "オールカントリー" → global all-country) — every one of the 111 names resolved to a category, none left unclassified. This is a <b>different universe</b> from the JSDA 41%-domestic-stock figure quoted earlier: Wealth Advisor only tracks investment-trust (fund) flows, not the direct individual-stock purchases that make up ~45% of total NISA money (growth-quota stock buys, which are mechanically ~100% domestic since NISA doesn't permit direct foreign-stock purchases) — so this chart answers "within fund flows specifically, how domestic vs. foreign," a narrower and complementary question. Read: domestic-equity funds' share of top-20 flow was near-zero through most of 2024–2025 and has risen to ~20% by mid-2026, while foreign/global-mixed equity funds remain the larger slice most months.</div>
+      <div class="note">This chart answers: <b>within the selected retail investment-trust-flow proxy, how much is associated with Japan-only, US, ex-Japan, global and other mandates?</b> Every fund that has appeared in the Wealth Advisor top-20 monthly-inflow list (111 distinct funds, Jul 2024–Jul 2026) classified by name into domestic-Japan equity, US equity, other-developed-ex-Japan equity, emerging-market equity, global all-country (~95% foreign/~5% Japan by MSCI ACWI weight — an approximation, since the Japan weight is time-varying with market cap, not a fixed constant), global/thematic funds of mixed geography, and non-equity (bonds/gold/REIT/wrap). Classification is rule-based on each fund's own stated mandate in its name (e.g. "日本株"/"日経"/"TOPIX" → domestic; "米国"/"S&P500"/"NASDAQ" → US; "先進国株式" → developed ex-Japan; "オールカントリー" → global all-country) — every one of the 111 names resolved to a category, none left unclassified, though name-only classification is a first-pass heuristic and can be imprecise for balanced/thematic/fund-of-funds products. <b>Do not use this chart alone to infer NISA's overall domestic/foreign share</b> — NISA also includes direct domestic and foreign stocks and ETFs. It is a <b>different universe</b> from the JSDA domestic/foreign direct-stock split: Wealth Advisor only tracks investment-trust (fund) flows, not direct individual-stock purchases. Growth-quota direct-stock buying is heavily domestic-tilted but <b>not mechanically 100% domestic</b> — eligible foreign-listed stocks/ETFs can also be held in NISA (JSDA's 2025 NISA White Paper: of the top 10 growth-quota stock names in 2025, 9 were domestic, 1 foreign) — so JSDA's direct domestic/foreign split should be read alongside this fund-only classification, not in place of it. Read: domestic-equity funds' share of top-20 flow was near-zero through most of 2024–2025 and has risen to ~20% by mid-2026, while foreign/global-mixed equity funds remain the larger slice most months.</div>
       <div class="kpis" id="nisaGeoKpis" style="margin-top:10px"></div>
       <div style="height:360px;margin-top:12px"><canvas id="nisaGeoChart"></canvas></div>
     </div>
     <div class="card full">
       <h2 id="nisaInvTrustTitle">Portfolio investment flows by investment trust management companies</h2>
-      <div class="note">The toshin-fund channel — the closest direct FX read-through of NISA-driven household money going into foreign assets, since NISA purchases largely flow through these funds. Same MoF International Transactions in Securities series as the Cross-border flows tab; history here only goes back to 2021-04 (MoF's own release history), shorter than the 2005-2026 range on a Bloomberg/Macrobond terminal.</div>
+      <div class="note"><b>Macro proxy, not a direct NISA FX series.</b> This MoF investment-trust-management-company outward securities series covers the fund channel through which part of NISA's foreign-asset demand is implemented — but it includes all investment-trust-management-company transactions (not tagged by account type), so it should not be interpreted as, or converted into, an implied NISA-specific FX-buying number. Same MoF International Transactions in Securities series as the Cross-border flows tab; history here only goes back to 2021-04 (MoF's own release history), shorter than the 2005-2026 range on a Bloomberg/Macrobond terminal.</div>
       <canvas id="cNisaInvTrust" style="max-height:340px;margin-top:12px"></canvas>
     </div>
     <div class="card full">
@@ -1183,13 +1188,13 @@
     </div>
     <div class="grid2">
       <div class="card">
-        <h2>Quota split (2026 Q1)</h2>
-        <div class="note">Growth quota (成長投資枠) vs tsumitate quota (つみたて投資枠), share of buys.</div>
+        <h2>Quota split — JSDA 10-firm, 2026 Q1</h2>
+        <div class="note">Growth quota (成長投資枠) vs tsumitate quota (つみたて投資枠), share of buys. JSDA 10-firm survey basis — not FSA whole-market.</div>
         <canvas id="nisaQuotaChart"></canvas>
       </div>
       <div class="card">
-        <h2>Within the growth quota</h2>
-        <div class="note">Single stocks vs investment funds.</div>
+        <h2>Within the growth quota — JSDA 10-firm, 2026 Q1</h2>
+        <div class="note">Single stocks vs investment funds. JSDA 10-firm survey basis — not FSA whole-market. Two-way split only (stocks vs funds); does not yet separate direct securities into domestic vs foreign.</div>
         <canvas id="nisaWithinChart"></canvas>
       </div>
     </div>
@@ -3435,9 +3440,31 @@ fetch('./intervention_data.json?' + Date.now())
       new Chart(document.getElementById('nisaAcctChart'),{type:"line",data:{labels:acc.map(d=>fmtD(d.date)),
         datasets:[{data:acc.map(d=>d.value/100),borderColor:"#4a90d9",backgroundColor:"rgba(74,144,217,.12)",fill:true,tension:.25,pointRadius:2}]},options:baseOpts("mn accounts")});
 
-      const jan = d => d.date.endsWith("-01");
-      new Chart(document.getElementById('nisaMonChart'),{type:"bar",data:{labels:mon.map(d=>fmtD(d.date)),
-        datasets:[{data:mon.map(d=>d.value/10000),backgroundColor:mon.map(d=>jan(d)?"#e2564a":"#4a7fc0"),borderRadius:3}]},options:{...baseOpts("¥ tn/mo"),animation:false}});
+      const NISA_MON_YR_COLORS = {2024:"#8a94ad",2025:"#4a7fc0",2026:"#e2564a"};
+      const monByYear = {};
+      mon.forEach(d => { const [y,m]=d.date.split("-"); (monByYear[y]=monByYear[y]||[])[+m-1]=d.value/10000; });
+      const monYears = Object.keys(monByYear).sort();
+      const monLabels = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+      const monCurYear = monYears[monYears.length-1];
+      const monSeasDatasets = monYears.map(y => {
+        const cur = y === monCurYear;
+        return {label:y, data:monLabels.map((_,i)=>monByYear[y][i]!=null?monByYear[y][i]:null),
+          spanGaps:false, borderColor:NISA_MON_YR_COLORS[y]||"#8a94ad", backgroundColor:"transparent",
+          borderWidth:cur?3:1.6, pointRadius:cur?3:2, tension:.15};
+      });
+      new Chart(document.getElementById('nisaMonChart'),{type:"line",data:{labels:monLabels,datasets:monSeasDatasets},
+        options:{responsive:true,animation:false,
+          plugins:{legend:{display:true,position:"top",align:"start",labels:{boxWidth:11,boxHeight:11,padding:9,font:{size:10.5},color:"#c7d0e0"}}},
+          scales:{x:{grid:GRID,ticks:TICK},y:{grid:GRID,ticks:TICK,title:{display:true,text:"¥ tn/mo",color:"#93a1bd"}}}}});
+      const monMissing = monYears.filter(y => monByYear[y].filter(v=>v!=null).length < 12);
+      const monSeasNoteEl = document.getElementById('nisaMonSeasNote');
+      if (monSeasNoteEl) {
+        monSeasNoteEl.innerHTML = `Top-10 securities firms (JSDA), ¥ trillion/month, one line per calendar year — current year bolded. Note the <b>January spike</b> each year as investors front-load the annual quota, then the fade through spring.` +
+          (monMissing.length ? ' ' + monMissing.map(y => {
+            const have = monByYear[y].map((v,i)=>v!=null?monLabels[i]:null).filter(Boolean);
+            return `<b>${y}</b> is partial (${have[0]}–${have[have.length-1]} only).`;
+          }).join(' ') : '');
+      }
 
       const byYear = {};
       mon.forEach(d => { const [y,m]=d.date.split("-"); (byYear[y]=byYear[y]||[]).push({m:+m,v:d.value/10000}); });
@@ -3515,7 +3542,7 @@ fetch('./intervention_data.json?' + Date.now())
 
   let nisaFundFlowRows = null, nisaFundFlowChart_ = null, nisaFundFlowCcy = 'jpy', nisaFxRate = null, nisaFundFlowHorizon = '1m';
   const NISA_HZ_LABEL = {'1m':'1-month','3m':'3-month','6m':'6-month','1y':'1-year'};
-  const NISA_HZ_TITLE = {'1m':'net monthly inflow','3m':'net 3-month inflow','6m':'net 6-month inflow','1y':'net 1-year inflow'};
+  const NISA_HZ_TITLE = {'1m':'net monthly inflow','3m':'trailing 3M flow (same fixed top-20 set)','6m':'trailing 6M flow (same fixed top-20 set)','1y':'trailing 1Y flow (same fixed top-20 set)'};
 
   function drawNisaFundFlowChart(){
     if (!nisaFundFlowRows) return;
@@ -3526,22 +3553,30 @@ fetch('./intervention_data.json?' + Date.now())
     const unitLabel = (usd ? '$ billion / ' : '¥ billion / ') + NISA_HZ_LABEL[nisaFundFlowHorizon] + ' window';
     const ccySym = usd ? '$' : '¥';
 
+    const geoBuckets = rows.map(r => NISA_GEO_BUCKET[nisaGeoClassify(r.fund)]);
+    const geoColors = geoBuckets.map(b => NISA_GEO_COLORS[b]);
+
     if (nisaFundFlowChart_) nisaFundFlowChart_.destroy();
     nisaFundFlowChart_ = new Chart(document.getElementById('nisaFundFlowChart'), {
       type: "bar",
       data: {
         labels: rows.map(r => r.fund.length > 28 ? r.fund.slice(0, 27) + "…" : r.fund),
-        datasets: [{ data: rows.map(toUnit), backgroundColor: "#7fb3e8", borderRadius: 3 }]
+        datasets: [{ data: rows.map(toUnit), backgroundColor: geoColors, borderRadius: 3 }]
       },
       options: {
         indexAxis: "y", responsive: true, maintainAspectRatio: false, animation: false,
-        plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${ccySym}${c.raw.toFixed(usd ? 2 : 0)} bn net inflow (${NISA_HZ_LABEL[nisaFundFlowHorizon]})` } } },
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${ccySym}${c.raw.toFixed(usd ? 2 : 0)} bn net inflow (${NISA_HZ_LABEL[nisaFundFlowHorizon]}) — ${NISA_GEO_LABELS[geoBuckets[c.dataIndex]]}` } } },
         scales: {
           x: { grid: GRID, ticks: TICK, title: { display: true, text: unitLabel, color: "#93a1bd" } },
           y: { grid: GRID, ticks: { ...TICK, font: { size: 10 }, autoSkip: false } }
         }
       }
     });
+
+    const legendEl = document.getElementById('nisaFundFlowLegend');
+    if (legendEl) legendEl.innerHTML = ['domestic_eq','global_incl_jp','foreign_eq','non_equity'].map(k =>
+      `<span style="display:inline-flex;align-items:center;gap:5px"><span style="width:9px;height:9px;border-radius:2px;background:${NISA_GEO_COLORS[k]};display:inline-block"></span>${NISA_GEO_LABELS[k]}</span>`
+    ).join('');
   }
 
   window.setNisaFundFlowHorizon = function(hz, btn){
@@ -3556,7 +3591,7 @@ fetch('./intervention_data.json?' + Date.now())
     const titleEl = document.getElementById('nisaFundFlowTitle');
     if (titleEl) {
       const pill = document.getElementById('nisaFundFlowMonth');
-      titleEl.innerHTML = `Top 20 funds by ${NISA_HZ_TITLE[hz]} `;
+      titleEl.innerHTML = `Latest-month top-20 retail funds — ranked by ${NISA_HZ_TITLE[hz]} `;
       if (pill) titleEl.appendChild(pill);
     }
     drawNisaFundFlowChart();
