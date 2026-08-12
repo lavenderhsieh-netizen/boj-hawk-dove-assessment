@@ -1,5 +1,9 @@
 # Japan Macro / BOJ Hawk-Dove Dashboard — project notes
 
+## News tab removed (2026-08-12)
+
+HanHan: "We can remove Japan News tab." Removed the tab button, its `#tab-news` panel (headlines list + tag filter buttons), and all supporting JS (`TAG_LABELS`, `_allNews`, `renderNews()`, `paintNews()`, the `renderNews(M)` call in the market_data.json load chain, and the `newsList` fallback text on fetch failure) plus the orphaned `.news-list`/`.ni`/`.ntag*`/`.news-filters`/`.nf` CSS rules from `index.html`. **Left the underlying data pull alone** — `fetch_market.py`'s `fetch_news()` (Google News RSS, EN + JA queries) still runs and still writes `market_data.json → news`, since `validate_data.py` checks for it and nothing else on the dashboard depends on removing it; if HanHan later wants the fetch itself stopped too, that's a separate follow-up (would also need to relax `validate_data.py`'s news-emptiness check). Checkpointed to git before the edit (standing safety-net rule for large `index.html` edits) and committed after. Verified live via `agent-browser` on the public URL: News button gone from the nav, all other tabs intact, zero console errors.
+
 ## NISA tab — USD toggle added to the fund-flow time-series chart (2026-08-12)
 
 HanHan: "For Japan nisa tab. Can I have USD option toggle as well" — the NISA tab's "Top 20 funds" snapshot chart already had a ¥/$ toggle (`nisaFundFlowCcyJpy`/`nisaFundFlowCcyUsd`, built 2026-08-11 alongside the fund-flow tracker itself); the "Top NISA funds — net monthly inflow over time" chart directly below it (same underlying Wealth Advisor data, just plotted as a time series instead of a single-month ranking) didn't have one.
