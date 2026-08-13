@@ -286,7 +286,7 @@
         <thead><tr><th>Member</th><th>Role</th><th>Tenure</th><th>Dissents</th><th>Voting record in window</th><th>Leaning</th></tr></thead>
         <tbody id="boardBody"></tbody>
       </table></div>
-      <div class="note">Dissent counts cover MPM votes July 2024 – present (rate decisions plus the June 2025 JGB-taper vote). Greyed rows = departed members.</div>
+      <div class="note">Dissents cover MPM votes Jul 2024–present (rate decisions + Jun 2025 JGB-taper vote). Greyed rows = departed members.</div>
     </div>
   </div>
 
@@ -298,8 +298,8 @@
         <thead><tr><th>Date</th><th>Type</th><th>Event</th><th>Relates to</th><th>Notes</th></tr></thead>
         <tbody id="calBody"></tbody>
       </table></div>
-      <div class="note" style="margin-top:10px"><b style="color:#b79ae8">Board term expiries</b> (last votable MPM before date): Tamura &amp; Takata <b>23 Jul 2027</b> · Uchida &amp; Himino (Dep. Gov) 19 Mar 2028 · Ueda (Gov) 8 Apr 2028 · Koeda 25 Mar 2030 · Masu 30 Jun 2030 · Asada 31 Mar 2031 · Sato 29 Jun 2031.</div>
-      <div class="note">Sources: <a href="https://www.boj.or.jp/en/mopo/mpmsche_minu/index.htm" target="_blank">BOJ MPM schedule</a> · <a href="https://www.boj.or.jp/en/statistics/tk/index.htm" target="_blank">BOJ Tankan schedule</a>. Outlook Reports: Jan/Apr/Jul/Oct; Tankan: ~Apr 1/Jul 1/Oct 1/mid-Dec.</div>
+      <div class="note" style="margin-top:10px"><b style="color:#b79ae8">Board term expiries</b>: Tamura &amp; Takata <b>23 Jul 2027</b> · Uchida &amp; Himino (Dep. Gov) 19 Mar 2028 · Ueda (Gov) 8 Apr 2028 · Koeda 25 Mar 2030 · Masu 30 Jun 2030 · Asada 31 Mar 2031 · Sato 29 Jun 2031.</div>
+      <div class="note">Sources: <a href="https://www.boj.or.jp/en/mopo/mpmsche_minu/index.htm" target="_blank">BOJ MPM schedule</a> · <a href="https://www.boj.or.jp/en/statistics/tk/index.htm" target="_blank">BOJ Tankan schedule</a>. Outlook: Jan/Apr/Jul/Oct; Tankan: ~Apr 1/Jul 1/Oct 1/mid-Dec.</div>
     </div>
   </div>
 
@@ -308,7 +308,7 @@
     <div class="card">
       <h2>MOF JGB auction calendar</h2>
       <div id="auctionSections"></div>
-      <div class="note">Issue amounts announced ~1 week before each auction. Source: mof.go.jp auction calendar.</div>
+      <div class="note">Issue amounts announced ~1 week before each auction. Source: mof.go.jp.</div>
     </div>
     <div class="card" style="margin-top:16px">
       <h2>Japan fiscal watchlist</h2>
@@ -325,27 +325,27 @@
       <div style="overflow-x:auto;margin-top:8px"><table id="jgbPlanTable2026" style="font-size:12px"></table></div>
       <div style="margin-top:20px;font-weight:700">FY2027 initial</div>
       <div style="overflow-x:auto;margin-top:8px"><table id="jgbPlanTable2027" style="font-size:12px"></table></div>
-      <div class="note">Rows = one month of gross issuance by bucket, ¥tn. "Liquidity enh." = BOJ-style re-opening auctions across 3 remaining-maturity buckets (1-5y/5-11y/11-39y). "CT" = Climate Transition (GX) bonds, 10y+5y combined. 1yTB shown lump-sum in March only (MOF/Nomura convention). Total rows carry ±0.1-0.3tn rounding noise. Source: Nomura "Market issuance" note, citing MOF; as of FY2027-initial estimate (2026-08-12).</div>
+      <div class="note">Rows = one month of gross issuance by bucket, ¥tn. "Liquidity enh." = re-opening auctions across 3 remaining-maturity buckets (1-5y/5-11y/11-39y); "CT" = Climate Transition (GX) bonds, 10y+5y combined; 1yTB shown lump-sum in March only. Totals carry ±0.1-0.3tn rounding noise. Source: Nomura "Market issuance" note, citing MOF; FY2027-initial estimate (2026-08-12).</div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>JGB holdings by holder type — who owns the market? <span id="jgbHoldersStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
       <div class="sub">The demand-side counterpart to the issuance plan above — who actually holds the ¥1,000tn+ stock of JGBs and FILP bonds outstanding, not just who's buying at each auction.</div>
       <div class="kpis" id="jgbHoldersKpis" style="margin-top:12px"></div>
       <div style="height:340px;margin-top:16px"><canvas id="chart-jgb-holders"></canvas></div>
-      <div class="note" id="jgbHoldersNote">Source: BOJ Flow of Funds Accounts, Preliminary Figures — "Government bonds and treasury bills" (item Db), by holder sector, assets side. Snapshot refreshed quarterly via <code>fetch_jgb_holders.py</code>. "Other" is a residual of several small sectors.</div>
+      <div class="note" id="jgbHoldersNote">Source: BOJ Flow of Funds Accounts, Preliminary Figures — "Government bonds and treasury bills" (item Db), by holder sector. Refreshed quarterly via <code>fetch_jgb_holders.py</code>. "Other" is a residual.</div>
     </div>
     <div class="card full">
       <h2>JGB holdings by holder type — the multi-year shift <span style="font-size:12px;color:var(--muted);font-weight:400">· excl. T-Bills</span></h2>
       <div class="sub">Same series as the snapshot above (item Db, "Central government securities and FILP bonds" — this excludes Treasury discount bills/T-Bills, item Da, which trade more like money-market paper), plotted as % of total, every quarter since end-1997.</div>
       <div style="height:380px;margin-top:16px"><canvas id="chart-jgb-holders-history"></canvas></div>
-      <div class="note">BOJ's own share (gold) rose from ~11% pre-QQE (Mar-2013) to a peak of ~52% (end-Mar 2025), then <b>fell to 47.9% by end-Mar 2026</b> — first sub-50% reading in 3.5 years, as QT reduces net purchases (Nikkei Asia, 19 Mar 2026). Banks' share fell from ~28% to ~13% as QQE absorbed their holdings, then ticked up slightly as QT created room. Source: BOJ Time-Series Data Search API (<a href="https://www.stat-search.boj.or.jp/index_en.html" target="_blank">stat-search.boj.or.jp</a>), DB=FF, series <code>FOF_FFAS&lt;sector&gt;A311</code>. Refresh with <code>fetch_jgb_holders_timeseries.py</code>.</div>
+      <div class="note">BOJ's share rose ~11% pre-QQE (Mar-2013) to a peak ~52% (end-Mar 2025), then <b>fell to 47.9% by end-Mar 2026</b> — first sub-50% reading in 3.5yrs as QT reduces net purchases (Nikkei Asia, 19 Mar 2026). Banks' share fell ~28%→~13% as QQE absorbed holdings, then ticked up under QT. Source: BOJ Time-Series API (<a href="https://www.stat-search.boj.or.jp/index_en.html" target="_blank">stat-search.boj.or.jp</a>), DB=FF, series <code>FOF_FFAS&lt;sector&gt;A311</code>.</div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>Household financial assets by type — the balance sheet <span id="hhAssetsStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
       <div class="sub">The household side of the same picture: Japanese households hold JGBs directly only via a small sliver of their overall savings (~2% of the JGB market, per the snapshot above) — most household savings sit in bank deposits, and most of their bond/equity exposure is intermediated through banks, insurance companies and pension funds. This chart shows what households' own ¥2,000tn+ balance sheet is actually made of.</div>
       <div class="kpis" id="hhAssetsKpis" style="margin-top:12px"></div>
       <div style="height:380px;margin-top:16px"><canvas id="chart-household-assets"></canvas></div>
-      <div class="note" id="hhAssetsNote">Source: BOJ Flow of Funds Accounts, Time-Series Data Search API, DB=FF, sector "Households" (FFAS430), Stock, Assets side — quarterly since end-1997. "Investment trust beneficiary certificates" and "Equity" are split out from the broader "Equity and investment fund shares" item since NISA-era flows concentrate in funds, not direct stock-picking. "Debt securities" includes directly-held JGBs (see JGB holders chart above for that cut). "Other" is a residual of small items. Refresh with <code>fetch_household_assets.py</code>.</div>
+      <div class="note" id="hhAssetsNote">Source: BOJ Flow of Funds Accounts, DB=FF, sector "Households" (FFAS430), Stock, Assets side — quarterly since end-1997. "Investment trust" and "Equity" are split from "Equity and investment fund shares" since NISA-era flows concentrate in funds. "Debt securities" includes directly-held JGBs. "Other" is a residual.</div>
     </div>
   </div>
 
@@ -382,7 +382,7 @@
       <div class="card">
         <h2>JGB 10Y–30Y spread <span id="jgbSpreadStatus"></span></h2>
         <canvas id="cJgbSpread" style="max-height:260px"></canvas>
-        <div class="note">30Y minus 10Y JGB yield (%). Wider spread = more term premium / steeper long end. Source: MOF daily.</div>
+        <div class="note">30Y minus 10Y JGB yield (%). Wider = more term premium/steeper long end. Source: MOF daily.</div>
       </div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;align-items:stretch">
@@ -394,7 +394,7 @@
       <div class="card" style="margin:0">
         <h2 style="min-height:44px">BOJ underlying inflation — distribution measures (yoy %) <span id="inflDistStatus"></span></h2>
         <canvas id="cInflDist" style="max-height:300px"></canvas>
-        <div class="note" style="margin-top:8px">Distribution-based core measures from the BOJ's <i>Indicators for Core CPI</i>: trimmed mean, weighted median, and mode of the cross-item price-change distribution. Source: BOJ Research (cpirev.xlsx).</div>
+        <div class="note" style="margin-top:8px">Trimmed mean, weighted median, mode of cross-item price-change distribution, from BOJ's <i>Indicators for Core CPI</i>. Source: BOJ Research (cpirev.xlsx).</div>
       </div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;align-items:stretch">
@@ -406,18 +406,13 @@
       <div class="card" style="margin:0">
         <h2 style="min-height:44px">Potential growth rate decomposition (semi-annual, y/y %) <span id="potGrowthFullStatus"></span></h2>
         <canvas id="cPotGrowthFull" style="max-height:300px"></canvas>
-        <div class="note" style="margin-top:8px">
-          Stacked bars show contributions of TFP, capital stock, hours worked, and number of employed to potential growth.
-          White line = headline potential growth rate. Source: BOJ Research Data (gap.xlsx), updated quarterly.
-        </div>
+        <div class="note" style="margin-top:8px">Stacked bars = TFP, capital stock, hours worked, employment contributions. White line = headline rate. Source: BOJ Research (gap.xlsx), quarterly.</div>
       </div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2 style="min-height:44px">Natural rate of interest (r*) — model estimates (quarterly, %) <span id="natRateStatus"></span></h2>
       <canvas id="cNatRate" style="max-height:360px"></canvas>
-      <div class="note" id="natRateNote" style="margin-top:8px">
-        Six model estimates of Japan's <b>natural rate of interest</b> — the real rate neutral to activity and prices. Shaded band = min–max across models each quarter; BOJ stresses <b>considerable dispersion</b>, so accommodation is a comprehensive judgment, not a single r*. Re-estimated after each GDP benchmark revision. Source: <a href="https://www.boj.or.jp/en/research/wps_rev/rev_2026/rev26e04.htm" target="_blank">BOJ Review 2026-E-4</a> (Chart 3), 27 Mar 2026 · <a href="https://www.boj.or.jp/en/research/wps_rev/rev_2026/data/rev26e04b.xlsx" target="_blank">data</a>.
-      </div>
+      <div class="note" id="natRateNote" style="margin-top:8px">Six model estimates of Japan's <b>natural rate of interest</b>. Shaded band = min–max; BOJ stresses <b>considerable dispersion</b>, so accommodation is a judgment call, not a single r*. Source: <a href="https://www.boj.or.jp/en/research/wps_rev/rev_2026/rev26e04.htm" target="_blank">BOJ Review 2026-E-4</a> (Chart 3), 27 Mar 2026 · <a href="https://www.boj.or.jp/en/research/wps_rev/rev_2026/data/rev26e04b.xlsx" target="_blank">data</a>.</div>
     </div>
     <div class="card" style="margin-top:16px">
       <h2>Data source status</h2>
@@ -551,7 +546,7 @@
       <div class="mbcard"><h3 id="xbTitle_life"></h3><canvas id="cXb_life"></canvas></div>
     </div>
     <div class="card full" style="margin-top:16px">
-      <div class="note">Trust a/c (pension) = structural outbound bid (GPIF & pension money); banks (banking a/c) swing with yen-hedging/repatriation; life insurers' foreign-bond appetite reads against their JGB super-long demand on the JSDA tab.</div>
+      <div class="note">Trust a/c (pension) = structural outbound bid; banks swing with yen-hedging/repatriation; life insurers' foreign-bond appetite reads against their JGB super-long demand on the JSDA tab.</div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>Seasonality — monthly net buying by fiscal year (from April)</h2>
@@ -594,7 +589,7 @@
       <h2>Japan, outward portfolio investment, sovereign bonds, net — by country <span id="bopOutTableStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
       <div class="sub">Same series and controls as the chart above, in table form — last 8 months, ¥bn. Blue = net buying, red = net selling. "Top N by size" ranks countries by the magnitude of their most recent month's value. Source: MoF Balance of Payments monthly, preliminary basis (see footnote below).</div>
       <div style="overflow-x:auto;margin-top:12px"><table id="bopOutTable" style="width:100%;border-collapse:collapse;font-size:12.5px"></table></div>
-      <div class="sub" style="margin-top:10px">Preliminary/unrevised basis: MoF occasionally revises these figures after initial release without updating the static PDF in place, so a given month can later drift from continuously-revised sell-side sources (Mizuho/Nomura/SMBC) — seen once so far (Jan-2026, ~30-35% gap), tracked closely and consistent otherwise.</div>
+      <div class="sub" style="margin-top:10px">Preliminary/unrevised basis: MoF's static PDF isn't updated after revision, so a month can later drift from continuously-revised sell-side sources — seen once (Jan-2026, ~30-35% gap), otherwise consistent.</div>
     </div>
 
     <div style="margin:1.6rem 0 .8rem;border-top:1px solid var(--line);padding-top:1.1rem">
@@ -640,7 +635,7 @@
         <canvas id="cXbWeeklyIn" style="max-height:340px;margin-top:12px"></canvas>
       </div>
     </div>
-    <div class="sub" style="margin-top:8px">Same MoF release as the monthly panels above, at <b>weekly</b> frequency, split into Equity &amp; investment fund shares vs. Long-term debt securities (Nomura's own Fig. 16/17 chart format). Positive = net buying (green-tinted area); negative = net selling / repatriation (red-tinted area). "3M rolling avg" smooths to a trailing 13-week mean (shown only once 13 weeks of history are available — no partial-window averages). Source: MoF International Transactions in Securities (Weekly; based on reports from designated major investors).</div>
+    <div class="sub" style="margin-top:8px">Same MoF release as the monthly panels above, <b>weekly</b> frequency, split Equity &amp; fund shares vs. Long-term debt. "3M rolling avg" = trailing 13-week mean (shown only once 13 weeks exist). Source: MoF International Transactions in Securities (Weekly).</div>
 
     <div style="margin:1.6rem 0 .8rem;border-top:1px solid var(--line);padding-top:1.1rem">
       <h1 style="font-size:1.05rem;color:var(--ink)">Balance of payments — overview</h1>
@@ -749,7 +744,7 @@
         </table>
       </div>
       <div class="note" id="gpifFxNote" style="margin-top:8px">Showing ¥bn (original reporting currency).</div>
-      <div class="note" style="margin-top:10px">Deviation limits are per-asset, under GPIF's Fifth Medium-Term Objectives Period policy (effective 1 Apr 2025, tightened from ±7%/±8%/±6%/±7%). GPIF also caps the <b>combined</b> bond and combined equity buckets at ±9% of the 50% target — both comfortably inside (bonds 50.07%, equities 49.93%) even as individual classes drift more. Alternative assets (real estate/PE/infrastructure) are 1.70% of the portfolio, well under the 5% ceiling. Total portfolio value rose ~¥20.5tn QoQ on strong returns plus rebalancing. Source: GPIF, "Policy Asset Mix for the Fifth Medium-Term Objectives Period."</div>
+      <div class="note" style="margin-top:10px">Deviation limits are per-asset, under GPIF's Fifth Medium-Term Objectives Period policy (effective 1 Apr 2025). GPIF also caps <b>combined</b> bonds and combined equities at ±9% of the 50% target — both comfortably inside (bonds 50.07%, equities 49.93%). Alternative assets are 1.70% of the portfolio, well under the 5% ceiling. Total portfolio value rose ~¥20.5tn QoQ on returns plus rebalancing. Source: GPIF, "Policy Asset Mix for the Fifth Medium-Term Objectives Period."</div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>Quarterly return by asset class — GPIF's own realized returns</h2>
@@ -775,7 +770,7 @@
           </tbody>
         </table>
       </div>
-      <div class="note" style="margin-top:10px">Domestic bonds is the only asset class negative in all of the last 9 quarters, reflecting BOJ's hiking cycle pushing JGB yields up (prices down) — consistent with the JGB tabs elsewhere. Foreign equities swung from GPIF's worst quarter (Q4 FY2024, −5.98%) to among its best (FY2025 full year, +27.16%) within a year. Sources: GPIF quarterly "Investment results" reports, cross-validated against FY2024/FY2025 annual summaries.</div>
+      <div class="note" style="margin-top:10px">Domestic bonds is the only asset class negative every quarter of the last 9, reflecting BOJ's hiking cycle pushing JGB yields up. Foreign equities swung from GPIF's worst quarter (Q4 FY2024, −5.98%) to among its best (FY2025 full year, +27.16%) within a year. Sources: GPIF quarterly "Investment results" reports, cross-validated against annual summaries.</div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>Long-run allocation vs. policy threshold, FY2013 – Q1 FY2026</h2>
@@ -788,7 +783,7 @@
         <div><h3 style="font-size:14px;margin-bottom:8px">Foreign bonds</h3><div style="overflow-x:auto"><canvas id="gpifFbChart" width="500" height="280"></canvas></div></div>
         <div><h3 style="font-size:14px;margin-bottom:8px">Foreign equities</h3><div style="overflow-x:auto"><canvas id="gpifFeChart" width="500" height="280"></canvas></div></div>
       </div>
-      <div class="note" style="margin-top:12px">Domestic bonds has spent almost this entire 13-year window below its policy target as GPIF reallocated toward equities — it briefly touched the top of its 2014-regime band (35% ±10%) in FY2014-15 but has undershot the 25% target every year since the 2020 revision. The other three classes have tracked close to target throughout — domestic bonds is where the story is. Sources: GPIF annual reports and quarterly "Investment results" PDFs (gpif.go.jp); policy target/band figures from GPIF's own "Policy Asset Mix" PDFs.</div>
+      <div class="note" style="margin-top:12px">Domestic bonds has spent almost this entire 13-year window below its policy target as GPIF reallocated toward equities — undershot the 25% target every year since the 2020 revision. The other three classes have tracked close to target throughout. Sources: GPIF annual reports and quarterly "Investment results" PDFs (gpif.go.jp).</div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>Q1 FY2026 return by asset class — reference index vs. GPIF's realized return</h2>
@@ -806,7 +801,7 @@
           </tbody>
         </table>
       </div>
-      <div class="note" style="margin-top:10px">GPIF tracks every one of its own benchmarks closely, as expected for a near-passive mandate — all four asset classes are within ~0.6pp of their reference index, consistent with fees/timing/light hedging rather than active positioning. Source: GPIF Q1 FY2026 quarterly report, page 6 ("Reference index: 1Q of fiscal 2026"), gpif.go.jp.</div>
+      <div class="note" style="margin-top:10px">GPIF tracks its own benchmarks closely, as expected for a near-passive mandate — all four classes are within ~0.6pp of their reference index, consistent with fees/timing/light hedging. Source: GPIF Q1 FY2026 quarterly report, page 6, gpif.go.jp.</div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>Basic Portfolio revision process — governance &amp; approval flow</h2>
@@ -832,7 +827,7 @@
           <div class="gpif-step" style="background:var(--card2);border-color:var(--accent)"><div class="gpif-badge" style="background:var(--ink);color:var(--bg)">8</div><div><b>New Basic Portfolio becomes effective</b></div></div>
         </div>
       </div>
-      <div class="note" style="margin-top:12px">Sourced from GPIF's own "Medium-Term Objectives" and "Operation Policy" documents (gpif.go.jp/en/info/) and Japan's Act on General Rules for Incorporated Administrative Agencies (sets MHLW's fiduciary duty). Reuters (13 Jul, 6 Aug 2026): as of Aug 2026, a formal Basic Portfolio review is not imminent — the near-term lever is GPIF shifting within existing permissible ranges, without triggering this full chain.</div>
+      <div class="note" style="margin-top:12px">Sourced from GPIF's "Medium-Term Objectives" and "Operation Policy" documents (gpif.go.jp/en/info/). Reuters (13 Jul, 6 Aug 2026): as of Aug 2026 a formal Basic Portfolio review isn't imminent — the near-term lever is shifting within existing permissible ranges, without triggering this full chain.</div>
     </div>
   </div>
 
@@ -869,7 +864,7 @@
     </div>
     <div class="card full">
       <h2>Intervention episodes — official/estimate status, ¥ &amp; approx. US$, effectiveness</h2>
-      <div class="sub">Episode/campaign subtotals (not individual daily ops — see the day-by-day table below). <b>Data status</b> distinguishes MOF-confirmed official figures from settlement-based market estimates — settlement estimates are <i>not</i> final MOF figures until MOF's quarterly release confirms them. All US$ amounts are approximate conversions at contemporaneous USD/JPY (MOF only publishes yen amounts) — never official MOF figures in their own right. <b>USD/JPY before → after</b> = the last close strictly before the episode's first operation date vs. the close ~5 trading days after its last operation date, with the resulting % change (negative = yen strengthened); only available for episodes with an exact start/end date — most pre-2022 episodes are recorded as month-level campaigns with no single before/after anchor day, shown as "—".</div>
+      <div class="sub">Episode/campaign subtotals (not individual daily ops — see day-by-day table below). <b>Data status</b> distinguishes MOF-confirmed official figures from settlement-based market estimates, which aren't final until MOF's quarterly release confirms them. All US$ amounts are approximate conversions at contemporaneous USD/JPY — MOF only publishes yen. <b>USD/JPY before → after</b> = last close before the episode's first op vs. close ~5 trading days after its last op; only available with an exact start/end date — most pre-2022 episodes are month-level campaigns, shown as "—".</div>
       <div style="overflow-x:auto;margin-top:10px">
       <table id="ivEpTable" style="width:100%;border-collapse:collapse;font-size:12.5px;table-layout:fixed">
         <colgroup>
@@ -910,7 +905,7 @@
         <tbody id="ivOpBody"></tbody>
       </table>
       </div>
-      <div class="note">US$bn = MOF's published yen amount converted at that day's USD/JPY close (not an MOF-published figure itself). Curated reference dataset, not on daily auto-refresh — MOF's official day-by-day data releases quarterly with a ~3 month lag. Updated by hand on new episodes or fresh MOF breakdowns.</div>
+      <div class="note">US$bn = MOF's yen amount converted at that day's USD/JPY close, not an MOF figure itself. Curated dataset, not auto-refreshed — MOF's day-by-day data releases quarterly with a ~3 month lag; updated by hand on new episodes.</div>
     </div>
   </div>
 
@@ -935,25 +930,25 @@
     <div class="card full" style="margin-top:16px">
       <h2>Current-account / reserve balances (¥tn)</h2>
       <canvas id="cBsCab" style="max-height:300px"></canvas>
-      <div class="note">Current deposits are the largest liability-side counterpart to BOJ asset creation, but short-term moves also reflect government deposits, lending facilities, repo, banknotes and other factors — not a one-for-one mirror of JGB holdings. Rose mechanically as BOJ bought JGBs 2013-2024; now the main liability absorbing the shrinking asset side under QT and the July 2024 taper plan.</div>
+      <div class="note">Largest liability-side counterpart to BOJ asset creation, but short-term moves also reflect government deposits, lending facilities, repo and banknotes — not a one-for-one mirror of JGB holdings. Rose mechanically as BOJ bought JGBs 2013-2024; now the main liability absorbing QT.</div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>QT decomposition — gross purchases vs. implied redemptions vs. net change (¥tn/mo)</h2>
       <div class="sub">A decline in BOJ JGB holdings can reflect smaller purchases, larger redemption months, or both — this decomposes the two. Redemptions are <b>implied</b>, not BOJ-published: gross outright purchases (DB=MD06) minus that month's net change in JGS holdings. The pattern lines up with Japan's redemption calendar — spikes recur every Mar/Jun/Sep/Dec — the best available check on this approximation.</div>
       <canvas id="cBsQtDecomp" style="max-height:320px;margin-top:10px"></canvas>
-      <div class="note">Bars: gross outright purchases (+) and implied redemptions (−, shown negative for readability). Line: net change in JGS holdings (purchases − redemptions). Not broken out by maturity bucket — BOJ's daily operation-result releases carry that detail but aren't yet in a clean scrapable series here.</div>
+      <div class="note">Bars: gross outright purchases (+) and implied redemptions (−). Line: net change in JGS holdings. Not broken out by maturity bucket — BOJ's daily operation-result releases carry that detail but aren't in a clean scrapable series here.</div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>Gross JGB issuance less BOJ purchases — private-sector absorption requirement (¥tn/mo)</h2>
-      <div class="sub">The other side of the QT story: every month MOF issues new JGBs and the BOJ buys back some of them outright — the gap is duration the private sector (banks, insurers, pension funds, foreign investors) has to absorb. As BOJ purchases taper while MOF issuance stays roughly flat, this gap widens — the mechanism behind rising super-long yields and steeper curves. <b>This is a gross measure, not a true net-duration-supply figure</b> — see the note below.</div>
+      <div class="sub">The other side of the QT story: each month MOF issues new JGBs and BOJ buys back some outright — the gap is duration the private sector must absorb. As BOJ purchases taper while issuance stays roughly flat, this gap widens — the mechanism behind rising super-long yields and steeper curves. <b>Gross measure, not true net-duration-supply</b> — see note below.</div>
       <canvas id="cBsNetSupply" style="max-height:320px;margin-top:10px"></canvas>
       <div class="note" id="bsNetSupplyNote">Bars: MOF gross coupon-JGB issuance (auction offering amounts, ex-Treasury Discount Bills) minus BOJ outright JGB purchases (DB=MD06). Line: BOJ absorption ratio, right axis = BOJ purchases ÷ MOF gross issuance. <b>Caveat:</b> "gross issuance" includes both new-money bonds and 借換債 refunding bonds — not netted against redemptions, so this is a <i>gross</i> absorption requirement, not true net-new-duration. See the card below for MOF's new-money-vs-refunding split, the more accurate annual basis.</div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>FY2026 MOF issuance plan — new-money vs. refunding <span style="font-size:12px;color:var(--muted);font-weight:400">· annual, not monthly</span></h2>
-      <div class="sub">The chart above nets MOF's <i>total</i> auction offering amount against BOJ purchases, but most of that gross issuance is 借換債 (refunding bonds) — reissued specifically to redeem maturing JGBs, replacing old paper rather than adding new duration to the market. MOF's own annual issuance plan breaks this out directly; it's the more accurate basis for "true" net new duration, just at yearly rather than monthly granularity, since auctions don't tag individual bonds as new-money vs. refunding.</div>
+      <div class="sub">The chart above nets MOF's <i>total</i> auction offering against BOJ purchases, but most of that gross issuance is 借換債 (refunding bonds) — reissued to redeem maturing JGBs, not adding new duration. MOF's own annual plan breaks this out directly, the more accurate basis for "true" net new duration, though only at yearly granularity.</div>
       <div id="bsIssuancePlanKpis" class="kpis" style="margin-top:12px"></div>
-      <div class="note">Source: MOF "JGB IR Basic Materials" investor presentation (2 Mar 2026) and FY2026 (令和8年度) JGB Issuance Plan, <a href="https://www.mof.go.jp/jgbs/issuance_plan/fy2026/index.html" target="_blank">mof.go.jp/jgbs/issuance_plan/fy2026</a>. Figures are the original plan (発行根拠法別, ¥180.7tn total); a June 2026 revision raised total planned issuance to ~¥183.8tn, but no clean re-split by legal basis was available — treat shares below as approximate for H2 FY2026.</div>
+      <div class="note">Source: MOF "JGB IR Basic Materials" investor presentation (2 Mar 2026) and FY2026 JGB Issuance Plan, <a href="https://www.mof.go.jp/jgbs/issuance_plan/fy2026/index.html" target="_blank">mof.go.jp/jgbs/issuance_plan/fy2026</a>. Figures are the original plan (¥180.7tn total); a June 2026 revision raised the total to ~¥183.8tn, but no clean re-split by legal basis exists — treat shares below as approximate for H2 FY2026.</div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>MOF gross issuance by maturity bucket <span style="font-size:12px;color:var(--muted);font-weight:400">· issuance side only — see note</span></h2>
@@ -972,7 +967,7 @@
       <div class="card full">
         <h2>Balance-sheet contraction pace — 3m / 6m / 12m cumulative change in JGB holdings (¥tn)</h2>
         <canvas id="cBsPace" style="max-height:300px"></canvas>
-        <div class="note">Three overlapping windows instead of one annualised rate. Quarterly redemption spikes (see QT-decomposition chart above) mean a single-quarter annualised rate (×4) mechanically overstates the "true" taper pace on heavy redemption months — the 3m line looks dramatic every Mar/Jun/Sep/Dec even with unchanged purchases. The 6m/12m lines smooth that out and are the more reliable read.</div>
+        <div class="note">Three overlapping windows instead of one annualised rate. Quarterly redemption spikes mean a single-quarter annualised rate (×4) mechanically overstates the "true" taper pace every Mar/Jun/Sep/Dec even with unchanged purchases — the 6m/12m lines are the more reliable read.</div>
       </div>
       <div class="card full">
         <h2>BOJ JGB holdings as % of total JGB outstanding</h2>
@@ -984,19 +979,19 @@
       <h2>Free-float JGB supply — BOJ holdings vs. private-sector holdings (¥tn)</h2>
       <div class="sub">The BOJ-ownership-share chart above only shows BOJ's slice shrinking; this reframes the same two numbers as what's actually tradable. QT means two things at once: the private sector absorbs more new duration each month (see absorption-requirement chart above), <b>and</b> more of the existing stock circulates in private hands — a liquidity tailwind even as it's a duration headwind. This chart is the liquidity side.</div>
       <canvas id="cBsFreeFloat" style="max-height:300px;margin-top:10px"></canvas>
-      <div class="note">Private-sector (free-float) holdings = total JGB outstanding (DB=FM05) minus BOJ holdings (DB=BS01). Not a precise "tradable" measure — still includes held-to-maturity JGBs at banks/insurers, not just actively-traded float — but it's the right direction of travel for liquidity discussions. Same ~1-month FM05 lag as the BOJ-ownership-share chart above.</div>
+      <div class="note">Private-sector (free-float) holdings = total JGB outstanding (DB=FM05) minus BOJ holdings (DB=BS01). Not a precise "tradable" measure — still includes held-to-maturity JGBs at banks/insurers — but the right direction of travel for liquidity. Same ~1-month FM05 lag as the chart above.</div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>Total BOJ assets as % of nominal GDP</h2>
       <canvas id="cBsGdp" style="max-height:280px"></canvas>
-      <div class="note">Useful for historical QE scale and cross-country comparison, but less actionable for JGB pricing than the charts above — macro context, not a primary QT-pace read. GDP = Cabinet Office nominal GDP (quarterly level, annualised ×4). Lags BOJ's own accounts by a full quarter, so the most recent 1-2 quarters show flat until the next GDP release.</div>
+      <div class="note">Useful for historical QE scale and cross-country comparison, but less actionable for JGB pricing than the charts above — macro context, not a QT-pace read. GDP = Cabinet Office nominal GDP (quarterly, annualised ×4), lags BOJ's own accounts by a full quarter.</div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>Non-JGB holdings — ETFs, J-REITs, corporate bonds <span style="font-size:12px;color:var(--muted);font-weight:400">· secondary to JGB QT, but ETF disposal is politically sensitive</span></h2>
       <div class="sub">The rest of the BOJ's unconventional-easing legacy. Corporate bonds are unwinding fast (no reinvestment of maturing holdings since 2022); ETFs and J-REITs are barely moving — the BOJ's ETF sale program is real but glacial, which is exactly why it keeps generating political debate about a faster/larger disposal.</div>
       <canvas id="cBsNonJgb" style="max-height:300px;margin-top:10px"></canvas>
       <div id="bsNonJgbKpis" class="kpis" style="margin-top:12px"></div>
-      <div class="note">"Years to unwind at current pace" is a naive linear extrapolation of each series' trailing-6-month run-rate — not a BOJ target or announced schedule (BOJ has never committed to a fixed ETF/J-REIT disposal timeline). Treat as a pace indicator, not a forecast: corporate bonds follow a real maturity schedule, while ETF/J-REIT sales have no disclosed cadence, so the projection is illustrative at best for those two.</div>
+      <div class="note">"Years to unwind at current pace" is a naive linear extrapolation of each series' trailing-6-month run-rate — not a BOJ target or announced schedule. Treat as a pace indicator, not a forecast: corporate bonds follow a real maturity schedule, while ETF/J-REIT sales have no disclosed cadence.</div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>Market-impact panel — does QT actually show up in JGB pricing?</h2>
@@ -1110,18 +1105,18 @@
     <div class="sub" style="margin-bottom:16px">Household investment under the 少額投資非課税制度. The tab combines the <b>FSA whole-market headline</b> (official, all institutions; generally semiannual — Jun-end and Dec-end releases, Mar-2025 was an ad hoc exception), the <b>JSDA 10-firm survey</b> (timely monthly pulse + asset allocation, industry-survey not whole-market), and separate retail/macro proxies for fund and cross-border flows. Proxy series are not NISA-exclusive — labeled as such throughout. <span id="nisaAsof" style="color:var(--muted)"></span></div>
     <div class="card full" style="border-left:3px solid #d9a441;background:rgba(217,164,65,0.08)">
       <h2 style="margin-bottom:6px">Policy Watch — JGBs and NISA</h2>
-      <div class="note"><b>Current rule: direct JGB holdings are NOT NISA-eligible.</b> Per JSDA's NISA FAQ, deposits, government bonds, and corporate bonds are excluded from both quotas today. Everything below is proposal-stage: <b>DISCUSSION</b> (Nov 2025 Diet debate) → <b>BILL</b> (opposition DPP's "国債NISA法案" filed to the Upper House 10 Jul 2026, not an LDP/government bill) — Finance Minister Katayama's tone has since warmed and LDP's tax commission is examining it, but the realistic track is the FY2027-29 annual tax-reform cycle, since the ruling coalition lacks an Upper House majority. Kodomo NISA (ages 0-17, tsumitate-only, Jan 2027) is separate and already confirmed — don't conflate the two. Biggest open design question: would JGB purchases consume the <i>existing</i> ¥3.6mn allowance (substitution risk) or a <i>separate</i> one (incremental demand)?</div>
+      <div class="note"><b>Current rule: direct JGB holdings are NOT NISA-eligible</b> (deposits/govt/corporate bonds excluded from both quotas, per JSDA FAQ). Everything below is proposal-stage: <b>DISCUSSION</b> (Nov 2025 Diet debate) → <b>BILL</b> (DPP opposition bill filed to Upper House 10 Jul 2026, not LDP/government) — realistic track is the FY2027-29 tax-reform cycle given the coalition's Upper House minority. Kodomo NISA (ages 0-17, tsumitate-only, Jan 2027) is separate and already confirmed. Open question: would JGB purchases use the <i>existing</i> ¥3.6mn allowance or a <i>separate</i> one?</div>
     </div>
     <div class="kpis" id="nisaKpis"></div>
     <div class="grid2">
       <div class="card">
         <h2>10-firm monthly gross buys — seasonality <span class="npill">timely</span></h2>
-        <div class="note" id="nisaMonSeasNote">Top-10 securities firms (JSDA), ¥tn/month, one line per calendar year. Note the <b>January spike</b> as investors front-load the annual quota, then fade through spring.</div>
+        <div class="note" id="nisaMonSeasNote">Top-10 securities firms (JSDA), ¥tn/month, one line per calendar year. <b>January spike</b> as investors front-load the annual quota, then fade through spring.</div>
         <canvas id="nisaMonChart"></canvas>
       </div>
       <div class="card">
         <h2>Cumulative NISA buys — YTD by year</h2>
-        <div class="note">Cumulative 10-firm (JSDA) gross buys within each calendar year, ¥tn — same "YTD line per year" read as the classic sell-side NISA-flow chart. <b>Caveat:</b> monthly granularity only from Jan-2025, so this shows 2025 vs 2026 YTD, not a multi-year history — a broader MOF-sourced series would be needed to extend further back.</div>
+        <div class="note">Cumulative 10-firm (JSDA) gross buys within each calendar year, ¥tn — "YTD line per year" read. <b>Caveat:</b> monthly granularity only from Jan-2025, so this shows 2025 vs 2026 YTD, not a multi-year history.</div>
         <canvas id="nisaCumYtdChart"></canvas>
       </div>
     </div>
@@ -1141,7 +1136,7 @@
           </span>
         </span>
       </h2>
-      <div class="note"><b>Retail fund-flow proxy — NISA-sensitive, not NISA-exclusive.</b> Wealth Advisor's monthly ranking indicates products attracting Japanese retail money, many heavily used in NISA — but it measures total fund flow (also captures taxable-account and iDeCo purchases), not NISA-specific flow. <b>Universe is fixed to the latest month's 1M top-20; the 3M/6M/1Y toggles only re-rank/re-size that same fixed set by trailing-window inflow</b> — they don't rebuild the top-20, so a fund that dropped out since won't appear even on 6M/1Y views. Bars colored by domestic-vs-foreign classification (same tagging as the "classified" chart below — hover for category). <span id="nisaFundFlowGapNote"></span></div>
+      <div class="note"><b>Retail fund-flow proxy — NISA-sensitive, not NISA-exclusive.</b> Wealth Advisor's ranking indicates products attracting Japanese retail money, many heavily used in NISA — but it's total fund flow (also taxable-account and iDeCo), not NISA-specific. <b>Universe is fixed to the latest month's 1M top-20; the 3M/6M/1Y toggles only re-rank/re-size that same set</b> — a fund that dropped out won't appear even on 6M/1Y views. Bars colored by domestic-vs-foreign classification (hover for category). <span id="nisaFundFlowGapNote"></span></div>
       <div id="nisaFundFlowLegend" style="display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin:6px 0 2px"></div>
       <div style="height:640px"><canvas id="nisaFundFlowChart"></canvas></div>
     </div>
@@ -1153,14 +1148,14 @@
           <button id="nisaFundFlowTSCcyUsd" onclick="setNisaFundFlowCcy('usd')" style="padding:4px 12px;border:none;cursor:pointer;background:transparent;color:var(--ink)">$</button>
         </span>
       </h2>
-      <div class="note" id="nisaFundFlowTSNote"><b>Market-wide, not account-type-specific</b> — same Wealth Advisor proxy as the snapshot above, followed through time. Gold bars = <b>full top-20 list's combined net inflow</b> each month (a retail fund-demand signal, not a measured NISA figure); thin colored lines = funds that stayed in the top 20 every month on file, the persistent core of retail flow. The <b>thick white dashed line</b> is an independent cross-check: Investment Trusts Association of Japan's official monthly net-flow total across the <b>entire ~5,300-fund universe</b> (not just top 20), published ~1-month lagged — it sits above the top-20 total as expected, since the top 20 is neither exhaustive nor NISA-exclusive. Currency toggle is shared with the snapshot chart above.</div>
+      <div class="note" id="nisaFundFlowTSNote"><b>Market-wide, not account-type-specific</b> — same Wealth Advisor proxy as the snapshot above, over time. Gold bars = <b>full top-20 list's combined net inflow</b> each month (a retail demand signal, not a measured NISA figure); thin colored lines = funds that stayed in the top 20 every month on file. The <b>thick white dashed line</b> is a cross-check: Investment Trusts Association of Japan's official net-flow total across the <b>entire ~5,300-fund universe</b>, ~1-month lagged — sits above the top-20 total as expected, since top-20 is neither exhaustive nor NISA-exclusive.</div>
       <div style="height:420px;margin-top:10px"><canvas id="nisaFundFlowTSChart"></canvas></div>
     </div>
     <div class="card full">
       <h2 style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
         <span>Retail fund-flow proxy, classified — domestic vs. foreign equity mandate <span class="npill" id="nisaGeoMonths"></span></span>
       </h2>
-      <div class="note">Answers: <b>within the retail investment-trust-flow proxy, how much is Japan-only vs. US vs. ex-Japan vs. global vs. other?</b> Every fund in the Wealth Advisor top-20 list (111 distinct funds, Jul 2024–Jul 2026) is classified by name into domestic-Japan, US, developed-ex-Japan, emerging-market, global all-country (~95% foreign/~5% Japan by MSCI ACWI weight, an approximation), global/thematic, and non-equity. Classification is rule-based on stated mandate in the name (e.g. "日本株"→domestic, "米国"→US, "オールカントリー"→global) — all 111 resolved, though it's a first-pass heuristic, imprecise for balanced/thematic products. <b>Don't use this alone to infer NISA's overall domestic/foreign share</b> — NISA also includes direct stocks/ETFs, a <b>different universe</b> from this fund-only view (growth-quota direct-stock buying is domestic-tilted but not 100%: JSDA's 2025 White Paper found 9 of the top 10 growth-quota stocks were domestic). Read: domestic-equity funds' share of flow was near-zero through 2024-2025, risen to ~20% by mid-2026; foreign/global-mixed funds remain the larger slice most months.</div>
+      <div class="note">Answers: <b>within the retail fund-flow proxy, how much is Japan-only vs. US vs. ex-Japan vs. global vs. other?</b> Every fund in the Wealth Advisor top-20 list (111 distinct funds, Jul 2024–Jul 2026) is classified by name — domestic-Japan, US, developed-ex-Japan, emerging-market, global all-country (~95% foreign/~5% Japan approximation), global/thematic, non-equity — a first-pass heuristic, imprecise for balanced/thematic products. <b>Don't use this alone to infer NISA's overall domestic/foreign share</b> — NISA also includes direct stocks/ETFs, a <b>different universe</b> (growth-quota direct-stock buying is domestic-tilted but not 100%: JSDA's 2025 White Paper found 9 of the top 10 growth-quota stocks domestic). Read: domestic-equity funds' share of flow was near-zero through 2024-2025, risen to ~20% by mid-2026.</div>
       <div class="kpis" id="nisaGeoKpis" style="margin-top:10px"></div>
       <div style="height:360px;margin-top:12px"><canvas id="nisaGeoChart"></canvas></div>
     </div>
@@ -1181,7 +1176,7 @@
           </span>
         </span>
       </h2>
-      <div class="note"><b>Macro proxy, not a direct NISA FX series.</b> This MoF investment-trust-management-company outward securities series covers the fund channel behind part of NISA's foreign-asset demand — but it includes all such transactions (not tagged by account type), so it shouldn't be read as an implied NISA-specific FX-buying number. Same MoF International Transactions in Securities series as the Cross-border flows tab; history here only goes back to 2021-04 (MoF's own release history). <b>Window/currency toggles are shared with the Cross-border flows tab.</b></div>
+      <div class="note"><b>Macro proxy, not a direct NISA FX series.</b> This MoF investment-trust-management-company series covers the fund channel behind part of NISA's foreign-asset demand, but includes all such transactions (not tagged by account type) — not an implied NISA-specific number. Same series as the Cross-border flows tab; history only back to 2021-04. <b>Toggles shared with Cross-border flows tab.</b></div>
       <canvas id="cNisaInvTrust" style="max-height:340px;margin-top:12px"></canvas>
     </div>
     <div class="grid2">
@@ -1198,7 +1193,7 @@
     </div>
     <div class="card full">
       <h2>Bottom-up fund-flow proxy — 17 top NISA funds, daily NAV basis <span class="npill" id="navFlowAsOf"></span></h2>
-      <div class="note">A modelled proxy, not a reported flow: AUM-weighted composite NAV index (top) from each fund's daily reinvest-adjusted return; estimated daily net flow (middle) = AUM change minus what price return alone explains; 20-day rolling sum (bottom) is the one worth watching day-to-day. Noise (distributions, fee timing, FX-hedge rebalancing) can look like flow on any single day — consistent sign across sessions is more trustworthy than the exact ¥ amount. Static snapshot from scraped asset-manager NAV feeds (18 of top 20 funds, 2 inaccessible); re-run <code>fetch_nisa_nav_flow.py</code> to refresh.</div>
+      <div class="note">A modelled proxy, not a reported flow: AUM-weighted composite NAV index (top); estimated daily net flow (middle) = AUM change minus what price return explains; 20-day rolling sum (bottom) is the one worth watching. Noise (distributions, fee timing, hedge rebalancing) can look like flow on any single day — consistent sign across sessions is more trustworthy than the exact ¥ amount. Static snapshot (18 of top 20 funds); re-run <code>fetch_nisa_nav_flow.py</code> to refresh.</div>
       <div style="height:170px;margin-top:10px"><canvas id="navFlowIndexChart"></canvas></div>
       <div style="height:170px;margin-top:10px"><canvas id="navFlowDailyChart"></canvas></div>
       <div style="height:170px;margin-top:10px"><canvas id="navFlowRollChart"></canvas></div>
@@ -3282,7 +3277,7 @@ fetch('./intervention_data.json?' + Date.now())
           });
           const lastM = M.meta.as_of_month;
           document.getElementById('bsNetSupplyNote').innerHTML =
-            `Bars: MOF gross coupon-JGB issuance (ex-Treasury Discount Bills, as of ${esc(lastM)}) minus BOJ outright JGB purchases (DB=MD06). Line, right axis: BOJ absorption ratio = BOJ purchases ÷ MOF gross issuance. <b>Caveat:</b> a <i>gross</i> absorption requirement, not net of redemptions — see the card below for MOF's new-money-vs-refunding split, the more accurate annual basis. MOF issuance is from a periodically-republished workbook, not a live feed, so recent months may lag; blank segments beyond ${esc(lastM)} mean data isn't in yet, not zero purchases.`;
+            `Bars: MOF gross coupon-JGB issuance (ex-T-Bills, as of ${esc(lastM)}) minus BOJ outright JGB purchases (DB=MD06). Line, right axis: BOJ absorption ratio = purchases ÷ issuance. <b>Caveat:</b> gross, not net of redemptions — see card below for the more accurate new-money-vs-refunding split. MOF issuance lags (periodic workbook, not live feed); blanks beyond ${esc(lastM)} mean data isn't in yet, not zero purchases.`;
 
           const plan = { newMoney: 29.6, filp: 13.0, gx: 2.3, refunding: 135.8, total: 180.7 };
           const trueNet = plan.newMoney + plan.filp + plan.gx;
@@ -3319,7 +3314,7 @@ fetch('./intervention_data.json?' + Date.now())
             });
           }
           document.getElementById('bsMaturityMixNote').innerHTML =
-            `Showing the last 7 years — full history back to ${esc(M.months[0])} is unreadable as a 5-category stacked bar. Buckets: 1-3Y (2Y, 3Y discount), 3-5Y (5Y, GX 5Y), 5-10Y (10Y, 10Y inflation-linked, GX 10Y), 10-25Y (20Y), 25Y+ (30Y, 40Y). Retail-only tenors (4Y, 6Y, 15Y floating) excluded — near-zero recent volume. Source: same MOF auction-history workbook as the issuance chart above, as of ${esc(M.meta.as_of_month)}.`;
+            `Last 7 years shown — full history back to ${esc(M.months[0])} is unreadable as a 5-category stacked bar. Buckets: 1-3Y (2Y, 3Y discount), 3-5Y (5Y, GX 5Y), 5-10Y (10Y, 10Y inflation-linked, GX 10Y), 10-25Y (20Y), 25Y+ (30Y, 40Y). Retail-only tenors excluded — near-zero volume. Source: same MOF workbook as issuance chart above, as of ${esc(M.meta.as_of_month)}.`;
         }
       }
       if (D.derived.jgs_change_3m_jpy_tn) {
@@ -3463,10 +3458,10 @@ fetch('./intervention_data.json?' + Date.now())
         }
 
         document.getElementById('bsImpactNote').innerHTML =
-          `Left: BOJ absorption ratio (left axis) vs. JGB month-end 10Y/30Y yields (right axis). Right: 30Y auction tail in bp (lowest-accepted-price yield minus weighted-average yield — wider tail = weaker demand at the margin) vs. the same absorption ratio. Bottom: JSDA's investor-type breakdown (公社債投資家別売買高) of net outright super-long (&gt;10Y) JGB buying by foreign investors, life &amp; non-life insurers, and trust banks (pension proxy) — the three types most cited as absorbing duration BOJ has stepped back from. ` +
-          (AQ && AQ.tenors['30Y'].length ? `Auction data from MOF's auction-history workbook, as of ${esc(AQ.tenors['30Y'][AQ.tenors['30Y'].length - 1].date)}. ` : '') +
+          `Left: BOJ absorption ratio vs. JGB month-end 10Y/30Y yields. Right: 30Y auction tail in bp (wider = weaker demand at the margin) vs. the same ratio. Bottom: JSDA's investor-type breakdown of net outright super-long (&gt;10Y) buying by foreign investors, life &amp; non-life insurers, and trust banks — the types most cited as absorbing duration BOJ has stepped back from. ` +
+          (AQ && AQ.tenors['30Y'].length ? `Auction data as of ${esc(AQ.tenors['30Y'][AQ.tenors['30Y'].length - 1].date)}. ` : '') +
           (SL ? `JSDA flow data as of ${esc(SL.meta.as_of)}. ` : '') +
-          `First-pass correlation view, not a causal test — yields and flows move on many factors besides BOJ's purchase pace.`;
+          `First-pass correlation, not a causal test.`;
       }
 
       // Asset composition — latest month donut + table
@@ -3496,9 +3491,9 @@ fetch('./intervention_data.json?' + Date.now())
         `<tr style="font-weight:600"><td style="padding:6px 8px">Total</td><td style="padding:6px 8px;text-align:right">${total.toFixed(1)}</td><td style="padding:6px 8px;text-align:right">100.0%</td></tr></tbody>`;
 
       document.getElementById('bsSourceNote').innerHTML =
-        `Source: <a href="${D.meta.source_url}" target="_blank">BOJ "Accounts of the Bank of Japan"</a> (released ~10th/20th/month-end), pulled via the ` +
-        `<a href="${D.meta.api_url}" target="_blank">BOJ Time-Series Data Search API</a> (DB=BS01) as a clean end-of-month series back to ${months[0]}. ` +
-        `JGB-outstanding (DB=FM05) and nominal-GDP (Cabinet Office ESRI) denominators typically lag the BOJ accounts by 1-3 months — those ratio charts show a flat/missing tail until each source's next release. ` +
+        `Source: <a href="${D.meta.source_url}" target="_blank">BOJ "Accounts of the Bank of Japan"</a> (~10th/20th/month-end), via the ` +
+        `<a href="${D.meta.api_url}" target="_blank">BOJ Time-Series Data Search API</a> (DB=BS01), end-of-month series back to ${months[0]}. ` +
+        `JGB-outstanding (FM05) and nominal-GDP denominators lag BOJ accounts by 1-3 months — those ratio charts show a flat/missing tail until each source's next release. ` +
         `Data generated ${D.meta.generated_at}, as of ${D.meta.as_of}. ${esc(D.meta.cross_check)}`;
     })
     .catch(e => { console.warn('boj_balance_sheet.json unavailable:', e); });
@@ -3571,7 +3566,7 @@ fetch('./intervention_data.json?' + Date.now())
       const monMissing = monYears.filter(y => monByYear[y].filter(v=>v!=null).length < 12);
       const monSeasNoteEl = document.getElementById('nisaMonSeasNote');
       if (monSeasNoteEl) {
-        monSeasNoteEl.innerHTML = `Top-10 securities firms (JSDA), ¥ trillion/month, one line per calendar year — current year bolded. Note the <b>January spike</b> each year as investors front-load the annual quota, then the fade through spring.` +
+        monSeasNoteEl.innerHTML = `Top-10 securities firms (JSDA), ¥tn/month, one line per calendar year — current year bolded. <b>January spike</b> as investors front-load the annual quota, then fade through spring.` +
           (monMissing.length ? ' ' + monMissing.map(y => {
             const have = monByYear[y].map((v,i)=>v!=null?monLabels[i]:null).filter(Boolean);
             return `<b>${y}</b> is partial (${have[0]}–${have[have.length-1]} only).`;
