@@ -942,7 +942,7 @@
       <h2>Gross JGB issuance less BOJ purchases — private-sector absorption requirement (¥tn/mo)</h2>
       <div class="sub">The other side of the QT story: each month MOF issues new JGBs and BOJ buys back some outright — the gap is duration the private sector must absorb. As BOJ purchases taper while issuance stays roughly flat, this gap widens — the mechanism behind rising super-long yields and steeper curves. <b>Gross measure, not true net-duration-supply</b> — see note below.</div>
       <canvas id="cBsNetSupply" style="max-height:320px;margin-top:10px"></canvas>
-      <div class="note" id="bsNetSupplyNote">Bars: MOF gross coupon-JGB issuance (auction offering amounts, ex-Treasury Discount Bills) minus BOJ outright JGB purchases (DB=MD06). Line: BOJ absorption ratio, right axis = BOJ purchases ÷ MOF gross issuance. <b>Caveat:</b> "gross issuance" includes both new-money bonds and 借換債 refunding bonds — not netted against redemptions, so this is a <i>gross</i> absorption requirement, not true net-new-duration. See the card below for MOF's new-money-vs-refunding split, the more accurate annual basis.</div>
+      <div class="note" id="bsNetSupplyNote">Bars: MOF gross coupon-JGB issuance (ex-T-Bills) minus BOJ outright purchases (DB=MD06). Line, right axis: BOJ absorption ratio = purchases ÷ issuance. <b>Caveat:</b> gross, not net of redemptions — see card below for the new-money-vs-refunding split.</div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>FY2026 MOF issuance plan — new-money vs. refunding <span style="font-size:12px;color:var(--muted);font-weight:400">· annual, not monthly</span></h2>
@@ -1460,7 +1460,7 @@ function render(D) {
   });
 
   var _tn = document.getElementById('toneNote');
-  if (_tn) _tn.textContent = 'Monthly, Feb–Jul 2026. Each member holds their assessed tone and steps only where a dated remark shifts it; single-remark members show as flat, and a line begins the month a member first has on-record evidence.';
+  if (_tn) _tn.textContent = 'Monthly, Feb–Jul 2026. Tone holds flat until a dated remark shifts it; lines begin the month each member first has on-record evidence.';
 
   // Speaker cards
   function toggleSp(el) { el.classList.toggle('open'); }
@@ -3277,7 +3277,7 @@ fetch('./intervention_data.json?' + Date.now())
           });
           const lastM = M.meta.as_of_month;
           document.getElementById('bsNetSupplyNote').innerHTML =
-            `Bars: MOF gross coupon-JGB issuance (ex-T-Bills, as of ${esc(lastM)}) minus BOJ outright JGB purchases (DB=MD06). Line, right axis: BOJ absorption ratio = purchases ÷ issuance. <b>Caveat:</b> gross, not net of redemptions — see card below for the more accurate new-money-vs-refunding split. MOF issuance lags (periodic workbook, not live feed); blanks beyond ${esc(lastM)} mean data isn't in yet, not zero purchases.`;
+            `Bars: MOF gross coupon-JGB issuance (ex-T-Bills, as of ${esc(lastM)}) minus BOJ outright purchases (DB=MD06). Line, right axis: BOJ absorption ratio = purchases ÷ issuance. <b>Caveat:</b> gross, not net of redemptions — see card below for the new-money-vs-refunding split. Blanks beyond ${esc(lastM)} mean data isn't in yet, not zero purchases.`;
 
           const plan = { newMoney: 29.6, filp: 13.0, gx: 2.3, refunding: 135.8, total: 180.7 };
           const trueNet = plan.newMoney + plan.filp + plan.gx;
@@ -3314,7 +3314,7 @@ fetch('./intervention_data.json?' + Date.now())
             });
           }
           document.getElementById('bsMaturityMixNote').innerHTML =
-            `Last 7 years shown — full history back to ${esc(M.months[0])} is unreadable as a 5-category stacked bar. Buckets: 1-3Y (2Y, 3Y discount), 3-5Y (5Y, GX 5Y), 5-10Y (10Y, 10Y inflation-linked, GX 10Y), 10-25Y (20Y), 25Y+ (30Y, 40Y). Retail-only tenors excluded — near-zero volume. Source: same MOF workbook as issuance chart above, as of ${esc(M.meta.as_of_month)}.`;
+            `Last 7 years shown — full history to ${esc(M.months[0])} is unreadable as a 5-category stacked bar. Buckets: 1-3Y (2Y, 3Y discount), 3-5Y (5Y, GX 5Y), 5-10Y (10Y, 10Y inflation-linked, GX 10Y), 10-25Y (20Y), 25Y+ (30Y, 40Y). Retail-only tenors excluded. Source: same MOF workbook as above, as of ${esc(M.meta.as_of_month)}.`;
         }
       }
       if (D.derived.jgs_change_3m_jpy_tn) {
@@ -3458,9 +3458,9 @@ fetch('./intervention_data.json?' + Date.now())
         }
 
         document.getElementById('bsImpactNote').innerHTML =
-          `Left: BOJ absorption ratio vs. JGB month-end 10Y/30Y yields. Right: 30Y auction tail in bp (wider = weaker demand at the margin) vs. the same ratio. Bottom: JSDA's investor-type breakdown of net outright super-long (&gt;10Y) buying by foreign investors, life &amp; non-life insurers, and trust banks — the types most cited as absorbing duration BOJ has stepped back from. ` +
+          `Left: BOJ absorption ratio vs. month-end 10Y/30Y yields. Right: 30Y auction tail in bp (wider = weaker demand) vs. the same ratio. Bottom: JSDA net outright super-long (&gt;10Y) buying by foreigners, insurers, trust banks — the types most cited as absorbing duration BOJ has stepped back from. ` +
           (AQ && AQ.tenors['30Y'].length ? `Auction data as of ${esc(AQ.tenors['30Y'][AQ.tenors['30Y'].length - 1].date)}. ` : '') +
-          (SL ? `JSDA flow data as of ${esc(SL.meta.as_of)}. ` : '') +
+          (SL ? `JSDA flow as of ${esc(SL.meta.as_of)}. ` : '') +
           `First-pass correlation, not a causal test.`;
       }
 
@@ -3491,10 +3491,10 @@ fetch('./intervention_data.json?' + Date.now())
         `<tr style="font-weight:600"><td style="padding:6px 8px">Total</td><td style="padding:6px 8px;text-align:right">${total.toFixed(1)}</td><td style="padding:6px 8px;text-align:right">100.0%</td></tr></tbody>`;
 
       document.getElementById('bsSourceNote').innerHTML =
-        `Source: <a href="${D.meta.source_url}" target="_blank">BOJ "Accounts of the Bank of Japan"</a> (~10th/20th/month-end), via the ` +
-        `<a href="${D.meta.api_url}" target="_blank">BOJ Time-Series Data Search API</a> (DB=BS01), end-of-month series back to ${months[0]}. ` +
-        `JGB-outstanding (FM05) and nominal-GDP denominators lag BOJ accounts by 1-3 months — those ratio charts show a flat/missing tail until each source's next release. ` +
-        `Data generated ${D.meta.generated_at}, as of ${D.meta.as_of}. ${esc(D.meta.cross_check)}`;
+        `Source: <a href="${D.meta.source_url}" target="_blank">BOJ "Accounts of the Bank of Japan"</a>, via the ` +
+        `<a href="${D.meta.api_url}" target="_blank">BOJ Time-Series API</a> (DB=BS01), end-of-month series back to ${months[0]}. ` +
+        `FM05/nominal-GDP denominators lag BOJ accounts by 1-3 months — those ratio charts show a flat/missing tail until the next release. ` +
+        `Generated ${D.meta.generated_at}, as of ${D.meta.as_of}. ${esc(D.meta.cross_check)}`;
     })
     .catch(e => { console.warn('boj_balance_sheet.json unavailable:', e); });
 })();
@@ -3732,7 +3732,7 @@ fetch('./intervention_data.json?' + Date.now())
       return (ly * 12 + lm) - (py * 12 + pm) > 1;
     })();
     document.getElementById('nisaFundFlowGapNote').textContent = gap ?
-      "(note: a monthly edition is missing between the two most recent months on file — a genuine publication gap, not backfilled.)" : "";
+      "(a monthly edition is missing between the two most recent months — genuine publication gap, not backfilled.)" : "";
 
     drawNisaFundFlowChart();
     buildNisaFundFlowTSChart(fd, months);
