@@ -1165,9 +1165,36 @@
       <div style="height:360px;margin-top:12px"><canvas id="nisaGeoChart"></canvas></div>
     </div>
     <div class="card full">
-      <h2 id="nisaInvTrustTitle">Portfolio investment flows by investment trust management companies</h2>
-      <div class="note"><b>Macro proxy, not a direct NISA FX series.</b> This MoF investment-trust-management-company outward securities series covers the fund channel through which part of NISA's foreign-asset demand is implemented — but it includes all investment-trust-management-company transactions (not tagged by account type), so it should not be interpreted as, or converted into, an implied NISA-specific FX-buying number. Same MoF International Transactions in Securities series as the Cross-border flows tab; history here only goes back to 2021-04 (MoF's own release history), shorter than the 2005-2026 range on a Bloomberg/Macrobond terminal.</div>
+      <h2 style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+        <span id="nisaInvTrustTitle">Portfolio investment flows by investment trust management companies</span>
+        <span style="display:flex;gap:10px;flex-wrap:wrap">
+          <span id="nisaXbWinBtns" style="display:inline-flex;gap:4px">
+            <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:4px 10px;font-size:11px" onclick="setXbWin(12,this)">1Y</button>
+            <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:4px 10px;font-size:11px" onclick="setXbWin(24,this)">2Y</button>
+            <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:4px 10px;font-size:11px" onclick="setXbWin(36,this)">3Y</button>
+            <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:4px 10px;font-size:11px" onclick="setXbWin(60,this)">5Y</button>
+            <button class="tab active" style="border:1px solid var(--line);border-radius:7px;padding:4px 10px;font-size:11px" onclick="setXbWin(0,this)">All</button>
+          </span>
+          <span id="nisaXbCurBtns" style="display:inline-flex;gap:4px">
+            <button class="tab active" style="border:1px solid var(--line);border-radius:7px;padding:4px 10px;font-size:11px" onclick="setXbCur('jpy',this)">¥ tn</button>
+            <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:4px 10px;font-size:11px" onclick="setXbCur('usd',this)">$ bn</button>
+          </span>
+        </span>
+      </h2>
+      <div class="note"><b>Macro proxy, not a direct NISA FX series.</b> This MoF investment-trust-management-company outward securities series covers the fund channel through which part of NISA's foreign-asset demand is implemented — but it includes all investment-trust-management-company transactions (not tagged by account type), so it should not be interpreted as, or converted into, an implied NISA-specific FX-buying number. Same MoF International Transactions in Securities series as the Cross-border flows tab; history here only goes back to 2021-04 (MoF's own release history), shorter than the 2005-2026 range on a Bloomberg/Macrobond terminal. <b>Window/currency toggles above are shared with the Cross-border flows tab's own charts</b> — same underlying data, same selection state.</div>
       <canvas id="cNisaInvTrust" style="max-height:340px;margin-top:12px"></canvas>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h2 id="nisaInvTrustSeasTotalTitle">Seasonality — total (equity + bonds)</h2>
+        <div class="note">Same series as above, one line per fiscal year (Apr–Mar), monthly net buying — not cumulative. Currency toggle above applies here too.</div>
+        <canvas id="cNisaInvTrustSeasTotal" style="max-height:300px;margin-top:10px"></canvas>
+      </div>
+      <div class="card">
+        <h2 id="nisaInvTrustSeasEquityTitle">Seasonality — equity only</h2>
+        <div class="note">Same fiscal-year seasonality view, restricted to the equity leg only (excludes ST/LT bonds) — isolates the piece most relevant to NISA's foreign-equity demand.</div>
+        <canvas id="cNisaInvTrustSeasEquity" style="max-height:300px;margin-top:10px"></canvas>
+      </div>
     </div>
     <div class="card full">
       <h2>Bottom-up fund-flow proxy — 17 top NISA funds, daily NAV basis <span class="npill" id="navFlowAsOf"></span></h2>
@@ -2524,6 +2551,45 @@ function xbStackedChart(canvasId, titleId, key){
     }
   });
 }
+// Fiscal-year seasonality for one instrument leg (e.g. 'equity') within one bucket (e.g. 'invtrust') —
+// same Apr-Mar FY grouping as fetch_mof_flows.py's own seasonal[] builder, computed client-side since
+// the fetch script only pre-aggregates seasonal totals, not per-instrument legs.
+function xbInstrSeasChart(canvasId, titleId, instrKey, bucketKey, label){
+  const cv=document.getElementById(canvasId); const X=_xbData; if(!cv||!X) return;
+  const U=_xbUnit(); const byInstr=(U.m==='monthly_usd')?X.monthly_by_instrument_usd:X.monthly_by_instrument;
+  const src=byInstr && byInstr[instrKey] && byInstr[instrKey][bucketKey]; if(!src) return;
+  const tt=document.getElementById(titleId); if(tt) tt.textContent=(label||instrKey)+' — '+X.labels[bucketKey];
+  const byMonth={}; X.months.forEach((tag,i)=>{ byMonth[tag]=src[i]; });
+  const fys=[...new Set(X.months.map(tag=>{ const y=+tag.slice(0,4), m=+tag.slice(5,7); return m>=4?y:y-1; }))].sort();
+  const seasonal={};
+  fys.forEach(fy=>{
+    seasonal[fy]=X.fytd_months.map(mlabel=>{
+      const mi={Apr:4,May:5,Jun:6,Jul:7,Aug:8,Sep:9,Oct:10,Nov:11,Dec:12,Jan:1,Feb:2,Mar:3}[mlabel];
+      const yy=mi>=4?fy:fy+1;
+      const tag=`${yy}-${String(mi).padStart(2,'0')}`;
+      return tag in byMonth ? byMonth[tag] : null;
+    });
+  });
+  const years=Object.keys(seasonal).sort(); const latest=years[years.length-1];
+  const hist=['#8a94ad','#4cba7a','#b79ae8','#d9a441','#4a90d9'];
+  const ds=years.map((y,i)=>{const cur=(y===latest);
+    const c=cur?'#e2564a':hist[Math.min(i,hist.length-1)];
+    return {label:'FY'+y, data:seasonal[y], borderColor:c, backgroundColor:c,
+      borderWidth:cur?3:1.5, pointRadius:cur?2.5:0, pointHoverRadius:4, tension:0.15, spanGaps:false, order:cur?0:1};});
+  if(_xbCharts[canvasId]){ _xbCharts[canvasId].destroy(); }
+  _xbCharts[canvasId]=new Chart(cv, {type:'line', data:{labels:X.fytd_months, datasets:ds},
+    options:{responsive:true, maintainAspectRatio:false, interaction:{mode:'index', intersect:false},
+      plugins:{legend:{position:'bottom', labels:{boxWidth:10, padding:7, font:{size:9.5}, color:'#c7d0e0'}},
+        tooltip:{callbacks:{label:c=>c.dataset.label+': '+(c.parsed.y==null?'–':(c.parsed.y>=0?'+':'')+c.parsed.y.toFixed(U.dp)+U.u)}}},
+      scales:{
+        y:{title:{display:true, text:U.su, color:'#93a1bd', font:{size:10}},
+           grid:{color:x=>x.tick.value===0?'#7688a8':'#243149', lineWidth:x=>x.tick.value===0?1.3:1},
+           border:{color:'#2a3752'}, ticks:{color:'#93a1bd', font:{size:10}, callback:v=>(v>0?'+':'')+v}},
+        x:{grid:{display:false}, border:{color:'#2a3752'}, ticks:{color:'#7e8aa3', font:{size:9.5}}}
+      }
+    }
+  });
+}
 function xbCumChart(canvasId, titleId, key){
   const cv=document.getElementById(canvasId); const X=_xbData; if(!cv||!X) return;
   const U=_xbUnit(); const src=X[U.f][key]; if(!src) return;
@@ -2646,14 +2712,18 @@ function renderXb(){ if(!_xbData) return;
   ['total','trust_pension','life'].forEach(k=>xbFyChart('cXbSeas_'+k,'xbSeasT_'+k, k, 'seas'));
   ['total','trust_pension','life'].forEach(k=>xbFyChart('cXbCum_'+k,'xbCumT_'+k, k, 'cum')); }
 function setXbWin(win, btn){ _xbWin=win;
-  document.querySelectorAll('#xbWinBtns .tab').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
+  document.querySelectorAll('#xbWinBtns .tab, #nisaXbWinBtns .tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll(`#xbWinBtns .tab[onclick="setXbWin(${win},this)"], #nisaXbWinBtns .tab[onclick="setXbWin(${win},this)"]`).forEach(b=>b.classList.add('active'));
   xbAllChart(); xbInChart();
-  ['banks','trust_bank','trust_pension','life'].forEach(k=>xbStackedChart('cXb_'+k,'xbTitle_'+k, k)); }
+  ['banks','trust_bank','trust_pension','life'].forEach(k=>xbStackedChart('cXb_'+k,'xbTitle_'+k, k));
+  if (typeof xbStackedChart === 'function') xbStackedChart('cNisaInvTrust', 'nisaInvTrustTitle', 'invtrust'); }
 function setXbCur(cur, btn){ _xbCur=cur;
-  document.querySelectorAll('#xbCurBtns .tab').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  renderXb(); xbInChart(); xbWeeklyChart(); renderBop(); }
+  document.querySelectorAll('#xbCurBtns .tab, #nisaXbCurBtns .tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll(`#xbCurBtns .tab[onclick="setXbCur('${cur}',this)"], #nisaXbCurBtns .tab[onclick="setXbCur('${cur}',this)"]`).forEach(b=>b.classList.add('active'));
+  renderXb(); xbInChart(); xbWeeklyChart(); renderBop();
+  if (typeof xbStackedChart === 'function') xbStackedChart('cNisaInvTrust', 'nisaInvTrustTitle', 'invtrust');
+  if (typeof xbFyChart === 'function') xbFyChart('cNisaInvTrustSeasTotal', 'nisaInvTrustSeasTotalTitle', 'invtrust', 'seas');
+  if (typeof xbInstrSeasChart === 'function') xbInstrSeasChart('cNisaInvTrustSeasEquity', 'nisaInvTrustSeasEquityTitle', 'equity', 'invtrust', 'Equity'); }
 fetch('./mof_flows.json?' + Date.now())
   .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
   .then(X => { _xbData=X; renderXb();
@@ -3512,6 +3582,8 @@ fetch('./intervention_data.json?' + Date.now())
     if (nisaFundFlowD) buildNisaFundFlowChart(nisaFundFlowD);
     if (nisaFundFlowD) buildNisaGeoChart(nisaFundFlowD);
     if (typeof xbStackedChart === 'function') xbStackedChart('cNisaInvTrust', 'nisaInvTrustTitle', 'invtrust');
+    if (typeof xbFyChart === 'function') xbFyChart('cNisaInvTrustSeasTotal', 'nisaInvTrustSeasTotalTitle', 'invtrust', 'seas');
+    if (typeof xbInstrSeasChart === 'function') xbInstrSeasChart('cNisaInvTrustSeasEquity', 'nisaInvTrustSeasEquityTitle', 'equity', 'invtrust', 'Equity');
     if (navFlowD) buildNavFlowChart(navFlowD);
   }
 
