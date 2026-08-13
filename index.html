@@ -1113,15 +1113,17 @@
       <div class="note"><b>Current rule: direct JGB holdings are NOT NISA-eligible.</b> Per JSDA's own NISA FAQ, deposits, government bonds, and corporate bonds are excluded from both the growth and tsumitate quotas today. Everything below is proposal-stage, not enacted law — treat status tags literally: <b>DISCUSSION</b> (Nov 2025 Diet debate on a domestic-investment quota) → <b>BILL</b> (opposition DPP's "国債NISA法案" filed to the Upper House 10 Jul 2026 — not an LDP or government bill) → Finance Minister Katayama's tone has warmed markedly since (Jul 2026) and LDP's own tax research commission has begun examining it, but the realistic legislative track per Japanese tax-policy commentary is the FY2027–29 annual tax-reform cycle, not the DPP bill passing as filed — the ruling coalition lacks an Upper House majority. Kodomo NISA (ages 0-17, tsumitate-only, launching Jan 2027) is a separate, already-confirmed change on the normal government-bill track — do not conflate the two. The single biggest unresolved design question for JGB-NISA: would JGB purchases consume the <i>existing</i> ¥3.6mn annual allowance (substitution risk away from equities/funds) or a <i>separate</i> allowance (genuinely incremental demand)?</div>
     </div>
     <div class="kpis" id="nisaKpis"></div>
-    <div class="card full">
-      <h2>10-firm monthly gross buys — seasonality <span class="npill">timely</span></h2>
-      <div class="note" id="nisaMonSeasNote">Top-10 securities firms (JSDA), ¥ trillion/month, one line per calendar year. Note the <b>January spike</b> each year as investors front-load the annual quota, then the fade through spring.</div>
-      <canvas id="nisaMonChart"></canvas>
-    </div>
-    <div class="card full">
-      <h2>Cumulative NISA buys — YTD by year</h2>
-      <div class="note">Cumulative 10-firm (JSDA) gross buys within each calendar year, ¥ trillion — same "YTD line per year" read as the classic sell-side NISA-flow chart. <b>Caveat:</b> this dataset only has monthly granularity from Jan-2025 onward (top-10 securities-firm survey), so it shows 2025 vs 2026 YTD, not a multi-year 2021-2026 history — a broader MOF-sourced monthly series would be needed to extend further back.</div>
-      <canvas id="nisaCumYtdChart"></canvas>
+    <div class="grid2">
+      <div class="card">
+        <h2>10-firm monthly gross buys — seasonality <span class="npill">timely</span></h2>
+        <div class="note" id="nisaMonSeasNote">Top-10 securities firms (JSDA), ¥ trillion/month, one line per calendar year. Note the <b>January spike</b> each year as investors front-load the annual quota, then the fade through spring.</div>
+        <canvas id="nisaMonChart"></canvas>
+      </div>
+      <div class="card">
+        <h2>Cumulative NISA buys — YTD by year</h2>
+        <div class="note">Cumulative 10-firm (JSDA) gross buys within each calendar year, ¥ trillion — same "YTD line per year" read as the classic sell-side NISA-flow chart. <b>Caveat:</b> this dataset only has monthly granularity from Jan-2025 onward (top-10 securities-firm survey), so it shows 2025 vs 2026 YTD, not a multi-year 2021-2026 history — a broader MOF-sourced monthly series would be needed to extend further back.</div>
+        <canvas id="nisaCumYtdChart"></canvas>
+      </div>
     </div>
     <div class="card full">
       <h2 style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
@@ -1153,12 +1155,6 @@
       </h2>
       <div class="note" id="nisaFundFlowTSNote"><b>Fund-flow data are market-wide, not account-type-specific</b> — same Wealth Advisor retail-flow proxy as the snapshot above, followed through time instead of ranked for a single month. Gold bars are the <b>full top-20 list's combined net inflow</b> each month (a retail fund-demand signal, not a measured NISA figure); the thin colored lines are the individual funds that stayed in the top 20 in every month on file — the persistent core of retail flow, as opposed to funds that rotate in and out of the ranking. The <b>thick white dashed line</b> is an independent cross-check: the Investment Trusts Association of Japan's own official monthly net-flow total across the <b>entire ~5,300-fund public stock-trust universe</b> (not just the top 20; public investment trusts, coverage of ETFs/fund-of-funds double-counting not independently verified), published with a ~1-month lag. It sits consistently above the top-20 total, as expected — the top 20 capture an important concentration of retail fund demand in products commonly used through NISA, but this is neither exhaustive nor NISA-exclusive. Currency toggle here is shared with the snapshot chart above — switching either one switches both.</div>
       <div style="height:420px;margin-top:10px"><canvas id="nisaFundFlowTSChart"></canvas></div>
-    </div>
-    <div class="card full">
-      <h2>How representative is the top-20? — coverage vs. industry-wide flow</h2>
-      <div class="note">Top-20 total ÷ Investment Trusts Association's industry-wide total, by month. &gt;100% months mean funds outside the top-20 saw net outflows that month — a concentration signal, not an error.</div>
-      <div class="kpis" id="nisaCoverageKpis" style="margin-top:10px"></div>
-      <div style="height:260px;margin-top:12px"><canvas id="nisaCoverageChart"></canvas></div>
     </div>
     <div class="card full">
       <h2 style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
@@ -3682,8 +3678,6 @@ fetch('./intervention_data.json?' + Date.now())
       return row ? conv(row.flow_bn) : null;
     }) : null;
 
-    buildNisaCoverageChart(months, totalByMonth, toushinByMonth);
-
     const shortName = f => f.length > 22 ? f.slice(0, 21) + "…" : f;
 
     if (window.__nisaFundFlowTSChart_) window.__nisaFundFlowTSChart_.destroy();
@@ -3712,46 +3706,6 @@ fetch('./intervention_data.json?' + Date.now())
         scales: {
           x: { grid: GRID, ticks: TICK },
           y: { grid: GRID, ticks: TICK, title: { display: true, text: unitLabel, color: "#93a1bd" } }
-        }
-      }
-    });
-  }
-
-  function buildNisaCoverageChart(months, totalByMonth, toushinByMonth){
-    if (!toushinByMonth) return;
-    const cov = months.map((m, i) => {
-      const t = totalByMonth[i], d = toushinByMonth[i];
-      return (t == null || d == null || d === 0) ? null : t / d * 100;
-    });
-    const vals = cov.filter(v => v != null).sort((a,b) => a-b);
-    if (vals.length) {
-      const avg = vals.reduce((s,v) => s+v, 0) / vals.length;
-      const med = vals[Math.floor(vals.length/2)];
-      document.getElementById('nisaCoverageKpis').innerHTML = [
-        { v: `${med.toFixed(0)}%`, l: 'Median coverage' },
-        { v: `${avg.toFixed(0)}%`, l: 'Average coverage' },
-        { v: `${vals[0].toFixed(0)}–${vals[vals.length-1].toFixed(0)}%`, l: 'Range' },
-      ].map(k => `<div class="kpi"><div class="v">${k.v}</div><div class="l">${k.l}</div></div>`).join('');
-    }
-    if (window.__nisaCoverageChart_) window.__nisaCoverageChart_.destroy();
-    window.__nisaCoverageChart_ = new Chart(document.getElementById('nisaCoverageChart'), {
-      type: 'line',
-      data: {
-        labels: months.map(fmtD),
-        datasets: [
-          { label: 'Coverage', data: cov, borderColor: '#d9a441', backgroundColor: '#d9a441', tension: .2, pointRadius: 2, borderWidth: 1.8, spanGaps: false },
-          { label: '100% line', data: months.map(() => 100), borderColor: 'rgba(232,237,247,.35)', borderDash: [4,3], pointRadius: 0, borderWidth: 1 }
-        ]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false, animation: false,
-        plugins: {
-          legend: { display: false },
-          tooltip: { callbacks: { label: c => c.dataset.label === '100% line' ? null : `${c.raw.toFixed(0)}%` } }
-        },
-        scales: {
-          x: { grid: GRID, ticks: TICK },
-          y: { grid: GRID, ticks: TICK, title: { display: true, text: '%', color: '#93a1bd' } }
         }
       }
     });
