@@ -298,8 +298,8 @@
         <thead><tr><th>Date</th><th>Type</th><th>Event</th><th>Relates to</th><th>Notes</th></tr></thead>
         <tbody id="calBody"></tbody>
       </table></div>
-      <div class="note" style="margin-top:10px"><b style="color:#b79ae8">Board term expiries</b> (last votable MPM before date): Tamura &amp; Takata <b>23 Jul 2027</b> · Uchida &amp; Himino (Dep. Gov) 19 Mar 2028 · Ueda (Gov) 8 Apr 2028 · Koeda 25 Mar 2030 · Masu 30 Jun 2030 · Asada 31 Mar 2031 · Sato 29 Jun 2031. Full dates on Board &amp; votes tab.</div>
-      <div class="note">Sources: <a href="https://www.boj.or.jp/en/mopo/mpmsche_minu/index.htm" target="_blank">BOJ MPM schedule</a> · <a href="https://www.boj.or.jp/en/statistics/tk/index.htm" target="_blank">BOJ Tankan schedule</a>. Outlook Reports accompany Jan/Apr/Jul/Oct meetings; Tankan released ~Apr 1/Jul 1/Oct 1/mid-Dec.</div>
+      <div class="note" style="margin-top:10px"><b style="color:#b79ae8">Board term expiries</b> (last votable MPM before date): Tamura &amp; Takata <b>23 Jul 2027</b> · Uchida &amp; Himino (Dep. Gov) 19 Mar 2028 · Ueda (Gov) 8 Apr 2028 · Koeda 25 Mar 2030 · Masu 30 Jun 2030 · Asada 31 Mar 2031 · Sato 29 Jun 2031.</div>
+      <div class="note">Sources: <a href="https://www.boj.or.jp/en/mopo/mpmsche_minu/index.htm" target="_blank">BOJ MPM schedule</a> · <a href="https://www.boj.or.jp/en/statistics/tk/index.htm" target="_blank">BOJ Tankan schedule</a>. Outlook Reports: Jan/Apr/Jul/Oct; Tankan: ~Apr 1/Jul 1/Oct 1/mid-Dec.</div>
     </div>
   </div>
 
@@ -325,14 +325,14 @@
       <div style="overflow-x:auto;margin-top:8px"><table id="jgbPlanTable2026" style="font-size:12px"></table></div>
       <div style="margin-top:20px;font-weight:700">FY2027 initial</div>
       <div style="overflow-x:auto;margin-top:8px"><table id="jgbPlanTable2027" style="font-size:12px"></table></div>
-      <div class="note">Rows = one month of gross issuance by bucket, ¥tn. "Liquidity enh." = BOJ-style re-opening auctions across 3 remaining-maturity buckets (11-39y/5-11y/1-5y; 1-5y gets a 2nd auction in alternating months, combined here). "CT" = Climate Transition (GX) bonds, 10y+5y combined. 1yTB shown lump-sum in March only (MOF/Nomura convention). Monthly figures reconcile to published FY totals; Total rows carry ±0.1-0.3tn rounding noise from per-cell decimal rounding in the source. Source: Nomura "Market issuance" note, citing MOF; as of the FY2027-initial estimate (2026-08-12).</div>
+      <div class="note">Rows = one month of gross issuance by bucket, ¥tn. "Liquidity enh." = BOJ-style re-opening auctions across 3 remaining-maturity buckets (1-5y/5-11y/11-39y). "CT" = Climate Transition (GX) bonds, 10y+5y combined. 1yTB shown lump-sum in March only (MOF/Nomura convention). Total rows carry ±0.1-0.3tn rounding noise. Source: Nomura "Market issuance" note, citing MOF; as of FY2027-initial estimate (2026-08-12).</div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>JGB holdings by holder type — who owns the market? <span id="jgbHoldersStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
       <div class="sub">The demand-side counterpart to the issuance plan above — who actually holds the ¥1,000tn+ stock of JGBs and FILP bonds outstanding, not just who's buying at each auction.</div>
       <div class="kpis" id="jgbHoldersKpis" style="margin-top:12px"></div>
       <div style="height:340px;margin-top:16px"><canvas id="chart-jgb-holders"></canvas></div>
-      <div class="note" id="jgbHoldersNote">Source: BOJ Flow of Funds Accounts, Preliminary Figures — "Government bonds and treasury bills" (item Db, central government securities and FILP bonds), by holder sector, assets side. BOJ only publishes a stable link for the latest quarter, so this is a snapshot refreshed each quarter via <code>fetch_jgb_holders.py</code>; the chart below covers the multi-year trend. "Other" is a residual (nonfinancial corporates, general government's own holdings, local governments, nonprofits, other financial intermediaries) — each individually small.</div>
+      <div class="note" id="jgbHoldersNote">Source: BOJ Flow of Funds Accounts, Preliminary Figures — "Government bonds and treasury bills" (item Db), by holder sector, assets side. Snapshot refreshed quarterly via <code>fetch_jgb_holders.py</code>. "Other" is a residual of several small sectors.</div>
     </div>
     <div class="card full">
       <h2>JGB holdings by holder type — the multi-year shift <span style="font-size:12px;color:var(--muted);font-weight:400">· excl. T-Bills</span></h2>
