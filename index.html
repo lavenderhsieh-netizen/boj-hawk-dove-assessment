@@ -347,6 +347,13 @@
       <div style="height:380px;margin-top:16px"><canvas id="chart-household-assets"></canvas></div>
       <div class="note" id="hhAssetsNote">Source: BOJ Flow of Funds Accounts, DB=FF, sector "Households" (FFAS430), Stock, Assets side — quarterly since end-1997. "Investment trust" and "Equity" are split from "Equity and investment fund shares" since NISA-era flows concentrate in funds. "Debt securities" includes directly-held JGBs. "Other" is a residual.</div>
     </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>Retail JGB demand — monthly subscription amounts <span id="retailJgbStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">The flow-side complement to the household-holdings stock above: how much individuals actually subscribed for at each month's offering, across MOF's 3 retail products (floating-rate 10yr, fixed-rate 5yr, fixed-rate 3yr). Retail JGB sales hit a record ¥5.28tn in 2025 (Reuters, 22 Dec 2025) as MOF courts Japan's ~$7tn household savings pool to fill the gap left by reduced BOJ buying — yet households still hold well under 2% of outstanding JGBs (see the holdings chart above), so this remains a small slice of total demand even as it grows.</div>
+      <div class="kpis" id="retailJgbKpis" style="margin-top:12px"></div>
+      <div style="height:340px;margin-top:16px"><canvas id="chart-retail-jgb"></canvas></div>
+      <div class="note" id="retailJgbNote">Source: MOF "個人向け国債の応募額" (Retail JGB subscription amount), monthly press release. Amounts are subscriptions (応募額) for that month's offering, not issuance/settlement (issue date is mid-following-month). MOF footnotes that reported figures can be revised; latest publication per month is used.</div>
+    </div>
   </div>
 
   <!-- MARKETS & BONDS -->
@@ -4256,6 +4263,54 @@ fetch('./household_assets.json?' + Date.now())
     });
   })
   .catch(e => { console.warn('household_assets.json unavailable:', e); });
+
+// Retail JGB demand — monthly subscription amounts (MOF, flow-side complement to household holdings above)
+const RETAIL_JGB_COLORS = { floating10: '#d9a441', fixed5: '#5aa0e6', fixed3: '#4cba7a' };
+let _retailJgbChart = null;
+fetch('./retail_jgb.json?' + Date.now())
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(D => {
+    const rows = D.rows; if (!rows || !rows.length) return;
+    const latest = rows[rows.length - 1];
+    const statusEl = document.getElementById('retailJgbStatus');
+    if (statusEl) statusEl.textContent = '· ' + latest.date;
+    const yoy = rows.find(r => r.date === (function(){ const [y,m]=latest.date.split('-'); return (+y-1)+'-'+m; })());
+    const yoyPct = yoy ? ((latest.total_bn / yoy.total_bn - 1) * 100) : null;
+    const dominant = [['Floating 10yr', latest.floating10_bn], ['Fixed 5yr', latest.fixed5_bn], ['Fixed 3yr', latest.fixed3_bn]]
+      .sort((a, b) => b[1] - a[1])[0];
+    const kpis = document.getElementById('retailJgbKpis');
+    if (kpis) kpis.innerHTML = `
+      <div class="kpi"><div class="v">¥${latest.total_bn.toFixed(0)}bn</div><div class="l">Total subscriptions, ${latest.date}</div></div>
+      <div class="kpi"><div class="v">${yoyPct == null ? '–' : (yoyPct >= 0 ? '+' : '') + yoyPct.toFixed(0) + '%'}</div><div class="l">YoY change</div></div>
+      <div class="kpi"><div class="v">${dominant[0]}</div><div class="l">Most subscribed product this month (¥${dominant[1].toFixed(0)}bn)</div></div>
+      <div class="kpi"><div class="v">¥${rows.filter(r => r.date.startsWith(latest.date.slice(0,4))).reduce((s,r)=>s+r.total_bn,0).toFixed(0)}bn</div><div class="l">${latest.date.slice(0,4)} YTD subscriptions</div></div>`;
+    const cv = document.getElementById('chart-retail-jgb');
+    if (!cv) return;
+    const labels = rows.map(r => r.date);
+    const datasets = [
+      { label: 'Floating 10yr', data: rows.map(r => r.floating10_bn), backgroundColor: RETAIL_JGB_COLORS.floating10, borderWidth: 0, stack: 's' },
+      { label: 'Fixed 5yr', data: rows.map(r => r.fixed5_bn), backgroundColor: RETAIL_JGB_COLORS.fixed5, borderWidth: 0, stack: 's' },
+      { label: 'Fixed 3yr', data: rows.map(r => r.fixed3_bn), backgroundColor: RETAIL_JGB_COLORS.fixed3, borderWidth: 0, stack: 's' },
+    ];
+    if (_retailJgbChart) _retailJgbChart.destroy();
+    _retailJgbChart = new Chart(cv, {
+      type: 'bar',
+      data: { labels, datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false, animation: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { position: 'top', align: 'start', labels: { boxWidth: 11, boxHeight: 11, padding: 8, font: { size: 10.5 }, color: '#c7d0e0' } },
+          tooltip: { callbacks: { label: c => `${c.dataset.label}: ¥${c.parsed.y.toFixed(1)}bn` } }
+        },
+        scales: {
+          x: { stacked: true, grid: { display: false }, ticks: { color: '#93a1bd', autoSkip: true, maxTicksLimit: 16 } },
+          y: { stacked: true, grid: { color: 'rgba(148,163,196,0.12)' }, ticks: { color: '#93a1bd' }, title: { display: true, text: '¥bn, subscriptions', color: '#93a1bd' } }
+        }
+      }
+    });
+  })
+  .catch(e => { console.warn('retail_jgb.json unavailable:', e); });
 
 </script>
 </body>

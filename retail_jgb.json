@@ -1,0 +1,543 @@
+{
+  "meta": {
+    "unit": "JPY bn",
+    "source": "MOF 個人向け国債の応募額 (Retail JGB subscription amount), monthly press releases",
+    "source_url": "https://www.mof.go.jp/jgbs/individual/kojinmuke/houdouhappyou/",
+    "note": "Subscription (応募額) amounts by product for the month; issue date is mid-following-month. Figures may be revised by MOF; newest publication per month kept."
+  },
+  "rows": [
+    {
+      "date": "2023-03",
+      "pub_date": "20230406",
+      "floating10_bn": 276.5,
+      "fixed5_bn": 61.1,
+      "fixed3_bn": 16.5,
+      "total_bn": 354.1,
+      "series": {
+        "floating10": 156,
+        "fixed5": 144,
+        "fixed3": 154
+      }
+    },
+    {
+      "date": "2023-04",
+      "pub_date": "20230509",
+      "floating10_bn": 158.1,
+      "fixed5_bn": 56.3,
+      "fixed3_bn": 22.9,
+      "total_bn": 237.3,
+      "series": {
+        "floating10": 157,
+        "fixed5": 145,
+        "fixed3": 155
+      }
+    },
+    {
+      "date": "2023-05",
+      "pub_date": "20230606",
+      "floating10_bn": 163.2,
+      "fixed5_bn": 34.3,
+      "fixed3_bn": 24.3,
+      "total_bn": 221.8,
+      "series": {
+        "floating10": 158,
+        "fixed5": 146,
+        "fixed3": 156
+      }
+    },
+    {
+      "date": "2023-06",
+      "pub_date": "20230706",
+      "floating10_bn": 198.2,
+      "fixed5_bn": 21.8,
+      "fixed3_bn": 33.1,
+      "total_bn": 253.1,
+      "series": {
+        "floating10": 159,
+        "fixed5": 147,
+        "fixed3": 157
+      }
+    },
+    {
+      "date": "2023-07",
+      "pub_date": "20230804",
+      "floating10_bn": 153.2,
+      "fixed5_bn": 10.6,
+      "fixed3_bn": 35.9,
+      "total_bn": 199.7,
+      "series": {
+        "floating10": 160,
+        "fixed5": 148,
+        "fixed3": 158
+      }
+    },
+    {
+      "date": "2023-08",
+      "pub_date": "20230906",
+      "floating10_bn": 222.5,
+      "fixed5_bn": 52.7,
+      "fixed3_bn": 18.9,
+      "total_bn": 294.1,
+      "series": {
+        "floating10": 161,
+        "fixed5": 149,
+        "fixed3": 159
+      }
+    },
+    {
+      "date": "2023-09",
+      "pub_date": "20231005",
+      "floating10_bn": 273.3,
+      "fixed5_bn": 49.8,
+      "fixed3_bn": 14.0,
+      "total_bn": 337.1,
+      "series": {
+        "floating10": 162,
+        "fixed5": 150,
+        "fixed3": 160
+      }
+    },
+    {
+      "date": "2023-10",
+      "pub_date": "20231107",
+      "floating10_bn": 245.3,
+      "fixed5_bn": 81.3,
+      "fixed3_bn": 19.3,
+      "total_bn": 345.9,
+      "series": {
+        "floating10": 163,
+        "fixed5": 151,
+        "fixed3": 161
+      }
+    },
+    {
+      "date": "2023-11",
+      "pub_date": "20231206",
+      "floating10_bn": 225.0,
+      "fixed5_bn": 103.6,
+      "fixed3_bn": 21.5,
+      "total_bn": 350.1,
+      "series": {
+        "floating10": 164,
+        "fixed5": 152,
+        "fixed3": 162
+      }
+    },
+    {
+      "date": "2023-12",
+      "pub_date": "20240110",
+      "floating10_bn": 212.1,
+      "fixed5_bn": 63.7,
+      "fixed3_bn": 12.4,
+      "total_bn": 288.2,
+      "series": {
+        "floating10": 165,
+        "fixed5": 153,
+        "fixed3": 163
+      }
+    },
+    {
+      "date": "2024-01",
+      "pub_date": "20240206",
+      "floating10_bn": 192.0,
+      "fixed5_bn": 41.3,
+      "fixed3_bn": 10.7,
+      "total_bn": 244.0,
+      "series": {
+        "floating10": 166,
+        "fixed5": 154,
+        "fixed3": 164
+      }
+    },
+    {
+      "date": "2024-02",
+      "pub_date": "20240306",
+      "floating10_bn": 223.9,
+      "fixed5_bn": 45.5,
+      "fixed3_bn": 8.8,
+      "total_bn": 278.2,
+      "series": {
+        "floating10": 167,
+        "fixed5": 155,
+        "fixed3": 165
+      }
+    },
+    {
+      "date": "2024-03",
+      "pub_date": "20240404",
+      "floating10_bn": 177.8,
+      "fixed5_bn": 45.0,
+      "fixed3_bn": 14.5,
+      "total_bn": 237.3,
+      "series": {
+        "floating10": 168,
+        "fixed5": 156,
+        "fixed3": 166
+      }
+    },
+    {
+      "date": "2024-04",
+      "pub_date": "20240508",
+      "floating10_bn": 278.8,
+      "fixed5_bn": 81.4,
+      "fixed3_bn": 24.1,
+      "total_bn": 384.3,
+      "series": {
+        "floating10": 169,
+        "fixed5": 157,
+        "fixed3": 167
+      }
+    },
+    {
+      "date": "2024-05",
+      "pub_date": "20240606",
+      "floating10_bn": 229.4,
+      "fixed5_bn": 96.1,
+      "fixed3_bn": 31.4,
+      "total_bn": 356.9,
+      "series": {
+        "floating10": 170,
+        "fixed5": 158,
+        "fixed3": 168
+      }
+    },
+    {
+      "date": "2024-06",
+      "pub_date": "20240704",
+      "floating10_bn": 288.1,
+      "fixed5_bn": 125.4,
+      "fixed3_bn": 50.9,
+      "total_bn": 464.4,
+      "series": {
+        "floating10": 171,
+        "fixed5": 159,
+        "fixed3": 169
+      }
+    },
+    {
+      "date": "2024-07",
+      "pub_date": "20240806",
+      "floating10_bn": 283.9,
+      "fixed5_bn": 142.6,
+      "fixed3_bn": 38.9,
+      "total_bn": 465.4,
+      "series": {
+        "floating10": 172,
+        "fixed5": 160,
+        "fixed3": 170
+      }
+    },
+    {
+      "date": "2024-08",
+      "pub_date": "20240905",
+      "floating10_bn": 233.6,
+      "fixed5_bn": 44.2,
+      "fixed3_bn": 26.8,
+      "total_bn": 304.6,
+      "series": {
+        "floating10": 173,
+        "fixed5": 161,
+        "fixed3": 171
+      }
+    },
+    {
+      "date": "2024-09",
+      "pub_date": "20241004",
+      "floating10_bn": 208.5,
+      "fixed5_bn": 115.4,
+      "fixed3_bn": 52.8,
+      "total_bn": 376.7,
+      "series": {
+        "floating10": 174,
+        "fixed5": 162,
+        "fixed3": 172
+      }
+    },
+    {
+      "date": "2024-10",
+      "pub_date": "20241107",
+      "floating10_bn": 175.2,
+      "fixed5_bn": 78.3,
+      "fixed3_bn": 50.2,
+      "total_bn": 303.7,
+      "series": {
+        "floating10": 175,
+        "fixed5": 163,
+        "fixed3": 173
+      }
+    },
+    {
+      "date": "2024-11",
+      "pub_date": "20241205",
+      "floating10_bn": 163.9,
+      "fixed5_bn": 121.1,
+      "fixed3_bn": 57.5,
+      "total_bn": 342.5,
+      "series": {
+        "floating10": 176,
+        "fixed5": 164,
+        "fixed3": 174
+      }
+    },
+    {
+      "date": "2024-12",
+      "pub_date": "20250109",
+      "floating10_bn": 223.5,
+      "fixed5_bn": 189.4,
+      "fixed3_bn": 100.2,
+      "total_bn": 513.1,
+      "series": {
+        "floating10": 177,
+        "fixed5": 165,
+        "fixed3": 175
+      }
+    },
+    {
+      "date": "2025-01",
+      "pub_date": "20250206",
+      "floating10_bn": 149.5,
+      "fixed5_bn": 115.9,
+      "fixed3_bn": 55.4,
+      "total_bn": 320.8,
+      "series": {
+        "floating10": 178,
+        "fixed5": 166,
+        "fixed3": 176
+      }
+    },
+    {
+      "date": "2025-02",
+      "pub_date": "20250306",
+      "floating10_bn": 209.9,
+      "fixed5_bn": 148.2,
+      "fixed3_bn": 66.5,
+      "total_bn": 424.6,
+      "series": {
+        "floating10": 179,
+        "fixed5": 167,
+        "fixed3": 177
+      }
+    },
+    {
+      "date": "2025-03",
+      "pub_date": "20250404",
+      "floating10_bn": 220.1,
+      "fixed5_bn": 288.2,
+      "fixed3_bn": 105.1,
+      "total_bn": 613.4,
+      "series": {
+        "floating10": 180,
+        "fixed5": 168,
+        "fixed3": 178
+      }
+    },
+    {
+      "date": "2025-04",
+      "pub_date": "20250508",
+      "floating10_bn": 189.7,
+      "fixed5_bn": 304.3,
+      "fixed3_bn": 110.3,
+      "total_bn": 604.3,
+      "series": {
+        "floating10": 181,
+        "fixed5": 169,
+        "fixed3": 179
+      }
+    },
+    {
+      "date": "2025-05",
+      "pub_date": "20250605",
+      "floating10_bn": 122.9,
+      "fixed5_bn": 145.5,
+      "fixed3_bn": 66.2,
+      "total_bn": 334.6,
+      "series": {
+        "floating10": 182,
+        "fixed5": 170,
+        "fixed3": 180
+      }
+    },
+    {
+      "date": "2025-06",
+      "pub_date": "20250704",
+      "floating10_bn": 193.3,
+      "fixed5_bn": 328.3,
+      "fixed3_bn": 68.9,
+      "total_bn": 590.5,
+      "series": {
+        "floating10": 183,
+        "fixed5": 171,
+        "fixed3": 181
+      }
+    },
+    {
+      "date": "2025-07",
+      "pub_date": "20250806",
+      "floating10_bn": 110.4,
+      "fixed5_bn": 137.7,
+      "fixed3_bn": 54.9,
+      "total_bn": 303.0,
+      "series": {
+        "floating10": 184,
+        "fixed5": 172,
+        "fixed3": 182
+      }
+    },
+    {
+      "date": "2025-08",
+      "pub_date": "20250904",
+      "floating10_bn": 144.6,
+      "fixed5_bn": 150.9,
+      "fixed3_bn": 57.3,
+      "total_bn": 352.8,
+      "series": {
+        "floating10": 185,
+        "fixed5": 173,
+        "fixed3": 183
+      }
+    },
+    {
+      "date": "2025-09",
+      "pub_date": "20251006",
+      "floating10_bn": 131.9,
+      "fixed5_bn": 235.2,
+      "fixed3_bn": 74.3,
+      "total_bn": 441.4,
+      "series": {
+        "floating10": 186,
+        "fixed5": 174,
+        "fixed3": 184
+      }
+    },
+    {
+      "date": "2025-10",
+      "pub_date": "20251107",
+      "floating10_bn": 124.6,
+      "fixed5_bn": 232.3,
+      "fixed3_bn": 94.1,
+      "total_bn": 451.0,
+      "series": {
+        "floating10": 187,
+        "fixed5": 175,
+        "fixed3": 185
+      }
+    },
+    {
+      "date": "2025-11",
+      "pub_date": "20251204",
+      "floating10_bn": 118.7,
+      "fixed5_bn": 152.8,
+      "fixed3_bn": 59.5,
+      "total_bn": 331.0,
+      "series": {
+        "floating10": 188,
+        "fixed5": 176,
+        "fixed3": 186
+      }
+    },
+    {
+      "date": "2025-12",
+      "pub_date": "20260108",
+      "floating10_bn": 211.2,
+      "fixed5_bn": 213.6,
+      "fixed3_bn": 78.5,
+      "total_bn": 503.3,
+      "series": {
+        "floating10": 189,
+        "fixed5": 177,
+        "fixed3": 187
+      }
+    },
+    {
+      "date": "2026-01",
+      "pub_date": "20260205",
+      "floating10_bn": 282.5,
+      "fixed5_bn": 352.9,
+      "fixed3_bn": 117.5,
+      "total_bn": 752.9,
+      "series": {
+        "floating10": 190,
+        "fixed5": 178,
+        "fixed3": 188
+      }
+    },
+    {
+      "date": "2026-02",
+      "pub_date": "20260305",
+      "floating10_bn": 243.9,
+      "fixed5_bn": 477.9,
+      "fixed3_bn": 152.4,
+      "total_bn": 874.2,
+      "series": {
+        "floating10": 191,
+        "fixed5": 179,
+        "fixed3": 189
+      }
+    },
+    {
+      "date": "2026-03",
+      "pub_date": "20260406",
+      "floating10_bn": 197.1,
+      "fixed5_bn": 372.1,
+      "fixed3_bn": 152.3,
+      "total_bn": 721.5,
+      "series": {
+        "floating10": 192,
+        "fixed5": 180,
+        "fixed3": 190
+      }
+    },
+    {
+      "date": "2026-04",
+      "pub_date": "20260511",
+      "floating10_bn": 235.6,
+      "fixed5_bn": 527.2,
+      "fixed3_bn": 180.7,
+      "total_bn": 943.5,
+      "series": {
+        "floating10": 193,
+        "fixed5": 181,
+        "fixed3": 191
+      }
+    },
+    {
+      "date": "2026-05",
+      "pub_date": "20260604",
+      "floating10_bn": 207.3,
+      "fixed5_bn": 402.5,
+      "fixed3_bn": 117.5,
+      "total_bn": 727.3,
+      "series": {
+        "floating10": 194,
+        "fixed5": 182,
+        "fixed3": 192
+      }
+    },
+    {
+      "date": "2026-06",
+      "pub_date": "20260706",
+      "floating10_bn": 268.7,
+      "fixed5_bn": 296.2,
+      "fixed3_bn": 91.4,
+      "total_bn": 656.3,
+      "series": {
+        "floating10": 195,
+        "fixed5": 183,
+        "fixed3": 193
+      }
+    },
+    {
+      "date": "2026-07",
+      "pub_date": "20260806",
+      "floating10_bn": 341.3,
+      "fixed5_bn": 546.0,
+      "fixed3_bn": 130.4,
+      "total_bn": 1017.7,
+      "series": {
+        "floating10": 196,
+        "fixed5": 184,
+        "fixed3": 194
+      }
+    }
+  ]
+}
