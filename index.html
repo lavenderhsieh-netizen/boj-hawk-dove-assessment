@@ -4150,20 +4150,16 @@ fetch('./jgb_holders.json?' + Date.now())
     const colors = D.holders.map(h => JGB_HOLDER_COLORS[h.name] || 'rgba(124,136,160,0.55)');
     if (_jgbHoldersChart) _jgbHoldersChart.destroy();
     _jgbHoldersChart = new Chart(cv, {
-      type: 'bar',
-      data: { labels, datasets: [{ data: vals, backgroundColor: colors, borderWidth: 0, borderRadius: 3 }] },
+      type: 'pie',
+      data: { labels, datasets: [{ data: vals, backgroundColor: colors, borderColor: '#171f31', borderWidth: 2 }] },
       options: {
-        indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+        responsive: true, maintainAspectRatio: false,
         plugins: {
-          legend: { display: false },
+          legend: { position: 'right', labels: { boxWidth: 11, boxHeight: 11, padding: 8, font: { size: 11 }, color: '#c7d0e0' } },
           tooltip: { callbacks: { label: c => {
             const h = D.holders[c.dataIndex];
-            return `¥${h.jpy_tn.toFixed(1)}tn (${h.pct}% of total)`;
+            return `${h.name}: ¥${h.jpy_tn.toFixed(1)}tn (${h.pct}% of total)`;
           } } }
-        },
-        scales: {
-          x: { title: { display: true, text: '¥tn', color: '#93a1bd' }, grid: { color: 'rgba(148,163,196,0.12)' }, ticks: { color: '#93a1bd' } },
-          y: { grid: { display: false }, ticks: { color: '#c7d0e0', font: { size: 11.5 } } }
         }
       }
     });
