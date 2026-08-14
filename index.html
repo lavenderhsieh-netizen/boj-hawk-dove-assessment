@@ -620,7 +620,7 @@
       </div>
       <div id="xbWeeklySmoothBtns" style="display:flex;gap:6px">
         <button class="tab active" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbWeeklySmooth('raw',this)">Weekly</button>
-        <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbWeeklySmooth('avg',this)">3M rolling avg</button>
+        <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbWeeklySmooth('avg',this)">4-week rolling avg</button>
       </div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
@@ -635,7 +635,7 @@
         <canvas id="cXbWeeklyIn" style="max-height:340px;margin-top:12px"></canvas>
       </div>
     </div>
-    <div class="sub" style="margin-top:8px">Same MoF release as the monthly panels above, <b>weekly</b> frequency, split Equity &amp; fund shares vs. Long-term debt. "3M rolling avg" = trailing 13-week mean (shown only once 13 weeks exist). Source: MoF International Transactions in Securities (Weekly).</div>
+    <div class="sub" style="margin-top:8px">Same MoF release as the monthly panels above, <b>weekly</b> frequency, split Equity &amp; fund shares vs. Long-term debt. "4-week rolling avg" = trailing 4-week mean (shown only once 4 weeks exist). Source: MoF International Transactions in Securities (Weekly).</div>
 
     <div style="margin:1.6rem 0 .8rem;border-top:1px solid var(--line);padding-top:1.1rem">
       <h1 style="font-size:1.05rem;color:var(--ink)">Balance of payments — overview</h1>
@@ -2958,7 +2958,7 @@ function setXbWeeklySmooth(mode, btn){ _xbWeeklySmooth=mode;
   if(btn) btn.classList.add('active');
   xbWeeklyChart();
 }
-const XBW_ROLL_N=13; // ~3 months of weekly data
+const XBW_ROLL_N=4; // 4 weeks (~1 month) of weekly data
 function xbwRollingMean(arr, n){
   const out=new Array(arr.length).fill(null);
   for(let i=n-1;i<arr.length;i++){
@@ -3002,7 +3002,7 @@ function xbWeeklyChart(){
   const usd=(_xbCur==='usd');
   const u=usd?'$bn':'¥tn', dp=usd?1:2;
   const smooth=(_xbWeeklySmooth==='avg');
-  const smoothLabel=smooth?' (3M avg)':'';
+  const smoothLabel=smooth?' (4W avg)':'';
   // roll BEFORE windowing so the earliest visible points still have trailing history
   const roll=arr=>smooth?xbwRollingMean(arr,XBW_ROLL_N):arr;
   const assetsEqFull=roll(usd?W.assets_eq_usd:W.assets_eq), assetsLtdFull=roll(usd?W.assets_ltd_usd:W.assets_ltd);
@@ -3015,7 +3015,7 @@ function xbWeeklyChart(){
   if(_xbWeeklyInObj){ _xbWeeklyInObj.destroy(); }
   _xbWeeklyOutObj=_xbWeeklyPanel('cXbWeeklyOut', weeks, weekLabels, assetsEq, assetsLtd, u, dp, smoothLabel);
   _xbWeeklyInObj=_xbWeeklyPanel('cXbWeeklyIn', weeks, weekLabels, liabEq, liabLtd, u, dp, smoothLabel);
-  const el=document.getElementById('xbWeeklyStatus'); if(el && W.meta) el.textContent='· data to '+W.meta.as_of+(smooth?' · 3M rolling avg':'');
+  const el=document.getElementById('xbWeeklyStatus'); if(el && W.meta) el.textContent='· data to '+W.meta.as_of+(smooth?' · 4-week rolling avg':'');
 }
 fetch('./mof_weekly.json?' + Date.now())
   .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
