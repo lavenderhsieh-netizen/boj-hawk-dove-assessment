@@ -1197,9 +1197,10 @@
       <h2 style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
         <span>Retail fund-flow proxy, classified — domestic vs. foreign equity mandate <span class="npill" id="nisaGeoMonths"></span></span>
       </h2>
-      <div class="note">Answers: <b>within the retail fund-flow proxy, how much is Japan-only vs. US vs. ex-Japan vs. global vs. other?</b> Every fund in the Wealth Advisor top-20 list (111 distinct funds, Jul 2024–Jul 2026) is classified by name — domestic-Japan, US, developed-ex-Japan, emerging-market, global all-country (~95% foreign/~5% Japan approximation), global/thematic, non-equity — a first-pass heuristic, imprecise for balanced/thematic products. <b>Don't use this alone to infer NISA's overall domestic/foreign share</b> — NISA also includes direct stocks/ETFs, a <b>different universe</b> (growth-quota direct-stock buying is domestic-tilted but not 100%: JSDA's 2025 White Paper found 9 of the top 10 growth-quota stocks domestic). Read: domestic-equity funds' share of flow was near-zero through 2024-2025, risen to ~20% by mid-2026.</div>
+      <div class="note"><b>Diversification, not repatriation.</b> Answers: <b>within the retail fund-flow proxy, how much is Japan-only vs. US vs. ex-Japan vs. global vs. other?</b> Every fund in the Wealth Advisor top-20 list (111 distinct funds, Jul 2024–Jul 2026) is classified by name — domestic-Japan, US, developed-ex-Japan, emerging-market, global all-country (~95% foreign/~5% Japan approximation), global/thematic, non-equity — a first-pass heuristic, imprecise for balanced/thematic products. <b>Don't use this alone to infer NISA's overall domestic/foreign share</b> — NISA also includes direct stocks/ETFs, a <b>different universe</b> (growth-quota direct-stock buying is domestic-tilted but not 100%: JSDA's 2025 White Paper found 9 of the top 10 growth-quota stocks domestic). Read: domestic-equity funds' share of flow was near-zero through 2024-2025, risen to ~20% by mid-2026 — but look through the ~95%-foreign global all-country sleeve (KPIs below) and foreign equity is still ~3/4 of underlying exposure. This is Japan gaining share at the margin within a still foreign-equity-dominated portfolio, not a reversal of overseas diversification.</div>
       <div class="kpis" id="nisaGeoKpis" style="margin-top:10px"></div>
       <div style="height:360px;margin-top:12px"><canvas id="nisaGeoChart"></canvas></div>
+      <div class="note" id="nisaGeoSubNote" style="margin-top:8px"></div>
     </div>
     <div class="card full">
       <h2 style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
@@ -4085,12 +4086,55 @@ fetch('./intervention_data.json?' + Date.now())
       return { tot, pct: Object.fromEntries(Object.keys(b).map(k => [k, tot ? b[k]/tot*100 : 0])) };
     });
     const latest = byMonth[byMonth.length - 1];
+    // Look-through: split global all-country's ~95% foreign / ~5% Japan into the domestic/foreign totals.
+    const ltDomestic = latest.pct.domestic_eq + 0.05 * latest.pct.global_incl_jp;
+    const ltForeign = latest.pct.foreign_eq + 0.95 * latest.pct.global_incl_jp;
+    // Non-equity sub-split for the latest month, using the same fund-name classifier at full granularity.
+    const latestMonthRows = fd.months[months[months.length - 1]];
+    const latestTot = latestMonthRows.reduce((s, r) => s + r.flow_1m_100m_jpy, 0);
+    const subCats = ['bond_domestic', 'bond_foreign', 'commodity', 'reit', 'alt_wrap'];
+    const subPct = Object.fromEntries(subCats.map(c => [c, 0]));
+    latestMonthRows.forEach(r => { const c = nisaGeoClassify(r.fund); if (c in subPct) subPct[c] += r.flow_1m_100m_jpy; });
+    Object.keys(subPct).forEach(c => subPct[c] = latestTot ? subPct[c] / latestTot * 100 : 0);
     const kpis = document.getElementById('nisaGeoKpis');
     if (kpis) kpis.innerHTML = `
       <div class="kpi"><div class="v">${latest.pct.domestic_eq.toFixed(1)}%</div><div class="l">Domestic-equity funds, latest month</div></div>
       <div class="kpi"><div class="v">${latest.pct.foreign_eq.toFixed(1)}%</div><div class="l">Foreign-equity funds (non-all-country)</div></div>
       <div class="kpi"><div class="v">${latest.pct.global_incl_jp.toFixed(1)}%</div><div class="l">Global all-country funds</div></div>
-      <div class="kpi"><div class="v">${latest.pct.non_equity.toFixed(1)}%</div><div class="l">Non-equity (bonds/gold/REIT/wrap)</div></div>`;
+      <div class="kpi"><div class="v">${latest.pct.non_equity.toFixed(1)}%</div><div class="l">Non-equity (bonds/gold/REIT/wrap)</div></div>
+      <div class="kpi"><div class="v">${ltDomestic.toFixed(1)}%</div><div class="l">Look-through domestic (splits all-country ~5% JP)</div></div>
+      <div class="kpi"><div class="v">${ltForeign.toFixed(1)}%</div><div class="l">Look-through foreign (splits all-country ~95% foreign)</div></div>`;
+    const subNote = document.getElementById('nisaGeoSubNote');
+    if (subNote) {
+      const subParts = [
+        `domestic bonds ${subPct.bond_domestic.toFixed(1)}%`,
+        `foreign bonds ${subPct.bond_foreign.toFixed(1)}%`,
+        `gold/commodity ${subPct.commodity.toFixed(1)}%`,
+        `REIT ${subPct.reit.toFixed(1)}%`,
+        `hedge/wrap/infra ${subPct.alt_wrap.toFixed(1)}%`,
+      ].join(' · ');
+      let coverageHtml = '';
+      if (toushinD && toushinD.series && toushinD.series.length) {
+        const latestNisaMonth = months[months.length - 1];
+        let trow = toushinD.series.find(r => r.date === latestNisaMonth);
+        let covMonth = latestNisaMonth, covTot = latestTot;
+        if (!trow) {
+          // JITA's series lags the top-20 tracker by ~1 month — fall back to its latest available month
+          // and the top-20 total for that same month, rather than showing nothing.
+          trow = toushinD.series[toushinD.series.length - 1];
+          covMonth = trow.date;
+          const covRows = fd.months[covMonth];
+          covTot = covRows ? covRows.reduce((s, r) => s + r.flow_1m_100m_jpy, 0) : null;
+        }
+        if (trow && trow.flow_bn && covTot != null) {
+          const top20Bn = covTot / 10; // flow_1m_100m_jpy is in ¥100mn units; toushin flow_bn is ¥bn (×10 smaller unit count)
+          const coverage = top20Bn / trow.flow_bn * 100;
+          const lagNote = covMonth !== latestNisaMonth ? ` (JITA lags ~1 month behind the top-20 tracker; showing its latest available, ${covMonth})` : '';
+          coverageHtml = ` <b>Coverage:</b> top-20 combined inflow was ${coverage.toFixed(1)}% of JITA's whole-industry equity-fund net flow in ${covMonth}${lagNote} (¥${top20Bn.toFixed(0)}bn of ¥${trow.flow_bn.toFixed(0)}bn) — varies month to month with how concentrated flow is in the top names, so treat category shares as directional, not exhaustive.`;
+        }
+      }
+      subNote.innerHTML = `<b>Non-equity, latest month, by type:</b> ${subParts} — too small individually to read much into, but confirms the 4.9%-scale non-equity bucket is not meaningfully a bond story.${coverageHtml}`;
+    }
     const order = ['domestic_eq','global_incl_jp','foreign_eq','non_equity'];
     const datasets = order.map(k => ({
       label: NISA_GEO_LABELS[k], data: byMonth.map(b => b.pct[k]),
@@ -4140,6 +4184,7 @@ fetch('./intervention_data.json?' + Date.now())
     .then(td => {
       toushinD = td;
       if (nisaFundFlowD) buildNisaFundFlowTSChart(nisaFundFlowD, Object.keys(nisaFundFlowD.months).sort());
+      if (nisaFundFlowD && window.__nisaChartsInit) buildNisaGeoChart(nisaFundFlowD);
     })
     .catch(e => console.warn('toushin_flows.json unavailable:', e));
 
