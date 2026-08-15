@@ -1157,10 +1157,10 @@
         <span id="nisaFundFlowTitle">Latest-month top-20 retail funds — ranked by net monthly inflow <span class="npill" id="nisaFundFlowMonth"></span></span>
         <span style="display:inline-flex;gap:8px;flex-wrap:wrap">
           <span style="display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;font-size:12px;font-weight:600">
-            <button id="nisaFundFlowHz1m" onclick="setNisaFundFlowHorizon('1m',this)" style="padding:4px 10px;border:none;cursor:pointer;background:var(--ink);color:var(--bg)">1M</button>
-            <button id="nisaFundFlowHz3m" onclick="setNisaFundFlowHorizon('3m',this)" style="padding:4px 10px;border:none;cursor:pointer;background:transparent;color:var(--ink)">3M</button>
-            <button id="nisaFundFlowHz6m" onclick="setNisaFundFlowHorizon('6m',this)" style="padding:4px 10px;border:none;cursor:pointer;background:transparent;color:var(--ink)">6M</button>
-            <button id="nisaFundFlowHz1y" onclick="setNisaFundFlowHorizon('1y',this)" style="padding:4px 10px;border:none;cursor:pointer;background:transparent;color:var(--ink)">1Y</button>
+            <button id="nisaFundFlowHzMtd" onclick="setNisaFundFlowHorizon('mtd',this)" style="padding:4px 10px;border:none;cursor:pointer;background:var(--ink);color:var(--bg)">MTD</button>
+            <button id="nisaFundFlowHzQtd" onclick="setNisaFundFlowHorizon('qtd',this)" style="padding:4px 10px;border:none;cursor:pointer;background:transparent;color:var(--ink)">QTD</button>
+            <button id="nisaFundFlowHzYtd" onclick="setNisaFundFlowHorizon('ytd',this)" style="padding:4px 10px;border:none;cursor:pointer;background:transparent;color:var(--ink)">YTD</button>
+            <button id="nisaFundFlowHzSi25" onclick="setNisaFundFlowHorizon('si25',this)" style="padding:4px 10px;border:none;cursor:pointer;background:transparent;color:var(--ink)">Since '25</button>
           </span>
           <span style="display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;font-size:12px;font-weight:600">
             <button id="nisaFundFlowCcyJpy" onclick="setNisaFundFlowCcy('jpy')" style="padding:4px 12px;border:none;cursor:pointer;background:var(--ink);color:var(--bg)">¥</button>
@@ -1172,7 +1172,7 @@
           </span>
         </span>
       </h2>
-      <div class="note"><b>Retail fund-flow proxy — NISA-sensitive, not NISA-exclusive.</b> Wealth Advisor's ranking indicates products attracting Japanese retail money, many heavily used in NISA — but it's total fund flow (also taxable-account and iDeCo), not NISA-specific. <b>Universe is fixed to the latest month's 1M top-20; the 3M/6M/1Y toggles only re-rank/re-size that same set</b> — a fund that dropped out won't appear even on 6M/1Y views. Bars colored by domestic-vs-foreign classification (hover for category). <span id="nisaFundFlowGapNote"></span></div>
+      <div class="note"><b>Retail fund-flow proxy — NISA-sensitive, not NISA-exclusive.</b> Wealth Advisor's ranking indicates products attracting Japanese retail money, many heavily used in NISA — but it's total fund flow (also taxable-account and iDeCo), not NISA-specific. <b>Universe is fixed to the latest month's top-20; MTD/QTD/YTD/Since '25 only re-rank/re-size that same set</b> by summing each fund's own monthly net inflow over the matching calendar window (own monthly time series, not the PDF's rolling 3M/6M/1Y fields) — a fund that dropped out of a given month's top-20 contributes ¥0 for that month even if it received real inflow, so cumulative windows can understate funds with lumpy in/out top-20 membership. Bars colored by domestic-vs-foreign classification (hover for category). <span id="nisaFundFlowGapNote"></span></div>
       <div id="nisaFundFlowLegend" style="display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin:6px 0 2px"></div>
       <div style="height:640px"><canvas id="nisaFundFlowChart"></canvas></div>
     </div>
@@ -3710,9 +3710,27 @@ fetch('./intervention_data.json?' + Date.now())
     });
   }
 
-  let nisaFundFlowRows = null, nisaFundFlowChart_ = null, nisaFundFlowCcy = 'jpy', nisaFxRate = null, nisaFundFlowHorizon = '1m', nisaFundNameLang = 'en';
-  const NISA_HZ_LABEL = {'1m':'1-month','3m':'3-month','6m':'6-month','1y':'1-year'};
-  const NISA_HZ_TITLE = {'1m':'net monthly inflow','3m':'trailing 3M flow (same fixed top-20 set)','6m':'trailing 6M flow (same fixed top-20 set)','1y':'trailing 1Y flow (same fixed top-20 set)'};
+  let nisaFundFlowRows = null, nisaFundFlowChart_ = null, nisaFundFlowCcy = 'jpy', nisaFxRate = null, nisaFundFlowHorizon = 'mtd', nisaFundNameLang = 'en';
+  let nisaFundFlowMonths = [], nisaFundFlowLatestMonth = null;
+  const NISA_HZ_LABEL = {'mtd':'MTD','qtd':'QTD','ytd':'YTD','si25':'since Jan 2025'};
+  const NISA_HZ_TITLE = {'mtd':'net month-to-date inflow','qtd':'net quarter-to-date inflow (calendar quarter)','ytd':'net year-to-date inflow (calendar year)','si25':'net inflow since Jan 2025'};
+
+  function nisaQuarterOf(m){ return Math.floor((parseInt(m.slice(5,7),10) - 1) / 3); }
+  function nisaFundPeriodSum(fund, horizon, months, latest){
+    if (!latest) return 0;
+    const latestYear = latest.slice(0,4), latestQ = nisaQuarterOf(latest);
+    let sum = 0;
+    for (const m of months) {
+      if (m > latest) continue;
+      if (horizon === 'mtd' && m !== latest) continue;
+      if (horizon === 'qtd' && (m.slice(0,4) !== latestYear || nisaQuarterOf(m) !== latestQ)) continue;
+      if (horizon === 'ytd' && m.slice(0,4) !== latestYear) continue;
+      if (horizon === 'si25' && m < '2025-01') continue;
+      const row = nisaFundFlowD.months[m].find(r => r.fund === fund);
+      if (row) sum += row.flow_1m_100m_jpy;
+    }
+    return sum;
+  }
 
   // Wealth Advisor fund names are Japanese-only at source; English is this project's own working translation/transliteration, not an official name.
   const NISA_FUND_EN = {
@@ -3845,10 +3863,12 @@ fetch('./intervention_data.json?' + Date.now())
 
   function drawNisaFundFlowChart(){
     if (!nisaFundFlowRows) return;
-    const field = 'flow_' + nisaFundFlowHorizon + '_100m_jpy';
-    const rows = [...nisaFundFlowRows].sort((a, b) => (b[field] || 0) - (a[field] || 0));
+    const valued = nisaFundFlowRows.map(r => ({ r, v: nisaFundPeriodSum(r.fund, nisaFundFlowHorizon, nisaFundFlowMonths, nisaFundFlowLatestMonth) }));
+    valued.sort((a, b) => b.v - a.v);
+    const rows = valued.map(x => x.r);
+    const vals = valued.map(x => x.v);
     const usd = nisaFundFlowCcy === 'usd' && nisaFxRate;
-    const toUnit = r => usd ? (r[field] / 100) / nisaFxRate : r[field] / 100;
+    const toUnit = v => usd ? (v / 100) / nisaFxRate : v / 100;
     const unitLabel = (usd ? '$ billion / ' : '¥ billion / ') + NISA_HZ_LABEL[nisaFundFlowHorizon] + ' window';
     const ccySym = usd ? '$' : '¥';
 
@@ -3860,7 +3880,7 @@ fetch('./intervention_data.json?' + Date.now())
       type: "bar",
       data: {
         labels: rows.map(r => { const l = fundLabel(r.fund); return l.length > 28 ? l.slice(0, 27) + "…" : l; }),
-        datasets: [{ data: rows.map(toUnit), backgroundColor: geoColors, borderRadius: 3 }]
+        datasets: [{ data: vals.map(toUnit), backgroundColor: geoColors, borderRadius: 3 }]
       },
       options: {
         indexAxis: "y", responsive: true, maintainAspectRatio: false, animation: false,
@@ -3880,7 +3900,7 @@ fetch('./intervention_data.json?' + Date.now())
 
   window.setNisaFundFlowHorizon = function(hz, btn){
     nisaFundFlowHorizon = hz;
-    ['nisaFundFlowHz1m','nisaFundFlowHz3m','nisaFundFlowHz6m','nisaFundFlowHz1y'].forEach(id => {
+    ['nisaFundFlowHzMtd','nisaFundFlowHzQtd','nisaFundFlowHzYtd','nisaFundFlowHzSi25'].forEach(id => {
       const b = document.getElementById(id);
       if (!b) return;
       const active = b === btn;
@@ -3914,6 +3934,8 @@ fetch('./intervention_data.json?' + Date.now())
     const months = Object.keys(fd.months).sort();
     const latest = months[months.length - 1];
     nisaFundFlowRows = fd.months[latest];
+    nisaFundFlowMonths = months;
+    nisaFundFlowLatestMonth = latest;
     document.getElementById('nisaFundFlowMonth').textContent = fmtD(latest);
     const prevIdx = months.indexOf(latest) - 1;
     const gap = prevIdx >= 0 && (() => {
