@@ -359,6 +359,13 @@
       <div style="height:340px;margin-top:16px"><canvas id="chart-retail-jgb"></canvas></div>
       <div class="note" id="retailJgbNote">Source: MOF "個人向け国債の応募額" (Retail JGB subscription amount), monthly press release. Amounts are subscriptions (応募額) for that month's offering, not issuance/settlement (issue date is mid-following-month). MOF footnotes that reported figures can be revised; latest publication per month is used.</div>
     </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>Long-JGB mutual funds — AUM &amp; monthly flow <span id="jgbFundsStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">A different angle on the same demand question: instead of MOF's own retail product (above), how are households investing in long-duration JGBs through the fund channel? One flagship long/super-long JGB fund per major manager — MUFG (wrap-only; MUFG's lineup here is thin), Daiwa (iFreeHOLD JGB2056, its deepest long-JGB lineup), and Amova (Tracers Ultra-Long, the 2025 rebrand of Nikko AM's JV). All three are small (¥6-33bn) and young (launched Aug-Nov 2025) — this is a fund-flow signal, not yet a market-moving one.</div>
+      <div class="kpis" id="jgbFundsKpis" style="margin-top:12px"></div>
+      <div style="height:300px;margin-top:16px"><canvas id="chart-jgb-funds"></canvas></div>
+      <div class="note" id="jgbFundsNote">Source: Nikkei per-fund pages (nikkei.com/nkd/fund), refreshed via <code>fetch_jgb_funds.py</code>. AUM and monthly net flow are both live snapshots — no source publishes a historical flow series for individual funds, so the flow line here builds forward from whenever this tracker started polling, not backfilled.</div>
+    </div>
   </div>
 
   <!-- MARKETS & BONDS -->
@@ -4312,6 +4319,47 @@ fetch('./retail_jgb.json?' + Date.now())
     });
   })
   .catch(e => { console.warn('retail_jgb.json unavailable:', e); });
+
+let _jgbFundsChart = null;
+const JGB_FUND_COLORS = { mufg: '#4a90d9', daiwa: '#e2564a', amova: '#d9a441' };
+fetch('./jgb_funds.json?' + Date.now())
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(D => {
+    const funds = D.funds; if (!funds || !funds.length) return;
+    const statusEl = document.getElementById('jgbFundsStatus');
+    if (statusEl) statusEl.textContent = '· ' + D.meta.as_of;
+    const kpis = document.getElementById('jgbFundsKpis');
+    if (kpis) kpis.innerHTML = funds.map(f => `
+      <div class="kpi"><div class="v">¥${f.aum_100m_jpy.toFixed(1)}億</div><div class="l">${f.manager} AUM<br><span style="font-size:11px">${f.name}</span></div><div class="d ${f.flow_1m_100m_jpy >= 0 ? 'up' : 'down'}">${f.flow_1m_100m_jpy >= 0 ? '+' : ''}¥${f.flow_1m_100m_jpy.toFixed(2)}億 flow (${f.flow_asof})</div></div>`).join('');
+    const cv = document.getElementById('chart-jgb-funds');
+    if (!cv) return;
+    const hist = D.history || [];
+    const labels = hist.map(h => h.date);
+    const datasets = funds.map(f => ({
+      label: f.manager + ' AUM',
+      data: hist.map(h => h[f.key + '_aum_100m']),
+      borderColor: JGB_FUND_COLORS[f.key], backgroundColor: JGB_FUND_COLORS[f.key] + '22',
+      fill: false, tension: 0.2, pointRadius: hist.length > 1 ? 2 : 4, borderWidth: 2,
+    }));
+    if (_jgbFundsChart) _jgbFundsChart.destroy();
+    _jgbFundsChart = new Chart(cv, {
+      type: 'line',
+      data: { labels, datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false, animation: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { position: 'top', align: 'start', labels: { boxWidth: 11, boxHeight: 11, padding: 8, font: { size: 10.5 }, color: '#c7d0e0' } },
+          tooltip: { callbacks: { label: c => `${c.dataset.label}: ¥${c.parsed.y.toFixed(2)}億` } }
+        },
+        scales: {
+          x: { grid: { display: false }, ticks: { color: '#93a1bd' } },
+          y: { grid: { color: 'rgba(148,163,196,0.12)' }, ticks: { color: '#93a1bd' }, title: { display: true, text: '¥100mn (億円)', color: '#93a1bd' } }
+        }
+      }
+    });
+  })
+  .catch(e => { console.warn('jgb_funds.json unavailable:', e); });
 
 </script>
 </body>
