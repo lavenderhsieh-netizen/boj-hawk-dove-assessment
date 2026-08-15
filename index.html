@@ -1244,12 +1244,12 @@
     </div>
     <div class="grid2">
       <div class="card">
-        <h2>Quota split — JSDA 10-firm, 2026 Q1</h2>
-        <div class="note">Growth quota (成長投資枠) vs tsumitate quota (つみたて投資枠), share of buys. JSDA 10-firm survey basis — not FSA whole-market.</div>
+        <h2>Quota split — JSDA 10-firm, Jan–May 2026 cumulative</h2>
+        <div class="note">Growth quota (成長投資枠) vs tsumitate quota (つみたて投資枠), share of buys. JSDA 10-firm survey basis — not FSA whole-market. Published 17 Jun 2026, cumulative Jan–May 2026.</div>
         <canvas id="nisaQuotaChart"></canvas>
       </div>
       <div class="card">
-        <h2>Within the growth quota — JSDA 10-firm, 2026 Q1</h2>
+        <h2>Within the growth quota — JSDA 10-firm, Jan–May 2026 cumulative</h2>
         <div class="note">Single stocks vs investment funds. JSDA 10-firm survey basis — not FSA whole-market. Two-way split only (stocks vs funds); does not yet separate direct securities into domestic vs foreign.</div>
         <canvas id="nisaWithinChart"></canvas>
       </div>
@@ -3655,7 +3655,7 @@ fetch('./intervention_data.json?' + Date.now())
         `The ${YEN}${t.cumulative_purchase_jpy_tn} tn target was <b>already cleared in Mar-2025</b> — the story now is momentum, not the target. `+
         `Current cumulative buys of ${YEN}${cumL.value} tn are <b>${(cumL.value/t.cumulative_purchase_jpy_tn*100).toFixed(0)}%</b> of target.`;
       document.getElementById('nisaAllocBox').innerHTML =
-        `In 2026 Q1, <b>${pct(alloc.growth_quota_share)}</b> of buys ran through the growth quota vs <b>${pct(alloc.tsumitate_quota_share)}</b> tsumitate. `+
+        `In Jan–May 2026 cumulative, <b>${pct(alloc.growth_quota_share)}</b> of buys ran through the growth quota vs <b>${pct(alloc.tsumitate_quota_share)}</b> tsumitate. `+
         `<b>${pct(alloc.domestic_stock_share_of_total)}</b> of all buys went into <b>domestic stocks</b>; within the growth quota the split is <b>${pct(alloc.within_growth_quota.stocks)} single stocks / ${pct(alloc.within_growth_quota.funds)} funds</b>. `+
         `The foreign-fund portion is the channel behind the persistent NISA→overseas-equity USDJPY bid.`;
 
