@@ -1166,6 +1166,10 @@
             <button id="nisaFundFlowCcyJpy" onclick="setNisaFundFlowCcy('jpy')" style="padding:4px 12px;border:none;cursor:pointer;background:var(--ink);color:var(--bg)">¥</button>
             <button id="nisaFundFlowCcyUsd" onclick="setNisaFundFlowCcy('usd')" style="padding:4px 12px;border:none;cursor:pointer;background:transparent;color:var(--ink)">$</button>
           </span>
+          <span style="display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;font-size:12px;font-weight:600">
+            <button id="nisaFundFlowLangEn" onclick="setNisaFundNameLang('en')" style="padding:4px 12px;border:none;cursor:pointer;background:var(--ink);color:var(--bg)">EN</button>
+            <button id="nisaFundFlowLangJp" onclick="setNisaFundNameLang('jp')" style="padding:4px 12px;border:none;cursor:pointer;background:transparent;color:var(--ink)">JP</button>
+          </span>
         </span>
       </h2>
       <div class="note"><b>Retail fund-flow proxy — NISA-sensitive, not NISA-exclusive.</b> Wealth Advisor's ranking indicates products attracting Japanese retail money, many heavily used in NISA — but it's total fund flow (also taxable-account and iDeCo), not NISA-specific. <b>Universe is fixed to the latest month's 1M top-20; the 3M/6M/1Y toggles only re-rank/re-size that same set</b> — a fund that dropped out won't appear even on 6M/1Y views. Bars colored by domestic-vs-foreign classification (hover for category). <span id="nisaFundFlowGapNote"></span></div>
@@ -1175,9 +1179,15 @@
     <div class="card full">
       <h2 style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
         <span>Major NISA-popular retail funds — net monthly inflow over time <span class="npill" id="nisaFundFlowTSMonths"></span></span>
-        <span style="display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;font-size:12px;font-weight:600">
-          <button id="nisaFundFlowTSCcyJpy" onclick="setNisaFundFlowCcy('jpy')" style="padding:4px 12px;border:none;cursor:pointer;background:var(--ink);color:var(--bg)">¥</button>
-          <button id="nisaFundFlowTSCcyUsd" onclick="setNisaFundFlowCcy('usd')" style="padding:4px 12px;border:none;cursor:pointer;background:transparent;color:var(--ink)">$</button>
+        <span style="display:inline-flex;gap:8px;flex-wrap:wrap">
+          <span style="display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;font-size:12px;font-weight:600">
+            <button id="nisaFundFlowTSCcyJpy" onclick="setNisaFundFlowCcy('jpy')" style="padding:4px 12px;border:none;cursor:pointer;background:var(--ink);color:var(--bg)">¥</button>
+            <button id="nisaFundFlowTSCcyUsd" onclick="setNisaFundFlowCcy('usd')" style="padding:4px 12px;border:none;cursor:pointer;background:transparent;color:var(--ink)">$</button>
+          </span>
+          <span style="display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;font-size:12px;font-weight:600">
+            <button id="nisaFundFlowTSLangEn" onclick="setNisaFundNameLang('en')" style="padding:4px 12px;border:none;cursor:pointer;background:var(--ink);color:var(--bg)">EN</button>
+            <button id="nisaFundFlowTSLangJp" onclick="setNisaFundNameLang('jp')" style="padding:4px 12px;border:none;cursor:pointer;background:transparent;color:var(--ink)">JP</button>
+          </span>
         </span>
       </h2>
       <div class="note" id="nisaFundFlowTSNote"><b>Market-wide, not account-type-specific</b> — same Wealth Advisor proxy as the snapshot above, over time. Gold bars = <b>full top-20 list's combined net inflow</b> each month (a retail demand signal, not a measured NISA figure); thin colored lines = funds that stayed in the top 20 every month on file. The <b>thick white dashed line</b> is a cross-check: Investment Trusts Association of Japan's official net-flow total across the <b>entire ~5,300-fund universe</b>, ~1-month lagged — sits above the top-20 total as expected, since top-20 is neither exhaustive nor NISA-exclusive.</div>
@@ -3700,9 +3710,138 @@ fetch('./intervention_data.json?' + Date.now())
     });
   }
 
-  let nisaFundFlowRows = null, nisaFundFlowChart_ = null, nisaFundFlowCcy = 'jpy', nisaFxRate = null, nisaFundFlowHorizon = '1m';
+  let nisaFundFlowRows = null, nisaFundFlowChart_ = null, nisaFundFlowCcy = 'jpy', nisaFxRate = null, nisaFundFlowHorizon = '1m', nisaFundNameLang = 'en';
   const NISA_HZ_LABEL = {'1m':'1-month','3m':'3-month','6m':'6-month','1y':'1-year'};
   const NISA_HZ_TITLE = {'1m':'net monthly inflow','3m':'trailing 3M flow (same fixed top-20 set)','6m':'trailing 6M flow (same fixed top-20 set)','1y':'trailing 1Y flow (same fixed top-20 set)'};
+
+  // Wealth Advisor fund names are Japanese-only at source; English is this project's own working translation/transliteration, not an official name.
+  const NISA_FUND_EN = {
+    "(SMBC FW) 米国株": "(SMBC FW) US Stocks",
+    "(ダイワFW)ヘッジファンドセレクト": "(Daiwa FW) Hedge Fund Select",
+    "(ダイワFW)日本債券セレクト": "(Daiwa FW) Japan Bond Select",
+    "(ラップ専用)SBI・ゴールド": "(Wrap-only) SBI Gold",
+    "(ラップ専用)SBI・先進国株式": "(Wrap-only) SBI Developed-Market Equity",
+    "(ラップ専用)SBI・米国株式": "(Wrap-only) SBI US Equity",
+    "AB･米国成長株投信Bコース(H無)": "AB US Growth Stock Fund Course B (Unhedged)",
+    "AB･米国成長株投信Dコース(H無) 予想分配金": "AB US Growth Stock Fund Course D (Unhedged, Est. Distribution)",
+    "DCマイセレクションS50(2024-2026リスク抑制型)": "DC My Selection S50 (2024-2026 Risk-Controlled)",
+    "GS グローバル社債ターゲット2024-09(限定追加型)": "GS Global Corporate Bond Target 2024-09 (Limited Additional)",
+    "GS ワールド・シフト株式ファンドBコース(H無)": "GS World Shift Equity Fund Course B (Unhedged)",
+    "HSBC G・ターゲット利回り債券2024-08(限追)": "HSBC Global Target Yield Bond 2024-08 (Limited Additional)",
+    "HSBC G・ターゲット利回り債券2025-05(限追)": "HSBC Global Target Yield Bond 2025-05 (Limited Additional)",
+    "HSBC インド･インフラ株式オープン": "HSBC India Infrastructure Equity Open",
+    "JPM・アメリカ成長株(H無、年1回)": "JPMorgan US Growth Stock (Unhedged, Annual)",
+    "JPモルガン・米国テクノロジー株式ファンド": "JPMorgan US Technology Equity Fund",
+    "One/ウエリントン・コントラリアン・バリュー": "One/Wellington Contrarian Value",
+    "One/フィデリティ・ブルーチップ・G株(成長)": "One/Fidelity Blue Chip Growth Stock",
+    "ROBOPROファンド": "ROBOPRO Fund",
+    "SBI NASDAQ100インデックス・ファンド": "SBI NASDAQ100 Index Fund",
+    "SBI 日本株4.3ブル": "SBI Japan Stock 4.3x Bull",
+    "SBI・S・米国高配当株式ファンド(年4回決算型)": "SBI-S US High-Dividend Equity Fund (Quarterly Distribution)",
+    "SBI・V・S&P500インデックス・ファンド": "SBI-V S&P500 Index Fund",
+    "SBI・iシェアーズ・ゴールド(H無)": "SBI iShares Gold (Unhedged)",
+    "TTI・グローバル中小型厳選株式ファンド": "TTI Global Small/Mid-Cap Select Equity Fund",
+    "Tracers NASDAQ100ゴールドプラス": "Tracers NASDAQ100 Gold Plus",
+    "WCM 世界成長株厳選ファンド(予想分配金提示型)": "WCM Focused Global Growth Equity (Est. Distribution)",
+    "eMAXIS Slim全世界株式(オール･カントリー)": "eMAXIS Slim All Country World Stock",
+    "eMAXIS Slim全世界株式(除く日本)": "eMAXIS Slim All Country World Stock (ex-Japan)",
+    "eMAXIS Slim国内株式(TOPIX)": "eMAXIS Slim Domestic Stock (TOPIX)",
+    "eMAXIS Slim国内株式(日経平均)": "eMAXIS Slim Domestic Stock (Nikkei Average)",
+    "eMAXIS Slim米国株式(S&P500)": "eMAXIS Slim US Stock (S&P500)",
+    "eMAXIS 日経半導体株インデックス": "eMAXIS Nikkei Semiconductor Stock Index",
+    "iFreeNEXT FANG+インデックス": "iFreeNEXT FANG+ Index",
+    "iFreeS&P500インデックス": "iFree S&P500 Index",
+    "netWIN GSテクノロジー株式ファンド B(H無)": "netWIN GS Technology Equity Fund B (Unhedged)",
+    "あおぞら・新グローバル分散F(限追)2024-07": "Aozora New Global Diversified Fund (Limited Additional) 2024-07",
+    "あおぞら・新グローバル分散F(限追)2024-10": "Aozora New Global Diversified Fund (Limited Additional) 2024-10",
+    "あおぞら・新グローバル分散F(限追)2025-04": "Aozora New Global Diversified Fund (Limited Additional) 2025-04",
+    "あおぞら・新グローバル分散F(限追)2025-07": "Aozora New Global Diversified Fund (Limited Additional) 2025-07",
+    "あおぞら・新グローバル分散F(限追)2025-10": "Aozora New Global Diversified Fund (Limited Additional) 2025-10",
+    "あおぞら・新グローバル分散F(限追)2026-01": "Aozora New Global Diversified Fund (Limited Additional) 2026-01",
+    "あおぞら・新グローバル分散F(限追)2026-04": "Aozora New Global Diversified Fund (Limited Additional) 2026-04",
+    "たわらノーロード先進国株式": "Tawara No-Load Developed-Market Equity",
+    "たわらノーロード日経225": "Tawara No-Load Nikkei 225",
+    "のむラップ･ファンド(普通型)": "Nomura Wrap Fund (Standard Type)",
+    "のむラップ･ファンド(積極型)": "Nomura Wrap Fund (Aggressive Type)",
+    "インベスコ 世界厳選株式＜H無＞(年1回決算)": "Invesco World Select Equity <Unhedged> (Annual Distribution)",
+    "インベスコ 世界厳選株式＜H無＞(毎月決算型)": "Invesco World Select Equity <Unhedged> (Monthly Distribution)",
+    "キャピタル･G･Hインカム債券F(米ドル売り円買い)": "Capital Group High-Income Bond Fund (USD-sell/JPY-buy)",
+    "グロース・オポチュニティB(H無)": "Growth Opportunity B (Unhedged)",
+    "グロース・オポチュニティD(毎月・予想分配型・H無)": "Growth Opportunity D (Monthly, Est. Distribution, Unhedged)",
+    "グローバル・オポチュニティ・パートナーズ・ファンド": "Global Opportunities Partners Fund",
+    "グローバル･ロボティクス株式ファンド(年2)": "Global Robotics Equity Fund (Semi-annual)",
+    "ゴールド･ファンド(H無)": "Gold Fund (Unhedged)",
+    "シュローダー好利回りCB25-09(H無・限追)": "Schroder High-Yield Convertible Bond 25-09 (Unhedged, Limited Additional)",
+    "ダイワ 外国株式インデックス(H無) (SMA専用)": "Daiwa Foreign Equity Index (Unhedged) (SMA-only)",
+    "ダイワ・アンビット・インド小型株ファンド": "Daiwa Ambit India Small-Cap Fund",
+    "ダイワ･ダイナミック･インド株ファンド": "Daiwa Dynamic India Equity Fund",
+    "ティー・ロウ・プライス C・アプリシエーションB(H無)": "T. Rowe Price Capital Appreciation B (Unhedged)",
+    "ドナルド・スミス G・ディープバリュー戦略株式F": "Donald Smith Global Deep Value Strategy Equity Fund",
+    "ニッセイ・S米国グロース株式メガ10＜購・換無＞": "Nissay-S US Growth Stock Mega 10 <No Sub/Switch>",
+    "ニッポン中小型株ファンド": "Nippon Small/Mid-Cap Stock Fund",
+    "ニュートン・パワー・イノベーション(H無)": "Newton Power Innovation (Unhedged)",
+    "ノムラ・エマージング・オープン": "Nomura Emerging Open",
+    "ノムラ･ジャパン･オープン": "Nomura Japan Open",
+    "ハイベータ日本株フォーカス・ファンド": "High-Beta Japan Stock Focus Fund",
+    "ピクテ・ゴールド(H無)": "Pictet Gold (Unhedged)",
+    "フィデリティ・G・オポチュニティD(毎月・予想・H無)": "Fidelity Global Opportunity D (Monthly, Est. Distribution, Unhedged)",
+    "フィデリティ・世界割安成長株 B(H無)": "Fidelity World Value-Growth Stock B (Unhedged)",
+    "フィデリティ・欧州割安成長株投信B(H無)": "Fidelity Europe Value-Growth Stock Fund B (Unhedged)",
+    "フィデリティ･USリートB(H無)": "Fidelity US REIT B (Unhedged)",
+    "ベイリー・ギフォード世界成長企業戦略/SMT.LN": "Baillie Gifford Global Growth Companies Strategy / SMT.LN",
+    "マテリアル・イノベーション戦略株式(H無)": "Material Innovation Strategy Equity (Unhedged)",
+    "モルガン・スタンレー フィジカルAI株式ファンド": "Morgan Stanley Physical AI Equity Fund",
+    "モルガン・スタンレー 米国株式インサイト戦略(H無)": "Morgan Stanley US Equity Insight Strategy (Unhedged)",
+    "三井住友DS・ジャパン・ハイ・コンビクション・S": "Sumitomo Mitsui DS Japan High Conviction S",
+    "三井住友･DC外国株式インデックスファンドS": "Sumitomo Mitsui DC Foreign Equity Index Fund S",
+    "三菱UFJ 純金ファンド": "Mitsubishi UFJ Pure Gold Fund",
+    "世界割安成長株 D(毎月・予想分配・H無)": "World Value-Growth Stock D (Monthly, Est. Distribution, Unhedged)",
+    "先進国債券インデックス＜H無＞(ラップ向け)": "Developed-Market Bond Index <Unhedged> (For Wrap Accounts)",
+    "先進国株式インデックス＜H無＞(ラップ向け)": "Developed-Market Equity Index <Unhedged> (For Wrap Accounts)",
+    "国内債券SMTBセレクション(SMA専用)": "Domestic Bond SMTB Selection (SMA-only)",
+    "国内債券インデックス（ラップ向け）": "Domestic Bond Index (For Wrap Accounts)",
+    "外国株式SMTBセレクション(SMA専用)": "Foreign Equity SMTB Selection (SMA-only)",
+    "情報エレクトロニクスファンド": "Information & Electronics Fund",
+    "成長戦略フォーカス・ジャパン": "Growth Strategy Focus Japan",
+    "日経225ノーロードオープン": "Nikkei 225 No-Load Open",
+    "日興FW･日本債券ファンド": "Nikko FW Japan Bond Fund",
+    "東京海上･宇宙関連株式ファンド(H無)": "Tokio Marine Space-Related Equity Fund (Unhedged)",
+    "楽天 日本株4.3倍ブル": "Rakuten Japan Stock 4.3x Bull",
+    "楽天・S&P500インデックス・ファンド": "Rakuten S&P500 Index Fund",
+    "楽天・オールカントリー株式インデックス・ファンド": "Rakuten All Country Stock Index Fund",
+    "楽天・プラス・NASDAQ-100インデックス・ファンド": "Rakuten Plus NASDAQ-100 Index Fund",
+    "楽天・プラス・S&P500インデックス・ファンド": "Rakuten Plus S&P500 Index Fund",
+    "楽天・プラス・オールカントリー株式インデックス・F": "Rakuten Plus All Country Stock Index Fund",
+    "楽天・全米株式インデックス･ファンド": "Rakuten Total US Stock Index Fund",
+    "楽天・高配当株式・米国(四半期決算型)": "Rakuten High-Dividend Equity US (Quarterly Distribution)",
+    "次世代AI株式戦略ファンド": "Next-Generation AI Equity Strategy Fund",
+    "次世代米国代表株ファンド": "Next-Generation US Blue-Chip Fund",
+    "資本効率化フォーカス・ジャパン": "Capital Efficiency Focus Japan",
+    "野村 ブラックロック世界優良企業厳選ファンドB": "Nomura BlackRock World Blue-Chip Select Fund B",
+    "野村 マッコーリー・プライベート・インフラ・ファンド": "Nomura Macquarie Private Infrastructure Fund",
+    "野村 世界業種別投資シリーズ(半導体)": "Nomura World Sector Investment Series (Semiconductor)",
+    "野村 外国株インデックスBコース(一任口座)": "Nomura Foreign Equity Index Course B (Discretionary Account)",
+    "野村 外国株式インデックスF(確定拠出年金)": "Nomura Foreign Equity Index F (DC Pension)",
+    "野村 日本バリュー厳選投資": "Nomura Japan Value Select Investment",
+    "野村 日本新鋭成長株ファンド": "Nomura Japan Emerging Growth Stock Fund",
+    "野村 日本株インデックス(一任口座)": "Nomura Japan Stock Index (Discretionary Account)",
+    "野村 構造変化日本株ファンド": "Nomura Structural Change Japan Equity Fund",
+    "＜購･換無＞ニッセイ NASDAQ100インデックス": "<No Sub/Switch> Nissay NASDAQ100 Index",
+  };
+  function fundLabel(name){
+    if (nisaFundNameLang !== 'en') return name;
+    return NISA_FUND_EN[name] || name;
+  }
+  window.setNisaFundNameLang = function(lang){
+    nisaFundNameLang = lang;
+    [['nisaFundFlowLangEn','nisaFundFlowLangJp'],['nisaFundFlowTSLangEn','nisaFundFlowTSLangJp']].forEach(([enId,jpId]) => {
+      const enBtn = document.getElementById(enId), jpBtn = document.getElementById(jpId);
+      if (enBtn){ enBtn.style.background = lang === 'en' ? 'var(--ink)' : 'transparent'; enBtn.style.color = lang === 'en' ? 'var(--bg)' : 'var(--ink)'; }
+      if (jpBtn){ jpBtn.style.background = lang === 'jp' ? 'var(--ink)' : 'transparent'; jpBtn.style.color = lang === 'jp' ? 'var(--bg)' : 'var(--ink)'; }
+    });
+    drawNisaFundFlowChart();
+    if (nisaFundFlowD) buildNisaFundFlowTSChart(nisaFundFlowD, Object.keys(nisaFundFlowD.months).sort());
+  };
 
   function drawNisaFundFlowChart(){
     if (!nisaFundFlowRows) return;
@@ -3720,12 +3859,12 @@ fetch('./intervention_data.json?' + Date.now())
     nisaFundFlowChart_ = new Chart(document.getElementById('nisaFundFlowChart'), {
       type: "bar",
       data: {
-        labels: rows.map(r => r.fund.length > 28 ? r.fund.slice(0, 27) + "…" : r.fund),
+        labels: rows.map(r => { const l = fundLabel(r.fund); return l.length > 28 ? l.slice(0, 27) + "…" : l; }),
         datasets: [{ data: rows.map(toUnit), backgroundColor: geoColors, borderRadius: 3 }]
       },
       options: {
         indexAxis: "y", responsive: true, maintainAspectRatio: false, animation: false,
-        plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${ccySym}${c.raw.toFixed(usd ? 2 : 0)} bn net inflow (${NISA_HZ_LABEL[nisaFundFlowHorizon]}) — ${NISA_GEO_LABELS[geoBuckets[c.dataIndex]]}` } } },
+        plugins: { legend: { display: false }, tooltip: { callbacks: { title: c => fundLabel(rows[c[0].dataIndex].fund), label: c => `${ccySym}${c.raw.toFixed(usd ? 2 : 0)} bn net inflow (${NISA_HZ_LABEL[nisaFundFlowHorizon]}) — ${NISA_GEO_LABELS[geoBuckets[c.dataIndex]]}` } } },
         scales: {
           x: { grid: GRID, ticks: TICK, title: { display: true, text: unitLabel, color: "#93a1bd" } },
           y: { grid: GRID, ticks: { ...TICK, font: { size: 10 }, autoSkip: false } }
@@ -3836,7 +3975,7 @@ fetch('./intervention_data.json?' + Date.now())
       return row ? conv(row.flow_bn) : null;
     }) : null;
 
-    const shortName = f => f.length > 22 ? f.slice(0, 21) + "…" : f;
+    const shortName = f => { const l = fundLabel(f); return l.length > 22 ? l.slice(0, 21) + "…" : l; };
 
     if (window.__nisaFundFlowTSChart_) window.__nisaFundFlowTSChart_.destroy();
     window.__nisaFundFlowTSChart_ = new Chart(document.getElementById('nisaFundFlowTSChart'), {
