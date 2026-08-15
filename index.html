@@ -42,6 +42,18 @@
   canvas{max-height:340px}
   #nisaFundFlowChart{max-height:640px}
   .note{font-size:11.5px;color:var(--muted);margin-top:8px;line-height:1.5}
+  .funnelRow{display:flex;align-items:stretch;gap:10px;margin:0 auto;max-width:640px}
+  .funnelBox{flex:1;border-radius:9px;padding:10px 12px;text-align:center;border:1px solid var(--line)}
+  .funnelBox.kept{background:rgba(217,164,65,.14);border-color:var(--accent)}
+  .funnelBox.dropped{background:var(--card2);opacity:.6}
+  .funnelBox .fv{font-size:17px;font-weight:700;color:var(--ink)}
+  .funnelBox.kept .fv{color:var(--accent)}
+  .funnelBox .fl{font-size:10.5px;color:var(--muted);margin-top:2px}
+  .funnelArrow{text-align:center;color:var(--muted);font-size:13px;margin:2px auto;max-width:640px;position:relative}
+  .funnelArrow::after{content:'↓';display:block;width:50%;margin-left:0}
+  .funnelTop{text-align:center;font-size:13px;color:var(--muted);margin-bottom:2px}
+  .funnelResult{margin:10px auto 0;max-width:640px;text-align:center;border:1px dashed var(--accent);border-radius:9px;padding:10px 14px;background:rgba(217,164,65,.08)}
+  .funnelResult b{color:var(--accent);font-size:16px}
   .mbcard{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px 10px}
   .mbcard h3{color:var(--ink);font-size:14px;font-weight:600;margin:0 0 8px;text-align:center;letter-spacing:.2px}
   .gpif-step{display:flex;align-items:center;gap:12px;background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:11px 14px;font-size:13px}
@@ -1253,17 +1265,10 @@
         <canvas id="nisaAcctChart"></canvas>
       </div>
     </div>
-    <div class="grid2">
-      <div class="card">
-        <h2>Quota split — JSDA 10-firm, Jan–May 2026 cumulative</h2>
-        <div class="note">Growth quota (成長投資枠) vs tsumitate quota (つみたて投資枠), share of buys. JSDA 10-firm survey basis — not FSA whole-market. Published 17 Jun 2026, cumulative Jan–May 2026.</div>
-        <canvas id="nisaQuotaChart"></canvas>
-      </div>
-      <div class="card">
-        <h2>Within the growth quota — JSDA 10-firm, Jan–May 2026 cumulative</h2>
-        <div class="note">Single stocks vs investment funds. JSDA 10-firm survey basis — not FSA whole-market. Two-way split only (stocks vs funds); does not yet separate direct securities into domestic vs foreign.</div>
-        <canvas id="nisaWithinChart"></canvas>
-      </div>
+    <div class="card full">
+      <h2>How the 41% domestic-stock figure is built — JSDA 10-firm, Jan–May 2026 cumulative</h2>
+      <div class="note">Same JSDA 10-firm survey basis as the KPI above, shown as the actual decomposition chain rather than two disconnected donuts — each step narrows to the next: quota → security type → domestic/foreign. Multiplying the three splits (<span id="nisaFunnelMath"></span>) reproduces JSDA's own reference figure almost exactly, which is the actual check that these are one consistent breakdown, not three unrelated stats.</div>
+      <div id="nisaFunnel" style="margin-top:14px"></div>
     </div>
     <div class="card full">
       <h2>Progress vs target &amp; asset tilt</h2>
@@ -3653,12 +3658,7 @@ fetch('./intervention_data.json?' + Date.now())
           plugins:{legend:{display:true,labels:{color:"#e8edf7"}}},
           scales:{x:{grid:GRID,ticks:TICK},y:{grid:GRID,ticks:TICK,title:{display:true,text:"¥ tn, cumulative",color:"#93a1bd"}}}}});
 
-      new Chart(document.getElementById('nisaQuotaChart'),{type:"doughnut",data:{labels:["Growth quota","Tsumitate quota"],
-        datasets:[{data:[alloc.growth_quota_share,alloc.tsumitate_quota_share],backgroundColor:["#e2564a","#4a90d9"],borderColor:"#171f31",borderWidth:2}]},
-        options:{responsive:true,plugins:{legend:{labels:{color:"#e8edf7"}}}}});
-      new Chart(document.getElementById('nisaWithinChart'),{type:"doughnut",data:{labels:["Single stocks","Funds"],
-        datasets:[{data:[alloc.within_growth_quota.stocks,alloc.within_growth_quota.funds],backgroundColor:["#d9a441","#7fb3e8"],borderColor:"#171f31",borderWidth:2}]},
-        options:{responsive:true,plugins:{legend:{labels:{color:"#e8edf7"}}}}});
+      buildNisaFunnel(alloc);
 
       const t = wm.govt_target;
       document.getElementById('nisaTargetBox').innerHTML =
@@ -3667,8 +3667,8 @@ fetch('./intervention_data.json?' + Date.now())
         `Current cumulative buys of ${YEN}${cumL.value} tn are <b>${(cumL.value/t.cumulative_purchase_jpy_tn*100).toFixed(0)}%</b> of target.`;
       document.getElementById('nisaAllocBox').innerHTML =
         `In Jan–May 2026 cumulative, <b>${pct(alloc.growth_quota_share)}</b> of buys ran through the growth quota vs <b>${pct(alloc.tsumitate_quota_share)}</b> tsumitate. `+
-        `<b>${pct(alloc.domestic_stock_share_of_total)}</b> of all buys went into <b>domestic stocks</b>; within the growth quota the split is <b>${pct(alloc.within_growth_quota.stocks)} single stocks / ${pct(alloc.within_growth_quota.funds)} funds</b>. `+
-        `The foreign-fund portion is the channel behind the persistent NISA→overseas-equity USDJPY bid.`;
+        `<b>${pct(alloc.domestic_stock_share_of_total)}</b> of all buys went into <b>domestic stocks</b> — see the breakdown chain above for how that figure is actually built. `+
+        `The fund portion (both growth-quota funds and all of tsumitate) is the channel behind the persistent NISA→overseas-equity USDJPY bid; direct stock-picking, by contrast, stays mostly domestic (${pct(alloc.within_growth_quota_stocks.domestic)}).`;
 
       let rows = "<tr><th>Source</th><th>Cadence</th><th>Role</th></tr>";
       D.sources.forEach(s => { rows += `<tr><td><a href="${s.url}" target="_blank">${s.name}</a></td><td>${s.cadence}</td><td>${s.role||""}</td></tr>`; });
@@ -3682,6 +3682,33 @@ fetch('./intervention_data.json?' + Date.now())
     if (typeof xbTotalSeasChart === 'function') xbTotalSeasChart('cNisaInvTrustSeasTotal', 'nisaInvTrustSeasTotalTitle', 'invtrust');
     if (typeof xbInstrSeasChart === 'function') xbInstrSeasChart('cNisaInvTrustSeasEquity', 'nisaInvTrustSeasEquityTitle', 'equity', 'invtrust', 'Equity');
     if (navFlowD) buildNavFlowChart(navFlowD);
+  }
+
+  function buildNisaFunnel(alloc){
+    const el = document.getElementById('nisaFunnel');
+    if (!el) return;
+    const g = alloc.within_growth_quota, gs = alloc.within_growth_quota_stocks;
+    const computed = alloc.growth_quota_share * g.stocks * gs.domestic;
+    const mathEl = document.getElementById('nisaFunnelMath');
+    if (mathEl) mathEl.textContent = `${pct(alloc.growth_quota_share)} × ${pct(g.stocks)} × ${pct(gs.domestic)} ≈ ${pct(computed)}`;
+    el.innerHTML = `
+      <div class="funnelTop">100% of JSDA 10-firm NISA buys, Jan–May 2026</div>
+      <div class="funnelArrow"></div>
+      <div class="funnelRow">
+        <div class="funnelBox kept"><div class="fv">${pct(alloc.growth_quota_share)}</div><div class="fl">Growth quota (成長投資枠)</div></div>
+        <div class="funnelBox dropped"><div class="fv">${pct(alloc.tsumitate_quota_share)}</div><div class="fl">Tsumitate quota — funds only, not decomposed further</div></div>
+      </div>
+      <div class="funnelArrow"></div>
+      <div class="funnelRow">
+        <div class="funnelBox kept"><div class="fv">${pct(g.stocks)}</div><div class="fl">…of which, single stocks</div></div>
+        <div class="funnelBox dropped"><div class="fv">${pct(g.funds)}</div><div class="fl">…of which, investment funds — mostly foreign-equity, not decomposed further</div></div>
+      </div>
+      <div class="funnelArrow"></div>
+      <div class="funnelRow">
+        <div class="funnelBox kept"><div class="fv">${pct(gs.domestic)}</div><div class="fl">…of which, domestic stock</div></div>
+        <div class="funnelBox dropped"><div class="fv">${pct(gs.foreign)}</div><div class="fl">…of which, foreign stock</div></div>
+      </div>
+      <div class="funnelResult">= <b>${pct(alloc.domestic_stock_share_of_total)}</b> of <u>all</u> NISA money (both quotas, all products) went into domestic stock — JSDA's own headline reference figure, not derived by this dashboard.</div>`;
   }
 
   function buildNavFlowChart(fd){
