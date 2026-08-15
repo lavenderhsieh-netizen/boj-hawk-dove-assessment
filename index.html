@@ -118,6 +118,14 @@
   table{width:100%;border-collapse:collapse;font-size:12.5px}
   th{background:var(--card2);color:var(--muted);text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px;padding:8px 10px;border-bottom:2px solid var(--line)}
   td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45}
+  table.fsaTable{border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  table.fsaTable th{text-transform:none;letter-spacing:0;font-size:12.5px;font-weight:700;color:#fff;border-bottom:none;text-align:center}
+  table.fsaTable th.rowLabel{background:var(--bg);text-align:left}
+  table.fsaTable th.grpA{background:var(--accent);color:#241a03}
+  table.fsaTable th.grpB{background:#4a90d9}
+  table.fsaTable td{font-size:13px;text-align:center}
+  table.fsaTable td.rowLabel{text-align:left;font-weight:600}
+  table.fsaTable tr.total td{font-weight:700;background:var(--card2)}
   tr.gone td{opacity:.55}
   tr.next td{background:rgba(217,164,65,.06)}
   tr.next td:first-child{border-left:3px solid var(--accent)}
@@ -1126,7 +1134,18 @@
       <h2 style="margin-bottom:6px">Policy Watch — JGBs and NISA</h2>
       <div class="note"><b>Current rule: direct JGB holdings are NOT NISA-eligible</b> (deposits/govt/corporate bonds excluded from both quotas, per JSDA FAQ). Everything below is proposal-stage: <b>DISCUSSION</b> (Nov 2025 Diet debate) → <b>BILL</b> (DPP opposition bill filed to Upper House 10 Jul 2026, not LDP/government) — realistic track is the FY2027-29 tax-reform cycle given the coalition's Upper House minority. Kodomo NISA (ages 0-17, tsumitate-only, Jan 2027) is separate and already confirmed. Open question: would JGB purchases use the <i>existing</i> ¥3.6mn allowance or a <i>separate</i> one?</div>
     </div>
-    <div class="kpis" id="nisaKpis"></div>
+    <div class="card full">
+      <h2>1. Size and type of assets under NISA program <span class="npill">FSA, Dec-2025</span></h2>
+      <div style="overflow-x:auto;margin-top:10px"><table class="fsaTable" id="nisaSizeByTypeTable"></table></div>
+      <div class="note" id="nisaSizeByTypeNote"></div>
+      <div class="note">The balance column is the mark-to-market value currently held under the new NISA system (since Jan-2024) — the cleanest "what's actually sitting in NISA accounts today" figure. Cumulative flow (old + new NISA, at cost, since 2014) is a bigger, different number — <b>¥71.4tn</b> — because it includes 11 years of old-NISA buying that has since matured or rolled off. See the chart below for that longer flow series.</div>
+    </div>
+    <div class="card full">
+      <h2>2. Domestic vs. foreign split <span class="npill">FSA, Dec-2025</span></h2>
+      <div class="note" style="margin-bottom:10px">FSA only publishes this split for listed equities — not for investment trusts, ETFs, or REITs.</div>
+      <div style="overflow-x:auto"><table class="fsaTable" id="nisaDomForTable"></table></div>
+      <div class="note">Sourced directly from FSA's official confirmed-figures release (fsa.go.jp/policy/nisa/20260703.html), growth-quota 上場株式 (listed stock) rows — 国内株式 (domestic) and 海外株式 (foreign) sum exactly to the listed-stock total in both the flow and balance tables, so these percentages are exact, not estimated. See the note below for why the JSDA "10-firm survey" 41% domestic-stock figure elsewhere on this tab looks different — it's not a discrepancy, just a different universe.</div>
+    </div>
     <div class="grid2">
       <div class="card">
         <h2>10-firm monthly gross buys — seasonality <span class="npill">timely</span></h2>
@@ -3538,6 +3557,39 @@ fetch('./intervention_data.json?' + Date.now())
 
   let nisaD = null, nisaFundFlowD = null, navFlowD = null;
 
+  // FSA official confirmed figures (Dec-2025 release, fsa.go.jp/policy/nisa/20260703.html,
+  // 別紙１ workbook 2512.xlsx, section 2 "年間新規買付額"/section 3 "商品別時価残高" —
+  // growth quota + tsumitate quota combined. Manual/static, annual-cadence source —
+  // re-check FSA's next confirmed release before reusing. Mirrors japan-nisa-tracker's Overview tab.
+  const NISA_SIZE_BY_TYPE=[
+    {type:"Investment trusts",flow_tn:12.60,bal_tn:27.05},
+    {type:"Listed equities",flow_tn:5.64,bal_tn:8.78},
+    {type:"ETF",flow_tn:0.42,bal_tn:0.84},
+    {type:"REIT",flow_tn:0.08,bal_tn:0.11},
+  ];
+  const NISA_DOM_FOR_SPLIT=[
+    {label:"Listed equities — 2025 flow",dom:91.4,for:8.6},
+    {label:"Listed equities — balance",dom:90.0,for:10.0},
+  ];
+  function buildNisaSizeByType(){
+    const totFlow=NISA_SIZE_BY_TYPE.reduce((s,d)=>s+d.flow_tn,0);
+    const totBal=NISA_SIZE_BY_TYPE.reduce((s,d)=>s+d.bal_tn,0);
+    let rows=`<tr><th class="rowLabel">Product type</th><th class="grpA">2025 new flow<br>(¥tn)</th><th class="grpA">% of new flow</th><th class="grpB">Outstanding balance,<br>end-Dec 2025 (¥tn)</th><th class="grpB">% of balance</th></tr>`;
+    NISA_SIZE_BY_TYPE.forEach(d=>{
+      rows+=`<tr><td class="rowLabel">${d.type}</td><td>${d.flow_tn.toFixed(2)}</td><td>${(d.flow_tn/totFlow*100).toFixed(1)}%</td><td>${d.bal_tn.toFixed(2)}</td><td>${(d.bal_tn/totBal*100).toFixed(1)}%</td></tr>`;
+    });
+    rows+=`<tr class="total"><td class="rowLabel">Total</td><td>${totFlow.toFixed(2)}</td><td>100%</td><td>${totBal.toFixed(2)}</td><td>100%</td></tr>`;
+    document.getElementById("nisaSizeByTypeTable").innerHTML=rows;
+    document.getElementById("nisaSizeByTypeNote").innerHTML=
+      `Investment trusts are already the biggest bucket at ${(NISA_SIZE_BY_TYPE[0].bal_tn/totBal*100).toFixed(0)}% of the balance and are growing faster than the market-wide average (+10.1% YoY flow vs +7.9% total), gaining share at the expense of ETFs (-11.2% YoY) and, more slowly, listed equities (+4.6% YoY). `+
+      `Source: FSA "NISA口座の利用状況調査" official releases, Dec-2025 vs Dec-2024.`;
+    let rows2=`<tr><th class="rowLabel">Category</th><th class="grpA">Domestic</th><th class="grpB">Foreign</th><th class="rowLabel">Basis</th></tr>`;
+    NISA_DOM_FOR_SPLIT.forEach(d=>{
+      rows2+=`<tr><td class="rowLabel">${d.label}</td><td>${d.dom.toFixed(1)}%</td><td>${d.for.toFixed(1)}%</td><td class="rowLabel">FSA official</td></tr>`;
+    });
+    document.getElementById("nisaDomForTable").innerHTML=rows2;
+  }
+
   function buildNisaTab(){
     if (window.__nisaChartsInit) return;
     if (!nisaD) return; // wait for the fetch(es) to resolve; called again once they do
@@ -3554,12 +3606,7 @@ fetch('./intervention_data.json?' + Date.now())
       const yoyCum = ((cumL.value/cum.find(d=>d.date==="2024-12").value-1)*100).toFixed(0);
       const yoyAcc = ((accL.value/acc.find(d=>d.date==="2024-12").value-1)*100).toFixed(0);
 
-      document.getElementById('nisaKpis').innerHTML = `
-        <div class="kpi"><div class="v">${YEN}${cumL.value} tn</div><div class="l">Cumulative buys, whole market</div><div class="d up">+${yoyCum}% YoY · ${fmtD(cumL.date)}</div></div>
-        <div class="kpi"><div class="v">${(accL.value/100).toFixed(2)} mn</div><div class="l">NISA accounts, whole market</div><div class="d up">+${yoyAcc}% YoY · ${fmtD(accL.date)}</div></div>
-        <div class="kpi"><div class="v">${YEN}${(monL.value/10000).toFixed(2)} tn</div><div class="l">10-firm monthly buys</div><div class="d flat">${fmtD(monL.date)}</div></div>
-        <div class="kpi"><div class="v">${pct(alloc.growth_quota_share)}</div><div class="l">Growth-quota share of buys</div><div class="d flat">2026 Q1</div></div>
-        <div class="kpi"><div class="v">${pct(alloc.domestic_stock_share_of_total)}</div><div class="l">Into domestic stocks</div><div class="d flat">2026 Q1</div></div>`;
+      buildNisaSizeByType();
 
       new Chart(document.getElementById('nisaCumChart'),{type:"line",data:{labels:cum.map(d=>fmtD(d.date)),
         datasets:[{data:cum.map(d=>d.value),borderColor:"#d9a441",backgroundColor:"rgba(217,164,65,.12)",fill:true,tension:.25,pointRadius:2}]},options:baseOpts("¥ tn")});
@@ -3930,7 +3977,7 @@ fetch('./intervention_data.json?' + Date.now())
     })
     .catch(e => {
       console.warn('nisa_data.json unavailable:', e);
-      document.getElementById('nisaKpis').innerHTML =
+      document.getElementById('nisaSizeByTypeNote').innerHTML =
         '<div style="color:var(--muted);padding:20px">NISA data unavailable.</div>';
     });
 
