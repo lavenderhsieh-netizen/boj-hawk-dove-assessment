@@ -240,6 +240,7 @@
   <button class="tab" onclick="showTab('balancesheet',this)" style="display:none" data-hidden="pending-nisa-review-2026-08-10">BOJ Balance Sheet</button>
   <button class="tab" onclick="showTab('calendar',this)">BOJ calendar</button>
   <button class="tab" onclick="showTab('auctions',this)">Auctions &amp; fiscal</button>
+  <button class="tab" onclick="showTab('ownership',this)">JGB Ownership &amp; Retail</button>
   <button class="tab" onclick="showTab('seasonality',this)">Seasonality</button>
   <button class="tab" onclick="showTab('markets',this)">Markets &amp; bonds</button>
   <button class="tab" onclick="showTab('method',this)">Methodology</button>
@@ -327,14 +328,18 @@
       <div style="overflow-x:auto;margin-top:8px"><table id="jgbPlanTable2027" style="font-size:12px"></table></div>
       <div class="note">Rows = one month of gross issuance by bucket, ¥tn. "Liquidity enh." = re-opening auctions across 3 remaining-maturity buckets (1-5y/5-11y/11-39y); "CT" = Climate Transition (GX) bonds, 10y+5y combined; 1yTB shown lump-sum in March only. Totals carry ±0.1-0.3tn rounding noise. Source: Nomura "Market issuance" note, citing MOF; FY2027-initial estimate (2026-08-12).</div>
     </div>
-    <div class="card full" style="margin-top:16px">
+  </div>
+
+  <!-- JGB OWNERSHIP & RETAIL DEMAND (split out of Auctions & fiscal, 2026-08-15 — too much info in one tab) -->
+  <div id="tab-ownership" class="panel">
+    <div class="card full">
       <h2>JGB holdings by holder type — who owns the market? <span id="jgbHoldersStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
-      <div class="sub">The demand-side counterpart to the issuance plan above — who actually holds the ¥1,000tn+ stock of JGBs and FILP bonds outstanding, not just who's buying at each auction.</div>
+      <div class="sub">Who actually holds the ¥1,000tn+ stock of JGBs and FILP bonds outstanding, not just who's buying at each auction (see Auctions &amp; fiscal for the issuance side).</div>
       <div class="kpis" id="jgbHoldersKpis" style="margin-top:12px"></div>
       <div style="height:340px;margin-top:16px"><canvas id="chart-jgb-holders"></canvas></div>
       <div class="note" id="jgbHoldersNote">Source: BOJ Flow of Funds Accounts, Preliminary Figures — "Government bonds and treasury bills" (item Db), by holder sector. Refreshed quarterly via <code>fetch_jgb_holders.py</code>. "Other" is a residual.</div>
     </div>
-    <div class="card full">
+    <div class="card full" style="margin-top:16px">
       <h2>JGB holdings by holder type — the multi-year shift <span style="font-size:12px;color:var(--muted);font-weight:400">· excl. T-Bills</span></h2>
       <div class="sub">Same series as the snapshot above (item Db, "Central government securities and FILP bonds" — this excludes Treasury discount bills/T-Bills, item Da, which trade more like money-market paper), plotted as % of total, every quarter since end-1997.</div>
       <div style="height:380px;margin-top:16px"><canvas id="chart-jgb-holders-history"></canvas></div>
