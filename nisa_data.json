@@ -281,8 +281,12 @@
       "tsumitate_quota_share": 0.25,
       "domestic_stock_share_of_total": 0.41,
       "within_growth_quota": {
-        "stocks": 0.6,
-        "funds": 0.4
+        "stocks": 0.59,
+        "funds": 0.41
+      },
+      "within_growth_quota_stocks": {
+        "domestic": 0.93,
+        "foreign": 0.07
       }
     }
   },
