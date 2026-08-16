@@ -1,5 +1,13 @@
 # Japan Macro / BOJ Hawk-Dove Dashboard — project notes
 
+## Medium/Long/Super-Long "flows by players" — 3-panel report chart (2026-08-16)
+
+HanHan sent a photo of this dashboard's live "Super long-end flows by players" chart (Cross-border flows tab — monthly net buying of >10y JGBs by Trust banks/Foreigners/Life insurers, JSDA source) and asked to mimic it for Medium-Term and Long-Term too, by the biggest buyers in each bucket, preview-only first. Then: "This is for report so make it professional" and "Can you make these three charts side by side."
+
+**No new data pull** — `fetch_jsda_superlong.py` already computes a per-player tenor split (medium/long/superlong) in `superlong_data.json`'s `byplayer_tenor` object; it just wasn't charted for medium/long yet. "Biggest buyers" = top 3 by cumulative net buying (Apr 2021–latest) per bucket — this selection rule reproduces the live chart's own Trust/Foreign/Life picks for the superlong bucket exactly, confirming it's consistent with what's already published. Medium-term's top 3: Foreigners (dominant, classic hedged-carry maturity), Trust banks, Regional banks. Long-term's top 3: Trust banks, City (mega) banks, Regional banks — foreigners barely register; mega banks show up as a real buyer here despite being net sellers of super-long paper.
+
+Built as one 3-panel figure (`jgb_flows_by_players_3panel.png`, script `preview_flows_by_tenor.py`), white-background report style matching this workspace's other report exhibits (Nomura framework chart, driver-decomposition chart) rather than the dashboard's dark house CSS — same institution gets the same color/linestyle across all 3 panels (Trust=blue solid, Foreign=red dashed, Life=green, Mega=gold, Regional=purple dashed) so cross-panel comparison reads cleanly, one shared legend below all three. **Preview only, not pushed to the live site** — saved as `preview_flows_by_players_3panel.png` / `preview_flows_by_tenor.py` in this project dir; HanHan's call on whether/where it goes live (natural fit: next to the existing super-long card on the Cross-border flows tab, replacing single-panel with this 3-up).
+
 ## NISA tab KPI row replaced with two FSA tables, ported from japan-nisa-tracker (2026-08-15)
 
 HanHan: "Change everything in Japan dashboard, nisa website is only for review" — right after the same table redesign shipped on `japan-nisa-tracker`'s Overview tab (see that project's own AGENTS.md entry same day). Confirms the established pattern this week: NISA-related builds get tested/reviewed on the standalone `japan-nisa-tracker` site first, then the finished version ships here — **this dashboard (`boj-hawk-dove-assessment`, "Japan dashboard"/"Japan website") is the one HanHan actually treats as live**, not the NISA tracker.
