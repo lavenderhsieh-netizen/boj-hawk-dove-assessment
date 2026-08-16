@@ -386,6 +386,12 @@
       <div style="height:300px;margin-top:16px"><canvas id="chart-jgb-funds"></canvas></div>
       <div class="note" id="jgbFundsNote">Source: Nikkei per-fund pages (nikkei.com/nkd/fund), refreshed via <code>fetch_jgb_funds.py</code>. AUM and monthly net flow are both live snapshots — no source publishes a historical flow series for individual funds, so the flow line here builds forward from whenever this tracker started polling, not backfilled.</div>
     </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>Life insurers' currency hedge ratio — why "unhedged" foreign-bond demand is scarcer than it looks</h2>
+      <div class="sub">The other side of the Lifers' foreign-bond appetite (see also their JSDA super-long JGB buying on the Auctions tab, and their outbound flow panel on Cross-border): how much of their ¥60-70tn foreign bond book is actually FX-hedged. The hedge ratio (line, right axis) fell from ~60% in FY2021 to ~40% by FY2024-25 as hedging costs stayed elevated — meaning a much bigger share of Lifers' foreign-bond flows now carry raw JPY exposure than a few years ago, one reason unhedged portfolio outflows have had more visible FX impact recently.</div>
+      <div style="height:380px;margin-top:16px"><canvas id="chart-lifer-hedge"></canvas></div>
+      <div class="note" id="liferHedgeNote">Covers 9 major life insurers, general-account basis, estimated by the BOJ from published company accounts (not a BOJ statistical release — BOJ does not publish an exact numeric series for this chart). Values read directly off BOJ's Financial System Report, April 2026, Chart III-2-5 — treat as accurate to roughly ±1-2 percentage points, not exact published figures. Source: <a href="https://www.boj.or.jp/en/research/brp/fsr/fsr260421.htm" target="_blank">BOJ Financial System Report</a>, semi-annual.</div>
+    </div>
   </div>
 
   <!-- MARKETS & BONDS -->
@@ -586,6 +592,12 @@
     </div>
     <div class="card full" style="margin-top:16px">
       <div class="note">Trust a/c (pension) = structural outbound bid; banks swing with yen-hedging/repatriation; life insurers' foreign-bond appetite reads against their JGB super-long demand on the JSDA tab.</div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>Banks' hedged UST demand vs. the US–JGB curve spread</h2>
+      <div class="sub">Banks are the most fully-hedged buyer of foreign bonds (see panel above), so their foreign-bond flows track the relative attractiveness of the hedged trade — roughly, how much steeper the US curve is than the JGB curve. Plotted here: Banks' 12-month rolling net purchase of foreign long-term debt (bars) against the raw US10Y − JGB10Y yield spread (line). The 2022 US curve inversion coincided with hedged investors pulling back on USTs; a narrowing spread as the Fed cuts and the JGB curve steepens should work the same way in reverse.</div>
+      <div style="height:360px;margin-top:16px"><canvas id="chart-banks-hedged-demand"></canvas></div>
+      <div class="note" id="banksHedgedNote">This is a simplified proxy, not GS's own hedged-yield formula (hedged UST yield = nominal yield − hedge cost, where hedge cost nets the USD/JPY 3-month rate differential against the cross-currency basis) — this dashboard doesn't have a free source for the 3-month JPY/USD funding-cost differential or the USD/JPY cross-currency basis swap (both are typically terminal-only data), so the raw 10Y−10Y spread is shown instead as the closest available directional proxy. Sources: MoF International Transactions in Securities (Banks, long-term bonds, monthly) and this dashboard's own JGB/US 10Y yield history (MOF; FRED <code>DGS10</code>).</div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>Seasonality — monthly net buying by fiscal year (from April)</h2>
@@ -2815,6 +2827,84 @@ fetch('./mof_flows.json?' + Date.now())
   })
   .catch(e => { console.warn('mof_flows.json unavailable:', e); });
 
+// Banks' hedged UST demand vs. US10Y-JGB10Y spread — self-contained (own fetches of mof_flows.json + market_data.json,
+// decoupled from _xbData's render lifecycle since this combines two independent JSON sources).
+(function() {
+  let flowsX = null, mktM = null;
+  let chart = null;
+  function tryBuild() {
+    const cv = document.getElementById('chart-banks-hedged-demand');
+    if (!cv || !flowsX || !mktM) return;
+    const months = flowsX.months;
+    const banksLt = flowsX.monthly_by_instrument?.ltbonds?.banks;
+    if (!banksLt) return;
+    // 12-month rolling sum of Banks' net purchases of foreign long-term bonds
+    const roll12 = months.map((_, i) => {
+      if (i < 11) return null;
+      let s = 0;
+      for (let j = i - 11; j <= i; j++) s += (banksLt[j] || 0);
+      return s;
+    });
+    // Monthly-average yield spread (US10Y - JGB10Y) from daily history, keyed by YYYY-MM
+    const avgByMonth = (hist, valKey) => {
+      const sums = {}, counts = {};
+      (hist || []).forEach(p => {
+        const tag = p.date.slice(0, 7);
+        const v = valKey ? p[valKey] : p.value;
+        if (v == null) return;
+        sums[tag] = (sums[tag] || 0) + v;
+        counts[tag] = (counts[tag] || 0) + 1;
+      });
+      const out = {};
+      Object.keys(sums).forEach(tag => { out[tag] = sums[tag] / counts[tag]; });
+      return out;
+    };
+    const jgb10ByMonth = avgByMonth(mktM.jgb?.history, 'y10');
+    const us10ByMonth = avgByMonth(mktM.us10y?.history);
+    const spread = months.map(tag => {
+      const j = jgb10ByMonth[tag], u = us10ByMonth[tag];
+      return (j != null && u != null) ? (u - j) : null;
+    });
+    if (chart) chart.destroy();
+    chart = new Chart(cv, {
+      data: {
+        labels: months,
+        datasets: [
+          { type: 'bar', label: "Banks' net purchases of foreign LT bonds (12m sum, ¥tn)", data: roll12,
+            backgroundColor: roll12.map(v => v == null ? 'transparent' : (v >= 0 ? 'rgba(226,86,74,0.65)' : 'rgba(74,144,217,0.65)')),
+            borderWidth: 0, yAxisID: 'y', order: 2 },
+          { type: 'line', label: 'US10Y − JGB10Y spread (%, rhs)', data: spread,
+            borderColor: '#d9a441', backgroundColor: '#d9a441', borderWidth: 2.2, pointRadius: 0,
+            tension: 0.15, yAxisID: 'y1', order: 0, spanGaps: false }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, animation: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { position: 'top', align: 'start', labels: { boxWidth: 11, boxHeight: 11, padding: 8, font: { size: 10.5 }, color: '#c7d0e0' } },
+          tooltip: { callbacks: { label: c => c.dataset.yAxisID === 'y1'
+            ? `${c.dataset.label}: ${c.parsed.y == null ? '–' : c.parsed.y.toFixed(2) + '%'}`
+            : `${c.dataset.label}: ${c.parsed.y == null ? '–' : (c.parsed.y >= 0 ? '+' : '') + c.parsed.y.toFixed(1) + 'tn'}` } }
+        },
+        scales: {
+          x: { grid: { display: false }, ticks: { color: '#7e8aa3', autoSkip: true, maxTicksLimit: 14, font: { size: 9.5 } } },
+          y: { position: 'left', grid: { color: x => x.tick.value === 0 ? '#7688a8' : 'rgba(148,163,196,0.12)', lineWidth: x => x.tick.value === 0 ? 1.3 : 1 },
+               ticks: { color: '#93a1bd', callback: v => (v > 0 ? '+' : '') + v }, title: { display: true, text: 'Banks\' foreign LT bond flow, 12m sum (¥tn)', color: '#93a1bd', font: { size: 10.5 } } },
+          y1: { position: 'right', grid: { display: false }, ticks: { color: '#93a1bd', callback: v => v.toFixed(1) + '%' },
+                title: { display: true, text: 'US10Y − JGB10Y (%)', color: '#93a1bd', font: { size: 10.5 } } }
+        }
+      }
+    });
+  }
+  fetch('./mof_flows.json?' + Date.now())
+    .then(r => r.ok ? r.json() : null).then(X => { flowsX = X; tryBuild(); })
+    .catch(e => console.warn('banks-hedged-demand: mof_flows.json unavailable:', e));
+  fetch('./market_data.json?' + Date.now())
+    .then(r => r.ok ? r.json() : null).then(M => { mktM = M; tryBuild(); })
+    .catch(e => console.warn('banks-hedged-demand: market_data.json unavailable:', e));
+})();
+
 // MoF BOP: securities flows by country (inbound = foreign→JGBs; outbound = Japan→foreign sovereigns)
 const XB_CTRY={china:'#e2564a', us:'#5aa0e6', uk:'#d9a441', germany:'#4cba7a', france:'#b79ae8', australia:'#e08fb0', others:'rgba(124,136,160,0.55)'};
 // Outbound-sovereign-bonds card: basis toggle (long-term-only vs long-term+short-term) + "Top N by size" filter
@@ -4536,6 +4626,54 @@ fetch('./household_assets.json?' + Date.now())
     });
   })
   .catch(e => { console.warn('household_assets.json unavailable:', e); });
+
+// Life insurers' currency hedge ratio (BOJ FSR Chart III-2-5, annual, chart-read — no live fetch script)
+let _liferHedgeChart = null;
+fetch('./lifer_hedge_ratio.json?' + Date.now())
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(X => {
+    const cv = document.getElementById('chart-lifer-hedge');
+    if (!cv || !X.series) return;
+    const rows = X.series;
+    const labels = rows.map(r => r.fy);
+    const bar = (key, color, label) => ({
+      type: 'bar', label, data: rows.map(r => r[key]),
+      backgroundColor: color, borderColor: color, borderWidth: 0, stack: 'b', order: 2,
+      yAxisID: 'y'
+    });
+    const datasets = [
+      bar('unhedged', 'rgba(148,163,196,0.18)', 'Unhedged'),
+      bar('hedged_currency_swap', '#5aa0e6', 'Hedged by currency swaps'),
+      bar('hedged_fx_swap', '#4cba7a', 'Hedged by FX swaps'),
+      {
+        type: 'line', label: 'Currency hedge ratio (rhs)', data: rows.map(r => r.hedge_ratio_pct),
+        borderColor: '#eef2f9', backgroundColor: '#eef2f9', borderWidth: 2.2, pointRadius: 3,
+        pointHoverRadius: 5, tension: 0.15, order: 0, yAxisID: 'y1', clip: false
+      }
+    ];
+    if (_liferHedgeChart) _liferHedgeChart.destroy();
+    _liferHedgeChart = new Chart(cv, {
+      data: { labels, datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false, animation: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { position: 'top', align: 'start', labels: { boxWidth: 11, boxHeight: 11, padding: 8, font: { size: 10.5 }, color: '#c7d0e0' } },
+          tooltip: { callbacks: { label: c => c.dataset.yAxisID === 'y1' ? `${c.dataset.label}: ${c.parsed.y}%` : `${c.dataset.label}: ¥${c.parsed.y}tn` } }
+        },
+        scales: {
+          x: { stacked: true, grid: { display: false }, ticks: { color: '#93a1bd' } },
+          y: { stacked: true, min: 0, position: 'left', grid: { color: 'rgba(148,163,196,0.12)' },
+               ticks: { color: '#93a1bd', callback: v => '¥' + v + 'tn' },
+               title: { display: true, text: 'Foreign bond holdings (¥tn)', color: '#93a1bd' } },
+          y1: { min: 30, max: 100, position: 'right', grid: { display: false },
+                ticks: { color: '#93a1bd', callback: v => v + '%' },
+                title: { display: true, text: 'Currency hedge ratio (%)', color: '#93a1bd' } }
+        }
+      }
+    });
+  })
+  .catch(e => { console.warn('lifer_hedge_ratio.json unavailable:', e); });
 
 // Retail JGB demand — monthly subscription amounts (MOF, flow-side complement to household holdings above)
 const RETAIL_JGB_COLORS = { floating10: '#d9a441', fixed5: '#5aa0e6', fixed3: '#4cba7a' };

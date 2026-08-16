@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "source": "Bank of Japan, Financial System Report, April 2026 edition, Chart III-2-5 \"Currency hedge ratios among life insurance companies\"",
+    "source_url": "https://www.boj.or.jp/en/research/brp/fsr/fsr260421.htm",
+    "source_pdf": "https://www.boj.or.jp/en/research/brp/fsr/data/fsr260421a.pdf",
+    "coverage": "Nine major life insurance companies, estimated based on general accounts. \"Unhedged\" includes foreign bonds earmarked for foreign currency-denominated insurance.",
+    "as_of": "End-September 2025 (latest bar); chart published in the April 2026 FSR",
+    "frequency": "Semi-annual FSR (April / October editions); this chart's own annual FY series is typically refreshed once a year in the April edition",
+    "methodology_note": "BOJ does not publish the underlying numeric series for this chart (no chart-data file exists for it, and it is not on stat-search.boj.or.jp — the FSR states its source as \"Published accounts of individual companies\", i.e. a BOJ staff estimate, not an official statistical release). Values below were read directly off the published chart (bar heights in tril. yen on the left axis, hedge-ratio line in % on the right axis) at high resolution and cross-checked against the same chart as it appeared in the October 2025 and April 2025 FSR editions, which show identical values for their overlapping fiscal years. Treat as accurate to roughly ±1-2 percentage points for the ratio and ±1 tril. yen for the bar components, not exact published figures.",
+    "generated_at": "2026-08-16"
+  },
+  "unit_bars": "tril. yen (foreign bond holdings, general account)",
+  "unit_ratio": "%",
+  "series": [
+    {"fy": "FY11", "unhedged": 14, "hedged_currency_swap": 2,  "hedged_fx_swap": 14, "hedge_ratio_pct": 47},
+    {"fy": "FY12", "unhedged": 19, "hedged_currency_swap": 2,  "hedged_fx_swap": 15, "hedge_ratio_pct": 49},
+    {"fy": "FY13", "unhedged": 20, "hedged_currency_swap": 1,  "hedged_fx_swap": 18, "hedge_ratio_pct": 50},
+    {"fy": "FY14", "unhedged": 26, "hedged_currency_swap": 1,  "hedged_fx_swap": 20, "hedge_ratio_pct": 47},
+    {"fy": "FY15", "unhedged": 27, "hedged_currency_swap": 1,  "hedged_fx_swap": 21, "hedge_ratio_pct": 52},
+    {"fy": "FY16", "unhedged": 23, "hedged_currency_swap": 1,  "hedged_fx_swap": 29, "hedge_ratio_pct": 58},
+    {"fy": "FY17", "unhedged": 24, "hedged_currency_swap": 1,  "hedged_fx_swap": 31, "hedge_ratio_pct": 58},
+    {"fy": "FY18", "unhedged": 26, "hedged_currency_swap": 1,  "hedged_fx_swap": 32, "hedge_ratio_pct": 56},
+    {"fy": "FY19", "unhedged": 24, "hedged_currency_swap": 3,  "hedged_fx_swap": 34, "hedge_ratio_pct": 60},
+    {"fy": "FY20", "unhedged": 27, "hedged_currency_swap": 5,  "hedged_fx_swap": 34, "hedge_ratio_pct": 60},
+    {"fy": "FY21", "unhedged": 27, "hedged_currency_swap": 6,  "hedged_fx_swap": 34, "hedge_ratio_pct": 59},
+    {"fy": "FY22", "unhedged": 29, "hedged_currency_swap": 6,  "hedged_fx_swap": 21, "hedge_ratio_pct": 47},
+    {"fy": "FY23", "unhedged": 36, "hedged_currency_swap": 9,  "hedged_fx_swap": 18, "hedge_ratio_pct": 42},
+    {"fy": "FY24", "unhedged": 36, "hedged_currency_swap": 8,  "hedged_fx_swap": 17, "hedge_ratio_pct": 40},
+    {"fy": "FY25", "unhedged": 38, "hedged_currency_swap": 8,  "hedged_fx_swap": 17, "hedge_ratio_pct": 40}
+  ]
+}
