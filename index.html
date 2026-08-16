@@ -386,12 +386,6 @@
       <div style="height:300px;margin-top:16px"><canvas id="chart-jgb-funds"></canvas></div>
       <div class="note" id="jgbFundsNote">Source: Nikkei per-fund pages (nikkei.com/nkd/fund), refreshed via <code>fetch_jgb_funds.py</code>. AUM and monthly net flow are both live snapshots — no source publishes a historical flow series for individual funds, so the flow line here builds forward from whenever this tracker started polling, not backfilled.</div>
     </div>
-    <div class="card full" style="margin-top:16px">
-      <h2>Life insurers' currency hedge ratio — why "unhedged" foreign-bond demand is scarcer than it looks</h2>
-      <div class="sub">The other side of the Lifers' foreign-bond appetite (see also their JSDA super-long JGB buying on the Auctions tab, and their outbound flow panel on Cross-border): how much of their ¥60-70tn foreign bond book is actually FX-hedged. The hedge ratio (line, right axis) fell from ~60% in FY2021 to ~40% by FY2024-25 as hedging costs stayed elevated — meaning a much bigger share of Lifers' foreign-bond flows now carry raw JPY exposure than a few years ago, one reason unhedged portfolio outflows have had more visible FX impact recently.</div>
-      <div style="height:380px;margin-top:16px"><canvas id="chart-lifer-hedge"></canvas></div>
-      <div class="note" id="liferHedgeNote">Covers 9 major life insurers, general-account basis, estimated by the BOJ from published company accounts (not a BOJ statistical release — BOJ does not publish an exact numeric series for this chart). Values read directly off BOJ's Financial System Report, April 2026, Chart III-2-5 — treat as accurate to roughly ±1-2 percentage points, not exact published figures. Source: <a href="https://www.boj.or.jp/en/research/brp/fsr/fsr260421.htm" target="_blank">BOJ Financial System Report</a>, semi-annual.</div>
-    </div>
   </div>
 
   <!-- MARKETS & BONDS -->
@@ -598,6 +592,12 @@
       <div class="sub">Banks are the most fully-hedged buyer of foreign bonds (see panel above), so their foreign-bond flows track the relative attractiveness of the hedged trade — roughly, how much steeper the US curve is than the JGB curve. Plotted here: Banks' 12-month rolling net purchase of foreign long-term debt (bars) against the raw US10Y − JGB10Y yield spread (line). The 2022 US curve inversion coincided with hedged investors pulling back on USTs; a narrowing spread as the Fed cuts and the JGB curve steepens should work the same way in reverse.</div>
       <div style="height:360px;margin-top:16px"><canvas id="chart-banks-hedged-demand"></canvas></div>
       <div class="note" id="banksHedgedNote">This is a simplified proxy, not GS's own hedged-yield formula (hedged UST yield = nominal yield − hedge cost, where hedge cost nets the USD/JPY 3-month rate differential against the cross-currency basis) — this dashboard doesn't have a free source for the 3-month JPY/USD funding-cost differential or the USD/JPY cross-currency basis swap (both are typically terminal-only data), so the raw 10Y−10Y spread is shown instead as the closest available directional proxy. Sources: MoF International Transactions in Securities (Banks, long-term bonds, monthly) and this dashboard's own JGB/US 10Y yield history (MOF; FRED <code>DGS10</code>).</div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>Life insurers' currency hedge ratio — why "unhedged" foreign-bond demand is scarcer than it looks</h2>
+      <div class="sub">The other side of the Lifers' foreign-bond appetite (see also their JSDA super-long JGB buying on the Auctions tab, and Banks' hedged UST demand above): how much of their ¥60-70tn foreign bond book is actually FX-hedged. The hedge ratio (line, right axis) fell from ~60% in FY2021 to ~40% by FY2024-25 as hedging costs stayed elevated — meaning a much bigger share of Lifers' foreign-bond flows now carry raw JPY exposure than a few years ago, one reason unhedged portfolio outflows have had more visible FX impact recently.</div>
+      <div style="height:380px;margin-top:16px"><canvas id="chart-lifer-hedge"></canvas></div>
+      <div class="note" id="liferHedgeNote">Covers 9 major life insurers, general-account basis, estimated by the BOJ from published company accounts (not a BOJ statistical release — BOJ does not publish an exact numeric series for this chart). Values read directly off BOJ's Financial System Report, April 2026, Chart III-2-5 — treat as accurate to roughly ±1-2 percentage points, not exact published figures. Source: <a href="https://www.boj.or.jp/en/research/brp/fsr/fsr260421.htm" target="_blank">BOJ Financial System Report</a>, semi-annual.</div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>Seasonality — monthly net buying by fiscal year (from April)</h2>
