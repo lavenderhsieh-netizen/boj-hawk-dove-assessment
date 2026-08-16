@@ -588,12 +588,6 @@
       <div class="note">Trust a/c (pension) = structural outbound bid; banks swing with yen-hedging/repatriation; life insurers' foreign-bond appetite reads against their JGB super-long demand on the JSDA tab.</div>
     </div>
     <div class="card full" style="margin-top:16px">
-      <h2>Life insurers' currency hedge ratio — why "unhedged" foreign-bond demand is scarcer than it looks</h2>
-      <div class="sub">The other side of the Lifers' foreign-bond appetite (see also their JSDA super-long JGB buying on the Auctions tab): how much of their ¥60-70tn foreign bond book is actually FX-hedged. The hedge ratio (line, right axis) fell from ~60% in FY2021 to ~40% by FY2024-25 as hedging costs stayed elevated — meaning a much bigger share of Lifers' foreign-bond flows now carry raw JPY exposure than a few years ago, one reason unhedged portfolio outflows have had more visible FX impact recently. <span style="color:var(--muted)">(The companion "Banks' hedged UST demand vs. curve spread" chart has been moved to the NISA dashboard, 2026-08-16, temporarily, for review.)</span></div>
-      <div style="height:380px;margin-top:16px"><canvas id="chart-lifer-hedge"></canvas></div>
-      <div class="note" id="liferHedgeNote">Covers 9 major life insurers, general-account basis, estimated by the BOJ from published company accounts (not a BOJ statistical release — BOJ does not publish an exact numeric series for this chart). Values read directly off BOJ's Financial System Report, April 2026, Chart III-2-5 — treat as accurate to roughly ±1-2 percentage points, not exact published figures. Source: <a href="https://www.boj.or.jp/en/research/brp/fsr/fsr260421.htm" target="_blank">BOJ Financial System Report</a>, semi-annual.</div>
-    </div>
-    <div class="card full" style="margin-top:16px">
       <h2>Seasonality — monthly net buying by fiscal year (from April)</h2>
       <div class="sub">Each month's net purchase of foreign long-term bonds plotted Apr→Mar — one line per fiscal year, current year highlighted. Shows the within-year buying pattern (e.g. the April start-of-fiscal-year surge). Non-cumulative. Source: MoF, same series; respects the ¥/$ toggle above.</div>
       <div id="xbSeasGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:14px">
@@ -716,6 +710,12 @@
         <div class="sub">Outward = Japanese residents' net direct investment abroad (capital outflow, plotted as negative bars); inward = non-residents' net direct investment into Japan (capital inflow, positive bars). White line = net direct investment balance (inward − outward), + = net capital inflow to Japan. Not seasonally adjusted (MoF publishes no SA version of FDI). Distinct from the portfolio/securities flows above — direct investment is FDI (control stakes, M&amp;A, reinvested earnings), not bond/equity portfolio buying. Source: MoF, 対外・対内直接投資総括表, monthly.</div>
         <canvas id="cDirectInvestment" style="max-height:340px;margin-top:12px"></canvas>
       </div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>Life insurers' currency hedge ratio — why "unhedged" foreign-bond demand is scarcer than it looks</h2>
+      <div class="sub">The other side of the Lifers' foreign-bond appetite (see also their JSDA super-long JGB buying on the Auctions tab): how much of their ¥60-70tn foreign bond book is actually FX-hedged. The hedge ratio (line, right axis) fell from ~60% in FY2021 to ~40% by FY2024-25 as hedging costs stayed elevated — meaning a much bigger share of Lifers' foreign-bond flows now carry raw JPY exposure than a few years ago, one reason unhedged portfolio outflows have had more visible FX impact recently. <span style="color:var(--muted)">(The companion "Banks' hedged UST demand vs. curve spread" chart has been moved to the NISA dashboard, 2026-08-16, temporarily, for review.)</span></div>
+      <div style="height:380px;margin-top:16px"><canvas id="chart-lifer-hedge"></canvas></div>
+      <div class="note" id="liferHedgeNote">Covers 9 major life insurers, general-account basis, estimated by the BOJ from published company accounts (not a BOJ statistical release — BOJ does not publish an exact numeric series for this chart). Values read directly off BOJ's Financial System Report, April 2026, Chart III-2-5 — treat as accurate to roughly ±1-2 percentage points, not exact published figures. Source: <a href="https://www.boj.or.jp/en/research/brp/fsr/fsr260421.htm" target="_blank">BOJ Financial System Report</a>, semi-annual.</div>
     </div>
   </div>
 
