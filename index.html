@@ -525,9 +525,22 @@
       <div class="note" id="slNote">Net buying = purchases − sales, outright (ex-repo). Lifers/trust banks are the domestic bid; foreigners set the marginal price at the super-long.</div>
     </div>
     <div class="card full" style="margin-top:16px">
-      <h2>Super long-end flows by players <span id="slfStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
-      <div class="sub">Monthly net buying of super-long (&gt;10y) JGBs, ¥tn — the three players that set the long-end: <b style="color:#5aa0e6">Trust banks (pension)</b>, <b style="color:#e2564a">Foreigners</b> (dashed), <b style="color:#4cba7a">Life &amp; non-life insurers</b>. Source: JSDA 公社債投資家別売買高, outright basis.</div>
-      <canvas id="cSlFlows" style="max-height:360px;margin-top:12px"></canvas>
+      <h2>Flows by players — by tenor bucket <span id="slfStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">Monthly net buying, ¥tn, by tenor bucket — the three biggest net buyers within each bucket over the period (legend shows latest month). Source: JSDA 公社債投資家別売買高, outright basis.</div>
+    </div>
+    <div id="flowsGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px">
+      <div class="card" style="margin-bottom:0">
+        <h3 style="font-size:14px;margin:0 0 8px">Medium-Term flows by players <span style="font-weight:400;color:var(--muted)">(~1-5y)</span></h3>
+        <canvas id="cMedFlows" style="max-height:300px"></canvas>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <h3 style="font-size:14px;margin:0 0 8px">Long-Term flows by players <span style="font-weight:400;color:var(--muted)">(~5-10y)</span></h3>
+        <canvas id="cLongFlows" style="max-height:300px"></canvas>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <h3 style="font-size:14px;margin:0 0 8px">Super-long flows by players <span style="font-weight:400;color:var(--muted)">(&gt;10y)</span></h3>
+        <canvas id="cSlFlows" style="max-height:300px"></canvas>
+      </div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>Japan bond flows by player — net buying by tenor <span id="tenStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
@@ -2331,23 +2344,40 @@ function setTenWin(win, btn){ _tenWin=win;
   if(btn) btn.classList.add('active');
   renderTenPanels(); }
 
-// "Super long-end flows by players" — 3-line time series (super-long net buying)
+// Flows-by-players line charts (one per tenor bucket) — 3-line time series of net buying
 function slFlowsChart(canvasId, T){
+  playerFlowsChart(canvasId, T, 'superlong', [
+    {key:'trust', label:'Trust banks', color:'#5aa0e6'},
+    {key:'foreign', label:'Foreigners', color:'#e2564a', dash:[6,4]},
+    {key:'life', label:'Life & non-life insurers', color:'#4cba7a'},
+  ]);
+}
+function medFlowsChart(canvasId, T){
+  playerFlowsChart(canvasId, T, 'medium', [
+    {key:'foreign', label:'Foreigners', color:'#e2564a', dash:[6,4]},
+    {key:'trust', label:'Trust banks (pension funds)', color:'#5aa0e6'},
+    {key:'regional', label:'Regional banks', color:'#4cba7a'},
+  ]);
+}
+function longFlowsChart(canvasId, T){
+  playerFlowsChart(canvasId, T, 'long', [
+    {key:'trust', label:'Trust banks (pension funds)', color:'#5aa0e6'},
+    {key:'mega', label:'City (mega) banks', color:'#4cba7a'},
+    {key:'regional', label:'Regional banks', color:'#d9a441', dash:[6,4]},
+  ]);
+}
+function playerFlowsChart(canvasId, T, tenorKey, lines){
   const cv=document.getElementById(canvasId); if(!cv||!T) return;
   const mn=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   let i0=T.months.findIndex(t=>t>='2023-01'); if(i0<0) i0=0;
   const months=T.months.slice(i0);
-  const slc=k=>T.players[k].superlong.slice(i0);
+  const slc=k=>T.players[k][tenorKey].slice(i0);
   const last=a=>{for(let i=a.length-1;i>=0;i--) if(a[i]!=null) return a[i]; return null;};
   const bn=v=>v==null?'':(v>=0?'+':'')+Math.round(v*1000)+'bn';
-  const line=(k,lab,col,dash)=>{const d=slc(k); return {label:lab+' ('+bn(last(d))+')', data:d,
-    borderColor:col, backgroundColor:col, borderWidth:1.9, borderDash:dash||[],
+  const line=({key,label,color,dash})=>{const d=slc(key); return {label:label+' ('+bn(last(d))+')', data:d,
+    borderColor:color, backgroundColor:color, borderWidth:1.9, borderDash:dash||[],
     pointRadius:0, pointHoverRadius:3, tension:0.12, spanGaps:false};};
-  const datasets=[
-    line('trust','Trust banks','#5aa0e6'),
-    line('foreign','Foreigners','#e2564a',[6,4]),
-    line('life','Life & non-life insurers','#4cba7a'),
-  ];
+  const datasets=lines.map(line);
   new Chart(cv, {type:'line', data:{labels:months, datasets},
     options:{responsive:true, maintainAspectRatio:false,
       interaction:{mode:'index', intersect:false},
@@ -2377,7 +2407,9 @@ fetch('./superlong_data.json?' + Date.now())
     slChart('cSlLife','slCapLife', SL.series.life, m);
     slChart('cSlTrust','slCapTrust', SL.series.trust, m);
     slChart('cSlForeign','slCapForeign', SL.series.foreign, m);
-    if(SL.byplayer_tenor){ slFlowsChart('cSlFlows', SL.byplayer_tenor);
+    if(SL.byplayer_tenor){ medFlowsChart('cMedFlows', SL.byplayer_tenor);
+      longFlowsChart('cLongFlows', SL.byplayer_tenor);
+      slFlowsChart('cSlFlows', SL.byplayer_tenor);
       const sf=document.getElementById('slfStatus');
       if(sf && SL.meta && SL.meta.as_of) sf.textContent='· data to '+SL.meta.as_of; }
     if(SL.byplayer_tenor){ const T=SL.byplayer_tenor;
