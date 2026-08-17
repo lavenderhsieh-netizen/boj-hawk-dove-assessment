@@ -1253,16 +1253,21 @@
       <div class="note"><b>Macro proxy, not a direct NISA FX series.</b> This MoF investment-trust-management-company series covers the fund channel behind part of NISA's foreign-asset demand, but includes all such transactions (not tagged by account type) — not an implied NISA-specific number. Same series as the Cross-border flows tab; history only back to 2021-04. <b>Toggles shared with Cross-border flows tab.</b></div>
       <canvas id="cNisaInvTrust" style="max-height:340px;margin-top:12px"></canvas>
     </div>
-    <div class="grid2">
-      <div class="card">
-        <h2 id="nisaInvTrustSeasTotalTitle">Seasonality — total (equity + bonds)</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      <div class="card" style="margin-bottom:0">
+        <h2 id="nisaInvTrustSeasTotalTitle" style="font-size:15px">Seasonality — total (equity + bonds)</h2>
         <div class="note">Same series as above, one line per fiscal year (Apr–Mar), monthly net buying — not cumulative. Currency toggle above applies here too.</div>
         <canvas id="cNisaInvTrustSeasTotal" style="max-height:300px;margin-top:10px"></canvas>
       </div>
-      <div class="card">
-        <h2 id="nisaInvTrustSeasEquityTitle">Seasonality — equity only</h2>
+      <div class="card" style="margin-bottom:0">
+        <h2 id="nisaInvTrustSeasEquityTitle" style="font-size:15px">Seasonality — equity only</h2>
         <div class="note">Same fiscal-year seasonality view, restricted to the equity leg only (excludes ST/LT bonds) — isolates the piece most relevant to NISA's foreign-equity demand.</div>
         <canvas id="cNisaInvTrustSeasEquity" style="max-height:300px;margin-top:10px"></canvas>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <h2 id="nisaInvTrustSeasLtBondsTitle" style="font-size:15px">Seasonality — long-term bonds only</h2>
+        <div class="note">Same fiscal-year seasonality view, restricted to the long-term bonds leg (MoF's own &gt;1y bucket, so this includes super-long JGBs — excludes short-term/equity legs).</div>
+        <canvas id="cNisaInvTrustSeasLtBonds" style="max-height:300px;margin-top:10px"></canvas>
       </div>
     </div>
     <div class="card full">
@@ -2844,7 +2849,8 @@ function setXbCur(cur, btn){ _xbCur=cur;
   renderXb(); xbInChart(); xbWeeklyChart(); renderBop();
   if (typeof xbStackedChart === 'function') xbStackedChart('cNisaInvTrust', 'nisaInvTrustTitle', 'invtrust');
   if (typeof xbTotalSeasChart === 'function') xbTotalSeasChart('cNisaInvTrustSeasTotal', 'nisaInvTrustSeasTotalTitle', 'invtrust');
-  if (typeof xbInstrSeasChart === 'function') xbInstrSeasChart('cNisaInvTrustSeasEquity', 'nisaInvTrustSeasEquityTitle', 'equity', 'invtrust', 'Equity'); }
+  if (typeof xbInstrSeasChart === 'function') xbInstrSeasChart('cNisaInvTrustSeasEquity', 'nisaInvTrustSeasEquityTitle', 'equity', 'invtrust', 'Equity');
+  if (typeof xbInstrSeasChart === 'function') xbInstrSeasChart('cNisaInvTrustSeasLtBonds', 'nisaInvTrustSeasLtBondsTitle', 'ltbonds', 'invtrust', 'Long-term bonds'); }
 fetch('./mof_flows.json?' + Date.now())
   .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
   .then(X => { _xbData=X; renderXb();
@@ -3721,6 +3727,7 @@ fetch('./intervention_data.json?' + Date.now())
     if (typeof xbStackedChart === 'function') xbStackedChart('cNisaInvTrust', 'nisaInvTrustTitle', 'invtrust');
     if (typeof xbTotalSeasChart === 'function') xbTotalSeasChart('cNisaInvTrustSeasTotal', 'nisaInvTrustSeasTotalTitle', 'invtrust');
     if (typeof xbInstrSeasChart === 'function') xbInstrSeasChart('cNisaInvTrustSeasEquity', 'nisaInvTrustSeasEquityTitle', 'equity', 'invtrust', 'Equity');
+    if (typeof xbInstrSeasChart === 'function') xbInstrSeasChart('cNisaInvTrustSeasLtBonds', 'nisaInvTrustSeasLtBondsTitle', 'ltbonds', 'invtrust', 'Long-term bonds');
     if (navFlowD) buildNavFlowChart(navFlowD);
   }
 
