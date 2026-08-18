@@ -603,8 +603,9 @@
     <div class="card full" style="margin-top:16px">
       <h2>Seasonality — monthly net buying by fiscal year (from April)</h2>
       <div class="sub">Each month's net purchase of foreign long-term bonds plotted Apr→Mar — one line per fiscal year, current year highlighted. Shows the within-year buying pattern (e.g. the April start-of-fiscal-year surge). Non-cumulative. Source: MoF, same series; respects the ¥/$ toggle above.</div>
-      <div id="xbSeasGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:14px">
+      <div id="xbSeasGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:14px">
         <div class="card" style="margin:0"><h2 id="xbSeasT_total" style="font-size:14px"></h2><canvas id="cXbSeas_total" style="max-height:280px"></canvas></div>
+        <div class="card" style="margin:0"><h2 id="xbSeasT_banks" style="font-size:14px"></h2><canvas id="cXbSeas_banks" style="max-height:280px"></canvas></div>
         <div class="card" style="margin:0"><h2 id="xbSeasT_trust_pension" style="font-size:14px"></h2><canvas id="cXbSeas_trust_pension" style="max-height:280px"></canvas></div>
         <div class="card" style="margin:0"><h2 id="xbSeasT_life" style="font-size:14px"></h2><canvas id="cXbSeas_life" style="max-height:280px"></canvas></div>
       </div>
@@ -612,8 +613,9 @@
     <div class="card full" style="margin-top:16px">
       <h2>Cumulative foreign bond buying — fiscal year to date (from April)</h2>
       <div class="sub">Cumulative net purchase of foreign long-term debt since the start of each fiscal year (Apr→Mar), ¥tn. One line per fiscal year; the current year is highlighted — shows whether this year's outflow is running ahead of or behind prior years. Source: MoF, same series.</div>
-      <div id="xbCumGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:14px">
+      <div id="xbCumGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:14px">
         <div class="card" style="margin:0"><h2 id="xbCumT_total" style="font-size:14px"></h2><canvas id="cXbCum_total" style="max-height:280px"></canvas></div>
+        <div class="card" style="margin:0"><h2 id="xbCumT_banks" style="font-size:14px"></h2><canvas id="cXbCum_banks" style="max-height:280px"></canvas></div>
         <div class="card" style="margin:0"><h2 id="xbCumT_trust_pension" style="font-size:14px"></h2><canvas id="cXbCum_trust_pension" style="max-height:280px"></canvas></div>
         <div class="card" style="margin:0"><h2 id="xbCumT_life" style="font-size:14px"></h2><canvas id="cXbCum_life" style="max-height:280px"></canvas></div>
       </div>
@@ -2835,8 +2837,8 @@ fetch('./mof_inbound.json?' + Date.now())
 function renderXb(){ if(!_xbData) return;
   xbAllChart();
   ['banks','trust_bank','trust_pension','life'].forEach(k=>xbStackedChart('cXb_'+k,'xbTitle_'+k, k));
-  ['total','trust_pension','life'].forEach(k=>xbFyChart('cXbSeas_'+k,'xbSeasT_'+k, k, 'seas'));
-  ['total','trust_pension','life'].forEach(k=>xbFyChart('cXbCum_'+k,'xbCumT_'+k, k, 'cum')); }
+  ['total','banks','trust_pension','life'].forEach(k=>xbFyChart('cXbSeas_'+k,'xbSeasT_'+k, k, 'seas'));
+  ['total','banks','trust_pension','life'].forEach(k=>xbFyChart('cXbCum_'+k,'xbCumT_'+k, k, 'cum')); }
 function setXbWin(win, btn){ _xbWin=win;
   document.querySelectorAll('#xbWinBtns .tab, #nisaXbWinBtns .tab').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll(`#xbWinBtns .tab[onclick="setXbWin(${win},this)"], #nisaXbWinBtns .tab[onclick="setXbWin(${win},this)"]`).forEach(b=>b.classList.add('active'));
