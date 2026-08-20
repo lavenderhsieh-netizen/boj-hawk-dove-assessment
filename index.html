@@ -640,7 +640,7 @@
       <canvas id="cBopOutbound" style="max-height:360px;margin-top:12px"></canvas>
     </div>
     <div class="card full" style="margin-top:16px">
-      <h2>Japan, outward portfolio investment, sovereign bonds, net — by country <span id="bopOutTableStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <h2>Japan, outward portfolio investment, sovereign bonds — by country <span id="bopOutTableStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
       <div class="sub">Same series and controls as the chart above, in table form — last 8 months, ¥bn. Blue = net buying, red = net selling. "Top N by size" ranks countries by the magnitude of their most recent month's value. Source: MoF Balance of Payments monthly, preliminary basis (see footnote below).</div>
       <div style="overflow-x:auto;margin-top:12px"><table id="bopOutTable" style="width:100%;border-collapse:collapse;font-size:12.5px"></table></div>
       <div class="sub" style="margin-top:10px">Preliminary/unrevised basis: MoF's static PDF isn't updated after revision, so a month can later drift from continuously-revised sell-side sources — seen once (Jan-2026, ~30-35% gap), otherwise consistent.</div>
@@ -2943,7 +2943,8 @@ function bopOutTable(B, nMonths, sec, orderOverride){
   html+='</tr></tbody>';
   tbl.innerHTML=html;
   const unitLabel=(U.m==='monthly_usd')?'$mn':'¥bn';
-  const el=document.getElementById('bopOutTableStatus'); if(el && B.meta) el.textContent='· data to '+B.meta.as_of+' · '+unitLabel;
+  const basisLabel=(sec==='outbound_sov_total')?'long-term + short-term, net':'long-term, net';
+  const el=document.getElementById('bopOutTableStatus'); if(el && B.meta) el.textContent='· '+basisLabel+' · data to '+B.meta.as_of+' · '+unitLabel;
 }
 let _bopData=null;
 function renderBop(){ if(!_bopData) return;
