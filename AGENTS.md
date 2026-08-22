@@ -1,5 +1,13 @@
 # Japan Macro / BOJ Hawk-Dove Dashboard — project notes
 
+## Cumulative FY seasonality charts added, JSDA tab (2026-08-22)
+
+HanHan sent a screenshot of the live "Super-long JGB demand by investor — seasonality" section (3 monthly-net-buying-by-FY charts, side by side: Life & non-life insurers / Trust banks / Foreigners) and asked to "add cumulative FY seasonality right after these... also side by side 3 charts." New section (`#slCumGrid`, same `grid-template-columns:repeat(3,1fr)` 3-up layout as the source charts) inserted right after the existing monthly-seasonality note card, before "Flows by players — by tenor bucket."
+
+No new data pull — new `slCumChart()` JS function (mirrors the existing `slChart()`) reads the same `superlong_data.json → series.{life,trust,foreign}.fy` monthly arrays already used by the monthly chart and runs a client-side cumulative sum within each FY (stopping at the first `null`, i.e. months not yet reported aren't extrapolated). Same color/highlight convention (current FY red, prior FYs grey/green/purple/gold/blue), same legend, same "data to" status badge. Caption per chart shows the running FY total through the latest reported month (e.g. "FY2026 cumulative through Jul: +1.08tn net buying" for Life & non-life insurers, +2.65tn Trust banks, +1.53tn Foreigners as of this build) — makes front- vs back-loaded demand within a fiscal year, and the running total vs. prior years, visible at a glance.
+
+Verified live via `agent-browser` on localhost:8501 (JSDA tab): all 3 new charts render directly below the monthly charts' note, current-FY line correctly highlighted, captions populate with real cumulative values, `<div>` 604/604 and `{`/`}` 2200/2200 balanced, `node --check` on the extracted `<script>` block passed, service log clean (all 200s, no errors). Committed.
+
 ## G7 real wage growth comparison chart added, Markets & bonds tab (2026-08-22)
 
 Same session as the G7 CPI chart above — HanHan had originally forwarded two screenshots (real wage growth first, CPI second), but only the CPI one got actioned. She caught the gap ("Where is the real wage chart?") and confirmed building it. New full-width card, `#cG7Wage`, added right after the G7 CPI card, same layout/palette convention.
