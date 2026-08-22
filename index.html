@@ -524,6 +524,29 @@
     <div class="card full" style="margin-top:16px">
       <div class="note" id="slNote">Net buying = purchases − sales, outright (ex-repo). Lifers/trust banks are the domestic bid; foreigners set the marginal price at the super-long.</div>
     </div>
+
+    <div class="card full" style="margin-top:16px">
+      <h2>Super-long JGB demand by investor — cumulative FY seasonality <span id="slCumStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">Running cumulative net buying within each fiscal year (Apr start), ¥tn, by investor type — same series as the monthly chart above, summed month-on-month. Shows whether a fiscal year's demand is front- or back-loaded, and the running total vs. prior years. Source: JSDA 公社債投資家別売買高, outright basis.</div>
+    </div>
+    <div id="slCumGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      <div class="card" style="margin-bottom:0">
+        <h2 id="slCumTitleLife" style="font-size:15px">Life &amp; non-life insurers</h2>
+        <canvas id="cSlLifeCum" style="max-height:300px"></canvas>
+        <div class="note" id="slCumCapLife"></div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <h2 id="slCumTitleTrust" style="font-size:15px">Trust banks</h2>
+        <canvas id="cSlTrustCum" style="max-height:300px"></canvas>
+        <div class="note" id="slCumCapTrust"></div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <h2 id="slCumTitleForeign" style="font-size:15px">Foreigners</h2>
+        <canvas id="cSlForeignCum" style="max-height:300px"></canvas>
+        <div class="note" id="slCumCapForeign"></div>
+      </div>
+    </div>
+
     <div class="card full" style="margin-top:16px">
       <h2>Flows by players — by tenor bucket <span id="slfStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
       <div class="sub">Monthly net buying, ¥tn, by tenor bucket — the three biggest net buyers within each bucket over the period (legend shows latest month). Source: JSDA 公社債投資家別売買高, outright basis.</div>
@@ -2224,6 +2247,49 @@ function slChart(canvasId, capId, s, months){
       'FY'+latest+' latest ('+months[li]+'): '+(v>=0?'+':'')+v.toFixed(2)+'tn net '+(v>=0?'buying':'selling');
   }
 }
+function slCumChart(canvasId, capId, s, months){
+  if(!s || !s.fy) return;
+  const years = Object.keys(s.fy).sort();
+  if(!years.length) return;
+  const latest = years[years.length-1];
+  const hist = ['#8a94ad','#4cba7a','#b79ae8','#d9a441','#4a90d9'];
+  const cumFy = {};
+  years.forEach(y=>{
+    let run = 0; const out = [];
+    s.fy[y].forEach(v=>{ if(v==null){ out.push(null); return; } run += v; out.push(+run.toFixed(3)); });
+    cumFy[y] = out;
+  });
+  const datasets = years.map((y,i)=>{
+    const cur = (y===latest);
+    const col = cur ? '#e2564a' : hist[Math.min(i, hist.length-1)];
+    return { label:'FY'+y, data:cumFy[y], borderColor:col, backgroundColor:col,
+      borderWidth: cur?3:1.5, pointRadius: cur?2.5:0, pointHoverRadius:4,
+      tension:0.25, spanGaps:false, order: cur?0:1 };
+  });
+  new Chart(document.getElementById(canvasId), {
+    type:'line',
+    data:{ labels:months, datasets },
+    options:{ responsive:true, maintainAspectRatio:false,
+      interaction:{mode:'index', intersect:false},
+      plugins:{
+        legend:{position:'bottom', labels:{boxWidth:10, padding:8, font:{size:10}}},
+        tooltip:{callbacks:{label:c=>c.dataset.label+': '+(c.parsed.y==null?'–':(c.parsed.y>=0?'+':'')+c.parsed.y.toFixed(2)+'tn cum.')}}
+      },
+      scales:{
+        y:{ title:{display:true, text:'¥tn, cumulative FY net buying'},
+            grid:{color:ctx=>ctx.tick.value===0?'#7688a8':'#2a3752'},
+            ticks:{callback:v=>(v>0?'+':'')+v} },
+        x:{ grid:{display:false} }
+      }
+    }
+  });
+  const arr = cumFy[latest]; let li=-1;
+  for(let i=arr.length-1;i>=0;i--){ if(arr[i]!=null){ li=i; break; } }
+  if(li>=0){ const v=arr[li];
+    document.getElementById(capId).textContent =
+      'FY'+latest+' cumulative through '+months[li]+': '+(v>=0?'+':'')+v.toFixed(2)+'tn net '+(v>=0?'buying':'selling');
+  }
+}
 let _slPlayers = null, _slChartObj = null, _slMeasure = 'extbills';
 function slPlayersChart(canvasId, players){
   if(!players) return;
@@ -2414,6 +2480,11 @@ fetch('./superlong_data.json?' + Date.now())
     slChart('cSlLife','slCapLife', SL.series.life, m);
     slChart('cSlTrust','slCapTrust', SL.series.trust, m);
     slChart('cSlForeign','slCapForeign', SL.series.foreign, m);
+    slCumChart('cSlLifeCum','slCumCapLife', SL.series.life, m);
+    slCumChart('cSlTrustCum','slCumCapTrust', SL.series.trust, m);
+    slCumChart('cSlForeignCum','slCumCapForeign', SL.series.foreign, m);
+    { const el2 = document.getElementById('slCumStatus');
+      if(el2) el2.textContent = SL.meta && SL.meta.as_of ? '· data to '+SL.meta.as_of : ''; }
     if(SL.byplayer_tenor){ medFlowsChart('cMedFlows', SL.byplayer_tenor);
       longFlowsChart('cLongFlows', SL.byplayer_tenor);
       slFlowsChart('cSlFlows', SL.byplayer_tenor);
