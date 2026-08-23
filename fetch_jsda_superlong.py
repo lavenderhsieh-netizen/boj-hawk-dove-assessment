@@ -67,6 +67,7 @@ TENOR_PLAYERS = [
     ("外国人",         "foreign",  "Foreigners"),
     ("地方銀行",       "regional", "Regional banks"),
     ("農林系金融機関", "agri",     "Agri co-ops (Norinchukin)"),
+    ("信用金庫",       "shinkin",  "Shinkin banks (credit unions)"),
 ]
 TENOR_BUCKETS = {  # output key -> (display label, color)
     "medium":   ("Medium-Term",     "#4cba7a"),
@@ -233,7 +234,7 @@ def build_tenor(all_months):
     players["others"] = {"medium": omed, "long": olng, "superlong": osup, "total": otot}
     labels = {p[1]: p[2] for p in TENOR_PLAYERS}
     labels["others"] = "Others (all remaining investors)"
-    order = ["mega", "trust", "foreign", "life", "regional", "agri"]
+    order = ["mega", "trust", "foreign", "life", "regional", "agri", "shinkin"]
     return {
         "months": months,
         "order": order,
