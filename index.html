@@ -548,6 +548,94 @@
     </div>
 
     <div class="card full" style="margin-top:16px">
+      <h2>Medium-Term JGB demand by investor — seasonality <span id="medSlStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">Monthly net buying of medium-term (~1-5y) JGBs, ¥tn, by the three biggest net buyers of this bucket over the period — Foreigners, Trust banks, Regional banks. Each line is one fiscal year (Apr–Mar); the current fiscal year is highlighted. Positive = net buying. Source: JSDA 公社債投資家別売買高 (国債投資家別売買高), outright basis.</div>
+    </div>
+    <div id="medSlGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      <div class="card" style="margin-bottom:0">
+        <h2 style="font-size:15px">Foreigners</h2>
+        <canvas id="cMedForeign" style="max-height:300px"></canvas>
+        <div class="note" id="medCapForeign"></div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <h2 style="font-size:15px">Trust banks</h2>
+        <canvas id="cMedTrust" style="max-height:300px"></canvas>
+        <div class="note" id="medCapTrust"></div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <h2 style="font-size:15px">Regional banks</h2>
+        <canvas id="cMedRegional" style="max-height:300px"></canvas>
+        <div class="note" id="medCapRegional"></div>
+      </div>
+    </div>
+
+    <div class="card full" style="margin-top:16px">
+      <h2>Medium-Term JGB demand by investor — cumulative FY seasonality <span id="medSlCumStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">Running cumulative net buying within each fiscal year (Apr start), ¥tn — same series as the monthly chart above, summed month-on-month.</div>
+    </div>
+    <div id="medSlCumGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      <div class="card" style="margin-bottom:0">
+        <h2 style="font-size:15px">Foreigners</h2>
+        <canvas id="cMedForeignCum" style="max-height:300px"></canvas>
+        <div class="note" id="medCumCapForeign"></div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <h2 style="font-size:15px">Trust banks</h2>
+        <canvas id="cMedTrustCum" style="max-height:300px"></canvas>
+        <div class="note" id="medCumCapTrust"></div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <h2 style="font-size:15px">Regional banks</h2>
+        <canvas id="cMedRegionalCum" style="max-height:300px"></canvas>
+        <div class="note" id="medCumCapRegional"></div>
+      </div>
+    </div>
+
+    <div class="card full" style="margin-top:16px">
+      <h2>Long-Term JGB demand by investor — seasonality <span id="longSlStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">Monthly net buying of long-term (~5-10y) JGBs, ¥tn, by the three biggest net buyers of this bucket over the period — Trust banks, City (mega) banks, Regional banks. Each line is one fiscal year (Apr–Mar); the current fiscal year is highlighted. Positive = net buying. Source: JSDA 公社債投資家別売買高 (国債投資家別売買高), outright basis.</div>
+    </div>
+    <div id="longSlGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      <div class="card" style="margin-bottom:0">
+        <h2 style="font-size:15px">Trust banks</h2>
+        <canvas id="cLongTrust" style="max-height:300px"></canvas>
+        <div class="note" id="longCapTrust"></div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <h2 style="font-size:15px">City (mega) banks</h2>
+        <canvas id="cLongMega" style="max-height:300px"></canvas>
+        <div class="note" id="longCapMega"></div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <h2 style="font-size:15px">Regional banks</h2>
+        <canvas id="cLongRegional" style="max-height:300px"></canvas>
+        <div class="note" id="longCapRegional"></div>
+      </div>
+    </div>
+
+    <div class="card full" style="margin-top:16px">
+      <h2>Long-Term JGB demand by investor — cumulative FY seasonality <span id="longSlCumStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">Running cumulative net buying within each fiscal year (Apr start), ¥tn — same series as the monthly chart above, summed month-on-month.</div>
+    </div>
+    <div id="longSlCumGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      <div class="card" style="margin-bottom:0">
+        <h2 style="font-size:15px">Trust banks</h2>
+        <canvas id="cLongTrustCum" style="max-height:300px"></canvas>
+        <div class="note" id="longCumCapTrust"></div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <h2 style="font-size:15px">City (mega) banks</h2>
+        <canvas id="cLongMegaCum" style="max-height:300px"></canvas>
+        <div class="note" id="longCumCapMega"></div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <h2 style="font-size:15px">Regional banks</h2>
+        <canvas id="cLongRegionalCum" style="max-height:300px"></canvas>
+        <div class="note" id="longCumCapRegional"></div>
+      </div>
+    </div>
+
+    <div class="card full" style="margin-top:16px">
       <h2>Flows by players — by tenor bucket <span id="slfStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
       <div class="sub">Monthly net buying, ¥tn, by tenor bucket — the three biggest net buyers within each bucket over the period (legend shows latest month). Source: JSDA 公社債投資家別売買高, outright basis.</div>
     </div>
@@ -2235,7 +2323,7 @@ function slChart(canvasId, capId, s, months){
       scales:{
         y:{ title:{display:true, text:'¥tn, net buying'},
             grid:{color:ctx=>ctx.tick.value===0?'#7688a8':'#2a3752'},
-            ticks:{callback:v=>(v>0?'+':'')+v} },
+            ticks:{callback:v=>{const r=+v.toFixed(6); return (r>0?'+':'')+r;}} },
         x:{ grid:{display:false} }
       }
     }
@@ -2278,7 +2366,7 @@ function slCumChart(canvasId, capId, s, months){
       scales:{
         y:{ title:{display:true, text:'¥tn, cumulative FY net buying'},
             grid:{color:ctx=>ctx.tick.value===0?'#7688a8':'#2a3752'},
-            ticks:{callback:v=>(v>0?'+':'')+v} },
+            ticks:{callback:v=>{const r=+v.toFixed(6); return (r>0?'+':'')+r;}} },
         x:{ grid:{display:false} }
       }
     }
@@ -2289,6 +2377,21 @@ function slCumChart(canvasId, capId, s, months){
     document.getElementById(capId).textContent =
       'FY'+latest+' cumulative through '+months[li]+': '+(v>=0?'+':'')+v.toFixed(2)+'tn net '+(v>=0?'buying':'selling');
   }
+}
+// Builds an {label, fy} series (same shape slChart/slCumChart expect) from
+// byplayer_tenor's flat chronological monthly array for one player+tenor bucket.
+function tenorFySeries(T, tenorKey, key, label){
+  const s = { label, fy: {} };
+  if(!T || !T.players[key]) return s;
+  const arr = T.players[key][tenorKey];
+  T.months.forEach((tag, i) => {
+    const [y, mo] = tag.split('-').map(Number);
+    const fy = (mo >= 4) ? y : y - 1;             // FY start year (Apr..Mar)
+    const idx = (mo - 4 + 12) % 12;                // Apr->0 ... Mar->11
+    if(!s.fy[fy]) s.fy[fy] = new Array(12).fill(null);
+    s.fy[fy][idx] = arr[i] == null ? null : arr[i];
+  });
+  return s;
 }
 let _slPlayers = null, _slChartObj = null, _slMeasure = 'extbills';
 function slPlayersChart(canvasId, players){
@@ -2490,6 +2593,34 @@ fetch('./superlong_data.json?' + Date.now())
       slFlowsChart('cSlFlows', SL.byplayer_tenor);
       const sf=document.getElementById('slfStatus');
       if(sf && SL.meta && SL.meta.as_of) sf.textContent='· data to '+SL.meta.as_of; }
+    if(SL.byplayer_tenor){
+      const T = SL.byplayer_tenor;
+      const medSeries = {
+        foreign:  tenorFySeries(T,'medium','foreign','Foreigners'),
+        trust:    tenorFySeries(T,'medium','trust','Trust banks'),
+        regional: tenorFySeries(T,'medium','regional','Regional banks'),
+      };
+      slChart('cMedForeign','medCapForeign', medSeries.foreign, m);
+      slChart('cMedTrust','medCapTrust', medSeries.trust, m);
+      slChart('cMedRegional','medCapRegional', medSeries.regional, m);
+      slCumChart('cMedForeignCum','medCumCapForeign', medSeries.foreign, m);
+      slCumChart('cMedTrustCum','medCumCapTrust', medSeries.trust, m);
+      slCumChart('cMedRegionalCum','medCumCapRegional', medSeries.regional, m);
+      const longSeries = {
+        trust:    tenorFySeries(T,'long','trust','Trust banks'),
+        mega:     tenorFySeries(T,'long','mega','City (mega) banks'),
+        regional: tenorFySeries(T,'long','regional','Regional banks'),
+      };
+      slChart('cLongTrust','longCapTrust', longSeries.trust, m);
+      slChart('cLongMega','longCapMega', longSeries.mega, m);
+      slChart('cLongRegional','longCapRegional', longSeries.regional, m);
+      slCumChart('cLongTrustCum','longCumCapTrust', longSeries.trust, m);
+      slCumChart('cLongMegaCum','longCumCapMega', longSeries.mega, m);
+      slCumChart('cLongRegionalCum','longCumCapRegional', longSeries.regional, m);
+      const status = SL.meta && SL.meta.as_of ? '· data to '+SL.meta.as_of : '';
+      ['medSlStatus','medSlCumStatus','longSlStatus','longSlCumStatus'].forEach(id=>{
+        const el=document.getElementById(id); if(el) el.textContent=status; });
+    }
     if(SL.byplayer_tenor){ const T=SL.byplayer_tenor;
       _tenT=T; renderTenPanels();
       const st=document.getElementById('tenStatus');
