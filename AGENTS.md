@@ -1,5 +1,15 @@
 # Japan Macro / BOJ Hawk-Dove Dashboard — project notes
 
+## Shinkin banks added as a tracked JSDA player (2026-08-23)
+
+Follow-up to the Medium/Long-Term seasonality build above, same session. HanHan asked (after being shown a reference chart grouping "Regional/Shinkin/agri banks" together) whether to add regional, shinkin, and agri banks — investigated first: Regional and Agri were already tracked (Regional is top-3 in the new Medium/Long charts; Agri already has its own panel in "Japan bond flows by player"), but **Shinkin banks (信用金庫) were a genuine gap** — JSDA's own workbook does report them as a distinct investor row, but this project's fetch script never captured it, so shinkin net buying had been silently folded into the "Others" residual on every chart on this tab. Cumulative Apr 2021–Jul 2026: +2.9tn (medium), +1.5tn (long), +4.3tn (superlong) — smaller than any bucket's top-3, similar size to Life insurers or Agri co-ops. HanHan confirmed ("Ok") adding them as a 7th panel.
+
+**Fix, in `fetch_jsda_superlong.py`:** added `("信用金庫", "shinkin", "Shinkin banks (credit unions)")` to `TENOR_PLAYERS` and `"shinkin"` to the hardcoded `order` list in `build_tenor()`. Re-ran the script — reused all 5 cached historical-FY workbooks (`source/koushasai202{1..5}*.xlsx`), only re-downloaded the current-FY file (`koushasai.xlsx`), so no new scraping risk. `superlong_data.json`'s `byplayer_tenor.players.shinkin` now populated with the same medium/long/superlong/total split as the other 6 players, full 64-month coverage.
+
+**HTML/JS:** added a 7th `.mbcard` (`cTen_shinkin`/`tenTitle_shinkin`) to `#slTenorGrid` in the "Japan bond flows by player" section (after Agri) — the grid is `repeat(2,1fr)`, so it now sits alone in a 4th row. Updated `renderTenPanels()`'s hardcoded fallback order array to include `'shinkin'` (the live `_tenT.order` from the JSON already includes it, so this only matters if the JSON fails to load). No other player list (`PLAYERS`, used by the main stacked "by players" superlong/extbills chart) was touched — this was scoped to the tenor-bucket panel section only, per what was actually asked/confirmed.
+
+Verified live via `agent-browser` on localhost:8501 (JSDA tab): new panel renders with real stacked bars (medium/long/superlong) + white total line, 4 datasets confirmed via `Chart.getChart()`, `<div>` 641/641 and `{`/`}` 2211/2211 balanced, `node --check` on the extracted `<script>` block passed, service log clean (all 200s, no errors). Checkpoint-committed before the fetch re-run + edit, committed again after.
+
 ## Medium/Long-Term seasonality charts added, JSDA tab (2026-08-23)
 
 HanHan (Telegram): "For Jsda, can I create the same sets of 3*2 seasonality charts for monthly and cumulative for the medium term and long term? Show the top 3 players?" — same treatment as the existing Super-long monthly+cumulative 3-up grids, extended to the two other tenor buckets already tracked on this dashboard (`byplayer_tenor.players.{key}.medium/long`, flat chronological monthly arrays, already powering `medFlowsChart`/`longFlowsChart` further down the same tab).
