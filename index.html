@@ -670,6 +670,7 @@
         <div class="mbcard"><h3 id="tenTitle_life"></h3><canvas id="cTen_life"></canvas></div>
         <div class="mbcard"><h3 id="tenTitle_regional"></h3><canvas id="cTen_regional"></canvas></div>
         <div class="mbcard"><h3 id="tenTitle_agri"></h3><canvas id="cTen_agri"></canvas></div>
+        <div class="mbcard"><h3 id="tenTitle_shinkin"></h3><canvas id="cTen_shinkin"></canvas></div>
       </div>
     </div>
   </div>
@@ -2513,7 +2514,7 @@ function tenorChart(canvasId, titleId, T, key){
 }
 
 function renderTenPanels(){ if(!_tenT) return;
-  (_tenT.order||['mega','trust','foreign','life','regional','agri'])
+  (_tenT.order||['mega','trust','foreign','life','regional','agri','shinkin'])
     .forEach(k=>tenorChart('cTen_'+k,'tenTitle_'+k, _tenT, k)); }
 function setTenWin(win, btn){ _tenWin=win;
   document.querySelectorAll('#tenWinBtns .tab').forEach(b=>b.classList.remove('active'));
