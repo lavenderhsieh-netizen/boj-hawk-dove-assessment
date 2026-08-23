@@ -1,5 +1,13 @@
 # Japan Macro / BOJ Hawk-Dove Dashboard — project notes
 
+## Long-JGB mutual funds card removed, JGB Ownership & Retail tab (2026-08-23)
+
+HanHan sent a screenshot of the live "Long-JGB mutual funds — AUM & monthly flow" card (MUFG/Daiwa/Amova, added 2026-08-15, see below) and said "Let's delete this as it's not very helpful" — the AUM figures are genuinely tiny (¥6-33bn) and the flow line was always going to be single-point-forward-only with no backfillable history, so the card never had much to say.
+
+Removed the card's HTML (KPI row + chart + note) and its JS fetch/render block (`jgb_funds.json` fetch, `_jgbFundsChart` builder) from `index.html` entirely — the "JGB Ownership & Retail" tab now flows straight from "Retail JGB demand" to the tab's end. **Left `fetch_jgb_funds.py` and `jgb_funds.json` on disk untouched** — cheap to keep, no automation depends on removing them, and it's trivial to re-add the card later from git history (commit `90e3b56`, the checkpoint right before this removal) if HanHan wants it back with a longer flow history built up.
+
+Verified live via `agent-browser` on localhost:8501 (JGB Ownership & Retail tab): card gone, "Retail JGB demand" (previous card) and the rest of the tab render unaffected, `<div>` 632/632 balanced, `node --check` on the extracted `<script>` block passed, service log shows `jgb_funds.json` no longer being requested and zero errors elsewhere. Checkpoint-committed before the edit and committed again after, per this project's standing large-edit safety rule.
+
 ## Shinkin banks added as a tracked JSDA player (2026-08-23)
 
 Follow-up to the Medium/Long-Term seasonality build above, same session. HanHan asked (after being shown a reference chart grouping "Regional/Shinkin/agri banks" together) whether to add regional, shinkin, and agri banks — investigated first: Regional and Agri were already tracked (Regional is top-3 in the new Medium/Long charts; Agri already has its own panel in "Japan bond flows by player"), but **Shinkin banks (信用金庫) were a genuine gap** — JSDA's own workbook does report them as a distinct investor row, but this project's fetch script never captured it, so shinkin net buying had been silently folded into the "Others" residual on every chart on this tab. Cumulative Apr 2021–Jul 2026: +2.9tn (medium), +1.5tn (long), +4.3tn (superlong) — smaller than any bucket's top-3, similar size to Life insurers or Agri co-ops. HanHan confirmed ("Ok") adding them as a 7th panel.
