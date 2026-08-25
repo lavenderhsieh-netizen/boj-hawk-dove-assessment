@@ -266,36 +266,71 @@ def fetch_call_rate(prev):
 
 
 def fetch_inflation(prev):
+    """BOJ 'Indicators for Core CPI' (cpirev.xlsx). Each measure (ex-fresh-food,
+    ex-fresh-food-energy, ex-food-energy institutional-factor-adjusted CPI, plus
+    trimmed mean / weighted median / mode) is published as several side-by-side
+    base-year vintages (e.g. 2025/2020/2015base) rather than one fixed column —
+    BOJ has reshuffled this layout before (most recently around the Aug 2026
+    2025-base rebasing) and fixed column indices silently broke then. Locate
+    each measure's columns by their Japanese header text instead, and splice
+    across vintages (prefer the newest base year available for a given month,
+    fall back to older bases for months the newest vintage doesn't cover) so
+    the series stays one continuous, current line across future rebasings.
+    """
     import openpyxl
     r = get(BOJ_CPI)
     wb = openpyxl.load_workbook(io.BytesIO(r.content), data_only=True)
     ws = wb[wb.sheetnames[0]]
-    months, ex_fresh, ex_fresh_energy, ex_food_energy = [], [], [], []
-    trimmed_mean, weighted_median, mode = [], [], []       # BOJ distribution-based core measures
     R2 = lambda x: round(x, 2) if isinstance(x, (int, float)) else None
+
+    GROUPS = {
+        "ex_fresh":         "除く生鮮食品、特殊要因",
+        "ex_fresh_energy":  "除く生鮮食品・エネルギー、特殊要因",
+        "ex_food_energy":   "除く食料・エネルギー、特殊要因",
+        "trimmed_mean":     "刈込平均値",
+        "weighted_median":  "加重中央値",
+        "mode":             "最頻値",
+    }
+    # header row (2) carries the Japanese measure name repeated across every
+    # base-year vintage column for that measure; row 5 carries the base-year
+    # label. Columns are ordered newest-base-first in the source file, which
+    # is also the splice preference order (most current vintage wins).
+    header_row = [ws.cell(row=2, column=c).value for c in range(1, ws.max_column + 1)]
+    group_cols = {key: [] for key in GROUPS}
+    for idx0, header in enumerate(header_row):
+        if not header:
+            continue
+        for key, label in GROUPS.items():
+            if label in header:
+                group_cols[key].append(idx0)
+                break
+    for key, cols in group_cols.items():
+        check(len(cols) > 0, f"inflation: could not locate columns for {key} (BOJ likely reshuffled cpirev.xlsx layout)")
+
+    months = []
+    series = {key: [] for key in GROUPS}
     for row in ws.iter_rows(min_row=6, values_only=True):
         d = row[0]
         if not isinstance(d, datetime) or d.year < 2019:
             continue
-        b, e, h = row[1], row[4], row[7]
-        tm, wm, mo = row[10], row[16], row[22]             # trimmed mean / weighted median / mode
-        if b is None and e is None and h is None:
+        vals = {key: next((row[c] for c in cols if row[c] is not None), None)
+                for key, cols in group_cols.items()}
+        if all(v is None for v in vals.values()):
             continue
         months.append(d.strftime("%Y-%m"))
-        ex_fresh.append(R2(b))
-        ex_fresh_energy.append(R2(e))
-        ex_food_energy.append(R2(h))
-        trimmed_mean.append(R2(tm))
-        weighted_median.append(R2(wm))
-        mode.append(R2(mo))
+        for key in GROUPS:
+            series[key].append(R2(vals[key]))
+
     check(len(months) > 12, "inflation: too few months")
     last_month = datetime.strptime(months[-1], "%Y-%m")
     check((datetime.now() - last_month).days < 120, f"inflation too old: {months[-1]}")
-    vals = [v for v in ex_fresh if v is not None]
-    check(all(-5 < v < 15 for v in vals), "inflation out of range")
-    return {"months": months, "ex_fresh": ex_fresh,
-            "ex_fresh_energy": ex_fresh_energy, "ex_food_energy": ex_food_energy,
-            "trimmed_mean": trimmed_mean, "weighted_median": weighted_median, "mode": mode}
+    ex_fresh_vals = [v for v in series["ex_fresh"] if v is not None]
+    check(all(-5 < v < 15 for v in ex_fresh_vals), "inflation out of range")
+
+    return {"months": months, "ex_fresh": series["ex_fresh"],
+            "ex_fresh_energy": series["ex_fresh_energy"], "ex_food_energy": series["ex_food_energy"],
+            "trimmed_mean": series["trimmed_mean"], "weighted_median": series["weighted_median"],
+            "mode": series["mode"]}
 
 
 def fetch_potential_growth(prev):
