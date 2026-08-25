@@ -267,12 +267,13 @@ def fetch_call_rate(prev):
 
 def fetch_inflation(prev):
     """BOJ 'Indicators for Core CPI' (cpirev.xlsx). Each measure (ex-fresh-food,
-    ex-fresh-food-energy, ex-food-energy institutional-factor-adjusted CPI, plus
-    trimmed mean / weighted median / mode) is published as several side-by-side
-    base-year vintages (e.g. 2025/2020/2015base) rather than one fixed column —
-    BOJ has reshuffled this layout before (most recently around the Aug 2026
-    2025-base rebasing) and fixed column indices silently broke then. Locate
-    each measure's columns by their Japanese header text instead, and splice
+    ex-fresh-food-energy, ex-food-energy institutional-factor-adjusted CPI,
+    trimmed mean / weighted median / mode, plus share of items rising/falling
+    and the diffusion index) is published as several side-by-side base-year
+    vintages (e.g. 2025/2020/2015base) rather than one fixed column — BOJ has
+    reshuffled this layout before (most recently around the Aug 2026 2025-base
+    rebasing) and fixed column indices silently broke then. Locate each
+    measure's columns by their Japanese header text instead, and splice
     across vintages (prefer the newest base year available for a given month,
     fall back to older bases for months the newest vintage doesn't cover) so
     the series stays one continuous, current line across future rebasings.
@@ -290,6 +291,13 @@ def fetch_inflation(prev):
         "trimmed_mean":     "刈込平均値",
         "weighted_median":  "加重中央値",
         "mode":             "最頻値",
+        # "share rising/falling" labels must be matched before "diffusion index"
+        # would otherwise also match, but the diffusion header has different
+        # trailing text ("－下落品目比率（％ポイント）" / "（％ポイント）") so there's
+        # no actual substring collision — kept in this order for clarity anyway.
+        "share_increasing": "上昇品目比率（％）",
+        "share_decreasing": "下落品目比率（％）",
+        "diffusion_index":  "上昇品目比率－下落品目比率（％ポイント）",
     }
     # header row (2) carries the Japanese measure name repeated across every
     # base-year vintage column for that measure; row 5 carries the base-year
@@ -326,11 +334,14 @@ def fetch_inflation(prev):
     check((datetime.now() - last_month).days < 120, f"inflation too old: {months[-1]}")
     ex_fresh_vals = [v for v in series["ex_fresh"] if v is not None]
     check(all(-5 < v < 15 for v in ex_fresh_vals), "inflation out of range")
+    share_vals = [v for v in series["share_increasing"] + series["share_decreasing"] if v is not None]
+    check(all(0 <= v <= 100 for v in share_vals), "inflation: share of items rising/falling out of range")
 
     return {"months": months, "ex_fresh": series["ex_fresh"],
             "ex_fresh_energy": series["ex_fresh_energy"], "ex_food_energy": series["ex_food_energy"],
             "trimmed_mean": series["trimmed_mean"], "weighted_median": series["weighted_median"],
-            "mode": series["mode"]}
+            "mode": series["mode"], "share_increasing": series["share_increasing"],
+            "share_decreasing": series["share_decreasing"], "diffusion_index": series["diffusion_index"]}
 
 
 def fetch_potential_growth(prev):

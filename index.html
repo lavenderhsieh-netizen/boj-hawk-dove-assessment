@@ -429,6 +429,11 @@
         <div class="note" style="margin-top:8px">Trimmed mean, weighted median, mode of cross-item price-change distribution, from BOJ's <i>Indicators for Core CPI</i>. Source: BOJ Research (cpirev.xlsx).</div>
       </div>
     </div>
+    <div class="card" style="margin-top:16px">
+      <h2 style="min-height:44px">BOJ diffusion index — share of items with rising vs. falling prices (%) <span id="inflDiffStatus"></span></h2>
+      <canvas id="cInflDiff" style="max-height:280px"></canvas>
+      <div class="note" id="inflDiffNote" style="margin-top:8px">Source: BOJ Research (cpirev.xlsx). Share of CPI items whose price rose/fell yoy; diffusion index = rising minus falling (% points). Same base-year-vintage splicing as the two CPI cards above.</div>
+    </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;align-items:stretch">
       <div class="card" style="margin:0">
         <h2 style="min-height:44px">Output gap (quarterly, %) <span id="gapStatus"></span></h2>
@@ -2140,6 +2145,36 @@ function renderMarkets(M) {
         },
         options: inflOpts
       });
+    }
+    if (inf.share_increasing && document.getElementById('cInflDiff')) {
+      document.getElementById('inflDiffStatus').innerHTML = staleBadge(src.inflation?.status);
+      new Chart(document.getElementById('cInflDiff'), {
+        type: 'line',
+        data: {
+          labels: months,
+          datasets: [
+            { label: 'Share of items rising', data: inf.share_increasing.slice(-n),
+              borderColor: '#e2564a', pointRadius: 0, borderWidth: 2.2, tension: 0.15 },
+            { label: 'Share of items falling', data: (inf.share_decreasing||[]).slice(-n),
+              borderColor: '#4a90d9', pointRadius: 0, borderWidth: 2.2, tension: 0.15 },
+            { label: 'Diffusion index (rising − falling)', data: (inf.diffusion_index||[]).slice(-n),
+              borderColor: '#d9a441', pointRadius: 0, borderWidth: 1.8, borderDash: [4,3], tension: 0.15 }
+          ]
+        },
+        options: {
+          plugins: { legend: { position: 'top' } },
+          scales: {
+            x: { ticks: { maxTicksLimit: 12, maxRotation: 45 } },
+            y: { title: { display: true, text: '%  /  % points' },
+                 ticks: { callback: v => v.toFixed(0) } }
+          }
+        }
+      });
+      const lastDiff = (inf.diffusion_index||[]).filter(v => v != null).slice(-1)[0];
+      if (lastDiff != null) {
+        document.getElementById('inflDiffNote').innerHTML =
+          `Source: BOJ Research (cpirev.xlsx). Share of CPI items whose price rose/fell yoy; diffusion index = rising minus falling (% points, latest ${months[months.length-1]}: ${lastDiff>0?'+':''}${lastDiff.toFixed(1)}pt). Same base-year-vintage splicing as the two CPI cards above.`;
+      }
     }
   }
 
