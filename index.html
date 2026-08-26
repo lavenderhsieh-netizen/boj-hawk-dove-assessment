@@ -2107,6 +2107,7 @@ function renderMarkets(M) {
     const n = Math.min(inf.months.length, 60);
     const months = inf.months.slice(-n);
     const inflOpts = {
+      interaction: { mode: 'index', intersect: false },
       plugins: { legend: { position: 'top' } },
       scales: {
         x: { ticks: { maxTicksLimit: 10, maxRotation: 45 } },
@@ -2162,6 +2163,7 @@ function renderMarkets(M) {
           ]
         },
         options: {
+          interaction: { mode: 'index', intersect: false },
           plugins: { legend: { position: 'top' } },
           scales: {
             x: { ticks: { maxTicksLimit: 12, maxRotation: 45 } },
