@@ -1,5 +1,17 @@
 # Japan Macro / BOJ Hawk-Dove Dashboard — project notes
 
+## Japan market snapshot card added, Markets & bonds tab (2026-08-30)
+
+HanHan (Telegram): "I want to create the 'Korea market snapshot' version in Japan and China websites too... for companies and index, for Japan, can you list Nikkei and TOPIX. And kioxia, SoftBank. Or anything you think we should include" — ported the `bok-hawk-dove-assessment` "Korea market snapshot" quote-card pattern (Retail Leverage tab: value + 1D/1W/1M/YTD %, Yahoo Finance) verbatim, new card at the top of the **Markets & bonds** tab, before the existing KPI row.
+
+**5 tickers**, all yfinance, all with working 2y history: `jpy` (JPY=X, USD/JPY spot — displayed as ¥-per-USD but %-change computed off 1/rate so + = JPY stronger, same `invert_pct` convention as bok's KRW/TWD), `n225` (^N225 Nikkei 225), `topix`, `kioxia` (285A.T, Kioxia Holdings — NAND memory-cycle bellwether, HanHan's own pick), `softbank` (9984.T, SoftBank Group — AI/chip-investment proxy, HanHan's own pick).
+
+**TOPIX has no working raw-index Yahoo ticker from this sandbox** — tried `^TOPX`, `^TPX`, `998405.T`, `TOPX.T`, `TOPIX`: all return empty history via yfinance (a real Yahoo data-coverage gap, not a wrong-ticker guess — confirmed by testing 5+ variants). Used **1306.T** (Nomura NEXT FUNDS TOPIX ETF, the largest/most liquid TOPIX ETF, ¥432 level) as a live tracking proxy instead — same "disclosed ETF-proxy" pattern already used elsewhere in this workspace (e.g. `japan-nisa-tracker`'s MUFG/Daiwa/Amova JGB funds). Card explicitly flags this in its own note rather than presenting it as the raw index.
+
+**Code**: `fetch_market.py` gained `QUOTE_TICKERS`/`QUOTE_INVERT_PCT`/`_quote_from_history()`/`fetch_quote_snapshot(prev)` — copied near-verbatim from `bok-hawk-dove-assessment/fetch_market.py`'s own quote-snapshot block (same reciprocal-series %-change logic for FX), registered in `SOURCES` (this project's prev-carryover orchestration, not bok's simpler always-overwrite loop) and in `latest_date_of()` (returns `None` for this key — it's a snapshot, not a dated history array). Writes `market_data.json → quote_snapshot.quotes`. `index.html` gained a `.quote-card`/`.quote-grid` CSS block (adapted to this project's own `--card`/`--line`/`--ink` var names, not bok's `--panel`/`--border`/`--strong`) and a `quoteCard()`/`buildQuoteSnapshot(M)` JS pair, called from the top of `renderMarkets(M)` (the function that already builds this tab from the same fetched `M` object).
+
+Verified live via `agent-browser` on localhost:8501 (Markets & bonds tab): all 5 cards render with real data (¥160.04 USD/JPY, Nikkei 66,406, TOPIX 432.0, Kioxia ¥47,900 +359% YTD, SoftBank ¥5,161), zero console errors, service log clean. Committed.
+
 ## Institutional-factor CPI fetch was silently broken since BOJ's base-year rebase; fixed (2026-08-25)
 
 HanHan (Telegram): "Update Japan website - institutional factor cpi." Investigated first rather than just re-running the daily fetch — found a real, previously-undetected bug.
