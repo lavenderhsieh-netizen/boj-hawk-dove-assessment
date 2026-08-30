@@ -39,6 +39,16 @@
   .grid2{display:grid;grid-template-columns:1.2fr 1fr;gap:16px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:16px}
   .card.full{grid-column:1/-1}
+  .quote-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+  .quote-card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:.85rem .9rem;text-align:center}
+  .quote-card .qc-title{font-size:.72rem;color:var(--muted);line-height:1.3;margin-bottom:.35rem}
+  .quote-card .qc-title b{color:var(--ink);font-weight:600}
+  .quote-card .qc-val{font-size:1.35rem;font-weight:700;color:var(--ink)}
+  .quote-card .qc-chg{font-size:.78rem;font-weight:600;margin-top:.1rem}
+  .quote-card .qc-periods{display:flex;justify-content:space-between;margin-top:.6rem;padding-top:.5rem;border-top:1px solid var(--line)}
+  .quote-card .qc-periods div{flex:1;text-align:center}
+  .quote-card .qc-periods .qc-p-lbl{font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+  .quote-card .qc-periods .qc-p-val{font-size:.75rem;font-weight:600;margin-top:.1rem}
   canvas{max-height:340px}
   #nisaFundFlowChart{max-height:640px}
   .note{font-size:11.5px;color:var(--muted);margin-top:8px;line-height:1.5}
@@ -383,6 +393,11 @@
 
   <!-- MARKETS & BONDS -->
   <div id="tab-markets" class="panel">
+    <div class="card" style="margin-bottom:20px">
+      <h2 style="margin-bottom:.1rem">Japan market snapshot</h2>
+      <p class="sub" style="font-size:.7rem;margin:0 0 .6rem">1/JPY (USD/JPY spot, inverted so + = JPY stronger), Nikkei 225, TOPIX, and the two most-asked-about single names — Kioxia (NAND memory-cycle bellwether) and SoftBank Group (AI/chip-investment proxy). Live quotes, Yahoo Finance.</p>
+      <div id="jp-quote-row" class="quote-grid"></div>
+    </div>
     <div class="kpis" id="mktKpis" style="margin-bottom:20px"></div>
     <div class="grid2">
       <div class="card full">
@@ -1993,7 +2008,37 @@ function renderForecasts(D) {
   mkHist('cFcCore', H.core);
 }
 
+function quoteCard(q, opts) {
+  q = q || {};
+  const fmtVal = v => v == null ? 'N/A' : v.toLocaleString('en-US', {minimumFractionDigits: opts.decimals ?? 2, maximumFractionDigits: opts.decimals ?? 2});
+  const fmtPct = v => v == null ? 'N/A' : (v >= 0 ? '+' : '') + v.toFixed(2) + '%';
+  const clr = v => v == null ? 'var(--muted)' : (v >= 0 ? '#4cba7a' : 'var(--hawk)');
+  return `<div class="quote-card">
+    <div class="qc-title"><b>${opts.title}</b>${opts.titleSub ? ' / ' + opts.titleSub : ''}</div>
+    <div class="qc-val">${opts.prefix || ''}${fmtVal(q.value)}</div>
+    <div class="qc-chg" style="color:${clr(q.chg1d_pct)}">${fmtPct(q.chg1d_pct)} daily</div>
+    <div class="qc-periods">
+      <div><div class="qc-p-lbl">Weekly</div><div class="qc-p-val" style="color:${clr(q.chg1w_pct)}">${fmtPct(q.chg1w_pct)}</div></div>
+      <div><div class="qc-p-lbl">Monthly</div><div class="qc-p-val" style="color:${clr(q.chg1m_pct)}">${fmtPct(q.chg1m_pct)}</div></div>
+      <div><div class="qc-p-lbl">YTD</div><div class="qc-p-val" style="color:${clr(q.chg_ytd_pct)}">${fmtPct(q.chg_ytd_pct)}</div></div>
+    </div>
+    ${opts.pctNote ? `<div style="font-size:.58rem;color:var(--muted);margin-top:.4rem;text-align:center">${opts.pctNote}</div>` : ''}
+  </div>`;
+}
+function buildQuoteSnapshot(M) {
+  const q = (M && M.quote_snapshot && M.quote_snapshot.quotes) || {};
+  const jp = document.getElementById('jp-quote-row');
+  if (jp) jp.innerHTML = [
+    quoteCard(q.jpy,      {title: 'USD/JPY Spot',       titleSub: 'ドル円',          prefix: '¥', decimals: 2, pctNote: '% = JPY return (+ = JPY stronger), computed off 1/rate'}),
+    quoteCard(q.n225,     {title: 'Nikkei 225',          titleSub: '日経平均',        decimals: 0}),
+    quoteCard(q.topix,    {title: 'TOPIX',               titleSub: '1306.T ETF proxy', decimals: 1, pctNote: 'No raw TOPIX index feed available — tracked via the largest TOPIX ETF'}),
+    quoteCard(q.kioxia,   {title: 'Kioxia Holdings',     titleSub: '285A',           prefix: '¥', decimals: 0}),
+    quoteCard(q.softbank, {title: 'SoftBank Group',      titleSub: '9984',           prefix: '¥', decimals: 0}),
+  ].join('');
+}
+
 function renderMarkets(M) {
+  buildQuoteSnapshot(M);
   const src = M.sources || {};
 
   // ── KPI row ──────────────────────────────────────────────────────────────

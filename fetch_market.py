@@ -245,6 +245,86 @@ def fetch_fx(prev):
     return fetch_fred_single("DEXJPUS", 50, 300, "USD/JPY")
 
 
+# Quote-card tickers (Yahoo Finance) for the "Japan market snapshot" row —
+# same pattern as bok-hawk-dove-assessment/fetch_market.py's QUOTE_TICKERS.
+# TOPIX has no working raw-index ticker on Yahoo from this sandbox (^TOPX /
+# ^TPX / 998405.T all return empty history) — 1306.T (Nomura NEXT FUNDS TOPIX
+# ETF, the largest/most liquid TOPIX ETF) is used as a live tracking proxy
+# instead, disclosed as such on the dashboard card.
+QUOTE_TICKERS = {
+    "jpy":      "JPY=X",
+    "n225":     "^N225",
+    "topix":    "1306.T",
+    "kioxia":   "285A.T",
+    "softbank": "9984.T",
+}
+QUOTE_INVERT_PCT = {"jpy"}  # displayed as JPY-per-USD; %-change read off 1/rate so + = JPY stronger
+
+
+def _quote_from_history(hist_df, invert_pct=False):
+    """Value + 1D/1W/1M/YTD % change from a yfinance history DataFrame.
+
+    invert_pct: for FX pairs quoted as "foreign currency per USD" (higher =
+    weaker JPY), a raw % change of the quote reads backwards for the quoted
+    currency — computed off the reciprocal series (1/close) so a positive %
+    genuinely means the quoted currency strengthened. Same logic as
+    bok-hawk-dove-assessment/fetch_market.py's _quote_from_history.
+    """
+    df = hist_df[hist_df["Close"].notna()]
+    if df.empty:
+        return None
+    closes = df["Close"]
+    current = float(closes.iloc[-1])
+    pct_series = (1.0 / closes) if invert_pct else closes
+    pct_current = float(pct_series.iloc[-1])
+
+    def pct_back(n_sessions):
+        if len(pct_series) > n_sessions:
+            base = float(pct_series.iloc[-1 - n_sessions])
+            return round((pct_current - base) / base * 100, 2) if base else None
+        return None
+
+    cur_year = df.index[-1].year
+    prior = df[df.index.year < cur_year]
+    if not prior.empty:
+        prior_close = prior["Close"].iloc[-1]
+        ytd_base = float(1.0 / prior_close if invert_pct else prior_close)
+    else:
+        ytd_base = None
+    chg_ytd = round((pct_current - ytd_base) / ytd_base * 100, 2) if ytd_base else None
+
+    return {
+        "value": round(current, 3),
+        "chg1d_pct": pct_back(1),
+        "chg1w_pct": pct_back(5),
+        "chg1m_pct": pct_back(21),
+        "chg_ytd_pct": chg_ytd,
+    }
+
+
+def fetch_quote_snapshot(prev):
+    """Japan headline quote row — value + 1D/1W/1M/YTD % for each QUOTE_TICKERS entry."""
+    if not HAS_YFINANCE:
+        raise RuntimeError("yfinance not installed: pip install yfinance")
+    prev = prev or {}
+    prev_quotes = prev.get("quotes", {})
+    out, errs = {}, []
+    for key, sym in QUOTE_TICKERS.items():
+        try:
+            hist_df = yf.Ticker(sym).history(period="2y")
+            q = _quote_from_history(hist_df, invert_pct=(key in QUOTE_INVERT_PCT))
+            if q is None:
+                raise RuntimeError("empty history")
+            out[key] = q
+        except Exception as exc:
+            errs.append(f"{key} ({sym}): {exc}")
+            if prev_quotes.get(key):
+                out[key] = prev_quotes[key]
+    if not out:
+        raise RuntimeError("; ".join(errs) or "no quotes fetched")
+    return {"quotes": out, "stale": False, "errors": errs or None}
+
+
 def fetch_fred_single(series_id, lo, hi, name, days_back=550):
     hist = fred_series(series_id, days_back)
     check(len(hist) > 10, f"{name}: too few observations")
@@ -685,6 +765,7 @@ def fetch_news(prev):
 SOURCES = {
     "jgb":              lambda prev: fetch_jgb(prev),
     "fx":               fetch_fx,
+    "quote_snapshot":   fetch_quote_snapshot,
     "nikkei":           lambda prev: fetch_fred_single("NIKKEI225", 5000, 200000, "Nikkei"),
     "us10y":            lambda prev: fetch_fred_single("DGS10", 0, 20, "US 10Y"),
     "call_rate":        fetch_call_rate,
@@ -704,6 +785,8 @@ def latest_date_of(key, section):
             return section["latest_date"]
         if key == "news":
             return section[0]["published"][:10]
+        if key == "quote_snapshot":
+            return None
         return section["history"][-1]["date"]
     except Exception:
         return None
