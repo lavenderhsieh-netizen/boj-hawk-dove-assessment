@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-08-30T16:06:06Z",
+  "scraped_at": "2026-08-31T16:07:23Z",
   "analysts": [
     "Kyohei Morita",
     "Tomoaki Shishido",
@@ -43,23 +43,39 @@
         "coverage": "Japan Macro / BOJ"
       },
       {
-        "title": "Japan: Speech by BOJ Deputy Governor Ryozo Himino - No obvious groundwork-laying for a rate hike, but we still expect a hike at the September MPM",
-        "url": "https://go.nomuranow.com/research/japi/publication/1317802?appname=GRPUI",
-        "date": "AUG 17, 2026",
-        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
-        "analyst": "Kyohei Morita",
-        "coverage": "Japan Macro / BOJ"
-      },
-      {
         "title": "BOJ Watch - (1) New main scenario is for next rate hike in September; (2) risk scenario is for two more hikes this year",
         "url": "https://go.nomuranow.com/research/japi/publication/1315799?appname=GRPUI",
         "date": "AUG 13, 2026",
         "summary": "KYOHEI MORITA, UICHIRO NOZAKI, YUNA MINEGISHI, MARI IWASHITA",
         "analyst": "Kyohei Morita",
         "coverage": "Japan Macro / BOJ"
+      },
+      {
+        "title": "Japan: FY26–28 economic outlook - We maintain scenario for economic recovery driven by capex",
+        "url": "https://go.nomuranow.com/research/japi/publication/1318200?appname=GRPUI",
+        "date": "",
+        "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, ZHAOQI LIU, YUNA MINEGISHI more...",
+        "analyst": "Kyohei Morita",
+        "coverage": "Japan Macro / BOJ"
       }
     ],
     "Tomoaki Shishido": [
+      {
+        "title": "Yen RV Analytics - 31 Aug 2026",
+        "url": "https://go.nomuranow.com/research/japi/publication/1318280?appname=GRPUI",
+        "date": "AUG 31, 2026",
+        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
+        "analyst": "Tomoaki Shishido",
+        "coverage": "Japan Rates"
+      },
+      {
+        "title": "Yen Rates Daily Monitor - 31 Aug 2026",
+        "url": "https://go.nomuranow.com/research/japi/publication/1318262?appname=GRPUI",
+        "date": "AUG 31, 2026",
+        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
+        "analyst": "Tomoaki Shishido",
+        "coverage": "Japan Rates"
+      },
       {
         "title": "Yen Rates Daily Monitor - 28 Aug 2026",
         "url": "https://go.nomuranow.com/research/japi/publication/1318033?appname=GRPUI",
@@ -72,22 +88,6 @@
         "title": "Yen RV Analytics - 27 Aug 2026",
         "url": "https://go.nomuranow.com/research/japi/publication/1317820?appname=GRPUI",
         "date": "AUG 27, 2026",
-        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
-        "analyst": "Tomoaki Shishido",
-        "coverage": "Japan Rates"
-      },
-      {
-        "title": "Yen Rates Daily Monitor - 27 Aug 2026",
-        "url": "https://go.nomuranow.com/research/japi/publication/1317813?appname=GRPUI",
-        "date": "AUG 27, 2026",
-        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
-        "analyst": "Tomoaki Shishido",
-        "coverage": "Japan Rates"
-      },
-      {
-        "title": "Yen RV Analytics - 26 Aug 2026",
-        "url": "https://go.nomuranow.com/research/japi/publication/1317649?appname=GRPUI",
-        "date": "AUG 26, 2026",
         "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
         "analyst": "Tomoaki Shishido",
         "coverage": "Japan Rates"
@@ -143,6 +143,14 @@
         "coverage": "Japan FX"
       },
       {
+        "title": "JPY Intraday Comment - Bessent backs BOJ action, with the government’s support, to strengthen JPY",
+        "url": "https://go.nomuranow.com/research/japi/publication/1318248?appname=GRPUI",
+        "date": "AUG 28, 2026",
+        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
         "title": "JPY Weekly - One step at a time",
         "url": "https://go.nomuranow.com/research/japi/publication/1318100?appname=GRPUI",
         "date": "AUG 28, 2026",
@@ -167,14 +175,6 @@
         "coverage": "Japan FX"
       },
       {
-        "title": "JPY Intraday Comment - Reviewing foreign portfolio investment flows into Japan",
-        "url": "https://go.nomuranow.com/research/japi/publication/1317426?appname=GRPUI",
-        "date": "AUG 28, 2026",
-        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
         "title": "Key focus and themes - Weaker USD theme builds – high convictions in USD/CNH, EUR/INR and EUR/JPY",
         "url": "https://go.nomuranow.com/research/japi/publication/1317155?appname=GRPUI",
         "date": "AUG 21, 2026",
@@ -193,25 +193,25 @@
     ],
     "Masaki Kuwahara": [
       {
+        "title": "Yen RV Analytics - 31 Aug 2026",
+        "url": "https://go.nomuranow.com/research/japi/publication/1318280?appname=GRPUI",
+        "date": "AUG 31, 2026",
+        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
+        "analyst": "Masaki Kuwahara",
+        "coverage": "Japan Macro"
+      },
+      {
+        "title": "Yen Rates Daily Monitor - 31 Aug 2026",
+        "url": "https://go.nomuranow.com/research/japi/publication/1318262?appname=GRPUI",
+        "date": "AUG 31, 2026",
+        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
+        "analyst": "Masaki Kuwahara",
+        "coverage": "Japan Macro"
+      },
+      {
         "title": "Yen Rates Daily Monitor - 28 Aug 2026",
         "url": "https://go.nomuranow.com/research/japi/publication/1318033?appname=GRPUI",
         "date": "AUG 28, 2026",
-        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
-        "analyst": "Masaki Kuwahara",
-        "coverage": "Japan Macro"
-      },
-      {
-        "title": "Yen RV Analytics - 27 Aug 2026",
-        "url": "https://go.nomuranow.com/research/japi/publication/1317820?appname=GRPUI",
-        "date": "AUG 27, 2026",
-        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
-        "analyst": "Masaki Kuwahara",
-        "coverage": "Japan Macro"
-      },
-      {
-        "title": "Yen Rates Daily Monitor - 27 Aug 2026",
-        "url": "https://go.nomuranow.com/research/japi/publication/1317813?appname=GRPUI",
-        "date": "AUG 27, 2026",
         "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
         "analyst": "Masaki Kuwahara",
         "coverage": "Japan Macro"
@@ -233,8 +233,8 @@
         "coverage": "Japan Macro"
       },
       {
-        "title": "Fiscal Insight - Total FY2027 budget requests could approach JPY144trn",
-        "url": "https://go.nomuranow.com/research/japi/publication/1317756?appname=GRPUI",
+        "title": "Fiscal Insight - Budget requests reported at around JPY140trn, newly issued bonds at around JPY40trn",
+        "url": "https://go.nomuranow.com/research/japi/publication/1318175?appname=GRPUI",
         "date": "AUG 17, 2026",
         "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
         "analyst": "Masaki Kuwahara",
@@ -249,10 +249,10 @@
         "coverage": "Japan Macro"
       },
       {
-        "title": "Japan: 2026 Q1 second preliminary GDP estimates - We revise economic outlook in light of second set of preliminary GDP estimates",
-        "url": "https://go.nomuranow.com/research/japi/publication/1304496?appname=GRPUI",
-        "date": "JUN 8, 2026",
-        "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, YUNA MINEGISHI",
+        "title": "Japan: FY26–28 economic outlook - We maintain scenario for economic recovery driven by capex",
+        "url": "https://go.nomuranow.com/research/japi/publication/1318200?appname=GRPUI",
+        "date": "",
+        "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, ZHAOQI LIU, YUNA MINEGISHI more...",
         "analyst": "Masaki Kuwahara",
         "coverage": "Japan Macro"
       }
@@ -371,8 +371,16 @@
         "summary": "KYOHEI MORITA, UICHIRO NOZAKI, YUNA MINEGISHI, MARI IWASHITA",
         "analyst": "Uichiro Nozaki",
         "coverage": "Japan Macro / Fiscal"
+      },
+      {
+        "title": "Japan: FY26–28 economic outlook - We maintain scenario for economic recovery driven by capex",
+        "url": "https://go.nomuranow.com/research/japi/publication/1318200?appname=GRPUI",
+        "date": "",
+        "summary": "KYOHEI MORITA, MASAKI KUWAHARA, KENGO TANAHASHI, UICHIRO NOZAKI, YUKI ITO, ZHAOQI LIU, YUNA MINEGISHI more...",
+        "analyst": "Uichiro Nozaki",
+        "coverage": "Japan Macro / Fiscal"
       }
     ]
   },
-  "total": 43
+  "total": 44
 }
