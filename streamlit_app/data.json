@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-09-01",
+  "as_of": "2026-09-02",
   "kpis": [
     {
       "value": "1.00%",
@@ -266,6 +266,11 @@
           "date": "27 Feb 2026",
           "source": "Public Remarks / Speech",
           "comment": "Delivered hawkish remarks, warning that a global recovery and rate hikes could lead to the risk of unintentionally falling behind the curve."
+        },
+        {
+          "date": "2 Sep 2026",
+          "source": "Speech — Meeting with Local Leaders, Sapporo",
+          "comment": "Argued Japan's economy entered a 'regime change' in 2026 amid a global AI-investment-driven rate-hike cycle, calling for the BOJ to hike 'nimbly' without being bound to reach the neutral rate or to any particular pace/interval. Flagged PPI at 7.2% y/y (Jul 2026) and warned of rising risk of second-round inflation effects reminiscent of the 1970s oil shocks; said the Bank should shift from encouraging inflation toward demonstrating its determination to prevent an overshoot. Reaffirmed his July MPM proposal to hike, framing it as a call for a regime change in Bank thinking, not just a response to data."
         }
       ]
     },
@@ -484,6 +489,11 @@
           "date": "27 Feb 2026",
           "source": "Public Remarks / Speech",
           "comment": "Delivered hawkish remarks, warning that a global recovery and rate hikes could lead to the risk of unintentionally falling behind the curve."
+        },
+        {
+          "date": "2 Sep 2026",
+          "source": "Speech — Meeting with Local Leaders, Sapporo",
+          "comment": "Argued Japan's economy entered a 'regime change' in 2026 amid a global AI-investment-driven rate-hike cycle, calling for the BOJ to hike 'nimbly' without being bound to reach the neutral rate or to any particular pace/interval. Flagged PPI at 7.2% y/y (Jul 2026) and warned of rising risk of second-round inflation effects reminiscent of the 1970s oil shocks; said the Bank should shift from encouraging inflation toward demonstrating its determination to prevent an overshoot. Reaffirmed his July MPM proposal to hike, framing it as a call for a regime change in Bank thinking, not just a response to data."
         }
       ]
     },
@@ -765,7 +775,7 @@
       "event": "Speech — TAKATA Hajime (Policy Board, hawk)",
       "type": "Speech",
       "relates": "—",
-      "notes": "Sapporo. Takata, the board's most hawkish voter, dissented in July (proposed 1.25% vs. the 8–1 hold). Key hawkish-tone check ~2 weeks before the Sep MPM. Not yet delivered.",
+      "notes": "Sapporo — delivered. Takata argued Japan's economy entered a 'regime change' in 2026 amid a global AI-investment-driven rate-hike cycle, calling for the Bank to hike 'nimbly' without being bound to reach the neutral rate or to any particular pace/interval. Flagged PPI at 7.2% y/y (Jul 2026) and rising risk of 1970s-style second-round inflation effects; said the Bank should shift from encouraging inflation toward demonstrating it will prevent an overshoot. Reaffirmed his July MPM hike proposal. Consistent with his existing max-hawk score — no tone-scale change.",
       "next": false
     },
     {
