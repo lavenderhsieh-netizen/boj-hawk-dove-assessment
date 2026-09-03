@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-09-02",
+  "as_of": "2026-09-03",
   "kpis": [
     {
       "value": "1.00%",
@@ -11,7 +11,7 @@
     },
     {
       "value": "Sep 17–18",
-      "label": "Next MPM (2026) — decision Sep 18; no Outlook Report this meeting"
+      "label": "Next MPM (2026) — decision Sep 18; markets price ~80-90% odds of a hike after Ueda's Sep 1 G20 remarks; no Outlook Report this meeting"
     },
     {
       "value": "Hawkish",
@@ -236,6 +236,11 @@
           "date": "24 Jun 2026",
           "source": "Speech (post-MPM)",
           "comment": "In a speech, Ueda reiterated that the BOJ sees upside risks to its 2% inflation target and will conduct additional rate hikes \"appropriately,\" reaffirming the bank's tightening bias."
+        },
+        {
+          "date": "1-2 Sep 2026",
+          "source": "Press Conference — G20 Finance Ministers & Central Bank Governors, Asheville, NC",
+          "comment": "Met US Treasury Secretary Bessent Sep 1 on the G20 sidelines — their first face-to-face since his public calls for BOJ tightening; Treasury said Bessent stressed \"sound monetary policy formulation and communication\" to anchor inflation expectations and address yen undervaluation. At his own post-G20 presser, Ueda said the BOJ will \"fully discuss\" a rate increase at every policy meeting, including the Sep 17-18 MPM, focusing on whether inflation and activity are tracking the Bank's baseline scenario and whether upside price risks are heightening. Declined to comment on markets pricing a high probability of a September hike or on daily yen moves."
         }
       ]
     },
@@ -719,6 +724,11 @@
       "date": "Jul 31, 2026",
       "kind": "event",
       "text": "FT: US Treasury's first direct yen support since 2011 — the NY Fed sold euros to buy yen on behalf of the Treasury (via Goldman Sachs and Morgan Stanley), alongside Japan's own yen-buying in New York; the yen closed the week up over 1% against both the dollar and the euro."
+    },
+    {
+      "date": "Sep 1-2, 2026",
+      "kind": "event",
+      "text": "G20 finance meeting, Asheville: Bessent presses Ueda at their first face-to-face meeting since his public tightening calls, urging \"sound monetary policy formulation\" to curb yen weakness. Ueda's own post-G20 press conference: BOJ will \"fully discuss\" a rate hike at every meeting including Sep 17-18. Market pricing for a September hike jumps toward 80-90%+; yen rallies from the ¥160s to the mid-¥150s, its strongest level in about a month."
     }
   ],
   "mpm_calendar": [
@@ -767,7 +777,7 @@
       "event": "G20 Finance Ministers & Central Bank Governors — Bessent/Ueda expected meeting",
       "type": "Meeting",
       "relates": "Sep MPM",
-      "notes": "Asheville, NC. Bessent says he expects to meet Ueda here — their first face-to-face since his public calls for BOJ tightening. Reuters: if it happens, makes a September hike hard to avoid. Not BOJ-confirmed (sources: Reuters, Japan Today, early Aug 2026); BOJ denied an earlier reported meeting on May 13.",
+      "notes": "Asheville, NC. Bessent and Ueda met Sep 1 on the G20 sidelines — their first face-to-face since his public calls for BOJ tightening. Treasury confirmed Sep 2 that Bessent stressed \"sound monetary policy formulation and communication\" to anchor inflation expectations and address yen undervaluation. At his own post-G20 presser, Ueda said the BOJ will \"fully discuss\" a hike at every meeting including Sep 17–18, declining to pre-commit or comment on market pricing. Market odds of a September hike rose to ~80-90%+ afterward; USD/JPY fell from the ¥160s to the mid-¥150s over Sep 1–3.",
       "next": false
     },
     {

@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-09-02T16:06:38Z",
+  "scraped_at": "2026-09-03T16:06:30Z",
   "analysts": [
     "Kyohei Morita",
     "Tomoaki Shishido",
@@ -69,6 +69,22 @@
     ],
     "Tomoaki Shishido": [
       {
+        "title": "Yen RV Analytics - 03 Sep 2026",
+        "url": "https://go.nomuranow.com/research/japi/publication/1318920?appname=GRPUI",
+        "date": "SEP 3, 2026",
+        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
+        "analyst": "Tomoaki Shishido",
+        "coverage": "Japan Rates"
+      },
+      {
+        "title": "Yen Rates Daily Monitor - 03 Sep 2026",
+        "url": "https://go.nomuranow.com/research/japi/publication/1318913?appname=GRPUI",
+        "date": "SEP 3, 2026",
+        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
+        "analyst": "Tomoaki Shishido",
+        "coverage": "Japan Rates"
+      },
+      {
         "title": "Yen RV Analytics - 02 Sep 2026",
         "url": "https://go.nomuranow.com/research/japi/publication/1318752?appname=GRPUI",
         "date": "SEP 2, 2026",
@@ -80,22 +96,6 @@
         "title": "Yen Rates Daily Monitor - 02 Sep 2026",
         "url": "https://go.nomuranow.com/research/japi/publication/1318745?appname=GRPUI",
         "date": "SEP 2, 2026",
-        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
-        "analyst": "Tomoaki Shishido",
-        "coverage": "Japan Rates"
-      },
-      {
-        "title": "Yen RV Analytics - 01 Sep 2026",
-        "url": "https://go.nomuranow.com/research/japi/publication/1318514?appname=GRPUI",
-        "date": "SEP 1, 2026",
-        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
-        "analyst": "Tomoaki Shishido",
-        "coverage": "Japan Rates"
-      },
-      {
-        "title": "Yen Rates Daily Monitor - 01 Sep 2026",
-        "url": "https://go.nomuranow.com/research/japi/publication/1318502?appname=GRPUI",
-        "date": "SEP 1, 2026",
         "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
         "analyst": "Tomoaki Shishido",
         "coverage": "Japan Rates"
@@ -151,6 +151,14 @@
         "coverage": "Japan FX"
       },
       {
+        "title": "JPY Intraday Comment - USD/JPY slips to 156 on BOJ rate hike expectations and GPIF speculation",
+        "url": "https://go.nomuranow.com/research/japi/publication/1318946?appname=GRPUI",
+        "date": "SEP 1, 2026",
+        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
         "title": "JPY Intraday Comment - The BOJ faces increasingly visible external pressure",
         "url": "https://go.nomuranow.com/research/japi/publication/1318761?appname=GRPUI",
         "date": "SEP 1, 2026",
@@ -175,14 +183,6 @@
         "coverage": "Japan FX"
       },
       {
-        "title": "JPY Weekly - One step at a time",
-        "url": "https://go.nomuranow.com/research/japi/publication/1318100?appname=GRPUI",
-        "date": "SEP 1, 2026",
-        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
         "title": "Key focus and themes - USD grinds higher, but watching three key events",
         "url": "https://go.nomuranow.com/research/japi/publication/1318091?appname=GRPUI",
         "date": "AUG 28, 2026",
@@ -201,6 +201,22 @@
     ],
     "Masaki Kuwahara": [
       {
+        "title": "Yen RV Analytics - 03 Sep 2026",
+        "url": "https://go.nomuranow.com/research/japi/publication/1318920?appname=GRPUI",
+        "date": "SEP 3, 2026",
+        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
+        "analyst": "Masaki Kuwahara",
+        "coverage": "Japan Macro"
+      },
+      {
+        "title": "Yen Rates Daily Monitor - 03 Sep 2026",
+        "url": "https://go.nomuranow.com/research/japi/publication/1318913?appname=GRPUI",
+        "date": "SEP 3, 2026",
+        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
+        "analyst": "Masaki Kuwahara",
+        "coverage": "Japan Macro"
+      },
+      {
         "title": "Yen RV Analytics - 02 Sep 2026",
         "url": "https://go.nomuranow.com/research/japi/publication/1318752?appname=GRPUI",
         "date": "SEP 2, 2026",
@@ -212,22 +228,6 @@
         "title": "Yen Rates Daily Monitor - 02 Sep 2026",
         "url": "https://go.nomuranow.com/research/japi/publication/1318745?appname=GRPUI",
         "date": "SEP 2, 2026",
-        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
-        "analyst": "Masaki Kuwahara",
-        "coverage": "Japan Macro"
-      },
-      {
-        "title": "Yen RV Analytics - 01 Sep 2026",
-        "url": "https://go.nomuranow.com/research/japi/publication/1318514?appname=GRPUI",
-        "date": "SEP 1, 2026",
-        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
-        "analyst": "Masaki Kuwahara",
-        "coverage": "Japan Macro"
-      },
-      {
-        "title": "Yen Rates Daily Monitor - 01 Sep 2026",
-        "url": "https://go.nomuranow.com/research/japi/publication/1318502?appname=GRPUI",
-        "date": "SEP 1, 2026",
         "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
         "analyst": "Masaki Kuwahara",
         "coverage": "Japan Macro"
