@@ -479,11 +479,6 @@
           "date": "27 Feb 2026",
           "source": "Public Remarks / Speech",
           "comment": "Delivered hawkish remarks, warning that a global recovery and rate hikes could lead to the risk of unintentionally falling behind the curve."
-        },
-        {
-          "date": "2 Sep 2026",
-          "source": "Speech — Meeting with Local Leaders, Sapporo (\"Economic Activity, Prices, and Monetary Policy in Japan\")",
-          "comment": "Said Japan has entered a new phase requiring flexible, mechanical rate hikes irrespective of a fixed pace or size — not the roughly twice-a-year cadence seen through 2025 — and that hike increments should be drawn from a wider menu of choices, not just 0.25pt steps, depending on how conditions evolve. Declined to rule out consecutive hikes at the Oct/Dec meetings. Cited the Fed and ECB drifting toward cuts as part of the shifting backdrop BOJ needs to respond to."
         }
       ]
     },
@@ -709,11 +704,6 @@
       "date": "Jul 31, 2026",
       "kind": "event",
       "text": "FT: US Treasury's first direct yen support since 2011 — the NY Fed sold euros to buy yen on behalf of the Treasury (via Goldman Sachs and Morgan Stanley), alongside Japan's own yen-buying in New York; the yen closed the week up over 1% against both the dollar and the euro."
-    },
-    {
-      "date": "Sep 2, 2026",
-      "kind": "event",
-      "text": "Takata (Sapporo speech): says BOJ has entered a phase needing flexible, mechanical rate hikes rather than a fixed twice-a-year pace, floats a wider range of hike sizes beyond 0.25pt, and does not rule out back-to-back hikes at the Oct/Dec meetings. Market still expects a hike to a 31-year high at the Sep 17–18 MPM."
     }
   ],
   "mpm_calendar": [
@@ -770,7 +760,7 @@
       "event": "Speech — TAKATA Hajime (Policy Board, hawk)",
       "type": "Speech",
       "relates": "—",
-      "notes": "Delivered: \"Economic Activity, Prices, and Monetary Policy in Japan,\" at a meeting with local leaders in Sapporo. Takata said Japan has entered a new phase needing flexible, mechanical rate hikes rather than the twice-a-year pace of 2025 and earlier, and that hike sizes should be drawn from a wider menu of options beyond 0.25pt depending on conditions; he declined to rule out consecutive hikes at the Oct/Dec meetings, and pointed to the Fed/ECB drifting toward cuts as part of the backdrop BOJ must respond to. Reinforces his lone-dissenter hawkish stance from the Jul 30–31 MPM (proposed 1.25%, defeated 8–1).",
+      "notes": "\"Economic Activity, Prices, and Monetary Policy in Japan\" at a meeting with local leaders in Sapporo. Takata is the board's most hawkish voter — dissented at the Jul 30–31 MPM proposing a hike to 1.25% (vs. the 8–1 hold at 1.00%); this speech lands ~2 weeks before the Sep 17–18 MPM and is a key hawkish-tone check. Scheduled per BOJ's official upcoming-speeches page as of Aug 5, 2026 — not yet delivered.",
       "next": false
     },
     {
