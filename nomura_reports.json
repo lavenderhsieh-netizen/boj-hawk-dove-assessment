@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-09-04T16:07:34Z",
+  "scraped_at": "2026-09-05T16:07:26Z",
   "analysts": [
     "Kyohei Morita",
     "Tomoaki Shishido",
@@ -129,7 +129,47 @@
       {
         "title": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.\n\nOur analysts >",
         "url": "http://go.nomuranow.com/research/japi/publication/960445?appname=GRPUI",
-        "date": "SEP 1, 2026",
+        "date": "SEP 4, 2026",
+        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
+        "title": "Key focus and themes - US CPI and our trades",
+        "url": "https://go.nomuranow.com/research/japi/publication/1319138?appname=GRPUI",
+        "date": "SEP 4, 2026",
+        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, ALBERT LEUNG more...",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
+        "title": "JPY Weekly - Fundamentals largely matter",
+        "url": "https://go.nomuranow.com/research/japi/publication/1319149?appname=GRPUI",
+        "date": "SEP 4, 2026",
+        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
+        "title": "JPY Intraday Comment - USD/JPY slips to 156 on BOJ rate hike expectations and GPIF speculation",
+        "url": "https://go.nomuranow.com/research/japi/publication/1318946?appname=GRPUI",
+        "date": "SEP 4, 2026",
+        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
+        "title": "JPY Intraday Comment - The BOJ faces increasingly visible external pressure",
+        "url": "https://go.nomuranow.com/research/japi/publication/1318761?appname=GRPUI",
+        "date": "SEP 4, 2026",
+        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
+        "title": "JPY Intraday Comment - More pressure from Bessent",
+        "url": "https://go.nomuranow.com/research/japi/publication/1318558?appname=GRPUI",
+        "date": "SEP 4, 2026",
         "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
         "analyst": "Yujiro Goto",
         "coverage": "Japan FX"
@@ -143,49 +183,9 @@
         "coverage": "Japan FX"
       },
       {
-        "title": "JPY Intraday Comment - USD/JPY slips to 156 on BOJ rate hike expectations and GPIF speculation",
-        "url": "https://go.nomuranow.com/research/japi/publication/1318946?appname=GRPUI",
-        "date": "SEP 1, 2026",
-        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
-        "title": "JPY Intraday Comment - The BOJ faces increasingly visible external pressure",
-        "url": "https://go.nomuranow.com/research/japi/publication/1318761?appname=GRPUI",
-        "date": "SEP 1, 2026",
-        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
-        "title": "JPY Intraday Comment - More pressure from Bessent",
-        "url": "https://go.nomuranow.com/research/japi/publication/1318558?appname=GRPUI",
-        "date": "SEP 1, 2026",
-        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
-        "title": "JPY Intraday Comment - Bessent backs BOJ action, with the government’s support, to strengthen JPY",
-        "url": "https://go.nomuranow.com/research/japi/publication/1318248?appname=GRPUI",
-        "date": "SEP 1, 2026",
-        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
         "title": "Key focus and themes - USD grinds higher, but watching three key events",
         "url": "https://go.nomuranow.com/research/japi/publication/1318091?appname=GRPUI",
         "date": "AUG 28, 2026",
-        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, ALBERT LEUNG more...",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
-        "title": "Key focus and themes - US CPI and our trades",
-        "url": "https://go.nomuranow.com/research/japi/publication/1319138?appname=GRPUI",
-        "date": "",
         "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, ALBERT LEUNG more...",
         "analyst": "Yujiro Goto",
         "coverage": "Japan FX"
