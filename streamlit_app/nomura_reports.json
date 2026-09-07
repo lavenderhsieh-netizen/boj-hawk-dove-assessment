@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-09-06T16:06:48Z",
+  "scraped_at": "2026-09-07T16:06:59Z",
   "analysts": [
     "Kyohei Morita",
     "Tomoaki Shishido",
@@ -35,8 +35,8 @@
         "coverage": "Japan Macro / BOJ"
       },
       {
-        "title": "Japan: Forecasts for 2026 Q2 second preliminary GDP estimates - We forecast real GDP growth estimate of +1.0% q-q annualized, nearly unchanged from fi",
-        "url": "https://go.nomuranow.com/research/japi/publication/1318482?appname=GRPUI",
+        "title": "Japan Economic Weekly - Investment in \"strong and prosperous Japan\" set to be ¥12trn",
+        "url": "https://go.nomuranow.com/research/japi/publication/1319226?appname=GRPUI",
         "date": "AUG 31, 2026",
         "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
         "analyst": "Kyohei Morita",
@@ -61,6 +61,22 @@
     ],
     "Tomoaki Shishido": [
       {
+        "title": "Yen RV Analytics - 07 Sep 2026",
+        "url": "https://go.nomuranow.com/research/japi/publication/1319271?appname=GRPUI",
+        "date": "SEP 7, 2026",
+        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
+        "analyst": "Tomoaki Shishido",
+        "coverage": "Japan Rates"
+      },
+      {
+        "title": "Yen Rates Daily Monitor - 07 Sep 2026",
+        "url": "https://go.nomuranow.com/research/japi/publication/1319263?appname=GRPUI",
+        "date": "SEP 7, 2026",
+        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
+        "analyst": "Tomoaki Shishido",
+        "coverage": "Japan Rates"
+      },
+      {
         "title": "Yen RV Analytics - 04 Sep 2026",
         "url": "https://go.nomuranow.com/research/japi/publication/1319088?appname=GRPUI",
         "date": "SEP 4, 2026",
@@ -72,22 +88,6 @@
         "title": "Yen Rates Daily Monitor - 04 Sep 2026",
         "url": "https://go.nomuranow.com/research/japi/publication/1319075?appname=GRPUI",
         "date": "SEP 4, 2026",
-        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
-        "analyst": "Tomoaki Shishido",
-        "coverage": "Japan Rates"
-      },
-      {
-        "title": "Yen RV Analytics - 03 Sep 2026",
-        "url": "https://go.nomuranow.com/research/japi/publication/1318920?appname=GRPUI",
-        "date": "SEP 3, 2026",
-        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
-        "analyst": "Tomoaki Shishido",
-        "coverage": "Japan Rates"
-      },
-      {
-        "title": "Yen Rates Daily Monitor - 03 Sep 2026",
-        "url": "https://go.nomuranow.com/research/japi/publication/1318913?appname=GRPUI",
-        "date": "SEP 3, 2026",
         "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
         "analyst": "Tomoaki Shishido",
         "coverage": "Japan Rates"
@@ -143,6 +143,14 @@
         "coverage": "Japan FX"
       },
       {
+        "title": "JPY Intraday Comment - Yen strengthens sharply again",
+        "url": "https://go.nomuranow.com/research/japi/publication/1319301?appname=GRPUI",
+        "date": "SEP 4, 2026",
+        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
         "title": "JPY Weekly - Fundamentals largely matter",
         "url": "https://go.nomuranow.com/research/japi/publication/1319149?appname=GRPUI",
         "date": "SEP 4, 2026",
@@ -167,14 +175,6 @@
         "coverage": "Japan FX"
       },
       {
-        "title": "JPY Intraday Comment - More pressure from Bessent",
-        "url": "https://go.nomuranow.com/research/japi/publication/1318558?appname=GRPUI",
-        "date": "SEP 4, 2026",
-        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
         "title": "Currency Horizons - Our medium-term FX views",
         "url": "https://go.nomuranow.com/research/japi/publication/1318595?appname=GRPUI",
         "date": "SEP 1, 2026",
@@ -193,25 +193,17 @@
     ],
     "Masaki Kuwahara": [
       {
-        "title": "Yen RV Analytics - 04 Sep 2026",
-        "url": "https://go.nomuranow.com/research/japi/publication/1319088?appname=GRPUI",
-        "date": "SEP 4, 2026",
+        "title": "Yen RV Analytics - 07 Sep 2026",
+        "url": "https://go.nomuranow.com/research/japi/publication/1319271?appname=GRPUI",
+        "date": "SEP 7, 2026",
         "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
         "analyst": "Masaki Kuwahara",
         "coverage": "Japan Macro"
       },
       {
-        "title": "Yen Rates Daily Monitor - 04 Sep 2026",
-        "url": "https://go.nomuranow.com/research/japi/publication/1319075?appname=GRPUI",
-        "date": "SEP 4, 2026",
-        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
-        "analyst": "Masaki Kuwahara",
-        "coverage": "Japan Macro"
-      },
-      {
-        "title": "Yen RV Analytics - 03 Sep 2026",
-        "url": "https://go.nomuranow.com/research/japi/publication/1318920?appname=GRPUI",
-        "date": "SEP 3, 2026",
+        "title": "Yen Rates Daily Monitor - 07 Sep 2026",
+        "url": "https://go.nomuranow.com/research/japi/publication/1319263?appname=GRPUI",
+        "date": "SEP 7, 2026",
         "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
         "analyst": "Masaki Kuwahara",
         "coverage": "Japan Macro"
@@ -233,8 +225,16 @@
         "coverage": "Japan Macro"
       },
       {
-        "title": "Fiscal Insight - Government is leaning towards not compiling a second supplementary budget in Autumn",
-        "url": "https://go.nomuranow.com/research/japi/publication/1319007?appname=GRPUI",
+        "title": "Japan Rates Insights - JGB Free-Float Simulation (September 2026)",
+        "url": "https://go.nomuranow.com/research/japi/publication/1319227?appname=GRPUI",
+        "date": "AUG 31, 2026",
+        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
+        "analyst": "Masaki Kuwahara",
+        "coverage": "Japan Macro"
+      },
+      {
+        "title": "Japan Economic Weekly - Investment in \"strong and prosperous Japan\" set to be ¥12trn",
+        "url": "https://go.nomuranow.com/research/japi/publication/1319226?appname=GRPUI",
         "date": "AUG 31, 2026",
         "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
         "analyst": "Masaki Kuwahara",
@@ -341,6 +341,14 @@
         "coverage": "Japan Macro / Fiscal"
       },
       {
+        "title": "Japan Economic Weekly - Investment in \"strong and prosperous Japan\" set to be ¥12trn",
+        "url": "https://go.nomuranow.com/research/japi/publication/1319226?appname=GRPUI",
+        "date": "AUG 31, 2026",
+        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
+        "analyst": "Uichiro Nozaki",
+        "coverage": "Japan Macro / Fiscal"
+      },
+      {
         "title": "Japan: Forecasts for 2026 Q2 second preliminary GDP estimates - We forecast real GDP growth estimate of +1.0% q-q annualized, nearly unchanged from fi",
         "url": "https://go.nomuranow.com/research/japi/publication/1318482?appname=GRPUI",
         "date": "AUG 31, 2026",
@@ -359,14 +367,6 @@
       {
         "title": "Japan: August 2026 Tokyo CPI - Acceleration in core CPI inflation, even when taking into account measures to curb electricity and gas charges",
         "url": "https://go.nomuranow.com/research/japi/publication/1317980?appname=GRPUI",
-        "date": "AUG 31, 2026",
-        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
-        "analyst": "Uichiro Nozaki",
-        "coverage": "Japan Macro / Fiscal"
-      },
-      {
-        "title": "Japan: Speech by BOJ Deputy Governor Ryozo Himino - No obvious groundwork-laying for a rate hike, but we still expect a hike at the September MPM",
-        "url": "https://go.nomuranow.com/research/japi/publication/1317802?appname=GRPUI",
         "date": "AUG 31, 2026",
         "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
         "analyst": "Uichiro Nozaki",
