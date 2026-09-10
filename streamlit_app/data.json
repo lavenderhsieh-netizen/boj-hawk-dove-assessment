@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-09-09",
+  "as_of": "2026-09-10",
   "kpis": [
     {
       "value": "1.00%",
@@ -11,7 +11,7 @@
     },
     {
       "value": "Sep 17–18",
-      "label": "Next MPM (2026) — decision Sep 18; markets price ~80-90% odds of a hike after Ueda's Sep 1 G20 remarks; no Outlook Report this meeting"
+      "label": "Next MPM (2026) — decision Sep 18; markets price ~90-97% odds of a hike (swaps) after Ueda's Sep 1 G20 remarks and Masu's Sep 10 hawkish speech; no Outlook Report this meeting"
     },
     {
       "value": "Hawkish",
@@ -122,7 +122,7 @@
         0.5,
         0.5,
         0.5,
-        0.5
+        1.5
       ]
     },
     {
@@ -173,16 +173,16 @@
       "score": 1.5
     },
     {
+      "name": "Masu",
+      "score": 1.5
+    },
+    {
       "name": "Himino",
       "score": 1.25
     },
     {
       "name": "Ueda",
       "score": 1
-    },
-    {
-      "name": "Masu",
-      "score": 0.5
     },
     {
       "name": "Uchida",
@@ -352,10 +352,10 @@
     {
       "name": "MASU Kazuyuki",
       "role": "Board Member (from Jul 2025)",
-      "tag": "Cautious normalizer",
-      "lean": "neutral",
-      "shift": "Supports normalization, stresses caution (≈ +0.5); replaced dove Nakamura",
-      "quote": "\"I am convinced that continuing with further policy interest rate hikes will be needed to complete the normalization\"... but the Bank will \"proceed cautiously.\" — Ehime, Feb 6, 2026.",
+      "tag": "Escalating hawk",
+      "lean": "hawk",
+      "shift": "Cautious normalizer → warns of forced rapid hikes (≈ +0.5 → +1.5); replaced dove Nakamura",
+      "quote": "\"Financial conditions in Japan remain accommodative. If inflation accelerates here, there is a risk we might inevitably need to rapidly raise interest rates.\" — Fukui, Sep 10, 2026.",
       "remarks": [
         {
           "date": "6 Feb 2026",
@@ -366,6 +366,11 @@
           "date": "14 May 2026",
           "source": "Speech — Business Conference, Kagoshima",
           "comment": "If statistical data do not indicate clear signs of an economic downturn, it is desirable to raise the policy rate at the earliest stage possible. Further rate hikes are needed to complete policy normalization."
+        },
+        {
+          "date": "10 Sep 2026",
+          "source": "Speech — Meeting with Local Leaders, Fukui",
+          "comment": "Notably more hawkish than his earlier \"cautious\" framing: said the BOJ \"will continue to raise the policy interest rate,\" with underlying inflation \"very close\" to 2%. Warned financial conditions remain accommodative and that if inflation accelerates, the Bank \"might inevitably need to rapidly raise interest rates\" — an explicit rapid-hike warning, not just gradual normalization. Said negative real rates should be addressed \"as soon as possible\" and put the BOJ's estimated neutral-rate range at 1.1%-2.5%, arguing the policy rate needs to move solidly within that range for flexibility in either direction. Rejected a fixed ~6-month hike cadence, saying every decision reflects prevailing conditions. Flagged a recent PPI spike, Iran-war-driven fuel/chemical costs, weak-yen pass-through and AI-related demand as broadening inflation risks. Delivered a week ahead of the Sep 17-18 MPM; swaps market priced ~90-97% odds of a hike following the speech (Reuters, Bloomberg)."
         }
       ]
     },
@@ -526,7 +531,7 @@
       "dissents": "0",
       "kind": "none",
       "record": "Voted with the majority since joining.",
-      "lean": "Neutral",
+      "lean": "Escalating hawk",
       "active": true,
       "remarks": [
         {
@@ -538,6 +543,11 @@
           "date": "14 May 2026",
           "source": "Speech — Business Conference, Kagoshima",
           "comment": "If statistical data do not indicate clear signs of an economic downturn, it is desirable to raise the policy rate at the earliest stage possible. Further rate hikes are needed to complete policy normalization."
+        },
+        {
+          "date": "10 Sep 2026",
+          "source": "Speech — Meeting with Local Leaders, Fukui",
+          "comment": "Notably more hawkish than his earlier \"cautious\" framing: said the BOJ \"will continue to raise the policy interest rate,\" with underlying inflation \"very close\" to 2%. Warned that if inflation accelerates, the Bank \"might inevitably need to rapidly raise interest rates.\" Said negative real rates should be addressed \"as soon as possible\"; put the BOJ's neutral-rate range at 1.1%-2.5%. Rejected a fixed ~6-month hike cadence. Delivered a week ahead of the Sep 17-18 MPM; swaps priced ~90-97% odds of a hike following the speech."
         }
       ]
     },
@@ -793,7 +803,7 @@
       "event": "Speech — MASU Kazuyuki (Policy Board)",
       "type": "Speech",
       "relates": "—",
-      "notes": "Fukui. Last scheduled board speech before the Sep 17–18 MPM, ~1 week ahead. Not yet delivered.",
+      "notes": "Fukui — delivered. Notably more hawkish than his earlier \"cautious\" tone: said the BOJ will continue raising rates and warned it \"might inevitably need to rapidly raise interest rates\" if inflation accelerates; urged addressing negative real rates \"as soon as possible\"; put the neutral-rate range at 1.1%-2.5%; rejected a fixed ~6-month hike cadence. Last scheduled board speech before the Sep 17-18 MPM; swaps priced ~90-97% odds of a hike afterward.",
       "next": false
     },
     {
