@@ -123,38 +123,29 @@ EPISODES = [
          direction="sell", coordinated=False, total=-114.1, japan=-114.1, nonjapan=0.0, confirmed=True),
     dict(start="2022-09-22", end="2022-10-24", context="First yen buying since 1998",
          direction="buy", coordinated=False, total=62.9, japan=62.9, nonjapan=0.0, confirmed=True,
-         note="Corrected 2026-08-04: was $69.9bn (stale figure from original chart digitization); "
-              "sum of the three MOF-confirmed daily ops (¥2.84tn+5.62tn+0.73tn=¥9.19tn) is $62.9bn, "
-              "matching external estimates ($60.8-65.2bn range, Reuters/Nippon.com)."),
+         note="Revised from an earlier $69.9bn estimate; sum of the three MOF-confirmed daily ops "
+              "(¥9.19tn) is $62.9bn."),
     dict(start="2024-04-29", end="2024-05-01", context="Golden Week yen support",
          direction="buy", coordinated=False, total=62.2, japan=62.2, nonjapan=0.0, confirmed=True,
-         note="Corrected 2026-08-04: was $64.6bn; MOF officially confirmed ¥9.79tn = $62.23bn "
-              "(Reuters, 31 May 2024), matching the sum of the two daily ops."),
+         note="MOF officially confirmed ¥9.79tn = $62.23bn, matching the sum of the two daily ops."),
     dict(start="2024-07-11", end="2024-07-12", context="Yen support",
          direction="buy", coordinated=False, total=36.5, japan=36.5, nonjapan=0.0, confirmed=True),
     dict(start="2026-01-23", end="2026-01-23", context="Suspected BOJ + NY Fed rate check — no actual FX spend",
          direction="buy", coordinated=True, total=0.0, japan=0.0, nonjapan=0.0, confirmed=True,
-         note="Officials asked banks about USD/JPY levels after the pair hit ~159.2 — a preparatory step, not "
-              "an actual operation. Desk research (Mizuho FI, financial wires) confirms $0 actual spend vs. an "
-              "estimated ~¥370bn if executed."),
+         note="Officials asked banks about USD/JPY levels after the pair hit ~159.2 — a preparatory step, "
+              "not an actual operation; $0 actual spend vs. an estimated ~¥370bn if executed."),
     dict(start="2026-04-28", end="2026-05-27", context="Golden Week 2026 yen support — record single-round intervention",
          direction="buy", coordinated=False, total=73.0, japan=73.0, nonjapan=0.0, confirmed=True,
-         note="MOF-confirmed ¥11.7tn / $73bn (Nikkei Asia, 29 May 2026) — supersedes pre-confirmation "
-              "chart estimate of $77.5bn."),
+         note="MOF-confirmed ¥11.7tn / $73bn — supersedes an earlier pre-confirmation estimate of $77.5bn."),
     dict(start="2026-07-30", end="2026-07-31", context="Joint US-Japan FX intervention to strengthen JPY — "
                                                           "first joint yen-buying intervention since 1998 "
                                                           "(first joint intervention of any kind since 2011)",
          direction="buy", coordinated=True, total=98.47, japan=90.97, nonjapan=7.5, confirmed="event",
-         note="Event officially confirmed by Japan MOF and US Treasury Sec. Bessent on 3 Aug 2026 (Reuters, "
-              "Nikkei, Business Times, Nippon.com). Japan-side figure is two separate daily market estimates "
-              "summed: ~$58.97bn on 30 Jul (BOJ current-account residuals, Reuters) + ~$32bn on 31 Jul "
-              "(separate ¥5tn residual reported by TBS/JNN, 3 Aug 2026, tied to the confirmed joint leg). "
-              "Exact MOF-confirmed size (incl. US Treasury's own leg) is pending the next quarterly MOF "
-              "disclosure — all $ figures here are market estimates, not yet official. The US Treasury leg "
-              "was reportedly funded by selling EUR rather than USD (FT; independently corroborated by a "
-              "desk US Treasury FX intervention table, sourced MRS/Congressional Research Service, which "
-              "lists Jul-2026 as \"Bought JPY / Sold EUR\") — implying ECB coordination, though the exact "
-              "US-side dollar size remains unconfirmed (\"?\" in that same source)."),
+         note="Officially confirmed by Japan MOF and US Treasury Sec. Bessent on 3 Aug 2026. Japan-side "
+              "figure sums two daily market estimates: ~$58.97bn (30 Jul) + ~$32bn (31 Jul); exact "
+              "MOF-confirmed size (incl. the US Treasury leg) is pending the next quarterly disclosure. "
+              "The US Treasury leg was reportedly funded by selling EUR rather than USD, implying ECB "
+              "coordination — exact US-side dollar size still unconfirmed."),
 ]
 
 # ── Recent-cycle individual operation days, 2022-2026 ────────────────────────
@@ -171,33 +162,29 @@ RECENT_OPS = [
     dict(date="2024-07-12", jpy_tn=2.37, usd_bn=15.0, official=True),
     dict(date="2026-01-23", jpy_tn=0.0, usd_bn=0.0, official=False,
          label="Rate check ($0 spend)",
-         note="Suspected BOJ + NY Fed rate check (USD-selling) after USD/JPY hit ~159.2; "
-              "no actual FX spend — desk research (Mizuho FI, financial wires) confirms $0 actual "
-              "vs. an estimated ~¥370bn if executed. Included for completeness, not a real operation."),
+         note="Suspected BOJ + NY Fed rate check after USD/JPY hit ~159.2; no actual FX spend "
+              "(vs. an estimated ~¥370bn if executed). Included for completeness, not a real operation."),
     dict(date="2026-04-30", jpy_tn=6.2787, usd_bn=40.1, official=True,
-         label="MOF-confirmed", note="Official day-by-day breakdown released 7 Aug 2026 (Apr-Jun 2026 quarter); "
-                                  "USD figure is a derived conversion at that day's FX close (¥156.66), not "
-                                  "MOF-published. Within the ¥11.7349tn/$73bn Apr28-May27 round."),
+         label="MOF-confirmed", note="Part of the ¥11.7349tn/$73bn Apr 28–May 27 round; USD figure derived "
+                                  "at that day's FX close (¥156.66)."),
     dict(date="2026-05-04", jpy_tn=0.7802, usd_bn=5.0, official=True,
-         label="MOF-confirmed", note="Official day-by-day breakdown released 7 Aug 2026 (Apr-Jun 2026 quarter); "
-                                  "previously not broken out as a separate operation day. USD figure is a "
-                                  "derived conversion at that day's FX close (¥157.21). Within the ¥11.7349tn/"
-                                  "$73bn Apr28-May27 round."),
+         label="MOF-confirmed", note="Part of the ¥11.7349tn/$73bn Apr 28–May 27 round; USD figure derived "
+                                  "at that day's FX close (¥157.21)."),
     dict(date="2026-05-06", jpy_tn=4.6759, usd_bn=29.9, official=True,
-         label="MOF-confirmed", note="Official day-by-day breakdown released 7 Aug 2026 (Apr-Jun 2026 quarter); "
-                                  "USD figure is a derived conversion at that day's FX close (¥156.44). Within "
-                                  "the ¥11.7349tn/$73bn Apr28-May27 round."),
+         label="MOF-confirmed", note="Part of the ¥11.7349tn/$73bn Apr 28–May 27 round; USD figure derived "
+                                  "at that day's FX close (¥156.44)."),
     dict(date="2026-07-30", jpy_tn=8.45, usd_bn=58.97, official=False,
-         label="Market est. (Thu)", note="Solo Japan operation ahead of the BOJ meeting; exact size pending "
-                                    "MOF's official disclosure. Derived from BOJ current-account residuals "
-                                    "vs. money-broker forecasts (Reuters, 31 Jul 2026)."),
+         label="Market est. (Thu)", note="Solo Japan operation ahead of the BOJ meeting; market estimate "
+                                    "from BOJ current-account residuals, exact size pending MOF disclosure."),
     dict(date="2026-07-31", jpy_tn=5.0, usd_bn=32.0, official=False,
-         label="Market est. (Fri, joint)", note="Second, separate day of intervention — the confirmed joint "
-                                    "US-Japan leg (NY trading Fri, first since 1998). Sized from a distinct "
-                                    "~¥5tn BOJ current-account residual for this settlement date (TBS/JNN, "
-                                    "3 Aug 2026); $ conversion approximate (~¥156-160 range that day). "
-                                    "Separately, the US Treasury's own leg is estimated at $5-10bn (Bessent's "
-                                    "handwritten note, Reuters photo)."),
+         label="Market est. (Fri, joint)", note="Confirmed joint US-Japan leg (NY trading Fri) — first joint "
+                                    "intervention since 1998. US Treasury's own leg estimated separately "
+                                    "at $5-10bn."),
+    dict(date="2026-07-30 (round total)", jpy_tn=15.3, usd_bn=94.6, official=True,
+         label="MOF-confirmed (round total)", is_total_row=True,
+         note="Official MOF-confirmed total for the 30 Jul 2026-onward round — a running total, day-by-day "
+              "breakdown still pending. USD figure derived at the blended 30-31 Jul FX close (~¥161.7). "
+              "Supersedes the two estimate rows above for total sizing; those are kept for day-level detail."),
 ]
 
 SOURCES = [
@@ -379,7 +366,8 @@ def build_episode_snapshots(recent_hist, recent_ops, gap_days=14, lead_days=5, t
     by_date = {p["date"]: p["value"] for p in recent_hist}
     dates_sorted = sorted(by_date)
 
-    real_ops = [o for o in recent_ops if o.get("jpy_tn", 0) or o.get("usd_bn", 0)]
+    real_ops = [o for o in recent_ops
+                if (o.get("jpy_tn", 0) or o.get("usd_bn", 0)) and not o.get("is_total_row")]
     groups = []
     for op in sorted(real_ops, key=lambda o: o["date"]):
         if groups and (datetime.strptime(op["date"], "%Y-%m-%d")
