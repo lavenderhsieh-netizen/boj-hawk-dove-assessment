@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-09-12T02:05:12Z",
+  "scraped_at": "2026-09-12T16:06:07Z",
   "analysts": [
     "Kyohei Morita",
     "Tomoaki Shishido",
@@ -121,7 +121,47 @@
       {
         "title": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.\n\nOur analysts >",
         "url": "http://go.nomuranow.com/research/japi/publication/960445?appname=GRPUI",
-        "date": "SEP 8, 2026",
+        "date": "SEP 11, 2026",
+        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
+        "title": "Key focus and themes - Stronger US CPI and our strategies",
+        "url": "https://go.nomuranow.com/research/japi/publication/1320031?appname=GRPUI",
+        "date": "SEP 11, 2026",
+        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, ALBERT LEUNG more...",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
+        "title": "JPY Weekly - The yen’s next move: More appreciation or a pause?",
+        "url": "https://go.nomuranow.com/research/japi/publication/1319965?appname=GRPUI",
+        "date": "SEP 11, 2026",
+        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
+        "title": "FX Insights - JPY latest positioning and flows",
+        "url": "https://go.nomuranow.com/research/japi/publication/1319826?appname=GRPUI",
+        "date": "SEP 11, 2026",
+        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
+        "title": "JPY Intraday Comment - BOJ’s Masu gives no indication of an acceleration in the pace of rate hikes",
+        "url": "https://go.nomuranow.com/research/japi/publication/1319803?appname=GRPUI",
+        "date": "SEP 11, 2026",
+        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
+        "analyst": "Yujiro Goto",
+        "coverage": "Japan FX"
+      },
+      {
+        "title": "Nomura Client Survey - Almost all respondents expect a September rate hike",
+        "url": "https://go.nomuranow.com/research/japi/publication/1319770?appname=GRPUI",
+        "date": "SEP 11, 2026",
         "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
         "analyst": "Yujiro Goto",
         "coverage": "Japan FX"
@@ -135,49 +175,9 @@
         "coverage": "Japan FX"
       },
       {
-        "title": "JPY Weekly - The yen’s next move: More appreciation or a pause?",
-        "url": "https://go.nomuranow.com/research/japi/publication/1319965?appname=GRPUI",
-        "date": "SEP 8, 2026",
-        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
-        "title": "FX Insights - JPY latest positioning and flows",
-        "url": "https://go.nomuranow.com/research/japi/publication/1319826?appname=GRPUI",
-        "date": "SEP 8, 2026",
-        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
-        "title": "JPY Intraday Comment - BOJ’s Masu gives no indication of an acceleration in the pace of rate hikes",
-        "url": "https://go.nomuranow.com/research/japi/publication/1319803?appname=GRPUI",
-        "date": "SEP 8, 2026",
-        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
-        "title": "Nomura Client Survey - Almost all respondents expect a September rate hike",
-        "url": "https://go.nomuranow.com/research/japi/publication/1319770?appname=GRPUI",
-        "date": "SEP 8, 2026",
-        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
         "title": "Key focus and themes - US CPI and our trades",
         "url": "https://go.nomuranow.com/research/japi/publication/1319138?appname=GRPUI",
         "date": "SEP 4, 2026",
-        "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, ALBERT LEUNG more...",
-        "analyst": "Yujiro Goto",
-        "coverage": "Japan FX"
-      },
-      {
-        "title": "Key focus and themes - Stronger US CPI and our strategies",
-        "url": "https://go.nomuranow.com/research/japi/publication/1320031?appname=GRPUI",
-        "date": "",
         "summary": "CRAIG CHAN, YUJIRO GOTO, DOMINIC BUNNING, WEE CHOON TEO, YUSUKE MIYAIRI, CFA, VICKY CHEN, ALBERT LEUNG more...",
         "analyst": "Yujiro Goto",
         "coverage": "Japan FX"
