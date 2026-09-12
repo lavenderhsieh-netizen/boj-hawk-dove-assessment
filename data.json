@@ -270,7 +270,7 @@
         {
           "date": "2 Sep 2026",
           "source": "Speech + press conference, Sapporo",
-          "comment": "Said the BOJ must respond \"flexibly, without being bound by fixed intervals or magnitudes\" of rate hikes, calling 2026 a turning point requiring nimble, data-driven policy rather than a fixed semiannual pace; explicitly left the door open to consecutive hikes. Cited expanding global AI-investment spending and Middle East tensions as upside price risks that could push central banks worldwide toward earlier tightening."
+          "comment": "Assessed that \"the price stability target has almost been achieved\" and the old deflationary norm has been dispelled, with medium/long-term inflation expectations near 2%. Declared 2026 \"a new phase in which rate hikes will not be carried out at a fixed pace but will instead be conducted in a nimble manner\" — a break from the market's assumed semiannual cadence through 2028. Revealed he proposed a hike to 1.25% at the July MPM. On the neutral rate: Japan's policy rate \"has yet to reach the neutral zone\" (unlike the US/Europe), and the true neutral rate \"could exceed market expectations\" — repeated his \"rainbow\" analogy (visible from afar, vanishes as you approach). Cited PPI +7.2% y/y and warned Japan's usual buffers against 1970s-style second-round oil-shock effects (wage restraint, pass-through restraint) are now weaker than in the past. Framed global AI investment as a structural driver of a 2026 synchronized growth/rate-hike cycle across major central banks."
         }
       ]
     },
@@ -310,7 +310,7 @@
         {
           "date": "27 Aug 2026",
           "source": "Speech + press conference, Saitama",
-          "comment": "Said the BOJ should pay greater attention to upside price risks than in the past, with underlying inflation approaching 2%; in-depth deliberations on this should be held at every policy meeting. Cited weaker yen, higher oil prices and rising chip costs as inflation risks. Kept the door open to a September hike but avoided an explicit signal on timing or pace."
+          "comment": "Framed the outlook around \"four key factors\": Middle East/oil (down on growth, up on prices), AI-driven demand (up on both), yen depreciation (mixed on growth, up on prices), and still-accommodative financial conditions (up on both). Said Japan is \"entering a phase where we will also need to bear in mind the possibility of underlying inflation exceeding 2 percent,\" with headline CPI expected to move back above 2% in H2 FY2026 as oil/rice effects fade and AI-driven chip and petrochemical cost pass-through builds. Labor market called the tightest \"since the 1980s' bubble economy era.\" No explicit September signal — timing/pace to be judged by weighing baseline likelihood against risks, paying \"greater attention to the upside risk to prices than in the past.\""
         }
       ]
     },
@@ -365,7 +365,7 @@
         {
           "date": "10 Sep 2026",
           "source": "Speech + press conference, Fukui",
-          "comment": "Said underlying inflation is \"very close\" to 2% and the Bank will continue raising the policy rate to keep it from significantly exceeding that level; warned accommodative financial conditions mean the BOJ \"might inevitably need to rapidly raise interest rates\" if inflation accelerates, citing a Middle East-driven producer-price spike and yen weakness, and said negative real rates should be addressed as soon as possible. On a specific 50bp hike, said the Bank should proceed cautiously."
+          "comment": "Said underlying inflation (ex-fresh-food, ex-temporary factors) \"remains below 2 percent, [but] is very close to\" target, while headline CPI is temporarily declining on rice-price normalization and government subsidies/tax measures. Gave the most quantitative neutral-rate figure of the three: BOJ's March-2026 natural-rate estimate of -0.9% to +0.5% real implies a nominal neutral range of roughly 1.1%-2.5% — with the policy rate at 1.0%, just below it — and said the Bank \"needs to raise the policy interest rate further, so that it falls solidly within the estimated range of the neutral interest rate.\" Warned that if inflation accelerates there is a risk the Bank \"might inevitably need to implement a rapid policy interest rate hike,\" but avoided Takata's explicit fixed-vs-nimble framing or any specific proposed number. Most granular of the three on Middle East oil mechanics: ~70% of Japan's crude imports passed through the Strait of Hormuz at peak tension; with plastics far more pervasive today, called the potential impact of a crude shortage \"more serious than it was during the oil shocks in the 1970s,\" though supply has held via reserve releases and alternative sourcing."
         }
       ]
     },
@@ -449,7 +449,7 @@
         {
           "date": "27 Aug 2026",
           "source": "Speech + press conference, Saitama",
-          "comment": "Said the BOJ should pay greater attention to upside price risks than in the past; in-depth deliberations on this should be held at every policy meeting. Kept the door open to a September hike but gave no explicit signal on timing or pace."
+          "comment": "Framed the outlook around \"four key factors\": Middle East/oil (down on growth, up on prices), AI-driven demand (up on both), yen depreciation (mixed on growth, up on prices), and still-accommodative financial conditions (up on both). Said Japan is \"entering a phase where we will also need to bear in mind the possibility of underlying inflation exceeding 2 percent,\" with headline CPI expected to move back above 2% in H2 FY2026 as oil/rice effects fade and AI-driven chip and petrochemical cost pass-through builds. Labor market called the tightest \"since the 1980s' bubble economy era.\" No explicit September signal — timing/pace to be judged by weighing baseline likelihood against risks, paying \"greater attention to the upside risk to prices than in the past.\""
         }
       ]
     },
@@ -505,7 +505,7 @@
         {
           "date": "2 Sep 2026",
           "source": "Speech + press conference, Sapporo",
-          "comment": "Said the BOJ must respond flexibly, not bound by fixed intervals or magnitudes of rate hikes; explicitly left the door open to consecutive hikes. Cited global AI-investment spending and Middle East tensions as upside price risks."
+          "comment": "Assessed that \"the price stability target has almost been achieved\" and the old deflationary norm has been dispelled, with medium/long-term inflation expectations near 2%. Declared 2026 \"a new phase in which rate hikes will not be carried out at a fixed pace but will instead be conducted in a nimble manner\" — a break from the market's assumed semiannual cadence through 2028. Revealed he proposed a hike to 1.25% at the July MPM. On the neutral rate: Japan's policy rate \"has yet to reach the neutral zone\" (unlike the US/Europe), and the true neutral rate \"could exceed market expectations\" — repeated his \"rainbow\" analogy (visible from afar, vanishes as you approach). Cited PPI +7.2% y/y and warned Japan's usual buffers against 1970s-style second-round oil-shock effects (wage restraint, pass-through restraint) are now weaker than in the past. Framed global AI investment as a structural driver of a 2026 synchronized growth/rate-hike cycle across major central banks."
         }
       ]
     },
@@ -549,7 +549,7 @@
         {
           "date": "10 Sep 2026",
           "source": "Speech + press conference, Fukui",
-          "comment": "Said underlying inflation is very close to 2% and the Bank will keep raising rates; warned of a risk of needing to hike rapidly if inflation accelerates, but said the Bank should proceed cautiously on a specific 50bp move."
+          "comment": "Said underlying inflation (ex-fresh-food, ex-temporary factors) \"remains below 2 percent, [but] is very close to\" target, while headline CPI is temporarily declining on rice-price normalization and government subsidies/tax measures. Gave the most quantitative neutral-rate figure of the three: BOJ's March-2026 natural-rate estimate of -0.9% to +0.5% real implies a nominal neutral range of roughly 1.1%-2.5% — with the policy rate at 1.0%, just below it — and said the Bank \"needs to raise the policy interest rate further, so that it falls solidly within the estimated range of the neutral interest rate.\" Warned that if inflation accelerates there is a risk the Bank \"might inevitably need to implement a rapid policy interest rate hike,\" but avoided Takata's explicit fixed-vs-nimble framing or any specific proposed number. Most granular of the three on Middle East oil mechanics: ~70% of Japan's crude imports passed through the Strait of Hormuz at peak tension; with plastics far more pervasive today, called the potential impact of a crude shortage \"more serious than it was during the oil shocks in the 1970s,\" though supply has held via reserve releases and alternative sourcing."
         }
       ]
     },
