@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-09-11T16:07:52Z",
+  "scraped_at": "2026-09-12T02:05:12Z",
   "analysts": [
     "Kyohei Morita",
     "Tomoaki Shishido",
@@ -21,7 +21,15 @@
       {
         "title": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.\n\nOur analysts >",
         "url": "http://go.nomuranow.com/research/japi/publication/960445?appname=GRPUI",
-        "date": "SEP 9, 2026",
+        "date": "SEP 10, 2026",
+        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
+        "analyst": "Kyohei Morita",
+        "coverage": "Japan Macro / BOJ"
+      },
+      {
+        "title": "Japan: September 2026 BOJ Tankan preview - We forecast improvement in corporate sentiment, particularly within manufacturing sector",
+        "url": "https://go.nomuranow.com/research/japi/publication/1320044?appname=GRPUI",
+        "date": "SEP 10, 2026",
         "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
         "analyst": "Kyohei Morita",
         "coverage": "Japan Macro / BOJ"
@@ -39,22 +47,6 @@
         "url": "https://go.nomuranow.com/research/japi/publication/1319603?appname=GRPUI",
         "date": "SEP 9, 2026",
         "summary": "YUKI TAKASHIMA, YUKI ITO, KYOHEI MORITA, SHINICHI YAMAZAKI, SHIGEKI OKAZAKI, DAIKI BAN",
-        "analyst": "Kyohei Morita",
-        "coverage": "Japan Macro / BOJ"
-      },
-      {
-        "title": "Japan: 2026 Q2 second preliminary GDP estimates - We revise economic outlook in light of second set of preliminary GDP estimates",
-        "url": "https://go.nomuranow.com/research/japi/publication/1319501?appname=GRPUI",
-        "date": "SEP 9, 2026",
-        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
-        "analyst": "Kyohei Morita",
-        "coverage": "Japan Macro / BOJ"
-      },
-      {
-        "title": "Japan: Monthly Labor Survey for July 2026 - Modest acceleration in underlying wage growth, especially for SMEs",
-        "url": "https://go.nomuranow.com/research/japi/publication/1319428?appname=GRPUI",
-        "date": "SEP 9, 2026",
-        "summary": "Extel 2027 All-Japan Research Team Survey - Please vote for our researchers.",
         "analyst": "Kyohei Morita",
         "coverage": "Japan Macro / BOJ"
       }
@@ -382,5 +374,5 @@
       }
     ]
   },
-  "total": 44
+  "total": 43
 }
