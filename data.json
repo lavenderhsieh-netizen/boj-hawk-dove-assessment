@@ -182,7 +182,7 @@
     },
     {
       "name": "Masu",
-      "score": 0.5
+      "score": 1
     },
     {
       "name": "Uchida",
@@ -259,13 +259,18 @@
       "role": "Policy Board Member",
       "tag": "Escalating hawk",
       "lean": "hawk",
-      "shift": "\"Gear shift\" advocate → proposed 1.0% hike at Jan 2026 MPM (≈ +1.5 → +2)",
+      "shift": "\"Gear shift\" advocate → proposed 1.0% hike Jan 2026 → dissented for 1.25% Jul 2026 → \"flexible/nimble,\" open to consecutive hikes Sep 2026 (≈ +1.5 → +2.5)",
       "quote": "\"At the January 2026 MPM, I proposed that the Bank raise the policy interest rate to 1.0 percent as a further gear shift.\" — Kyoto, Feb 26, 2026.",
       "remarks": [
         {
           "date": "27 Feb 2026",
           "source": "Public Remarks / Speech",
           "comment": "Delivered hawkish remarks, warning that a global recovery and rate hikes could lead to the risk of unintentionally falling behind the curve."
+        },
+        {
+          "date": "2 Sep 2026",
+          "source": "Speech + press conference, Sapporo",
+          "comment": "Said the BOJ must respond \"flexibly, without being bound by fixed intervals or magnitudes\" of rate hikes, calling 2026 a turning point requiring nimble, data-driven policy rather than a fixed semiannual pace; explicitly left the door open to consecutive hikes. Cited expanding global AI-investment spending and Middle East tensions as upside price risks that could push central banks worldwide toward earlier tightening."
         }
       ]
     },
@@ -301,6 +306,11 @@
           "date": "19 Jun 2026",
           "source": "Parliament (post-rate hike explanation)",
           "comment": "Sees a risk that inflation could accelerate beyond the 2% target; pass-through of higher costs in B2B transactions is proceeding at a somewhat faster pace and could eventually spread to broader price increases. Delay in rate hikes might end up weighing on the economy. Higher corporate prices expected to start affecting CPI soon; FX fluctuations more likely to affect prices."
+        },
+        {
+          "date": "27 Aug 2026",
+          "source": "Speech + press conference, Saitama",
+          "comment": "Said the BOJ should pay greater attention to upside price risks than in the past, with underlying inflation approaching 2%; in-depth deliberations on this should be held at every policy meeting. Cited weaker yen, higher oil prices and rising chip costs as inflation risks. Kept the door open to a September hike but avoided an explicit signal on timing or pace."
         }
       ]
     },
@@ -337,10 +347,10 @@
     {
       "name": "MASU Kazuyuki",
       "role": "Board Member (from Jul 2025)",
-      "tag": "Cautious normalizer",
-      "lean": "neutral",
-      "shift": "Supports normalization, stresses caution (≈ +0.5); replaced dove Nakamura",
-      "quote": "\"I am convinced that continuing with further policy interest rate hikes will be needed to complete the normalization\"... but the Bank will \"proceed cautiously.\" — Ehime, Feb 6, 2026.",
+      "tag": "Cautious normalizer, hawkish tilt",
+      "lean": "neutral-hawk",
+      "shift": "Supports normalization, stressed caution → now flags risk of a rapid hike if inflation accelerates (≈ +0.5 → +1)",
+      "quote": "\"Financial conditions in Japan remain accommodative. If inflation accelerates here, there is a risk we might inevitably need to rapidly raise interest rates.\" — Fukui, Sep 10, 2026.",
       "remarks": [
         {
           "date": "6 Feb 2026",
@@ -351,6 +361,11 @@
           "date": "14 May 2026",
           "source": "Speech — Business Conference, Kagoshima",
           "comment": "If statistical data do not indicate clear signs of an economic downturn, it is desirable to raise the policy rate at the earliest stage possible. Further rate hikes are needed to complete policy normalization."
+        },
+        {
+          "date": "10 Sep 2026",
+          "source": "Speech + press conference, Fukui",
+          "comment": "Said underlying inflation is \"very close\" to 2% and the Bank will continue raising the policy rate to keep it from significantly exceeding that level; warned accommodative financial conditions mean the BOJ \"might inevitably need to rapidly raise interest rates\" if inflation accelerates, citing a Middle East-driven producer-price spike and yen weakness, and said negative real rates should be addressed as soon as possible. On a specific 50bp hike, said the Bank should proceed cautiously."
         }
       ]
     },
@@ -428,8 +443,15 @@
       "dissents": "0",
       "kind": "none",
       "record": "Voted with the majority throughout.",
-      "lean": "Neutral",
-      "active": true
+      "lean": "Neutral, hawkish tilt",
+      "active": true,
+      "remarks": [
+        {
+          "date": "27 Aug 2026",
+          "source": "Speech + press conference, Saitama",
+          "comment": "Said the BOJ should pay greater attention to upside price risks than in the past; in-depth deliberations on this should be held at every policy meeting. Kept the door open to a September hike but gave no explicit signal on timing or pace."
+        }
+      ]
     },
     {
       "member": "UCHIDA Shinichi",
@@ -471,7 +493,7 @@
       "tenure": "24 Jul 2022 – 23 Jul 2027",
       "dissents": "5 hawkish",
       "kind": "hawk",
-      "record": "Sep & Oct 2025: proposed 0.75% · Jan 2026: proposed 1.0% · Mar 2026: proposed a hike · Jul 2026: dissented at the hold, proposing 1.25% (defeated 8–1).",
+      "record": "Sep & Oct 2025: proposed 0.75% · Jan 2026: proposed 1.0% · Mar 2026: proposed a hike · Jul 2026: dissented at the hold, proposing 1.25% (defeated 8–1). · Sep 2026: speech calls for flexible/nimble hikes, open to consecutive moves.",
       "lean": "Escalating hawk — lone dissenter",
       "active": true,
       "remarks": [
@@ -479,6 +501,11 @@
           "date": "27 Feb 2026",
           "source": "Public Remarks / Speech",
           "comment": "Delivered hawkish remarks, warning that a global recovery and rate hikes could lead to the risk of unintentionally falling behind the curve."
+        },
+        {
+          "date": "2 Sep 2026",
+          "source": "Speech + press conference, Sapporo",
+          "comment": "Said the BOJ must respond flexibly, not bound by fixed intervals or magnitudes of rate hikes; explicitly left the door open to consecutive hikes. Cited global AI-investment spending and Middle East tensions as upside price risks."
         }
       ]
     },
@@ -506,7 +533,7 @@
       "dissents": "0",
       "kind": "none",
       "record": "Voted with the majority since joining.",
-      "lean": "Neutral",
+      "lean": "Neutral, hawkish tilt",
       "active": true,
       "remarks": [
         {
@@ -518,6 +545,11 @@
           "date": "14 May 2026",
           "source": "Speech — Business Conference, Kagoshima",
           "comment": "If statistical data do not indicate clear signs of an economic downturn, it is desirable to raise the policy rate at the earliest stage possible. Further rate hikes are needed to complete policy normalization."
+        },
+        {
+          "date": "10 Sep 2026",
+          "source": "Speech + press conference, Fukui",
+          "comment": "Said underlying inflation is very close to 2% and the Bank will keep raising rates; warned of a risk of needing to hike rapidly if inflation accelerates, but said the Bank should proceed cautiously on a specific 50bp move."
         }
       ]
     },
@@ -744,7 +776,7 @@
       "event": "Speech — HIMINO Ryozo (Deputy Governor)",
       "type": "Speech",
       "relates": "—",
-      "notes": "\"Japan's Economy and Monetary Policy\" at a meeting with local leaders in Saitama. Himino has leaned more hawkish in tone lately (Jun 19: flagged risk of the price trend rising above the 2% target); watch for any signal on the Sep 17–18 MPM. Scheduled per BOJ's official upcoming-speeches page as of Aug 5, 2026 — not yet delivered.",
+      "notes": "\"Japan's Economy and Monetary Policy\" — speech + press conference to local business leaders in Saitama. Himino said the BOJ should pay greater attention to upside risk to prices than in the past, with underlying inflation approaching 2%; in-depth deliberations on this should be held at every policy meeting. Cited the weaker yen, higher oil prices and rising semiconductor costs as inflation risks. Kept the door open to a September hike but gave no explicit signal on timing or pace — read by markets as \"generally hawkish as expected.\" Delivered Aug 27, 2026.",
       "next": false
     },
     {
@@ -760,7 +792,7 @@
       "event": "Speech — TAKATA Hajime (Policy Board, hawk)",
       "type": "Speech",
       "relates": "—",
-      "notes": "\"Economic Activity, Prices, and Monetary Policy in Japan\" at a meeting with local leaders in Sapporo. Takata is the board's most hawkish voter — dissented at the Jul 30–31 MPM proposing a hike to 1.25% (vs. the 8–1 hold at 1.00%); this speech lands ~2 weeks before the Sep 17–18 MPM and is a key hawkish-tone check. Scheduled per BOJ's official upcoming-speeches page as of Aug 5, 2026 — not yet delivered.",
+      "notes": "\"Economic Activity, Prices, and Monetary Policy in Japan\" — speech + press conference to local leaders in Sapporo. Takata, the board's most hawkish voter, said the BOJ must respond \"flexibly, without being bound by fixed intervals or magnitudes\" of rate hikes — not the semiannual pace markets had assumed — and explicitly left the door open to consecutive hikes. Called 2026 a \"new phase\" carrying upside price risks, citing expanding global AI-investment spending and Middle East tensions as factors that could push central banks worldwide toward earlier tightening. Delivered Sep 2, 2026; pushed market-implied odds of a Sep 18 hike to near 100%.",
       "next": false
     },
     {
@@ -768,7 +800,7 @@
       "event": "Speech — MASU Kazuyuki (Policy Board)",
       "type": "Speech",
       "relates": "—",
-      "notes": "\"Economic Activity, Prices, and Monetary Policy in Japan\" at a meeting with local leaders in Fukui. Scheduled per BOJ's official upcoming-speeches page (boj.or.jp/en/about/press) as of Aug 10, 2026 — not yet delivered. Lands ~1 week before the Sep 17–18 MPM, the last scheduled board speech before that decision.",
+      "notes": "\"Economic Activity, Prices, and Monetary Policy in Japan\" — speech + press conference to local leaders in Fukui. Masu said underlying inflation is \"very close\" to the BOJ's 2% target and the Bank will keep raising the policy rate to stop it significantly exceeding that level; warned that with financial conditions still accommodative, the BOJ \"might inevitably need to rapidly raise interest rates\" if inflation accelerates — flagging a producer-price spike tied to Middle East-driven oil/chemical costs and yen weakness as the trigger to watch, and said negative real rates should be addressed \"as soon as possible.\" On a specific 50bp move, he said the Bank should \"proceed cautiously.\" Delivered Sep 10, 2026, the last scheduled board speech before the Sep 17–18 MPM.",
       "next": false
     },
     {
