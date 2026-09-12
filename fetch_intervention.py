@@ -292,11 +292,34 @@ DIPLOMATIC_EVENTS = [
          event="Joint Japan-US statement issued on the 30-31 Jul operation",
          detail="Mimura: the joint intervention “could mark the peak of the US-Japan currency "
                 "partnership.”"),
+    dict(date="2026-08-30", actor="Bessent × Ueda", kind="meeting",
+         event="Met on sidelines of G20 Finance Ministers & Central Bank Governors Meeting, Asheville, NC",
+         detail="Treasury statement: Bessent “expressed strong support for Japan's decisive market and "
+                "monetary steps to address the substantial undervaluation of the yen” and “noted the role "
+                "of yen weakness in contributing to domestic inflationary pressures in Japan” — urged sound "
+                "policy communication to anchor inflation expectations and avoid excess FX volatility. "
+                "Pre-meeting, Bessent called the yen's moves “pretty contained” and “not disorderly.”"),
+    dict(date="2026-08-31", actor="Bessent × Katayama", kind="meeting",
+         event="Bilateral meeting, Asheville, NC (G20 sidelines)",
+         detail="Katayama: reaffirmed “orderly yen movements are indispensable for the stability of U.S. "
+                "and global financial markets”; “the continuous and coordinated efforts of Japan and the "
+                "United States serve a common purpose” — Tokyo “would not hesitate to take further action, "
+                "if necessary.” Also briefed Bessent on Japan's plan to steadily cut its debt/GDP ratio "
+                "while funding a consumption-tax cut without deficit-covering bonds; declined to comment on "
+                "the 10Y JGB yield's push toward 3%."),
+    dict(date="2026-09-08", actor="Bessent", kind="statement",
+         event="Remarks at a Southern Methodist University event, Texas",
+         detail="“I am the house now, so when we intervene with the Japanese yen, I have pretty good "
+                "insight into what the Japanese, what the Bank of Japan is going to do, what Japanese "
+                "policymakers are going to do” — dared traders to bet against the yen, claiming "
+                "“asymmetric information” on the BOJ's next moves ahead of its 17-18 Sep meeting."),
+    dict(date="2026-09-11", actor="Katayama", kind="statement",
+         event="Remarks to reporters, Tokyo",
+         detail="On Bessent's “house” comment: said it “sounded a little frightening” translated into "
+                "Japanese, but she understood it reflected his former career as a hedge-fund manager. "
+                "Separately: “we will continue to maintain close communication with the U.S. Treasury and "
+                "work to ensure orderly foreign exchange markets.”"),
     # ── Scheduled / expected — not yet occurred as of this file's last update ──
-    dict(date="2026-08-31", actor="Bessent × Ueda (expected)", kind="scheduled",
-         event="G20 Finance Ministers & Central Bank Governors Meeting, Asheville, NC (31 Aug – 1 Sep)",
-         detail="Bessent: looks forward to seeing his “longtime friend” Ueda there — their first "
-                "face-to-face since the 19-May Paris G7 sidelines meeting."),
     dict(date="2026-10-12", actor="Bessent × Katayama (expected)", kind="scheduled",
          event="G7/IMFC Finance Ministers' meeting on sidelines of IMF-World Bank Annual Meetings, Bangkok "
               "(week of 12 Oct)",
