@@ -58,12 +58,14 @@
     "Apr 26",
     "May 26",
     "Jun 26",
-    "Jul 26"
+    "Jul 26",
+    "Sep 26"
   ],
   "tone": [
     {
       "name": "Tamura",
       "scores": [
+        2,
         2,
         2,
         2,
@@ -80,6 +82,7 @@
         2,
         2,
         2,
+        2.5,
         2.5
       ]
     },
@@ -90,6 +93,7 @@
         0.5,
         0.5,
         0.75,
+        1,
         1,
         1
       ]
@@ -102,6 +106,7 @@
         0.5,
         0.75,
         1,
+        1,
         1
       ]
     },
@@ -113,12 +118,14 @@
         1,
         1.5,
         1.5,
+        1.5,
         1.5
       ]
     },
     {
       "name": "Masu",
       "scores": [
+        0.5,
         0.5,
         0.5,
         0.5,
@@ -135,6 +142,7 @@
         0,
         0,
         0,
+        0,
         0
       ]
     },
@@ -145,6 +153,7 @@
         null,
         -0.5,
         -1,
+        -1.5,
         -1.5,
         -1.5
       ]
@@ -157,7 +166,8 @@
         null,
         null,
         -0.5,
-        -0.5
+        -0.5,
+        -1.25
       ]
     }
   ],
@@ -192,7 +202,7 @@
     },
     {
       "name": "Sato",
-      "score": -0.5,
+      "score": -1.25,
       "role": "Member"
     },
     {
@@ -572,7 +582,7 @@
       "dissents": "1 dovish",
       "kind": "none",
       "record": "Joined end-June 2026 (replaced Nakagawa). Jul 2026: cast her first vote, siding with the 8–1 majority to hold at 1.00%. Sep 2026: dissented against the hike to 1.25% (preferred to hold), citing GDP data showing softer domestic demand — her first dissent.",
-      "lean": "Expected dovish",
+      "lean": "Dovish",
       "active": true,
       "remarks": [
         {

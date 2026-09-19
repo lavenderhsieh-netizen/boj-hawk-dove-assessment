@@ -1,7 +1,7 @@
 {
  "meta": {
   "as_of": "2026-07",
-  "generated_at": "2026-09-10T00:32:21+00:00",
+  "generated_at": "2026-09-19T06:07:03+00:00",
   "unit": "JPY tn (or USD bn in the _usd fields)",
   "current_account_note": "current_account = seasonally adjusted; current_account_nsa = not seasonally adjusted (原数値), same MoF table family, added 2026-08-11 at HanHan's request. + = current account surplus / net receipts.",
   "direct_investment_note": "Not seasonally adjusted (MoF does not publish an SA version of FDI). Flow-consistent sign convention (updated 2026-08-11): residents' outward FDI is a capital outflow, sign-flipped to plot as a negative bar; non-residents' inward FDI is a capital inflow, plotted as-is (positive), matching the sign convention used elsewhere on this dashboard (outflow = negative, inflow = positive). direct_investment_balance = inward - outward (+ = net capital inflow to Japan).",

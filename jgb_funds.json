@@ -1,6 +1,6 @@
 {
   "meta": {
-    "as_of": "2026-08-15",
+    "as_of": "2026-09-19",
     "source": "Nikkei per-fund pages (nikkei.com/nkd/fund?fcode=...)",
     "note": "AUM (純資産総額) and monthly net flow (資金流出入1ヶ月) are both live snapshots — no historical flow series is published anywhere for individual funds. AUM history is genuinely available (Nikkei /history sub-page) but not pulled here; flow history builds prospectively from this script's own run dates only."
   },
@@ -11,9 +11,9 @@
       "name": "日本超長期国債インデックスファンド（ラップ向け）",
       "fcode": "0331320C",
       "note": "Wrap-channel only (sold via discretionary investment wrap accounts, not directly to retail); MUFG's lineup of genuine long-JGB funds is thinner than Daiwa's or Amova's.",
-      "aum_100m_jpy": 9.23,
-      "flow_1m_100m_jpy": 0.34,
-      "flow_asof": "2026年7月末"
+      "aum_100m_jpy": 8.65,
+      "flow_1m_100m_jpy": -0.43,
+      "flow_asof": "2026年8月末"
     },
     {
       "key": "daiwa",
@@ -21,9 +21,9 @@
       "name": "iFreeHOLD 日本国債（JGB2056）",
       "fcode": "04311258",
       "note": "~30yr target-maturity (matures 2056-03-27), NISA growth-quota eligible. Daiwa runs the deepest long-JGB lineup of the three managers (also JGB2045 etc.).",
-      "aum_100m_jpy": 33.0,
-      "flow_1m_100m_jpy": 1.75,
-      "flow_asof": "2026年7月末"
+      "aum_100m_jpy": 35.0,
+      "flow_1m_100m_jpy": 5.92,
+      "flow_asof": "2026年8月末"
     },
     {
       "key": "amova",
@@ -31,9 +31,9 @@
       "name": "Tracers 日本国債ウルトラロング（30年平均）年4回分配型",
       "fcode": "0231225B",
       "note": "27-33yr residual-maturity JGBs. Amova = the 2025 rebrand of Nikko Asset Management's asset-management JV.",
-      "aum_100m_jpy": 5.99,
-      "flow_1m_100m_jpy": 0.4,
-      "flow_asof": "2026年7月末"
+      "aum_100m_jpy": 5.79,
+      "flow_1m_100m_jpy": 0.11,
+      "flow_asof": "2026年8月末"
     }
   ],
   "history": [
@@ -48,6 +48,18 @@
       "amova_aum_100m": 5.99,
       "amova_flow_1m_100m": 0.4,
       "amova_flow_asof": "2026年7月末"
+    },
+    {
+      "date": "2026-09-19",
+      "mufg_aum_100m": 8.65,
+      "mufg_flow_1m_100m": -0.43,
+      "mufg_flow_asof": "2026年8月末",
+      "daiwa_aum_100m": 35.0,
+      "daiwa_flow_1m_100m": 5.92,
+      "daiwa_flow_asof": "2026年8月末",
+      "amova_aum_100m": 5.79,
+      "amova_flow_1m_100m": 0.11,
+      "amova_flow_asof": "2026年8月末"
     }
   ]
 }

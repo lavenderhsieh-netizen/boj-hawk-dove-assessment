@@ -1,51 +1,51 @@
 {
-  "as_of": "End of March 2026",
-  "total_jpy_tn": 1013.76,
+  "as_of": "End of June 2026",
+  "total_jpy_tn": 1006.52,
   "holders": [
     {
       "name": "Bank of Japan",
-      "jpy_tn": 485.43,
-      "pct": 47.9
+      "jpy_tn": 470.04,
+      "pct": 46.7
     },
     {
       "name": "Insurance companies",
-      "jpy_tn": 155.33,
-      "pct": 15.3
+      "jpy_tn": 152.06,
+      "pct": 15.1
     },
     {
       "name": "Banks",
-      "jpy_tn": 133.28,
-      "pct": 13.1
+      "jpy_tn": 143.28,
+      "pct": 14.2
     },
     {
       "name": "Overseas (foreign investors)",
-      "jpy_tn": 82.01,
-      "pct": 8.1
+      "jpy_tn": 79.91,
+      "pct": 7.9
     },
     {
       "name": "Public pensions (incl. GPIF)",
-      "jpy_tn": 73.45,
-      "pct": 7.2
+      "jpy_tn": 76.62,
+      "pct": 7.6
     },
     {
       "name": "Pension funds (corporate/other)",
-      "jpy_tn": 31.66,
-      "pct": 3.1
+      "jpy_tn": 32.21,
+      "pct": 3.2
     },
     {
       "name": "Households",
-      "jpy_tn": 20.04,
-      "pct": 2.0
-    },
-    {
-      "name": "Other (nonfin. corp, gov't, other financial intermediaries)",
-      "jpy_tn": 17.04,
-      "pct": 1.7
+      "jpy_tn": 21.94,
+      "pct": 2.2
     },
     {
       "name": "Investment trusts",
-      "jpy_tn": 15.52,
-      "pct": 1.5
+      "jpy_tn": 16.62,
+      "pct": 1.7
+    },
+    {
+      "name": "Other (nonfin. corp, gov't, other financial intermediaries)",
+      "jpy_tn": 13.84,
+      "pct": 1.4
     }
   ],
   "source": "BOJ Flow of Funds Accounts, Preliminary Figures (sjpre.xlsx) \u2014 'Government bonds and treasury bills' item, series Db (Central government securities and FILP bonds), by holder sector, assets side.",
