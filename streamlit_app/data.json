@@ -1,25 +1,25 @@
 {
-  "as_of": "2026-09-13",
+  "as_of": "2026-09-18",
   "kpis": [
     {
-      "value": "1.00%",
-      "label": "Policy rate — held at 1.00% on Jul 31, 2026 (8–1 vote); highest since 1995"
+      "value": "1.25%",
+      "label": "Policy rate — hiked to 1.25% on Sep 18, 2026 (7–2 vote); highest since 1995"
     },
     {
-      "value": "4 hikes",
-      "label": "Since exit from easing (Mar 2024): Jul '24, Jan '25, Dec '25, Jun '26"
+      "value": "5 hikes",
+      "label": "Since exit from easing (Mar 2024): Jul '24, Jan '25, Dec '25, Jun '26, Sep '26"
     },
     {
-      "value": "Sep 17–18",
-      "label": "Next MPM (2026) — decision Sep 18; markets price ~90-97% odds of a hike (swaps) after Ueda's Sep 1 G20 remarks and Masu's Sep 10 hawkish speech; no Outlook Report this meeting"
+      "value": "Oct 29–30",
+      "label": "Next MPM (2026) — decision Oct 30; with Outlook Report"
     },
     {
       "value": "Hawkish",
       "label": "Net board drift: dovish dissenters replaced; doves now accept gradual hikes"
     },
     {
-      "value": "8–1 hold",
-      "label": "Jul 31: hawk Takata dissents for a 1.25% hike (lone dissenter); Asada's Jun dovish dissent is the opposite pole"
+      "value": "7–2 hike",
+      "label": "Sep 18: newly-appointed doves Asada & Sato dissent for hold; Ueda declares a policy \"phase change\""
     }
   ],
   "rate_path": {
@@ -34,7 +34,8 @@
       "Jan '26",
       "Apr '26",
       "Jun '26",
-      "Jul '26"
+      "Jul '26",
+      "Sep '26"
     ],
     "values": [
       0.25,
@@ -47,7 +48,8 @@
       0.75,
       0.75,
       1.0,
-      1.0
+      1.0,
+      1.25
     ]
   },
   "periods": [
@@ -78,7 +80,7 @@
         2,
         2,
         2,
-        2
+        2.5
       ]
     },
     {
@@ -100,7 +102,7 @@
         0.5,
         0.75,
         1,
-        1.25
+        1
       ]
     },
     {
@@ -122,7 +124,7 @@
         0.5,
         0.5,
         0.5,
-        1.5
+        0.5
       ]
     },
     {
@@ -166,22 +168,22 @@
     },
     {
       "name": "Takata",
-      "score": 2
+      "score": 2.5
     },
     {
       "name": "Koeda",
       "score": 1.5
     },
     {
-      "name": "Masu",
-      "score": 1.5
+      "name": "Ueda",
+      "score": 1
     },
     {
       "name": "Himino",
-      "score": 1.25
+      "score": 1
     },
     {
-      "name": "Ueda",
+      "name": "Masu",
       "score": 1
     },
     {
@@ -236,11 +238,6 @@
           "date": "24 Jun 2026",
           "source": "Speech (post-MPM)",
           "comment": "In a speech, Ueda reiterated that the BOJ sees upside risks to its 2% inflation target and will conduct additional rate hikes \"appropriately,\" reaffirming the bank's tightening bias."
-        },
-        {
-          "date": "1-2 Sep 2026",
-          "source": "Press Conference — G20 Finance Ministers & Central Bank Governors, Asheville, NC",
-          "comment": "Met US Treasury Secretary Bessent Sep 1 on the G20 sidelines — their first face-to-face since his public calls for BOJ tightening; Treasury said Bessent stressed \"sound monetary policy formulation and communication\" to anchor inflation expectations and address yen undervaluation. At his own post-G20 presser, Ueda said the BOJ will \"fully discuss\" a rate increase at every policy meeting, including the Sep 17-18 MPM, focusing on whether inflation and activity are tracking the Bank's baseline scenario and whether upside price risks are heightening. Declined to comment on markets pricing a high probability of a September hike or on daily yen moves."
         }
       ]
     },
@@ -264,7 +261,7 @@
       "role": "Policy Board Member",
       "tag": "Escalating hawk",
       "lean": "hawk",
-      "shift": "\"Gear shift\" advocate → proposed 1.0% hike at Jan 2026 MPM (≈ +1.5 → +2)",
+      "shift": "\"Gear shift\" advocate → proposed 1.0% hike Jan 2026 → dissented for 1.25% Jul 2026 → \"flexible/nimble,\" open to consecutive hikes Sep 2026 (≈ +1.5 → +2.5)",
       "quote": "\"At the January 2026 MPM, I proposed that the Bank raise the policy interest rate to 1.0 percent as a further gear shift.\" — Kyoto, Feb 26, 2026.",
       "remarks": [
         {
@@ -274,8 +271,8 @@
         },
         {
           "date": "2 Sep 2026",
-          "source": "Speech — Meeting with Local Leaders, Sapporo",
-          "comment": "Argued Japan's economy entered a 'regime change' in 2026 amid a global AI-investment-driven rate-hike cycle, calling for the BOJ to hike 'nimbly' without being bound to reach the neutral rate or to any particular pace/interval. Flagged PPI at 7.2% y/y (Jul 2026) and warned of rising risk of second-round inflation effects reminiscent of the 1970s oil shocks; said the Bank should shift from encouraging inflation toward demonstrating its determination to prevent an overshoot. Reaffirmed his July MPM proposal to hike, framing it as a call for a regime change in Bank thinking, not just a response to data."
+          "source": "Speech + press conference, Sapporo",
+          "comment": "Assessed that \"the price stability target has almost been achieved\" and the old deflationary norm has been dispelled, with medium/long-term inflation expectations near 2%. Declared 2026 \"a new phase in which rate hikes will not be carried out at a fixed pace but will instead be conducted in a nimble manner\" — a break from the market's assumed semiannual cadence through 2028. Revealed he proposed a hike to 1.25% at the July MPM. On the neutral rate: Japan's policy rate \"has yet to reach the neutral zone\" (unlike the US/Europe), and the true neutral rate \"could exceed market expectations\" — repeated his \"rainbow\" analogy (visible from afar, vanishes as you approach). Cited PPI +7.2% y/y and warned Japan's usual buffers against 1970s-style second-round oil-shock effects (wage restraint, pass-through restraint) are now weaker than in the past. Framed global AI investment as a structural driver of a 2026 synchronized growth/rate-hike cycle across major central banks."
         }
       ]
     },
@@ -284,8 +281,8 @@
       "role": "Deputy Governor",
       "tag": "Measured hawk",
       "lean": "neutral-hawk",
-      "shift": "Steady gradualist; intellectual groundwork for hikes (≈ +0.5 → +1.25)",
-      "quote": "\"I believe the Bank should continue to raise the policy interest rate and adjust the degree of monetary accommodation... If underlying inflation deviates upward to a level above the price stability target of 2 percent, that would have an adverse impact on the economy, and we should pay greater attention to the upside risk to prices than in the past.\" — Saitama, Aug 27, 2026",
+      "shift": "Steady gradualist; intellectual groundwork for hikes (≈ +0.5 → +1)",
+      "quote": "Mar 2026: policy \"should gradually shift to a more neutral stance through moderate policy rate hikes.\"",
       "remarks": [
         {
           "date": "2 Mar 2026",
@@ -314,8 +311,8 @@
         },
         {
           "date": "27 Aug 2026",
-          "source": "Speech — Meeting with Local Leaders, Saitama",
-          "comment": "Reaffirmed the Bank should continue raising the policy rate as underlying inflation approaches 2%; expects CPI to move up and stay above 2% in H2 FY2026 as petrochemical, semiconductor and yen-driven price pass-through continues. Explicitly said the Bank \"should pay greater attention to the upside risk to prices than in the past.\" Flagged AI-related demand as now having a material, spreading macroeconomic impact (17% y/y import-price rise, 10% y/y export-price rise in July, led by AI-related products), beyond the narrow effect the Bank had assumed as recently as Oct 2025. Framed policy as \"still pressing on the accelerator\" (financial conditions remain accommodative) needing to \"ease off in a timely manner.\" On the weak yen, reiterated policy does not target FX levels but that pass-through to prices is strengthening."
+          "source": "Speech + press conference, Saitama",
+          "comment": "Framed the outlook around \"four key factors\": Middle East/oil (down on growth, up on prices), AI-driven demand (up on both), yen depreciation (mixed on growth, up on prices), and still-accommodative financial conditions (up on both). Said Japan is \"entering a phase where we will also need to bear in mind the possibility of underlying inflation exceeding 2 percent,\" with headline CPI expected to move back above 2% in H2 FY2026 as oil/rice effects fade and AI-driven chip and petrochemical cost pass-through builds. Labor market called the tightest \"since the 1980s' bubble economy era.\" No explicit September signal — timing/pace to be judged by weighing baseline likelihood against risks, paying \"greater attention to the upside risk to prices than in the past.\""
         }
       ]
     },
@@ -352,9 +349,9 @@
     {
       "name": "MASU Kazuyuki",
       "role": "Board Member (from Jul 2025)",
-      "tag": "Escalating hawk",
-      "lean": "hawk",
-      "shift": "Cautious normalizer → warns of forced rapid hikes (≈ +0.5 → +1.5); replaced dove Nakamura",
+      "tag": "Cautious normalizer, hawkish tilt",
+      "lean": "neutral-hawk",
+      "shift": "Supports normalization, stressed caution → now flags risk of a rapid hike if inflation accelerates (≈ +0.5 → +1)",
       "quote": "\"Financial conditions in Japan remain accommodative. If inflation accelerates here, there is a risk we might inevitably need to rapidly raise interest rates.\" — Fukui, Sep 10, 2026.",
       "remarks": [
         {
@@ -369,8 +366,8 @@
         },
         {
           "date": "10 Sep 2026",
-          "source": "Speech — Meeting with Local Leaders, Fukui",
-          "comment": "Notably more hawkish than his earlier \"cautious\" framing: said the BOJ \"will continue to raise the policy interest rate,\" with underlying inflation \"very close\" to 2%. Warned financial conditions remain accommodative and that if inflation accelerates, the Bank \"might inevitably need to rapidly raise interest rates\" — an explicit rapid-hike warning, not just gradual normalization. Said negative real rates should be addressed \"as soon as possible\" and put the BOJ's estimated neutral-rate range at 1.1%-2.5%, arguing the policy rate needs to move solidly within that range for flexibility in either direction. Rejected a fixed ~6-month hike cadence, saying every decision reflects prevailing conditions. Flagged a recent PPI spike, Iran-war-driven fuel/chemical costs, weak-yen pass-through and AI-related demand as broadening inflation risks. Delivered a week ahead of the Sep 17-18 MPM; swaps market priced ~90-97% odds of a hike following the speech (Reuters, Bloomberg)."
+          "source": "Speech + press conference, Fukui",
+          "comment": "Said underlying inflation (ex-fresh-food, ex-temporary factors) \"remains below 2 percent, [but] is very close to\" target, while headline CPI is temporarily declining on rice-price normalization and government subsidies/tax measures. Gave the most quantitative neutral-rate figure of the three: BOJ's March-2026 natural-rate estimate of -0.9% to +0.5% real implies a nominal neutral range of roughly 1.1%-2.5% — with the policy rate at 1.0%, just below it — and said the Bank \"needs to raise the policy interest rate further, so that it falls solidly within the estimated range of the neutral interest rate.\" Warned that if inflation accelerates there is a risk the Bank \"might inevitably need to implement a rapid policy interest rate hike,\" but avoided Takata's explicit fixed-vs-nimble framing or any specific proposed number. Most granular of the three on Middle East oil mechanics: ~70% of Japan's crude imports passed through the Strait of Hormuz at peak tension; with plastics far more pervasive today, called the potential impact of a crude shortage \"more serious than it was during the oil shocks in the 1970s,\" though supply has held via reserve releases and alternative sourcing."
         }
       ]
     },
@@ -380,7 +377,7 @@
       "tag": "New dove",
       "lean": "dove",
       "shift": "Sole dissenter at the June 2026 hike (≈ −1.5)",
-      "quote": "Any further hike conditional on the economy's “endogenous strength” — wage- and demand-driven inflation toward the 2% target, with employment weighed alongside prices (Reuters, Jul 8 2026). Jul 7 (Sankei): raising rates could slow the economy. Sole dissenter at the June 2026 hike — preferred to hold at 0.75%, citing downside risks to production and employment.",
+      "quote": "Any further hike conditional on the economy's “endogenous strength” — wage- and demand-driven inflation toward the 2% target, with employment weighed alongside prices (Reuters, Jul 8 2026). Jul 7 (Sankei): raising rates could slow the economy. Sole dissenter (7-1) at the June 2026 hike — per the BOJ's official minutes (released 5 Aug 2026): “downside risks to production and employment were greater than upside risks to prices, and it was desirable for the Bank to maintain the guideline for money market operations.”",
       "remarks": [
         {
           "date": "1 Apr 2026",
@@ -389,13 +386,13 @@
         },
         {
           "date": "Jun 2026",
-          "source": "June Monetary Policy Meeting",
-          "comment": "Cast the sole dissenting vote against the BOJ's rate hike (0.75% → 1.0%), arguing downside risks to production and employment outweighed upside risks to prices. Preferred to maintain the existing guideline for money market operations."
+          "source": "June Monetary Policy Meeting — Official Vote",
+          "comment": "Cast the sole dissenting vote (7-1) against the BOJ's rate hike (0.75% → 1.0%). Official minutes text: \"Asada Toichiro dissented, considering that, regarding the impact of the situation in the Middle East, downside risks to production and employment were greater than upside risks to prices, and it was desirable for the Bank to maintain the guideline for money market operations.\""
         },
         {
-          "date": "Jun 2026",
-          "source": "June MPM Summary of Opinions",
-          "comment": "Reportedly pointed out that the Japanese economy could return to deflation in a worst-case scenario, emphasising downside risks to production and employment in contrast to the prevailing hawkish tone among most board members."
+          "date": "5 Aug 2026",
+          "source": "June MPM Full Minutes (released Aug 5, 2026)",
+          "comment": "Confirmed by the official minutes (upgrading the earlier, hedged Summary-of-Opinions readout): in the deliberation, the dissenting member warned that if the downside risks to production and employment from the Middle East situation materialized, this could disrupt the wage-price virtuous cycle and, in a worst-case scenario, tip Japan's economy — which appeared to have overcome a prolonged period of deflation — back into deflation."
         },
         {
           "date": "7 Jul 2026",
@@ -437,7 +434,7 @@
       "tenure": "9 Apr 2023 – 8 Apr 2028",
       "dissents": "0",
       "kind": "none",
-      "record": "Chairman; in the majority at all meetings. Absent (hospitalized) for the Jun 2026 vote; returned to chair the Jul 31, 2026 meeting.",
+      "record": "Chairman; in the majority at all meetings. Absent (hospitalized) for the Jun 2026 vote; returned to chair the Jul 31, 2026 meeting. Sep 2026: chaired the 1.25% hike and declared a policy \"phase change\" — underlying inflation near 2% shifts the aim from raising inflation to anchoring it, with symmetric risk management.",
       "lean": "Neutral, turning less dovish",
       "active": true
     },
@@ -448,8 +445,15 @@
       "dissents": "0",
       "kind": "none",
       "record": "Voted with the majority throughout.",
-      "lean": "Neutral",
-      "active": true
+      "lean": "Neutral, hawkish tilt",
+      "active": true,
+      "remarks": [
+        {
+          "date": "27 Aug 2026",
+          "source": "Speech + press conference, Saitama",
+          "comment": "Framed the outlook around \"four key factors\": Middle East/oil (down on growth, up on prices), AI-driven demand (up on both), yen depreciation (mixed on growth, up on prices), and still-accommodative financial conditions (up on both). Said Japan is \"entering a phase where we will also need to bear in mind the possibility of underlying inflation exceeding 2 percent,\" with headline CPI expected to move back above 2% in H2 FY2026 as oil/rice effects fade and AI-driven chip and petrochemical cost pass-through builds. Labor market called the tightest \"since the 1980s' bubble economy era.\" No explicit September signal — timing/pace to be judged by weighing baseline likelihood against risks, paying \"greater attention to the upside risk to prices than in the past.\""
+        }
+      ]
     },
     {
       "member": "UCHIDA Shinichi",
@@ -491,7 +495,7 @@
       "tenure": "24 Jul 2022 – 23 Jul 2027",
       "dissents": "5 hawkish",
       "kind": "hawk",
-      "record": "Sep & Oct 2025: proposed 0.75% · Jan 2026: proposed 1.0% · Mar 2026: proposed a hike · Jul 2026: dissented at the hold, proposing 1.25% (defeated 8–1).",
+      "record": "Sep & Oct 2025: proposed 0.75% · Jan 2026: proposed 1.0% · Mar 2026: proposed a hike · Jul 2026: dissented at the hold, proposing 1.25% (defeated 8–1). · Sep 2026: speech calls for flexible/nimble hikes, open to consecutive moves.",
       "lean": "Escalating hawk — lone dissenter",
       "active": true,
       "remarks": [
@@ -502,8 +506,8 @@
         },
         {
           "date": "2 Sep 2026",
-          "source": "Speech — Meeting with Local Leaders, Sapporo",
-          "comment": "Argued Japan's economy entered a 'regime change' in 2026 amid a global AI-investment-driven rate-hike cycle, calling for the BOJ to hike 'nimbly' without being bound to reach the neutral rate or to any particular pace/interval — explicitly moving past the roughly twice-a-year cadence of 2025 and earlier, and favouring a wider menu of hike sizes (not just 0.25pt steps) chosen to fit how conditions evolve. Flagged PPI at 7.2% y/y (Jul 2026) and warned of rising risk of second-round inflation effects reminiscent of the 1970s oil shocks; said the Bank should shift from encouraging inflation toward demonstrating its determination to prevent an overshoot. Declined to rule out consecutive hikes at the Oct/Dec meetings. Reaffirmed his July MPM proposal to hike, framing it as a call for a regime change in Bank thinking, not just a response to data."
+          "source": "Speech + press conference, Sapporo",
+          "comment": "Assessed that \"the price stability target has almost been achieved\" and the old deflationary norm has been dispelled, with medium/long-term inflation expectations near 2%. Declared 2026 \"a new phase in which rate hikes will not be carried out at a fixed pace but will instead be conducted in a nimble manner\" — a break from the market's assumed semiannual cadence through 2028. Revealed he proposed a hike to 1.25% at the July MPM. On the neutral rate: Japan's policy rate \"has yet to reach the neutral zone\" (unlike the US/Europe), and the true neutral rate \"could exceed market expectations\" — repeated his \"rainbow\" analogy (visible from afar, vanishes as you approach). Cited PPI +7.2% y/y and warned Japan's usual buffers against 1970s-style second-round oil-shock effects (wage restraint, pass-through restraint) are now weaker than in the past. Framed global AI investment as a structural driver of a 2026 synchronized growth/rate-hike cycle across major central banks."
         }
       ]
     },
@@ -531,7 +535,7 @@
       "dissents": "0",
       "kind": "none",
       "record": "Voted with the majority since joining.",
-      "lean": "Escalating hawk",
+      "lean": "Neutral, hawkish tilt",
       "active": true,
       "remarks": [
         {
@@ -546,8 +550,8 @@
         },
         {
           "date": "10 Sep 2026",
-          "source": "Speech — Meeting with Local Leaders, Fukui",
-          "comment": "Notably more hawkish than his earlier \"cautious\" framing: said the BOJ \"will continue to raise the policy interest rate,\" with underlying inflation \"very close\" to 2%. Warned that if inflation accelerates, the Bank \"might inevitably need to rapidly raise interest rates.\" Said negative real rates should be addressed \"as soon as possible\"; put the BOJ's neutral-rate range at 1.1%-2.5%. Rejected a fixed ~6-month hike cadence. Delivered a week ahead of the Sep 17-18 MPM; swaps priced ~90-97% odds of a hike following the speech."
+          "source": "Speech + press conference, Fukui",
+          "comment": "Said underlying inflation (ex-fresh-food, ex-temporary factors) \"remains below 2 percent, [but] is very close to\" target, while headline CPI is temporarily declining on rice-price normalization and government subsidies/tax measures. Gave the most quantitative neutral-rate figure of the three: BOJ's March-2026 natural-rate estimate of -0.9% to +0.5% real implies a nominal neutral range of roughly 1.1%-2.5% — with the policy rate at 1.0%, just below it — and said the Bank \"needs to raise the policy interest rate further, so that it falls solidly within the estimated range of the neutral interest rate.\" Warned that if inflation accelerates there is a risk the Bank \"might inevitably need to implement a rapid policy interest rate hike,\" but avoided Takata's explicit fixed-vs-nimble framing or any specific proposed number. Most granular of the three on Middle East oil mechanics: ~70% of Japan's crude imports passed through the Strait of Hormuz at peak tension; with plastics far more pervasive today, called the potential impact of a crude shortage \"more serious than it was during the oil shocks in the 1970s,\" though supply has held via reserve releases and alternative sourcing."
         }
       ]
     },
@@ -555,9 +559,9 @@
       "member": "ASADA Toichiro",
       "role": "Board Member",
       "tenure": "1 Apr 2026 – 31 Mar 2031",
-      "dissents": "1 dovish",
+      "dissents": "2 dovish",
       "kind": "dove",
-      "record": "Jun 2026: sole dissent against the hike to 1.00% (preferred to hold) · Jul 2026: voted with the majority to hold.",
+      "record": "Jun 2026: sole dissent against the hike to 1.00% (preferred to hold) · Jul 2026: voted with the majority to hold · Sep 2026: dissented against the hike to 1.25% (preferred to hold), citing GDP data showing softer domestic demand.",
       "lean": "Dovish, reflationist-leaning",
       "active": true
     },
@@ -565,9 +569,9 @@
       "member": "SATO Ayano",
       "role": "Board Member",
       "tenure": "30 Jun 2026 – 29 Jun 2031",
-      "dissents": "0",
+      "dissents": "1 dovish",
       "kind": "none",
-      "record": "Joined end-June 2026 (replaced Nakagawa). Jul 2026: cast her first vote, siding with the 8–1 majority to hold at 1.00%. Reported reflationist lean.",
+      "record": "Joined end-June 2026 (replaced Nakagawa). Jul 2026: cast her first vote, siding with the 8–1 majority to hold at 1.00%. Sep 2026: dissented against the hike to 1.25% (preferred to hold), citing GDP data showing softer domestic demand — her first dissent.",
       "lean": "Expected dovish",
       "active": true,
       "remarks": [
@@ -736,9 +740,9 @@
       "text": "FT: US Treasury's first direct yen support since 2011 — the NY Fed sold euros to buy yen on behalf of the Treasury (via Goldman Sachs and Morgan Stanley), alongside Japan's own yen-buying in New York; the yen closed the week up over 1% against both the dollar and the euro."
     },
     {
-      "date": "Sep 1-2, 2026",
-      "kind": "event",
-      "text": "G20 finance meeting, Asheville: Bessent presses Ueda at their first face-to-face meeting since his public tightening calls, urging \"sound monetary policy formulation\" to curb yen weakness. Ueda's own post-G20 press conference: BOJ will \"fully discuss\" a rate hike at every meeting including Sep 17-18. Market pricing for a September hike jumps toward 80-90%+; yen rallies from the ¥160s to the mid-¥150s, its strongest level in about a month."
+      "date": "Sep 18, 2026",
+      "kind": "hike",
+      "text": "Rate raised to 1.25% (7–2), highest since 1995. Ueda declares a policy \"phase change\": with underlying inflation near 2%, the aim shifts from raising inflation to anchoring it, with symmetric upside/downside risk management. Newly-appointed Board members Asada and Sato dissent for hold."
     }
   ],
   "mpm_calendar": [
@@ -779,7 +783,7 @@
       "event": "Speech — HIMINO Ryozo (Deputy Governor)",
       "type": "Speech",
       "relates": "—",
-      "notes": "Saitama — delivered. Reaffirmed continued rate-hike guidance; said the Bank should pay \"greater attention to the upside risk to prices than in the past\" as underlying inflation nears 2%; expects CPI back above 2% in H2 FY2026. Hawkish signal ahead of the Sep 17–18 MPM.",
+      "notes": "\"Japan's Economy and Monetary Policy\" — speech + press conference to local business leaders in Saitama. Himino said the BOJ should pay greater attention to upside risk to prices than in the past, with underlying inflation approaching 2%; in-depth deliberations on this should be held at every policy meeting. Cited the weaker yen, higher oil prices and rising semiconductor costs as inflation risks. Kept the door open to a September hike but gave no explicit signal on timing or pace — read by markets as \"generally hawkish as expected.\" Delivered Aug 27, 2026.",
       "next": false
     },
     {
@@ -787,7 +791,7 @@
       "event": "G20 Finance Ministers & Central Bank Governors — Bessent/Ueda expected meeting",
       "type": "Meeting",
       "relates": "Sep MPM",
-      "notes": "Asheville, NC. Bessent and Ueda met Sep 1 on the G20 sidelines — their first face-to-face since his public calls for BOJ tightening. Treasury confirmed Sep 2 that Bessent stressed \"sound monetary policy formulation and communication\" to anchor inflation expectations and address yen undervaluation. At his own post-G20 presser, Ueda said the BOJ will \"fully discuss\" a hike at every meeting including Sep 17–18, declining to pre-commit or comment on market pricing. Market odds of a September hike rose to ~80-90%+ afterward; USD/JPY fell from the ¥160s to the mid-¥150s over Sep 1–3.",
+      "notes": "Asheville, NC. Treasury Secretary Bessent has said he expects to meet Governor Ueda here (Bessent public remarks, confirmed via Reuters/Japan Today, Aug 1–5, 2026) — would be their first face-to-face since Bessent's repeated public calls for BOJ tightening. Reuters sources say a Bessent–Ueda meeting, if it happens, would make it ‘very hard for the BOJ to avoid raising rates in September.’ Lands ~2.5 weeks before the Sep 17–18 MPM. Not yet officially confirmed by the BOJ itself (BOJ previously denied a meeting took place on at least one earlier occasion, May 13, 2026) — flagged as expected/reported, not an officially scheduled BOJ event.",
       "next": false
     },
     {
@@ -795,7 +799,7 @@
       "event": "Speech — TAKATA Hajime (Policy Board, hawk)",
       "type": "Speech",
       "relates": "—",
-      "notes": "Sapporo — delivered. Takata argued Japan's economy entered a 'regime change' in 2026 amid a global AI-investment-driven rate-hike cycle, calling for the Bank to hike 'nimbly' without being bound to reach the neutral rate or to any particular pace/interval, and favouring a wider menu of hike sizes beyond 0.25pt depending on conditions. Flagged PPI at 7.2% y/y (Jul 2026) and rising risk of 1970s-style second-round inflation effects; said the Bank should shift from encouraging inflation toward demonstrating it will prevent an overshoot. Declined to rule out consecutive hikes at the Oct/Dec meetings. Reaffirmed his July MPM hike proposal. Consistent with his existing max-hawk score — no tone-scale change.",
+      "notes": "\"Economic Activity, Prices, and Monetary Policy in Japan\" — speech + press conference to local leaders in Sapporo. Takata, the board's most hawkish voter, said the BOJ must respond \"flexibly, without being bound by fixed intervals or magnitudes\" of rate hikes — not the semiannual pace markets had assumed — and explicitly left the door open to consecutive hikes. Called 2026 a \"new phase\" carrying upside price risks, citing expanding global AI-investment spending and Middle East tensions as factors that could push central banks worldwide toward earlier tightening. Delivered Sep 2, 2026; pushed market-implied odds of a Sep 18 hike to near 100%.",
       "next": false
     },
     {
@@ -803,16 +807,16 @@
       "event": "Speech — MASU Kazuyuki (Policy Board)",
       "type": "Speech",
       "relates": "—",
-      "notes": "Fukui — delivered. Notably more hawkish than his earlier \"cautious\" tone: said the BOJ will continue raising rates and warned it \"might inevitably need to rapidly raise interest rates\" if inflation accelerates; urged addressing negative real rates \"as soon as possible\"; put the neutral-rate range at 1.1%-2.5%; rejected a fixed ~6-month hike cadence. Last scheduled board speech before the Sep 17-18 MPM; swaps priced ~90-97% odds of a hike afterward.",
+      "notes": "\"Economic Activity, Prices, and Monetary Policy in Japan\" — speech + press conference to local leaders in Fukui. Masu said underlying inflation is \"very close\" to the BOJ's 2% target and the Bank will keep raising the policy rate to stop it significantly exceeding that level; warned that with financial conditions still accommodative, the BOJ \"might inevitably need to rapidly raise interest rates\" if inflation accelerates — flagging a producer-price spike tied to Middle East-driven oil/chemical costs and yen weakness as the trigger to watch, and said negative real rates should be addressed \"as soon as possible.\" On a specific 50bp move, he said the Bank should \"proceed cautiously.\" Delivered Sep 10, 2026, the last scheduled board speech before the Sep 17–18 MPM.",
       "next": false
     },
     {
       "date": "Sep 17–18 (Thu–Fri)",
-      "event": "MPM — decision Sep 18",
+      "event": "MPM — decided Sep 18: hike to 1.25% (7–2)",
       "type": "MPM",
       "relates": "—",
-      "notes": "No Outlook Report at this meeting.",
-      "next": true
+      "notes": "No Outlook Report at this meeting. Ueda declared a policy \"phase change\" (underlying inflation near 2%); Asada & Sato (Takaichi-administration appointees) dissented for hold.",
+      "next": false
     },
     {
       "date": "Sep 28 (Mon)",
@@ -844,7 +848,7 @@
       "type": "MPM",
       "relates": "—",
       "notes": "With Outlook Report (Oct 30).",
-      "next": false
+      "next": true
     },
     {
       "date": "Nov 5 (Thu)",
@@ -1160,92 +1164,6 @@
         "issue": "2-year",
         "context": ""
       }
-    ],
-    "September 2026": [
-      {
-        "date": "Sep 1 (Tue)",
-        "type": "Coupon",
-        "issue": "10-year",
-        "context": "~2.5 weeks before the Sep 17–18 MPM"
-      },
-      {
-        "date": "Sep 3 (Thu)",
-        "type": "Coupon",
-        "issue": "30-year",
-        "context": ""
-      },
-      {
-        "date": "Sep 4 (Fri)",
-        "type": "T-bill",
-        "issue": "Treasury Discount Bills (3-month)",
-        "context": ""
-      },
-      {
-        "date": "Sep 8 (Tue)",
-        "type": "Coupon",
-        "issue": "5-year",
-        "context": ""
-      },
-      {
-        "date": "Sep 9 (Wed)",
-        "type": "T-bill",
-        "issue": "Treasury Discount Bills (6-month)",
-        "context": ""
-      },
-      {
-        "date": "Sep 10 (Thu)",
-        "type": "Liquidity",
-        "issue": "Liquidity Enhancement Auction (1–5y remaining)",
-        "context": ""
-      },
-      {
-        "date": "Sep 11 (Fri)",
-        "type": "T-bill",
-        "issue": "Treasury Discount Bills (3-month)",
-        "context": ""
-      },
-      {
-        "date": "Sep 15 (Tue)",
-        "type": "Coupon",
-        "issue": "20-year",
-        "context": ""
-      },
-      {
-        "date": "Sep 16 (Wed)",
-        "type": "T-bill",
-        "issue": "Treasury Discount Bills (1-year)",
-        "context": "Day before the Sep 17–18 MPM decision"
-      },
-      {
-        "date": "Sep 17 (Thu)",
-        "type": "T-bill",
-        "issue": "Treasury Discount Bills (3-month)",
-        "context": "MPM day 1 (Sep 17–18)"
-      },
-      {
-        "date": "Sep 25 (Fri)",
-        "type": "T-bill",
-        "issue": "Treasury Discount Bills (3-month)",
-        "context": ""
-      },
-      {
-        "date": "Sep 25 (Fri)",
-        "type": "Liquidity",
-        "issue": "Liquidity Enhancement Auction (5–11y remaining)",
-        "context": ""
-      },
-      {
-        "date": "Sep 29 (Tue)",
-        "type": "Coupon",
-        "issue": "40-year",
-        "context": "Longest tenor; first since the Jul 22 40y auction"
-      },
-      {
-        "date": "Sep 30 (Wed)",
-        "type": "Coupon",
-        "issue": "2-year",
-        "context": ""
-      }
     ]
   },
   "fiscal": [
@@ -1364,6 +1282,15 @@
       "presider": "Governor UEDA Kazuo",
       "note": "Ueda back from illness; Sato's first vote (with majority). July Outlook trims FY2026 CPI on govt energy subsidies and upgrades activity risk to 'generally balanced'; overshoot-2% warning retained. Presser: risk factors for timing/pace expanded from one to three (Middle East, AI, FX); Kumamoto earthquake and Apr-2027 food consumption-tax cut both flagged; Takata and Tamura alternative-language proposals both defeated.",
       "file": "2026-07-31.md"
+    },
+    {
+      "date": "2026-09-18",
+      "display": "17–18 Sep 2026",
+      "decision": "Hike to 1.25%",
+      "vote": "7–2 (Asada, Sato dissented for hold)",
+      "presider": "Governor UEDA Kazuo",
+      "note": "Highest policy rate since 1995. Ueda declares a \"phase change\" — underlying inflation near 2% shifts the policy aim from raising inflation to anchoring it, with symmetric (not downside-skewed) risk management going forward. No pre-committed pace; would not rule out 50bp/consecutive hikes. Consumer-level pass-through language upgraded from \"may spread\" (Jun) to \"has started spreading\". Declined to discuss 30 Aug Bessent meeting; yen weakened ~¥1.50 immediately after the hike.",
+      "file": "2026-09-18.md"
     }
   ],
   "forecasts": {

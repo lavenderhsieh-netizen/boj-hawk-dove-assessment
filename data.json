@@ -1,25 +1,25 @@
 {
-  "as_of": "2026-07-31",
+  "as_of": "2026-09-18",
   "kpis": [
     {
-      "value": "1.00%",
-      "label": "Policy rate — held at 1.00% on Jul 31, 2026 (8–1 vote); highest since 1995"
+      "value": "1.25%",
+      "label": "Policy rate — hiked to 1.25% on Sep 18, 2026 (7–2 vote); highest since 1995"
     },
     {
-      "value": "4 hikes",
-      "label": "Since exit from easing (Mar 2024): Jul '24, Jan '25, Dec '25, Jun '26"
+      "value": "5 hikes",
+      "label": "Since exit from easing (Mar 2024): Jul '24, Jan '25, Dec '25, Jun '26, Sep '26"
     },
     {
-      "value": "Sep 17–18",
-      "label": "Next MPM (2026) — decision Sep 18; no Outlook Report this meeting"
+      "value": "Oct 29–30",
+      "label": "Next MPM (2026) — decision Oct 30; with Outlook Report"
     },
     {
       "value": "Hawkish",
       "label": "Net board drift: dovish dissenters replaced; doves now accept gradual hikes"
     },
     {
-      "value": "8–1 hold",
-      "label": "Jul 31: hawk Takata dissents for a 1.25% hike (lone dissenter); Asada's Jun dovish dissent is the opposite pole"
+      "value": "7–2 hike",
+      "label": "Sep 18: newly-appointed doves Asada & Sato dissent for hold; Ueda declares a policy \"phase change\""
     }
   ],
   "rate_path": {
@@ -34,7 +34,8 @@
       "Jan '26",
       "Apr '26",
       "Jun '26",
-      "Jul '26"
+      "Jul '26",
+      "Sep '26"
     ],
     "values": [
       0.25,
@@ -47,7 +48,8 @@
       0.75,
       0.75,
       1.0,
-      1.0
+      1.0,
+      1.25
     ]
   },
   "periods": [
@@ -432,7 +434,7 @@
       "tenure": "9 Apr 2023 – 8 Apr 2028",
       "dissents": "0",
       "kind": "none",
-      "record": "Chairman; in the majority at all meetings. Absent (hospitalized) for the Jun 2026 vote; returned to chair the Jul 31, 2026 meeting.",
+      "record": "Chairman; in the majority at all meetings. Absent (hospitalized) for the Jun 2026 vote; returned to chair the Jul 31, 2026 meeting. Sep 2026: chaired the 1.25% hike and declared a policy \"phase change\" — underlying inflation near 2% shifts the aim from raising inflation to anchoring it, with symmetric risk management.",
       "lean": "Neutral, turning less dovish",
       "active": true
     },
@@ -557,9 +559,9 @@
       "member": "ASADA Toichiro",
       "role": "Board Member",
       "tenure": "1 Apr 2026 – 31 Mar 2031",
-      "dissents": "1 dovish",
+      "dissents": "2 dovish",
       "kind": "dove",
-      "record": "Jun 2026: sole dissent against the hike to 1.00% (preferred to hold) · Jul 2026: voted with the majority to hold.",
+      "record": "Jun 2026: sole dissent against the hike to 1.00% (preferred to hold) · Jul 2026: voted with the majority to hold · Sep 2026: dissented against the hike to 1.25% (preferred to hold), citing GDP data showing softer domestic demand.",
       "lean": "Dovish, reflationist-leaning",
       "active": true
     },
@@ -567,9 +569,9 @@
       "member": "SATO Ayano",
       "role": "Board Member",
       "tenure": "30 Jun 2026 – 29 Jun 2031",
-      "dissents": "0",
+      "dissents": "1 dovish",
       "kind": "none",
-      "record": "Joined end-June 2026 (replaced Nakagawa). Jul 2026: cast her first vote, siding with the 8–1 majority to hold at 1.00%. Reported reflationist lean.",
+      "record": "Joined end-June 2026 (replaced Nakagawa). Jul 2026: cast her first vote, siding with the 8–1 majority to hold at 1.00%. Sep 2026: dissented against the hike to 1.25% (preferred to hold), citing GDP data showing softer domestic demand — her first dissent.",
       "lean": "Expected dovish",
       "active": true,
       "remarks": [
@@ -736,6 +738,11 @@
       "date": "Jul 31, 2026",
       "kind": "event",
       "text": "FT: US Treasury's first direct yen support since 2011 — the NY Fed sold euros to buy yen on behalf of the Treasury (via Goldman Sachs and Morgan Stanley), alongside Japan's own yen-buying in New York; the yen closed the week up over 1% against both the dollar and the euro."
+    },
+    {
+      "date": "Sep 18, 2026",
+      "kind": "hike",
+      "text": "Rate raised to 1.25% (7–2), highest since 1995. Ueda declares a policy \"phase change\": with underlying inflation near 2%, the aim shifts from raising inflation to anchoring it, with symmetric upside/downside risk management. Newly-appointed Board members Asada and Sato dissent for hold."
     }
   ],
   "mpm_calendar": [
@@ -805,11 +812,11 @@
     },
     {
       "date": "Sep 17–18 (Thu–Fri)",
-      "event": "MPM — decision Sep 18",
+      "event": "MPM — decided Sep 18: hike to 1.25% (7–2)",
       "type": "MPM",
       "relates": "—",
-      "notes": "No Outlook Report at this meeting.",
-      "next": true
+      "notes": "No Outlook Report at this meeting. Ueda declared a policy \"phase change\" (underlying inflation near 2%); Asada & Sato (Takaichi-administration appointees) dissented for hold.",
+      "next": false
     },
     {
       "date": "Sep 28 (Mon)",
@@ -841,7 +848,7 @@
       "type": "MPM",
       "relates": "—",
       "notes": "With Outlook Report (Oct 30).",
-      "next": false
+      "next": true
     },
     {
       "date": "Nov 5 (Thu)",
@@ -1275,6 +1282,15 @@
       "presider": "Governor UEDA Kazuo",
       "note": "Ueda back from illness; Sato's first vote (with majority). July Outlook trims FY2026 CPI on govt energy subsidies and upgrades activity risk to 'generally balanced'; overshoot-2% warning retained. Presser: risk factors for timing/pace expanded from one to three (Middle East, AI, FX); Kumamoto earthquake and Apr-2027 food consumption-tax cut both flagged; Takata and Tamura alternative-language proposals both defeated.",
       "file": "2026-07-31.md"
+    },
+    {
+      "date": "2026-09-18",
+      "display": "17–18 Sep 2026",
+      "decision": "Hike to 1.25%",
+      "vote": "7–2 (Asada, Sato dissented for hold)",
+      "presider": "Governor UEDA Kazuo",
+      "note": "Highest policy rate since 1995. Ueda declares a \"phase change\" — underlying inflation near 2% shifts the policy aim from raising inflation to anchoring it, with symmetric (not downside-skewed) risk management going forward. No pre-committed pace; would not rule out 50bp/consecutive hikes. Consumer-level pass-through language upgraded from \"may spread\" (Jun) to \"has started spreading\". Declined to discuss 30 Aug Bessent meeting; yen weakened ~¥1.50 immediately after the hike.",
+      "file": "2026-09-18.md"
     }
   ],
   "forecasts": {
