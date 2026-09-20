@@ -403,6 +403,12 @@
       <div class="note">All rates were pinned near zero from the mid-2010s through 2023, then rose in step with BOJ's exit from negative rates and the hiking cycle since (Mar 2024). Fixed-rate 10yr housing loans have risen fastest — from ~0.7% (2021) to 3.72% (Jul 2026) — since they price mostly off the 10yr JGB yield rather than the policy rate directly. Floating-rate loans (majority of both outstanding and new lending) move more slowly, tracking the short-term prime rate. The floating/fixed loan-mix table is a separate, less frequently updated cut (Jul–Sep 2025) from the rate lines (Jul 2026) — don't read the two as the same vintage. Figures read directly off a BOJ chart HanHan shared (deposit-amount-weighted averages across categories, new-loan/outstanding-loan rates); treat as accurate to roughly the nearest 0.01-0.02pt, not an auto-refreshed series. Source: Bank of Japan.</div>
     </div>
     <div class="card full" style="margin-top:16px">
+      <h2>Housing loan rate-type share — new borrowers, 2015-2026</h2>
+      <div class="sub">A real, publicly-tracked time series of what new mortgage borrowers actually choose: floating-rate vs. fixed-period-selection vs. full-period-fixed, from Japan Housing Finance Agency's (JHF, 住宅金融支援機構) biannual borrower survey — not the same series as the BOJ snapshot table above (see note).</div>
+      <div style="height:340px;margin-top:16px"><canvas id="housingLoanShareChart"></canvas></div>
+      <div class="note">Each point is a separate ~1,000-1,500-respondent JHF survey wave, covering loans originated in the ~6-month window ending that date (e.g. the latest point, "2026-01", covers loans taken Apr-Sep 2025). Floating-rate choice has risen almost every wave since 2016 as BOJ's low-rate era made variable pricing the cheaper default, hitting a cycle-high 79.0% (Oct 2024-Mar 2025 loans) before easing slightly to 75.0% in the most recent wave (Apr-Sep 2025 loans) as fixed rates' relative appeal improved. <b>Scope differs from the BOJ FSR table above</b> — JHF surveys individual borrowers across all lender types (including online/regional lenders), while BOJ's own 88.7%/11.3% new-loan split is compiled internally from major+regional bank supervisory data only; the two shouldn't be read as the same series, which is why JHF's floating share (75%) sits well below BOJ's (88.7%) for a similar period. Source: JHF, "住宅ローン利用者の実態調査" (Survey on the Conditions of Mortgage Borrowers), <a href="https://www.jhf.go.jp/about/research/loan/user/index.html" target="_blank" style="color:var(--accent)">jhf.go.jp</a>.</div>
+    </div>
+    <div class="card full" style="margin-top:16px">
       <h2>Retail JGB demand — monthly subscription amounts <span id="retailJgbStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
       <div class="sub">The flow-side complement to the household-holdings stock above: how much individuals actually subscribed for at each month's offering, across MOF's 3 retail products (floating-rate 10yr, fixed-rate 5yr, fixed-rate 3yr). Retail JGB sales hit a record ¥5.28tn in 2025 (Reuters, 22 Dec 2025) as MOF courts Japan's ~$7tn household savings pool to fill the gap left by reduced BOJ buying — yet households still hold well under 2% of outstanding JGBs (see the holdings chart above), so this remains a small slice of total demand even as it grows.</div>
       <div class="kpis" id="retailJgbKpis" style="margin-top:12px"></div>
@@ -4932,6 +4938,50 @@ fetch('./lifer_hedge_ratio.json?' + Date.now())
     });
   })
   .catch(e => { console.warn('lifer_hedge_ratio.json unavailable:', e); });
+
+// Housing loan rate-type share — JHF new-borrower survey (chart-read from JHF's own published wave PDFs, no live fetch script)
+let _housingShareChart = null;
+fetch('./housing_loan_share.json?' + Date.now())
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(X => {
+    const cv = document.getElementById('housingLoanShareChart');
+    if (!cv || !X.series) return;
+    const rows = X.series;
+    const labels = rows.map(r => r.wave);
+    const area = (key, color, label) => ({
+      label, data: rows.map(r => r[key]),
+      borderColor: color, backgroundColor: color, fill: true,
+      pointRadius: 0, borderWidth: 1, tension: 0
+    });
+    const datasets = [
+      area('floating', '#e2564a', 'Floating-rate (変動型)'),
+      area('fixed_period', '#d9a441', 'Fixed-period selection (固定期間選択型)'),
+      area('full_fixed', '#5aa0e6', 'Full-period fixed (全期間固定型)')
+    ];
+    if (_housingShareChart) _housingShareChart.destroy();
+    _housingShareChart = new Chart(cv, {
+      type: 'line',
+      data: { labels, datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false, animation: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { position: 'top', align: 'start', labels: { boxWidth: 11, boxHeight: 11, padding: 8, font: { size: 10.5 }, color: '#c7d0e0' } },
+          tooltip: {
+            callbacks: {
+              title: items => 'Survey ' + items[0].label + ' (loans: ' + rows[items[0].dataIndex].window + ')',
+              label: c => `${c.dataset.label}: ${c.parsed.y.toFixed(1)}%`
+            }
+          }
+        },
+        scales: {
+          x: { stacked: true, grid: { display: false }, ticks: { color: '#93a1bd', autoSkip: true, maxTicksLimit: 14 } },
+          y: { stacked: true, min: 0, max: 100, grid: { color: 'rgba(148,163,196,0.12)' }, ticks: { color: '#93a1bd', callback: v => v + '%' }, title: { display: true, text: '% of new borrowers (JHF survey)', color: '#93a1bd' } }
+        }
+      }
+    });
+  })
+  .catch(e => { console.warn('housing_loan_share.json unavailable:', e); });
 
 // Retail JGB demand — monthly subscription amounts (MOF, flow-side complement to household holdings above)
 const RETAIL_JGB_COLORS = { floating10: '#d9a441', fixed5: '#5aa0e6', fixed3: '#4cba7a' };

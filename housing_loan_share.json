@@ -1,0 +1,27 @@
+{
+  "source": "JHF (Japan Housing Finance Agency), 住宅ローン利用者の実態調査 (Survey on the Conditions of Mortgage Borrowers), new-borrower edition",
+  "source_url": "https://www.jhf.go.jp/about/research/loan/user/index.html",
+  "note": "Each row is one survey wave (~1,000-1,500 respondents), covering loans originated in the ~6-month window ending on the wave label. Interest-rate-type share is self-reported by new borrowers across all lender types, not bank-supervisory data.",
+  "series": [
+    {"wave": "2016-06", "window": "Nov 2015 - Feb 2016", "floating": 38.7, "fixed_period": 25.3, "full_fixed": 36.0},
+    {"wave": "2017-02", "window": "Mar 2016 - Sep 2016", "floating": 49.2, "fixed_period": 36.9, "full_fixed": 13.9},
+    {"wave": "2017-08", "window": "Oct 2016 - Mar 2017", "floating": 47.9, "fixed_period": 35.1, "full_fixed": 17.0},
+    {"wave": "2018-02", "window": "Apr 2017 - Sep 2017", "floating": 50.4, "fixed_period": 36.9, "full_fixed": 12.6},
+    {"wave": "2018-08", "window": "Oct 2017 - Mar 2018", "floating": 56.5, "fixed_period": 30.1, "full_fixed": 13.3},
+    {"wave": "2019-02", "window": "Apr 2018 - Sep 2018", "floating": 57.0, "fixed_period": 25.3, "full_fixed": 17.7},
+    {"wave": "2019-08", "window": "Oct 2018 - Mar 2019", "floating": 60.3, "fixed_period": 25.1, "full_fixed": 14.6},
+    {"wave": "2020-02", "window": "Apr 2019 - Sep 2019", "floating": 59.0, "fixed_period": 26.7, "full_fixed": 14.3},
+    {"wave": "2020-05", "window": "Oct 2019 - Mar 2020", "floating": 60.2, "fixed_period": 26.6, "full_fixed": 13.2},
+    {"wave": "2020-11", "window": "Apr 2020 - Sep 2020", "floating": 62.9, "fixed_period": 24.5, "full_fixed": 12.6},
+    {"wave": "2021-04", "window": "Oct 2020 - Mar 2021", "floating": 68.1, "fixed_period": 20.7, "full_fixed": 11.2},
+    {"wave": "2021-10", "window": "Apr 2021 - Sep 2021", "floating": 67.4, "fixed_period": 21.7, "full_fixed": 10.9},
+    {"wave": "2022-04", "window": "Oct 2021 - Mar 2022", "floating": 73.9, "fixed_period": 17.3, "full_fixed": 8.9},
+    {"wave": "2022-10", "window": "Apr 2022 - Sep 2022", "floating": 69.9, "fixed_period": 20.1, "full_fixed": 10.0},
+    {"wave": "2023-04", "window": "Oct 2022 - Mar 2023", "floating": 72.3, "fixed_period": 18.3, "full_fixed": 9.3},
+    {"wave": "2023-10", "window": "Apr 2023 - Sep 2023", "floating": 74.5, "fixed_period": 18.3, "full_fixed": 7.2},
+    {"wave": "2024-04", "window": "Oct 2023 - Mar 2024", "floating": 76.9, "fixed_period": 15.1, "full_fixed": 8.0},
+    {"wave": "2024-10", "window": "Apr 2024 - Sep 2024", "floating": 77.4, "fixed_period": 13.5, "full_fixed": 9.0},
+    {"wave": "2025-04", "window": "Oct 2024 - Mar 2025", "floating": 79.0, "fixed_period": 12.2, "full_fixed": 8.8},
+    {"wave": "2026-01", "window": "Apr 2025 - Sep 2025", "floating": 75.0, "fixed_period": 14.9, "full_fixed": 10.1}
+  ]
+}
