@@ -383,6 +383,26 @@
       <div class="note" id="hhAssetsNote">Source: BOJ Flow of Funds Accounts, DB=FF, sector "Households" (FFAS430), Stock, Assets side — quarterly since end-1997. "Investment trust" and "Equity" are split from "Equity and investment fund shares" since NISA-era flows concentrate in funds. "Debt securities" includes directly-held JGBs. "Other" is a residual.</div>
     </div>
     <div class="card full" style="margin-top:16px">
+      <h2>Deposit &amp; housing loan interest rates — the other side of household normalization</h2>
+      <div class="sub">Why household deposits are finally earning something, and why new mortgage borrowers are paying more: retail deposit and housing-loan rates through the current hiking cycle (Jul 2026 latest print for rates; loan-type mix is Jul–Sep 2025).</div>
+      <div class="kpis" style="margin-top:12px">
+        <div class="kpi"><div class="v">0.56%</div><div class="l">Time deposits (5yr), Jul 2026</div></div>
+        <div class="kpi"><div class="v">0.38%</div><div class="l">Time deposits (1yr), Jul 2026</div></div>
+        <div class="kpi"><div class="v">0.26%</div><div class="l">Ordinary deposits, Jul 2026</div></div>
+        <div class="kpi"><div class="v">0.99% <span style="font-size:.55em;color:var(--muted);font-weight:500">/ 3.72%</span></div><div class="l">Housing loans — floating / fixed(10y initial), Jul 2026</div></div>
+      </div>
+      <div style="overflow-x:auto;margin-top:14px">
+        <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+          <thead><tr style="border-bottom:1px solid var(--line)"><th style="padding:6px 8px;text-align:left">Share of housing loans</th><th style="padding:6px 8px;text-align:right">Floating-rate</th><th style="padding:6px 8px;text-align:right">Fixed-rate</th></tr></thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">Outstanding loans</td><td style="padding:6px 8px;text-align:right">80.9%</td><td style="padding:6px 8px;text-align:right">19.1%</td></tr>
+            <tr><td style="padding:6px 8px">New loans</td><td style="padding:6px 8px;text-align:right">88.7%</td><td style="padding:6px 8px;text-align:right">11.3%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">All rates were pinned near zero from the mid-2010s through 2023, then rose in step with BOJ's exit from negative rates and the hiking cycle since (Mar 2024). Fixed-rate 10yr housing loans have risen fastest — from ~0.7% (2021) to 3.72% (Jul 2026) — since they price mostly off the 10yr JGB yield rather than the policy rate directly. Floating-rate loans (majority of both outstanding and new lending) move more slowly, tracking the short-term prime rate. The floating/fixed loan-mix table is a separate, less frequently updated cut (Jul–Sep 2025) from the rate lines (Jul 2026) — don't read the two as the same vintage. Figures read directly off a BOJ chart HanHan shared (deposit-amount-weighted averages across categories, new-loan/outstanding-loan rates); treat as accurate to roughly the nearest 0.01-0.02pt, not an auto-refreshed series. Source: Bank of Japan.</div>
+    </div>
+    <div class="card full" style="margin-top:16px">
       <h2>Retail JGB demand — monthly subscription amounts <span id="retailJgbStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
       <div class="sub">The flow-side complement to the household-holdings stock above: how much individuals actually subscribed for at each month's offering, across MOF's 3 retail products (floating-rate 10yr, fixed-rate 5yr, fixed-rate 3yr). Retail JGB sales hit a record ¥5.28tn in 2025 (Reuters, 22 Dec 2025) as MOF courts Japan's ~$7tn household savings pool to fill the gap left by reduced BOJ buying — yet households still hold well under 2% of outstanding JGBs (see the holdings chart above), so this remains a small slice of total demand even as it grows.</div>
       <div class="kpis" id="retailJgbKpis" style="margin-top:12px"></div>
@@ -863,12 +883,12 @@
   <div id="tab-gpif" class="panel">
     <div class="card full">
       <h2>GPIF — Government Pension Investment Fund asset allocation, Q1 FY2026 (end-June 2026)</h2>
-      <div class="sub">The world's largest pension fund (¥320.4tn managed). Portfolio composition released quarterly; this is the Q1 FY2026 (Apr-Jun 2026) update, published <b>7 Aug 2026</b>. Source: GPIF official quarterly report, <a href="https://www.gpif.go.jp/operation/38371785gpif/2026_1Q_0807_en.pdf" target="_blank" style="color:var(--accent)">gpif.go.jp</a> — figures are preliminary and may be revised in GPIF's Annual Report.</div>
+      <div class="sub">The world's largest pension fund (¥320.4tn managed, ~$1.97tn at end-Jun 2026 USD/JPY). Portfolio composition released quarterly; this is the Q1 FY2026 (Apr-Jun 2026) update, published <b>7 Aug 2026</b>. Source: GPIF official quarterly report, <a href="https://www.gpif.go.jp/operation/38371785gpif/2026_1Q_0807_en.pdf" target="_blank" style="color:var(--accent)">gpif.go.jp</a> — figures are preliminary and may be revised in GPIF's Annual Report.</div>
     </div>
     <div class="kpis">
-      <div class="kpi"><div class="v">¥320.4tn</div><div class="l">Total portfolio value, end-Jun 2026</div></div>
+      <div class="kpi"><div class="v">¥320.4tn <span style="font-size:.6em;color:var(--muted);font-weight:500">(~$1.97tn)</span></div><div class="l">Total portfolio value, end-Jun 2026</div></div>
       <div class="kpi"><div class="v">+8.20%</div><div class="l">Q1 FY2026 quarterly return (not annualized)</div></div>
-      <div class="kpi"><div class="v">+¥24.09tn</div><div class="l">Q1 FY2026 quarterly profit</div></div>
+      <div class="kpi"><div class="v">+¥24.09tn <span style="font-size:.6em;color:var(--muted);font-weight:500">(~$148.1bn)</span></div><div class="l">Q1 FY2026 quarterly profit</div></div>
       <div class="kpi"><div class="v">+4.95%</div><div class="l">Annualized cumulative return since FY2001</div></div>
     </div>
     <div class="card full" style="margin-top:16px">
