@@ -297,6 +297,11 @@
         <canvas id="cTone" style="max-height:420px"></canvas>
         <div class="note" id="toneNote"></div>
       </div>
+      <div class="card full">
+        <h2>Policy Board positioning — dovish/hawkish vs. inflation-focus/financial-stability-focus</h2>
+        <canvas id="cBoardQuadrant" style="max-height:460px"></canvas>
+        <div class="note" id="boardQuadNote"></div>
+      </div>
     </div>
     <div class="card">
       <h2>Key speakers — how their tone changed</h2>
@@ -1619,6 +1624,107 @@ window.toggleAucMonth = function(header, sid) {
   if (chev) chev.textContent = open ? '▶' : '▼';
 };
 
+// ── Board positioning quadrant ───────────────────────────────────────────────
+// Y-axis is our own qualitative read of which risk each member emphasises more in their own
+// on-record remarks (compiled in D.board / D.speakers): financial-stability / growth-side-effects
+// framing (negative) vs sustainable-inflation-achievement framing (positive). Not pulled from an
+// external report — disclosed in the card's note. X-axis reuses the existing sourced dove-hawk score.
+const BOARD_Y_AXIS = {
+  Himino: 1.5, Takata: 1.5, Koeda: 1.5, Tamura: 1, Masu: 1, Ueda: 0.5,
+  Uchida: -0.5, Sato: -0.3, Asada: -2
+};
+function renderBoardQuadrant(D) {
+  const canvas = document.getElementById('cBoardQuadrant');
+  if (!canvas) return;
+  const specByName = {};
+  (D.spectrum || []).forEach(s => { specByName[s.name] = s.score; });
+  const pts = Object.keys(BOARD_Y_AXIS)
+    .filter(n => specByName[n] !== undefined)
+    .map(n => ({ name: n, x: specByName[n], y: BOARD_Y_AXIS[n], photo: n.toLowerCase() + '.jpg' }));
+
+  function loadImg(src) {
+    return new Promise(res => {
+      const img = new Image();
+      img.onload = () => res(img);
+      img.onerror = () => res(null);
+      img.src = src;
+    });
+  }
+  function circularImage(img, size) {
+    size = size || 96;
+    const c = document.createElement('canvas');
+    c.width = size; c.height = size;
+    const cx = c.getContext('2d');
+    cx.save();
+    cx.beginPath(); cx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2); cx.closePath(); cx.clip();
+    const scale = Math.max(size / img.width, size / img.height);
+    const w = img.width * scale, h = img.height * scale;
+    cx.drawImage(img, (size - w) / 2, (size - h) / 2, w, h);
+    cx.restore();
+    cx.beginPath(); cx.arc(size / 2, size / 2, size / 2 - 1.5, 0, Math.PI * 2);
+    cx.strokeStyle = '#d9a441'; cx.lineWidth = 3; cx.stroke();
+    return c;
+  }
+  const quadrantLines = {
+    id: 'quadrantLines',
+    beforeDraw(chart) {
+      const { ctx, chartArea, scales } = chart;
+      if (!chartArea) return;
+      const xZero = scales.x.getPixelForValue(0), yZero = scales.y.getPixelForValue(0);
+      ctx.save();
+      ctx.strokeStyle = 'rgba(147,161,189,.3)'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(xZero, chartArea.top); ctx.lineTo(xZero, chartArea.bottom); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(chartArea.left, yZero); ctx.lineTo(chartArea.right, yZero); ctx.stroke();
+      ctx.restore();
+    }
+  };
+  const nameLabels = {
+    id: 'nameLabels',
+    afterDatasetsDraw(chart) {
+      const meta = chart.getDatasetMeta(0);
+      const { ctx } = chart;
+      ctx.save();
+      ctx.font = '600 11px Segoe UI, sans-serif'; ctx.fillStyle = '#e8edf7'; ctx.textAlign = 'center';
+      meta.data.forEach((p, i) => ctx.fillText(pts[i].name, p.x, p.y + 32));
+      ctx.restore();
+    }
+  };
+
+  Promise.all(pts.map(p => loadImg('./photos/' + p.photo))).then(imgs => {
+    const radius = 22;
+    const existing = Chart.getChart(canvas);
+    if (existing) existing.destroy();
+    new Chart(canvas, {
+      type: 'scatter',
+      data: {
+        datasets: [{
+          data: pts.map(p => ({ x: p.x, y: p.y })),
+          pointStyle: imgs.map(img => img ? circularImage(img, radius * 2) : 'circle'),
+          pointRadius: radius, pointHoverRadius: radius + 3,
+          backgroundColor: 'rgba(217,164,65,.5)'
+        }]
+      },
+      plugins: [quadrantLines, nameLabels],
+      options: {
+        layout: { padding: { top: 10, bottom: 30, left: 10, right: 10 } },
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => pts[ctx.dataIndex].name + ` (dove/hawk ${pts[ctx.dataIndex].x}, inflation/stability ${pts[ctx.dataIndex].y})` } }
+        },
+        scales: {
+          x: { min: -2.5, max: 2.5, title: { display: true, text: '← DOVISH            HAWKISH →', color: '#93a1bd' }, grid: { color: 'rgba(42,55,82,.5)' } },
+          y: { min: -2.5, max: 2.5, title: { display: true, text: 'FINANCIAL STABILITY ←            → SUSTAINABLE INFLATION', color: '#93a1bd' }, grid: { color: 'rgba(42,55,82,.5)' } }
+        }
+      }
+    });
+  });
+
+  const noteEl = document.getElementById('boardQuadNote');
+  if (noteEl) {
+    noteEl.textContent = 'X-axis reuses the dove-hawk score from "Current spectrum" above (sourced from members\' own dated remarks). Y-axis is our own qualitative read of whether a member\'s public framing leans more on achieving sustainable 2% inflation (top) or on financial-stability/growth side-effects of tightening (bottom) — not pulled from an external report, styled after a Bloomberg Economics board-positioning chart HanHan shared. Departed members excluded (no current photo/position).';
+  }
+}
+
 // ── Render ──────────────────────────────────────────────────────────────────
 function render(D) {
   document.getElementById('loading').style.display = 'none';
@@ -1665,6 +1771,9 @@ function render(D) {
       scales: { x: { min: -2.5, max: 2.5, title: { display: true, text: '← dove   |   hawk →' } } }
     }
   });
+
+  // Board positioning quadrant — dove/hawk (x, reuses D.spectrum) vs inflation-focus/financial-stability-focus (y, our own read of each member's public remarks, see note)
+  renderBoardQuadrant(D);
 
   // Tone over time chart
   new Chart(document.getElementById('cTone'), {
