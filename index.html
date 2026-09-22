@@ -1712,8 +1712,8 @@ function renderBoardQuadrant(D) {
           tooltip: { callbacks: { label: ctx => pts[ctx.dataIndex].name + ` (dove/hawk ${pts[ctx.dataIndex].x}, inflation/stability ${pts[ctx.dataIndex].y})` } }
         },
         scales: {
-          x: { min: -2.5, max: 2.5, title: { display: true, text: '← DOVISH            HAWKISH →', color: '#93a1bd' }, grid: { color: 'rgba(42,55,82,.5)' } },
-          y: { min: -2.5, max: 2.5, title: { display: true, text: 'FINANCIAL STABILITY ←            → SUSTAINABLE INFLATION', color: '#93a1bd' }, grid: { color: 'rgba(42,55,82,.5)' } }
+          x: { min: -3, max: 3, title: { display: true, text: '← DOVISH            HAWKISH →', color: '#93a1bd' }, grid: { color: 'rgba(42,55,82,.5)' } },
+          y: { min: -3, max: 3, title: { display: true, text: 'FINANCIAL STABILITY ←            → SUSTAINABLE INFLATION', color: '#93a1bd' }, grid: { color: 'rgba(42,55,82,.5)' } }
         }
       }
     });
