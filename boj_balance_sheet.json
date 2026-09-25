@@ -1,7 +1,7 @@
 {
  "meta": {
   "as_of": "2026-08",
-  "generated_at": "2026-09-19T06:08:37+00:00",
+  "generated_at": "2026-09-25T06:36:39+00:00",
   "unit": "JPY tn",
   "frequency": "monthly (end-of-month snapshot; BOJ also publishes every-10-days on the acmai page)",
   "source": "BOJ Time-Series Data Search API (DB=BS01, Bank of Japan Accounts); DB=FM05 (JGB amount outstanding) for the BOJ-ownership-share denominator; Cabinet Office ESRI Quarterly Estimates of GDP (nominal, original series) for the assets/GDP denominator",

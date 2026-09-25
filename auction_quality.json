@@ -3,7 +3,7 @@
     "source": "MOF JGB auction historical data workbook",
     "source_url": "https://www.mof.go.jp/jgbs/reference/appendix/jgb_historical_data.xls",
     "method": "Per auction: bid-to-cover = competitive bids submitted / competitive bids accepted. Tail (bp) = (yield at lowest accepted price - yield at weighted average price) x 100.",
-    "generated_at": "2026-09-19 06:06 UTC"
+    "generated_at": "2026-09-25 06:36 UTC"
   },
   "tenors": {
     "30Y": [
