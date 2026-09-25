@@ -1,7 +1,7 @@
 {
   "meta": {
     "as_of": "2026-08",
-    "generated_at": "2026-09-19T06:07:06Z",
+    "generated_at": "2026-09-25T06:29:49Z",
     "unit": "JPY tn",
     "sign": "+ = net purchase (inbound: foreign capital inflow to Japan); − = net sale / repatriation",
     "source": "MoF International Transactions in Securities (Monthly) — non-residents' net purchase of Japanese securities, by instrument (montha1.csv)",
@@ -534,7 +534,7 @@
       -16.79,
       -0.32,
       1.06,
-      8.31
+      8.2
     ],
     "out_ltbonds": [
       13.17,
@@ -586,7 +586,7 @@
       19.06,
       -0.11,
       2.29,
-      -0.92
+      -0.9
     ],
     "out_stbonds": [
       0.79,
@@ -638,7 +638,7 @@
       -1.15,
       1.22,
       5.15,
-      -6.53
+      -6.44
     ],
     "out_total": [
       -11.51,
@@ -690,7 +690,7 @@
       1.12,
       0.79,
       8.5,
-      0.88
+      0.87
     ],
     "in_equity": [
       18.04,
@@ -742,7 +742,7 @@
       18.08,
       -18.67,
       8.11,
-      -1.11
+      -1.1
     ],
     "in_ltbonds": [
       11.56,
@@ -794,7 +794,7 @@
       5.52,
       -15.54,
       -8.22,
-      -4.38
+      -4.32
     ],
     "in_stbonds": [
       -43.98,
@@ -846,7 +846,7 @@
       -4.42,
       -25.54,
       -8.07,
-      -31.81
+      -31.38
     ],
     "in_total": [
       -14.38,
@@ -898,7 +898,7 @@
       19.18,
       -59.76,
       -8.19,
-      -37.3
+      -36.8
     ]
   }
 }

@@ -1,7 +1,7 @@
 {
  "meta": {
   "as_of": "2026-09-12",
-  "generated_at": "2026-09-19T06:06:41Z",
+  "generated_at": "2026-09-25T06:30:02Z",
   "unit": "JPY tn",
   "sign": "+ = net purchase (capital flow in that direction); − = net sale / repatriation",
   "source": "MoF International Transactions in Securities (Weekly; based on reports from designated major investors) — Portfolio Investment Assets (residents' net purchase of foreign securities) vs Portfolio Investment Liabilities (non-residents' net purchase of Japanese securities), each split into Equity & investment fund shares vs Long-term debt securities",
