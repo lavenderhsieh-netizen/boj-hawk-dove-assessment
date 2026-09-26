@@ -271,6 +271,7 @@
   <button class="tab" onclick="showTab('calendar',this)">BOJ calendar</button>
   <button class="tab" onclick="showTab('auctions',this)">Auctions &amp; fiscal</button>
   <button class="tab" onclick="showTab('ownership',this)">JGB Ownership &amp; Retail</button>
+  <button class="tab" onclick="showTab('property',this)">Property</button>
   <button class="tab" onclick="showTab('seasonality',this)">Seasonality</button>
   <button class="tab" onclick="showTab('markets',this)">Markets &amp; bonds</button>
   <button class="tab" onclick="showTab('method',this)">Methodology</button>
@@ -388,6 +389,50 @@
       <div class="note" id="hhAssetsNote">Source: BOJ Flow of Funds Accounts, DB=FF, sector "Households" (FFAS430), Stock, Assets side — quarterly since end-1997. "Investment trust" and "Equity" are split from "Equity and investment fund shares" since NISA-era flows concentrate in funds. "Debt securities" includes directly-held JGBs. "Other" is a residual.</div>
     </div>
     <div class="card full" style="margin-top:16px">
+      <h2>Retail JGB demand — monthly subscription amounts <span id="retailJgbStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">The flow-side complement to the household-holdings stock above: how much individuals actually subscribed for at each month's offering, across MOF's 3 retail products (floating-rate 10yr, fixed-rate 5yr, fixed-rate 3yr). Retail JGB sales hit a record ¥5.28tn in 2025 (Reuters, 22 Dec 2025) as MOF courts Japan's ~$7tn household savings pool to fill the gap left by reduced BOJ buying — yet households still hold well under 2% of outstanding JGBs (see the holdings chart above), so this remains a small slice of total demand even as it grows.</div>
+      <div class="kpis" id="retailJgbKpis" style="margin-top:12px"></div>
+      <div style="height:340px;margin-top:16px"><canvas id="chart-retail-jgb"></canvas></div>
+      <div class="note" id="retailJgbNote">Source: MOF "個人向け国債の応募額" (Retail JGB subscription amount), monthly press release. Amounts are subscriptions (応募額) for that month's offering, not issuance/settlement (issue date is mid-following-month). MOF footnotes that reported figures can be revised; latest publication per month is used.</div>
+    </div>
+  </div>
+
+  <!-- PROPERTY -->
+  <div id="tab-property" class="panel">
+    <div class="card full">
+      <h2>Japan residential property prices — MLIT's official price index <span id="propResStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">The closest Japan equivalent to China's NBS 70-city index or the US Case-Shiller index: MLIT's 不動産価格指数 (Real Estate Property Price Index), a hedonic/repeat-transaction index built from ~300,000 registry-based transactions a year, base 2010=100. National composite vs. the 3 major metro areas.</div>
+      <div class="kpis" id="propResKpis" style="margin-top:12px"></div>
+      <div style="height:360px;margin-top:16px"><canvas id="propResChart"></canvas></div>
+      <div class="note" id="propResNote"><b>MLIT postponed publication of this index on 2026-08-27</b> (令和8年8月27日) due to a program bug discovered during index calculation, affecting Jan-Apr 2026 monthly data and onward — no new publication date has been announced as of this build. The latest point shown (Dec 2025) is genuinely MLIT's most recent published figure, not a stale pull; re-run <code>fetch_mlit_property_index.py</code> periodically to pick up newer data once the postponement lifts. Source: Ministry of Land, Infrastructure, Transport and Tourism (国土交通省) — 不動産価格指数（住宅）, seasonally adjusted, hedonic/repeat-transaction index from ~300,000 registry-based transactions/year.</div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>National residential index by property type</h2>
+      <div class="sub">Same MLIT series, national coverage only, split by the 3 underlying property types plus the headline composite — condos have outpaced detached houses and land throughout the post-2013 recovery.</div>
+      <div style="height:340px;margin-top:16px"><canvas id="propResCatChart"></canvas></div>
+      <div class="note">住宅地 (Residential land), 戸建住宅 (Detached house) and マンション（区分所有） (Condominium) are the 3 components MLIT aggregates into 住宅総合 (Residential composite). Same source/base as the geography chart above.</div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>Commercial property price index <span id="propComStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">MLIT's companion commercial-property series (quarterly, same 2010=100 base) — national composite vs. the 3 major metro areas combined.</div>
+      <div style="height:340px;margin-top:16px"><canvas id="propComChart"></canvas></div>
+      <div class="note" id="propComNote">Same MLIT postponement noted above applies here too — latest published point is Q4 2025. Source: MLIT 不動産価格指数（商業用不動産）, seasonally adjusted, quarterly.</div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>REINS Market Watch — Greater Tokyo resale condo market <span id="propReinsCondoStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">The demand-health gauge MLIT's transaction-price index can't give you: monthly resale (existing) condo contract price and contract count for the Greater Tokyo Area (Tokyo/Kanagawa/Saitama/Chiba) — the closest Japan analog to Korea's KB breadth/resale series.</div>
+      <div class="kpis" id="propReinsCondoKpis" style="margin-top:12px"></div>
+      <div style="height:360px;margin-top:16px"><canvas id="propReinsCondoChart"></canvas></div>
+      <div class="note" id="propReinsCondoNote">Source: REINS (東日本不動産流通機構), 月例速報 Market Watch, page-1 headline table, monthly. Series starts 2015-04 (earliest reports, 2014-04–2015-03, use a layout with no extractable comparator fields); 2025-04 is also missing (one-month gap at the report-layout transition). Inventory count only available from May 2025 onward (report layout change) — shown where available.</div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>REINS Market Watch — Greater Tokyo resale detached-house market <span id="propReinsHouseStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">Same REINS release, the resale detached-house side of the Greater Tokyo market.</div>
+      <div class="kpis" id="propReinsHouseKpis" style="margin-top:12px"></div>
+      <div style="height:360px;margin-top:16px"><canvas id="propReinsHouseChart"></canvas></div>
+      <div class="note" id="propReinsHouseNote">Source: REINS (東日本不動産流通機構), 月例速報 Market Watch, page-1 headline table, monthly.</div>
+    </div>
+    <div class="card full" style="margin-top:16px">
       <h2>Deposit &amp; housing loan interest rates — the other side of household normalization</h2>
       <div class="sub">Why household deposits are finally earning something, and why new mortgage borrowers are paying more: retail deposit and housing-loan rates through the current hiking cycle (Jul 2026 latest print for rates; loan-type mix is Jul–Sep 2025).</div>
       <div class="kpis" style="margin-top:12px">
@@ -412,13 +457,6 @@
       <div class="sub">A real, publicly-tracked time series of what new mortgage borrowers actually choose: floating-rate vs. fixed-period-selection vs. full-period-fixed, from Japan Housing Finance Agency's (JHF, 住宅金融支援機構) biannual borrower survey — not the same series as the BOJ snapshot table above (see note).</div>
       <div style="height:340px;margin-top:16px"><canvas id="housingLoanShareChart"></canvas></div>
       <div class="note">Each point is a separate ~1,000-1,500-respondent JHF survey wave, covering loans originated in the ~6-month window ending that date (e.g. the latest point, "2026-01", covers loans taken Apr-Sep 2025). Floating-rate choice has risen almost every wave since 2016 as BOJ's low-rate era made variable pricing the cheaper default, hitting a cycle-high 79.0% (Oct 2024-Mar 2025 loans) before easing slightly to 75.0% in the most recent wave (Apr-Sep 2025 loans) as fixed rates' relative appeal improved. <b>Scope differs from the BOJ FSR table above</b> — JHF surveys individual borrowers across all lender types (including online/regional lenders), while BOJ's own 88.7%/11.3% new-loan split is compiled internally from major+regional bank supervisory data only; the two shouldn't be read as the same series, which is why JHF's floating share (75%) sits well below BOJ's (88.7%) for a similar period. Source: JHF, "住宅ローン利用者の実態調査" (Survey on the Conditions of Mortgage Borrowers), <a href="https://www.jhf.go.jp/about/research/loan/user/index.html" target="_blank" style="color:var(--accent)">jhf.go.jp</a>.</div>
-    </div>
-    <div class="card full" style="margin-top:16px">
-      <h2>Retail JGB demand — monthly subscription amounts <span id="retailJgbStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
-      <div class="sub">The flow-side complement to the household-holdings stock above: how much individuals actually subscribed for at each month's offering, across MOF's 3 retail products (floating-rate 10yr, fixed-rate 5yr, fixed-rate 3yr). Retail JGB sales hit a record ¥5.28tn in 2025 (Reuters, 22 Dec 2025) as MOF courts Japan's ~$7tn household savings pool to fill the gap left by reduced BOJ buying — yet households still hold well under 2% of outstanding JGBs (see the holdings chart above), so this remains a small slice of total demand even as it grows.</div>
-      <div class="kpis" id="retailJgbKpis" style="margin-top:12px"></div>
-      <div style="height:340px;margin-top:16px"><canvas id="chart-retail-jgb"></canvas></div>
-      <div class="note" id="retailJgbNote">Source: MOF "個人向け国債の応募額" (Retail JGB subscription amount), monthly press release. Amounts are subscriptions (応募額) for that month's offering, not issuance/settlement (issue date is mid-following-month). MOF footnotes that reported figures can be revised; latest publication per month is used.</div>
     </div>
   </div>
 
@@ -5091,6 +5129,185 @@ fetch('./housing_loan_share.json?' + Date.now())
     });
   })
   .catch(e => { console.warn('housing_loan_share.json unavailable:', e); });
+
+// ── PROPERTY TAB ─────────────────────────────────────────────────────────────
+const PROP_GEO_COLORS = { national: '#d9a441', tokyo_metro_area: '#e2564a', nagoya_metro_area: '#4a90d9', osaka_metro_area: '#4cba7a' };
+const PROP_CAT_COLORS = { residential_composite: '#d9a441', residential_land: '#8fa3c0', detached_house: '#e2564a', condominium: '#4a90d9' };
+let _propResChart = null, _propResCatChart = null, _propComChart = null, _propReinsCondoChart = null, _propReinsHouseChart = null;
+
+fetch('./property_data.json?' + Date.now())
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(P => {
+    const mlit = P.mlit_price_index;
+    if (mlit) {
+      // Residential — geography comparison (national + 3 major metro areas, all share the same 2008-04+ label range)
+      const resGeoKeys = ['national', 'tokyo_metro_area', 'nagoya_metro_area', 'osaka_metro_area'];
+      const resGeoNames = { national: 'National', tokyo_metro_area: 'Greater Tokyo', nagoya_metro_area: 'Greater Nagoya', osaka_metro_area: 'Greater Osaka' };
+      const resNational = mlit.residential.geography.national;
+      const resLabels = resNational.labels;
+      const statusEl = document.getElementById('propResStatus');
+      if (statusEl) statusEl.textContent = '· ' + mlit.residential.as_of;
+      const latestComposite = resNational.series.residential_composite[resNational.series.residential_composite.length - 1];
+      const yr = resLabels[resLabels.length - 1].split('-')[0];
+      const priorYearIdx = resLabels.indexOf((+yr - 1) + '-' + resLabels[resLabels.length - 1].split('-')[1]);
+      const yoyPct = priorYearIdx >= 0 ? ((latestComposite / resNational.series.residential_composite[priorYearIdx] - 1) * 100) : null;
+      const kpis = document.getElementById('propResKpis');
+      if (kpis) kpis.innerHTML = `
+        <div class="kpi"><div class="v">${latestComposite.toFixed(1)}</div><div class="l">National residential composite index, ${mlit.residential.as_of} (2010=100)</div></div>
+        ${yoyPct !== null ? `<div class="kpi"><div class="v">${yoyPct >= 0 ? '+' : ''}${yoyPct.toFixed(1)}%</div><div class="l">YoY, national composite</div></div>` : ''}
+        <div class="kpi"><div class="v">${resGeoKeys.slice(1).map(k => mlit.residential.geography[k].series.residential_composite.slice(-1)[0].toFixed(0)).join(' / ')}</div><div class="l">Tokyo / Nagoya / Osaka composite, latest</div></div>`;
+      const resDatasets = resGeoKeys.map(k => ({
+        label: resGeoNames[k], data: mlit.residential.geography[k].series.residential_composite,
+        borderColor: PROP_GEO_COLORS[k], backgroundColor: PROP_GEO_COLORS[k],
+        fill: false, pointRadius: 0, borderWidth: k === 'national' ? 2.5 : 1.5, tension: 0
+      }));
+      const cvRes = document.getElementById('propResChart');
+      if (cvRes) {
+        if (_propResChart) _propResChart.destroy();
+        _propResChart = new Chart(cvRes, {
+          type: 'line', data: { labels: resLabels, datasets: resDatasets },
+          options: {
+            responsive: true, maintainAspectRatio: false, animation: false,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+              legend: { position: 'top', align: 'start', labels: { boxWidth: 11, boxHeight: 11, padding: 8, font: { size: 10.5 }, color: '#c7d0e0' } },
+              tooltip: { callbacks: { label: c => `${c.dataset.label}: ${c.parsed.y.toFixed(1)}` } }
+            },
+            scales: {
+              x: { grid: { display: false }, ticks: { color: '#93a1bd', autoSkip: true, maxTicksLimit: 16 } },
+              y: { grid: { color: 'rgba(148,163,196,0.12)' }, ticks: { color: '#93a1bd' }, title: { display: true, text: 'Index, 2010 average = 100', color: '#93a1bd' } }
+            }
+          }
+        });
+      }
+
+      // Residential — national by category
+      const catKeys = ['residential_composite', 'residential_land', 'detached_house', 'condominium'];
+      const catNames = { residential_composite: 'Residential composite (住宅総合)', residential_land: 'Residential land (住宅地)', detached_house: 'Detached house (戸建住宅)', condominium: 'Condominium (マンション)' };
+      const catDatasets = catKeys.map(k => ({
+        label: catNames[k], data: resNational.series[k],
+        borderColor: PROP_CAT_COLORS[k], backgroundColor: PROP_CAT_COLORS[k],
+        fill: false, pointRadius: 0, borderWidth: k === 'residential_composite' ? 2.5 : 1.5, tension: 0
+      }));
+      const cvResCat = document.getElementById('propResCatChart');
+      if (cvResCat) {
+        if (_propResCatChart) _propResCatChart.destroy();
+        _propResCatChart = new Chart(cvResCat, {
+          type: 'line', data: { labels: resLabels, datasets: catDatasets },
+          options: {
+            responsive: true, maintainAspectRatio: false, animation: false,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+              legend: { position: 'top', align: 'start', labels: { boxWidth: 11, boxHeight: 11, padding: 8, font: { size: 10.5 }, color: '#c7d0e0' } },
+              tooltip: { callbacks: { label: c => `${c.dataset.label}: ${c.parsed.y.toFixed(1)}` } }
+            },
+            scales: {
+              x: { grid: { display: false }, ticks: { color: '#93a1bd', autoSkip: true, maxTicksLimit: 16 } },
+              y: { grid: { color: 'rgba(148,163,196,0.12)' }, ticks: { color: '#93a1bd' }, title: { display: true, text: 'Index, 2010 average = 100', color: '#93a1bd' } }
+            }
+          }
+        });
+      }
+
+      // Commercial — national vs 3 major metro areas combined
+      const comNational = mlit.commercial.geography.national;
+      const comLabels = comNational.labels;
+      const comStatusEl = document.getElementById('propComStatus');
+      if (comStatusEl) comStatusEl.textContent = '· ' + mlit.commercial.as_of;
+      const comDatasets = [
+        { label: 'National', data: comNational.series.commercial_composite, borderColor: '#d9a441', backgroundColor: '#d9a441', fill: false, pointRadius: 0, borderWidth: 2.5, tension: 0 },
+        { label: '3 major metro areas', data: mlit.commercial.geography.three_major_metro_areas.series.commercial_composite, borderColor: '#e2564a', backgroundColor: '#e2564a', fill: false, pointRadius: 0, borderWidth: 1.5, tension: 0 }
+      ];
+      const cvCom = document.getElementById('propComChart');
+      if (cvCom) {
+        if (_propComChart) _propComChart.destroy();
+        _propComChart = new Chart(cvCom, {
+          type: 'line', data: { labels: comLabels, datasets: comDatasets },
+          options: {
+            responsive: true, maintainAspectRatio: false, animation: false,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+              legend: { position: 'top', align: 'start', labels: { boxWidth: 11, boxHeight: 11, padding: 8, font: { size: 10.5 }, color: '#c7d0e0' } },
+              tooltip: { callbacks: { label: c => `${c.dataset.label}: ${c.parsed.y.toFixed(1)}` } }
+            },
+            scales: {
+              x: { grid: { display: false }, ticks: { color: '#93a1bd', autoSkip: true, maxTicksLimit: 16 } },
+              y: { grid: { color: 'rgba(148,163,196,0.12)' }, ticks: { color: '#93a1bd' }, title: { display: true, text: 'Index, 2010 average = 100', color: '#93a1bd' } }
+            }
+          }
+        });
+      }
+    }
+
+    const reins = P.reins_market_watch;
+    if (reins) {
+      const buildReinsChart = (canvasId, statusId, kpisId, series, priceKey, priceLabel) => {
+        const statusEl = document.getElementById(statusId);
+        if (statusEl) statusEl.textContent = '· ' + reins.as_of;
+        const n = reins.labels.length;
+        const latestPrice = series[priceKey][n - 1];
+        const latestCount = series.contract_count[n - 1];
+        const latestInv = series.inventory_count[n - 1];
+        const kpisEl = document.getElementById(kpisId);
+        if (kpisEl) kpisEl.innerHTML = `
+          <div class="kpi"><div class="v">${latestPrice.toLocaleString()}万円</div><div class="l">${priceLabel}, ${reins.as_of}</div></div>
+          <div class="kpi"><div class="v">${latestCount.toLocaleString()}</div><div class="l">Contracts, ${reins.as_of} <span style="color:${series.contract_count_yoy_pct[n-1] >= 0 ? '#4cba7a' : 'var(--hawk2)'}">${series.contract_count_yoy_pct[n-1] >= 0 ? '+' : ''}${series.contract_count_yoy_pct[n-1]}% YoY</span></div></div>
+          ${latestInv != null ? `<div class="kpi"><div class="v">${latestInv.toLocaleString()}</div><div class="l">Inventory listings, ${reins.as_of}</div></div>` : ''}`;
+        return {
+          labels: reins.labels,
+          datasets: [
+            { type: 'line', label: priceLabel, data: series[priceKey], yAxisID: 'y', borderColor: '#d9a441', backgroundColor: '#d9a441', fill: false, pointRadius: 0, borderWidth: 2, tension: 0 },
+            { type: 'bar', label: 'Contract count', data: series.contract_count, yAxisID: 'y1', backgroundColor: 'rgba(74,144,217,0.45)', borderWidth: 0 }
+          ]
+        };
+      };
+
+      const condoData = buildReinsChart('propReinsCondoChart', 'propReinsCondoStatus', 'propReinsCondoKpis', reins.condo, 'price_manyen', 'Contract price');
+      const cvCondo = document.getElementById('propReinsCondoChart');
+      if (cvCondo) {
+        if (_propReinsCondoChart) _propReinsCondoChart.destroy();
+        _propReinsCondoChart = new Chart(cvCondo, {
+          data: condoData,
+          options: {
+            responsive: true, maintainAspectRatio: false, animation: false,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+              legend: { position: 'top', align: 'start', labels: { boxWidth: 11, boxHeight: 11, padding: 8, font: { size: 10.5 }, color: '#c7d0e0' } },
+              tooltip: { callbacks: { label: c => c.dataset.yAxisID === 'y' ? `${c.dataset.label}: ¥${c.parsed.y.toLocaleString()}万円` : `${c.dataset.label}: ${c.parsed.y.toLocaleString()}` } }
+            },
+            scales: {
+              x: { grid: { display: false }, ticks: { color: '#93a1bd', autoSkip: true, maxTicksLimit: 14 } },
+              y: { position: 'left', grid: { color: 'rgba(148,163,196,0.12)' }, ticks: { color: '#93a1bd' }, title: { display: true, text: 'Contract price, 万円', color: '#93a1bd' } },
+              y1: { position: 'right', grid: { display: false }, ticks: { color: '#93a1bd' }, title: { display: true, text: 'Contract count', color: '#93a1bd' } }
+            }
+          }
+        });
+      }
+
+      const houseData = buildReinsChart('propReinsHouseChart', 'propReinsHouseStatus', 'propReinsHouseKpis', reins.house, 'price_manyen', 'Contract price');
+      const cvHouse = document.getElementById('propReinsHouseChart');
+      if (cvHouse) {
+        if (_propReinsHouseChart) _propReinsHouseChart.destroy();
+        _propReinsHouseChart = new Chart(cvHouse, {
+          data: houseData,
+          options: {
+            responsive: true, maintainAspectRatio: false, animation: false,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+              legend: { position: 'top', align: 'start', labels: { boxWidth: 11, boxHeight: 11, padding: 8, font: { size: 10.5 }, color: '#c7d0e0' } },
+              tooltip: { callbacks: { label: c => c.dataset.yAxisID === 'y' ? `${c.dataset.label}: ¥${c.parsed.y.toLocaleString()}万円` : `${c.dataset.label}: ${c.parsed.y.toLocaleString()}` } }
+            },
+            scales: {
+              x: { grid: { display: false }, ticks: { color: '#93a1bd', autoSkip: true, maxTicksLimit: 14 } },
+              y: { position: 'left', grid: { color: 'rgba(148,163,196,0.12)' }, ticks: { color: '#93a1bd' }, title: { display: true, text: 'Contract price, 万円', color: '#93a1bd' } },
+              y1: { position: 'right', grid: { display: false }, ticks: { color: '#93a1bd' }, title: { display: true, text: 'Contract count', color: '#93a1bd' } }
+            }
+          }
+        });
+      }
+    }
+  })
+  .catch(e => { console.warn('property_data.json unavailable:', e); });
 
 // Retail JGB demand — monthly subscription amounts (MOF, flow-side complement to household holdings above)
 const RETAIL_JGB_COLORS = { floating10: '#d9a441', fixed5: '#5aa0e6', fixed3: '#4cba7a' };
