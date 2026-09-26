@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Japan NISA size tracker",
-    "as_of": "2026-09-22",
+    "as_of": "2026-09-26",
     "timezone": "Asia/Singapore",
     "notes": "Whole-market (FSA) figures are the official headline. 10-firm (JSDA) figures are the timely monthly pulse. Units as labelled per series."
   },
@@ -247,11 +247,15 @@
         },
         {
           "date": "2026-06",
-          "value": 14933
+          "value": 16540
         },
         {
           "date": "2026-07",
-          "value": 12379
+          "value": 10772
+        },
+        {
+          "date": "2026-08",
+          "value": 10896
         }
       ]
     },
@@ -289,13 +293,17 @@
         {
           "date": "2026-07",
           "value": 2014
+        },
+        {
+          "date": "2026-08",
+          "value": 2034
         }
       ]
     },
     "latest_allocation_2026Q1": {
-      "growth_quota_share": 0.73,
-      "tsumitate_quota_share": 0.27,
-      "domestic_stock_share_of_total": 0.38,
+      "growth_quota_share": 0.71,
+      "tsumitate_quota_share": 0.29,
+      "domestic_stock_share_of_total": 0.37,
       "within_growth_quota": {
         "stocks": 0.59,
         "funds": 0.41
