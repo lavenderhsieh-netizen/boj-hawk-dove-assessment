@@ -1,7 +1,7 @@
 {
  "meta": {
   "as_of": "2026-08",
-  "generated_at": "2026-09-25T06:29:46Z",
+  "generated_at": "2026-09-25T06:42:47Z",
   "unit": "JPY tn",
   "sign": "+ = net purchase of foreign securities (yen outflow); − = net sale / repatriation",
   "source": "MoF International Transactions in Securities — residents' net purchase of foreign securities by type of investor, split equity / LT bonds / ST bonds (monthb2/3/4.csv)",
