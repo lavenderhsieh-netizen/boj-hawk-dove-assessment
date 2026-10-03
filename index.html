@@ -413,6 +413,13 @@
       <div class="note">住宅地 (Residential land), 戸建住宅 (Detached house) and マンション（区分所有） (Condominium) are the 3 components MLIT aggregates into 住宅総合 (Residential composite). Same source/base as the geography chart above.</div>
     </div>
     <div class="card full" style="margin-top:16px">
+      <h2>MLIT momentum — YoY and 3-month annualised change <span id="propMomStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">Level charts hide turning points. <b>YoY</b> is the headline momentum read; <b>3m annualised</b> (3-month change, compounded to a yearly rate) reacts faster and turns before YoY does. Watch for YoY decelerating for several months in a row, which usually precedes a price peak by more than a negative print does.</div>
+      <div style="margin-top:10px"><button style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px;background:transparent;color:var(--ink);cursor:pointer" id="propMomYoy" onclick="setPropMom('yoy')">YoY %</button> <button style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px;background:transparent;color:var(--ink);cursor:pointer" id="propMom3m" onclick="setPropMom('3m')">3m annualised %</button> <select id="propMomCat" onchange="setPropMom()" style="margin-left:10px"><option value="residential_composite">Composite</option><option value="condominium">Condominium</option><option value="detached_house">Detached house</option><option value="residential_land">Land</option></select></div>
+      <div style="height:340px;margin-top:12px"><canvas id="propMomChart"></canvas></div>
+      <div class="note">Computed from the MLIT index levels above (same postponement caveat: latest point Dec 2025). Index is seasonally adjusted, so short-window measures are meaningful here, unlike raw REINS data. The 3m view is noisy for the regional metros; read the National line first.</div>
+    </div>
+    <div class="card full" style="margin-top:16px">
       <h2>Commercial property price index <span id="propComStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
       <div class="sub">MLIT's companion commercial-property series (quarterly, same 2010=100 base) — national composite vs. the 3 major metro areas combined.</div>
       <div style="height:340px;margin-top:16px"><canvas id="propComChart"></canvas></div>
@@ -424,6 +431,13 @@
       <div class="kpis" id="propReinsCondoKpis" style="margin-top:12px"></div>
       <div style="height:360px;margin-top:16px"><canvas id="propReinsCondoChart"></canvas></div>
       <div class="note" id="propReinsCondoNote">Source: REINS (東日本不動産流通機構), 月例速報 Market Watch, page-1 headline table, monthly. Series starts 2015-04 (earliest reports, 2014-04–2015-03, use a layout with no extractable comparator fields); 2025-04 is also missing (one-month gap at the report-layout transition). Inventory count only available from May 2025 onward (report layout change) — shown where available.</div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>Greater Tokyo resale condo — momentum &amp; health <span id="propHealthStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">Price alone can mislead. Read three YoY lines together: <b>price per sqm</b> (uses ㎡ price, not average price, to avoid unit-mix distortion), <b>contract count</b> (volume) and <b>inventory</b> (supply). Healthy = price up with volume up and inventory flat/falling. Early-warning = price flat or falling while volume falls and inventory rises. Raw REINS is seasonal, so all lines are YoY. Shown from 2023 onward so the 2020–21 COVID swings don't flatten the recent signal.</div>
+      <div class="kpis" id="propHealthKpis" style="margin-top:12px"></div>
+      <div style="height:340px;margin-top:16px"><canvas id="propHealthChart"></canvas></div>
+      <div class="note">Listing-to-contract gap = asking price per sqm of unsold inventory ÷ contract price per sqm, minus 1. A rising gap means sellers' asking prices are running ahead of what buyers pay. Inventory data starts May 2025 (REINS layout change), so inventory YoY begins from there. Source: REINS Market Watch.</div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>REINS Market Watch — Greater Tokyo resale detached-house market <span id="propReinsHouseStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
@@ -5308,6 +5322,69 @@ fetch('./property_data.json?' + Date.now())
     }
   })
   .catch(e => { console.warn('property_data.json unavailable:', e); });
+
+let _propMomChart = null, _propHealthChart = null, _propMomData = null, _propMomMode = 'yoy';
+function setPropMom(mode) {
+  if (mode) _propMomMode = mode;
+  if (!_propMomData) return;
+  const cat = document.getElementById('propMomCat').value;
+  const L = _propMomData.labels;
+  const geos = [['national','National'],['tokyo_metro_area','Greater Tokyo'],['nagoya_metro_area','Greater Nagoya'],['osaka_metro_area','Greater Osaka']];
+  const ds = geos.map(([k, n]) => {
+    const v = _propMomData.geo[k].series[cat];
+    const out = v.map((x, i) => {
+      if (_propMomMode === 'yoy') return i >= 12 ? +((x / v[i-12] - 1) * 100).toFixed(2) : null;
+      return i >= 3 ? +((Math.pow(x / v[i-3], 4) - 1) * 100).toFixed(2) : null;
+    });
+    return { label: n, data: out, borderColor: PROP_GEO_COLORS[k], backgroundColor: PROP_GEO_COLORS[k], fill: false, pointRadius: 0, borderWidth: k === 'national' ? 2.5 : 1.5, tension: 0 };
+  });
+  document.getElementById('propMomYoy').style.opacity = _propMomMode === 'yoy' ? 1 : .5;
+  document.getElementById('propMom3m').style.opacity = _propMomMode === '3m' ? 1 : .5;
+  if (_propMomChart) _propMomChart.destroy();
+  _propMomChart = new Chart(document.getElementById('propMomChart'), {
+    type: 'line', data: { labels: L, datasets: ds },
+    options: { responsive: true, maintainAspectRatio: false, animation: false, interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { position: 'top', align: 'start', labels: { boxWidth: 11, boxHeight: 11, font: { size: 10.5 }, color: '#c7d0e0' } },
+        tooltip: { callbacks: { label: c => c.parsed.y == null ? null : `${c.dataset.label}: ${c.parsed.y >= 0 ? '+' : ''}${c.parsed.y.toFixed(1)}%` } } },
+      scales: { x: { grid: { display: false }, ticks: { color: '#93a1bd', autoSkip: true, maxTicksLimit: 16 } },
+        y: { grid: { color: c => c.tick.value === 0 ? 'rgba(200,210,230,0.5)' : 'rgba(148,163,196,0.12)' }, ticks: { color: '#93a1bd', callback: v => v + '%' }, title: { display: true, text: _propMomMode === 'yoy' ? 'YoY %' : '3-month change, annualised %', color: '#93a1bd' } } } }
+  });
+}
+fetch('./property_data.json?' + Date.now()).then(r => r.json()).then(P => {
+  const m = P.mlit_price_index;
+  if (m) {
+    _propMomData = { labels: m.residential.geography.national.labels, geo: m.residential.geography };
+    document.getElementById('propMomStatus').textContent = '· ' + m.residential.as_of;
+    setPropMom('yoy');
+  }
+  const c = P.reins_market_watch && P.reins_market_watch.condo;
+  if (c) {
+    const L = P.reins_market_watch.labels, n = L.length;
+    const gap = c.inventory_price_per_sqm_manyen.map((x, i) => (x && c.price_per_sqm_manyen[i]) ? +((x / c.price_per_sqm_manyen[i] - 1) * 100).toFixed(1) : null);
+    const last = a => a[n-1];
+    const fmt = v => v == null ? 'n/a' : (v >= 0 ? '+' : '') + v + '%';
+    const col = (v, inv) => v == null ? '' : ((inv ? v <= 0 : v >= 0) ? '#4cba7a' : 'var(--hawk2)');
+    document.getElementById('propHealthStatus').textContent = '· ' + P.reins_market_watch.as_of;
+    document.getElementById('propHealthKpis').innerHTML = [
+      ['Price/㎡ YoY', last(c.price_per_sqm_yoy_pct), false], ['Contracts YoY', last(c.contract_count_yoy_pct), false], ['Inventory YoY', last(c.inventory_count_yoy_pct), true]
+    ].map(([l, v, inv]) => `<div class="kpi"><div class="v" style="color:${col(v, inv)}">${fmt(v)}</div><div class="l">${l}, ${L[n-1]}</div></div>`).join('') +
+      `<div class="kpi"><div class="v">${last(gap) == null ? 'n/a' : '+' + last(gap) + '%'}</div><div class="l">Asking vs contract price gap (was ${gap[n-13] == null ? 'n/a' : '+' + gap[n-13] + '%'} a year ago)</div></div>`;
+    const s0 = Math.max(0, L.indexOf('2023-01'));
+    const mk = (label, data, color, w) => ({ label, data: data.slice(s0), borderColor: color, backgroundColor: color, fill: false, pointRadius: 0, borderWidth: w, tension: 0, spanGaps: false });
+    if (_propHealthChart) _propHealthChart.destroy();
+    _propHealthChart = new Chart(document.getElementById('propHealthChart'), {
+      type: 'line', data: { labels: L.slice(s0), datasets: [
+        mk('Price per ㎡ YoY', c.price_per_sqm_yoy_pct, '#d9a441', 2.5),
+        mk('Contract count YoY', c.contract_count_yoy_pct, '#5aa9e6', 1.8),
+        mk('Inventory YoY', c.inventory_count_yoy_pct, '#e5637a', 1.8)] },
+      options: { responsive: true, maintainAspectRatio: false, animation: false, interaction: { mode: 'index', intersect: false },
+        plugins: { legend: { position: 'top', align: 'start', labels: { boxWidth: 11, boxHeight: 11, font: { size: 10.5 }, color: '#c7d0e0' } },
+          tooltip: { callbacks: { label: x => x.parsed.y == null ? null : `${x.dataset.label}: ${x.parsed.y >= 0 ? '+' : ''}${x.parsed.y}%` } } },
+        scales: { x: { grid: { display: false }, ticks: { color: '#93a1bd', autoSkip: true, maxTicksLimit: 16 } },
+          y: { grid: { color: c2 => c2.tick.value === 0 ? 'rgba(200,210,230,0.5)' : 'rgba(148,163,196,0.12)' }, ticks: { color: '#93a1bd', callback: v => v + '%' } } } }
+    });
+  }
+}).catch(e => console.warn('property momentum failed', e));
 
 // Retail JGB demand — monthly subscription amounts (MOF, flow-side complement to household holdings above)
 const RETAIL_JGB_COLORS = { floating10: '#d9a441', fixed5: '#5aa0e6', fixed3: '#4cba7a' };
