@@ -1,0 +1,1347 @@
+{
+ "meta": {
+  "survey": "Sep 2026",
+  "prev": "Jun 2026",
+  "source_url": "https://www.boj.or.jp/en/statistics/tk/gaiyo/2026/tka2609.pdf",
+  "fetched_at": "2026-10-03T00:45:42.679491Z",
+  "note": "Sector table parsed from the BOJ PDF; other tables curated from the same PDF (static, update quarterly)."
+ },
+ "sectors": [
+  {
+   "name": "Manufacturing",
+   "group": "Manufacturing",
+   "indent": false,
+   "L": {
+    "jun": 22,
+    "jun_fc": 17,
+    "sep": 24,
+    "chg": 2,
+    "dec": 21,
+    "fc": -3
+   },
+   "M": {
+    "jun": 17,
+    "jun_fc": 9,
+    "sep": 23,
+    "chg": 6,
+    "dec": 18,
+    "fc": -5
+   },
+   "S": {
+    "jun": 9,
+    "jun_fc": 2,
+    "sep": 14,
+    "chg": 5,
+    "dec": 12,
+    "fc": -2
+   }
+  },
+  {
+   "name": "Textiles",
+   "group": "Manufacturing",
+   "indent": true,
+   "L": {
+    "jun": 8,
+    "jun_fc": 13,
+    "sep": 13,
+    "chg": 5,
+    "dec": 4,
+    "fc": -9
+   },
+   "M": {
+    "jun": -7,
+    "jun_fc": -15,
+    "sep": 1,
+    "chg": 8,
+    "dec": -7,
+    "fc": -8
+   },
+   "S": {
+    "jun": -11,
+    "jun_fc": -26,
+    "sep": -17,
+    "chg": -6,
+    "dec": -24,
+    "fc": -7
+   }
+  },
+  {
+   "name": "Lumber & Wood products",
+   "group": "Manufacturing",
+   "indent": true,
+   "L": {
+    "jun": 7,
+    "jun_fc": 7,
+    "sep": -7,
+    "chg": -14,
+    "dec": 7,
+    "fc": 14
+   },
+   "M": {
+    "jun": 10,
+    "jun_fc": -6,
+    "sep": 16,
+    "chg": 6,
+    "dec": 8,
+    "fc": -8
+   },
+   "S": {
+    "jun": -16,
+    "jun_fc": -23,
+    "sep": -11,
+    "chg": 5,
+    "dec": -18,
+    "fc": -7
+   }
+  },
+  {
+   "name": "Pulp & Paper",
+   "group": "Manufacturing",
+   "indent": true,
+   "L": {
+    "jun": 40,
+    "jun_fc": 24,
+    "sep": 36,
+    "chg": -4,
+    "dec": 16,
+    "fc": -20
+   },
+   "M": {
+    "jun": 9,
+    "jun_fc": -3,
+    "sep": 0,
+    "chg": -9,
+    "dec": 3,
+    "fc": 3
+   },
+   "S": {
+    "jun": 1,
+    "jun_fc": -6,
+    "sep": 5,
+    "chg": 4,
+    "dec": 5,
+    "fc": 0
+   }
+  },
+  {
+   "name": "Chemicals",
+   "group": "Manufacturing",
+   "indent": true,
+   "L": {
+    "jun": 20,
+    "jun_fc": 11,
+    "sep": 26,
+    "chg": 6,
+    "dec": 12,
+    "fc": -14
+   },
+   "M": {
+    "jun": 38,
+    "jun_fc": 19,
+    "sep": 41,
+    "chg": 3,
+    "dec": 27,
+    "fc": -14
+   },
+   "S": {
+    "jun": 19,
+    "jun_fc": 2,
+    "sep": 25,
+    "chg": 6,
+    "dec": 15,
+    "fc": -10
+   }
+  },
+  {
+   "name": "Petroleum & Coal products",
+   "group": "Manufacturing",
+   "indent": true,
+   "L": {
+    "jun": 9,
+    "jun_fc": 36,
+    "sep": 36,
+    "chg": 27,
+    "dec": 45,
+    "fc": 9
+   },
+   "M": {
+    "jun": 20,
+    "jun_fc": -10,
+    "sep": 45,
+    "chg": 25,
+    "dec": 10,
+    "fc": -35
+   },
+   "S": {
+    "jun": 4,
+    "jun_fc": -13,
+    "sep": 1,
+    "chg": -3,
+    "dec": -2,
+    "fc": -3
+   }
+  },
+  {
+   "name": "Ceramics, Stone & Clay",
+   "group": "Manufacturing",
+   "indent": true,
+   "L": {
+    "jun": 11,
+    "jun_fc": 19,
+    "sep": 22,
+    "chg": 11,
+    "dec": 11,
+    "fc": -11
+   },
+   "M": {
+    "jun": 16,
+    "jun_fc": 10,
+    "sep": 17,
+    "chg": 1,
+    "dec": 17,
+    "fc": 0
+   },
+   "S": {
+    "jun": 6,
+    "jun_fc": 4,
+    "sep": 3,
+    "chg": -3,
+    "dec": 4,
+    "fc": 1
+   }
+  },
+  {
+   "name": "Iron & Steel",
+   "group": "Manufacturing",
+   "indent": true,
+   "L": {
+    "jun": -6,
+    "jun_fc": -3,
+    "sep": 6,
+    "chg": 12,
+    "dec": 9,
+    "fc": 3
+   },
+   "M": {
+    "jun": -6,
+    "jun_fc": -6,
+    "sep": 3,
+    "chg": 9,
+    "dec": -5,
+    "fc": -8
+   },
+   "S": {
+    "jun": -2,
+    "jun_fc": -7,
+    "sep": 7,
+    "chg": 9,
+    "dec": 10,
+    "fc": 3
+   }
+  },
+  {
+   "name": "Nonferrous metals",
+   "group": "Manufacturing",
+   "indent": true,
+   "L": {
+    "jun": 36,
+    "jun_fc": 37,
+    "sep": 45,
+    "chg": 9,
+    "dec": 39,
+    "fc": -6
+   },
+   "M": {
+    "jun": 37,
+    "jun_fc": 21,
+    "sep": 26,
+    "chg": -11,
+    "dec": 18,
+    "fc": -8
+   },
+   "S": {
+    "jun": 16,
+    "jun_fc": 0,
+    "sep": 29,
+    "chg": 13,
+    "dec": 21,
+    "fc": -8
+   }
+  },
+  {
+   "name": "Food & Beverages",
+   "group": "Manufacturing",
+   "indent": true,
+   "L": {
+    "jun": 9,
+    "jun_fc": 1,
+    "sep": 3,
+    "chg": -6,
+    "dec": 3,
+    "fc": 0
+   },
+   "M": {
+    "jun": 5,
+    "jun_fc": -5,
+    "sep": 7,
+    "chg": 2,
+    "dec": 6,
+    "fc": -1
+   },
+   "S": {
+    "jun": 4,
+    "jun_fc": 1,
+    "sep": 2,
+    "chg": -2,
+    "dec": 5,
+    "fc": 3
+   }
+  },
+  {
+   "name": "Processed metals",
+   "group": "Manufacturing",
+   "indent": true,
+   "L": {
+    "jun": 11,
+    "jun_fc": 0,
+    "sep": 16,
+    "chg": 5,
+    "dec": 8,
+    "fc": -8
+   },
+   "M": {
+    "jun": 13,
+    "jun_fc": 10,
+    "sep": 21,
+    "chg": 8,
+    "dec": 20,
+    "fc": -1
+   },
+   "S": {
+    "jun": 3,
+    "jun_fc": 0,
+    "sep": 13,
+    "chg": 10,
+    "dec": 13,
+    "fc": 0
+   }
+  },
+  {
+   "name": "General-purpose machinery",
+   "group": "Manufacturing",
+   "indent": true,
+   "L": {
+    "jun": 38,
+    "jun_fc": 31,
+    "sep": 38,
+    "chg": 0,
+    "dec": 40,
+    "fc": 2
+   },
+   "M": {
+    "jun": 28,
+    "jun_fc": 24,
+    "sep": 40,
+    "chg": 12,
+    "dec": 40,
+    "fc": 0
+   },
+   "S": {
+    "jun": 28,
+    "jun_fc": 17,
+    "sep": 42,
+    "chg": 14,
+    "dec": 30,
+    "fc": -12
+   }
+  },
+  {
+   "name": "Production machinery",
+   "group": "Manufacturing",
+   "indent": true,
+   "L": {
+    "jun": 36,
+    "jun_fc": 40,
+    "sep": 43,
+    "chg": 7,
+    "dec": 44,
+    "fc": 1
+   },
+   "M": {
+    "jun": 29,
+    "jun_fc": 20,
+    "sep": 33,
+    "chg": 4,
+    "dec": 32,
+    "fc": -1
+   },
+   "S": {
+    "jun": 6,
+    "jun_fc": 0,
+    "sep": 20,
+    "chg": 14,
+    "dec": 13,
+    "fc": -7
+   }
+  },
+  {
+   "name": "Business oriented machinery",
+   "group": "Manufacturing",
+   "indent": true,
+   "L": {
+    "jun": 23,
+    "jun_fc": 20,
+    "sep": 23,
+    "chg": 0,
+    "dec": 20,
+    "fc": -3
+   },
+   "M": {
+    "jun": 36,
+    "jun_fc": 32,
+    "sep": 42,
+    "chg": 6,
+    "dec": 37,
+    "fc": -5
+   },
+   "S": {
+    "jun": 25,
+    "jun_fc": 32,
+    "sep": 31,
+    "chg": 6,
+    "dec": 35,
+    "fc": 4
+   }
+  },
+  {
+   "name": "Electrical machinery",
+   "group": "Manufacturing",
+   "indent": true,
+   "L": {
+    "jun": 29,
+    "jun_fc": 27,
+    "sep": 33,
+    "chg": 4,
+    "dec": 35,
+    "fc": 2
+   },
+   "M": {
+    "jun": 20,
+    "jun_fc": 21,
+    "sep": 33,
+    "chg": 13,
+    "dec": 34,
+    "fc": 1
+   },
+   "S": {
+    "jun": 15,
+    "jun_fc": 16,
+    "sep": 22,
+    "chg": 7,
+    "dec": 28,
+    "fc": 6
+   }
+  },
+  {
+   "name": "Shipbuilding & Heavy machinery, etc.",
+   "group": "Manufacturing",
+   "indent": true,
+   "L": {
+    "jun": 39,
+    "jun_fc": 30,
+    "sep": 36,
+    "chg": -3,
+    "dec": 31,
+    "fc": -5
+   },
+   "M": {
+    "jun": 41,
+    "jun_fc": 39,
+    "sep": 39,
+    "chg": -2,
+    "dec": 34,
+    "fc": -5
+   },
+   "S": {
+    "jun": 37,
+    "jun_fc": 30,
+    "sep": 33,
+    "chg": -4,
+    "dec": 38,
+    "fc": 5
+   }
+  },
+  {
+   "name": "Motor vehicles",
+   "group": "Manufacturing",
+   "indent": true,
+   "L": {
+    "jun": 12,
+    "jun_fc": 9,
+    "sep": 11,
+    "chg": -1,
+    "dec": 10,
+    "fc": -1
+   },
+   "M": {
+    "jun": 17,
+    "jun_fc": 13,
+    "sep": 20,
+    "chg": 3,
+    "dec": 18,
+    "fc": -2
+   },
+   "S": {
+    "jun": 15,
+    "jun_fc": 13,
+    "sep": 29,
+    "chg": 14,
+    "dec": 17,
+    "fc": -12
+   }
+  },
+  {
+   "name": "Basic materials",
+   "group": "Manufacturing",
+   "indent": false,
+   "L": {
+    "jun": 18,
+    "jun_fc": 16,
+    "sep": 25,
+    "chg": 7,
+    "dec": 15,
+    "fc": -10
+   },
+   "M": {
+    "jun": 15,
+    "jun_fc": 3,
+    "sep": 18,
+    "chg": 3,
+    "dec": 10,
+    "fc": -8
+   },
+   "S": {
+    "jun": 2,
+    "jun_fc": -8,
+    "sep": 6,
+    "chg": 4,
+    "dec": 2,
+    "fc": -4
+   }
+  },
+  {
+   "name": "Processing",
+   "group": "Manufacturing",
+   "indent": false,
+   "L": {
+    "jun": 23,
+    "jun_fc": 18,
+    "sep": 25,
+    "chg": 2,
+    "dec": 23,
+    "fc": -2
+   },
+   "M": {
+    "jun": 18,
+    "jun_fc": 13,
+    "sep": 25,
+    "chg": 7,
+    "dec": 24,
+    "fc": -1
+   },
+   "S": {
+    "jun": 13,
+    "jun_fc": 9,
+    "sep": 20,
+    "chg": 7,
+    "dec": 19,
+    "fc": -1
+   }
+  },
+  {
+   "name": "Nonmanufacturing",
+   "group": "Non-manufacturing",
+   "indent": false,
+   "L": {
+    "jun": 37,
+    "jun_fc": 28,
+    "sep": 35,
+    "chg": -2,
+    "dec": 30,
+    "fc": -5
+   },
+   "M": {
+    "jun": 26,
+    "jun_fc": 16,
+    "sep": 24,
+    "chg": -2,
+    "dec": 19,
+    "fc": -5
+   },
+   "S": {
+    "jun": 15,
+    "jun_fc": 8,
+    "sep": 15,
+    "chg": 0,
+    "dec": 10,
+    "fc": -5
+   }
+  },
+  {
+   "name": "Construction",
+   "group": "Non-manufacturing",
+   "indent": true,
+   "L": {
+    "jun": 52,
+    "jun_fc": 42,
+    "sep": 56,
+    "chg": 4,
+    "dec": 48,
+    "fc": -8
+   },
+   "M": {
+    "jun": 31,
+    "jun_fc": 21,
+    "sep": 28,
+    "chg": -3,
+    "dec": 24,
+    "fc": -4
+   },
+   "S": {
+    "jun": 17,
+    "jun_fc": 7,
+    "sep": 17,
+    "chg": 0,
+    "dec": 14,
+    "fc": -3
+   }
+  },
+  {
+   "name": "Real estate",
+   "group": "Non-manufacturing",
+   "indent": true,
+   "L": {
+    "jun": 52,
+    "jun_fc": 43,
+    "sep": 52,
+    "chg": 0,
+    "dec": 41,
+    "fc": -11
+   },
+   "M": {
+    "jun": 35,
+    "jun_fc": 25,
+    "sep": 35,
+    "chg": 0,
+    "dec": 26,
+    "fc": -9
+   },
+   "S": {
+    "jun": 22,
+    "jun_fc": 15,
+    "sep": 20,
+    "chg": -2,
+    "dec": 12,
+    "fc": -8
+   }
+  },
+  {
+   "name": "Goods rental & Leasing",
+   "group": "Non-manufacturing",
+   "indent": true,
+   "L": {
+    "jun": 50,
+    "jun_fc": 35,
+    "sep": 46,
+    "chg": -4,
+    "dec": 27,
+    "fc": -19
+   },
+   "M": {
+    "jun": 36,
+    "jun_fc": 19,
+    "sep": 37,
+    "chg": 1,
+    "dec": 21,
+    "fc": -16
+   },
+   "S": {
+    "jun": 32,
+    "jun_fc": 21,
+    "sep": 28,
+    "chg": -4,
+    "dec": 22,
+    "fc": -6
+   }
+  },
+  {
+   "name": "Wholesaling",
+   "group": "Non-manufacturing",
+   "indent": true,
+   "L": {
+    "jun": 33,
+    "jun_fc": 19,
+    "sep": 30,
+    "chg": -3,
+    "dec": 25,
+    "fc": -5
+   },
+   "M": {
+    "jun": 19,
+    "jun_fc": 10,
+    "sep": 22,
+    "chg": 3,
+    "dec": 16,
+    "fc": -6
+   },
+   "S": {
+    "jun": 5,
+    "jun_fc": -3,
+    "sep": 10,
+    "chg": 5,
+    "dec": 1,
+    "fc": -9
+   }
+  },
+  {
+   "name": "Retailing",
+   "group": "Non-manufacturing",
+   "indent": true,
+   "L": {
+    "jun": 33,
+    "jun_fc": 27,
+    "sep": 29,
+    "chg": -4,
+    "dec": 25,
+    "fc": -4
+   },
+   "M": {
+    "jun": 28,
+    "jun_fc": 18,
+    "sep": 20,
+    "chg": -8,
+    "dec": 14,
+    "fc": -6
+   },
+   "S": {
+    "jun": 15,
+    "jun_fc": 7,
+    "sep": 16,
+    "chg": 1,
+    "dec": 7,
+    "fc": -9
+   }
+  },
+  {
+   "name": "Transport & Postal activities",
+   "group": "Non-manufacturing",
+   "indent": true,
+   "L": {
+    "jun": 25,
+    "jun_fc": 18,
+    "sep": 21,
+    "chg": -4,
+    "dec": 21,
+    "fc": 0
+   },
+   "M": {
+    "jun": 19,
+    "jun_fc": 3,
+    "sep": 14,
+    "chg": -5,
+    "dec": 11,
+    "fc": -3
+   },
+   "S": {
+    "jun": 18,
+    "jun_fc": 13,
+    "sep": 17,
+    "chg": -1,
+    "dec": 14,
+    "fc": -3
+   }
+  },
+  {
+   "name": "Communications",
+   "group": "Non-manufacturing",
+   "indent": true,
+   "L": {
+    "jun": 38,
+    "jun_fc": 31,
+    "sep": 35,
+    "chg": -3,
+    "dec": 35,
+    "fc": 0
+   },
+   "M": {
+    "jun": 32,
+    "jun_fc": 21,
+    "sep": 33,
+    "chg": 1,
+    "dec": 33,
+    "fc": 0
+   },
+   "S": {
+    "jun": 42,
+    "jun_fc": 39,
+    "sep": 44,
+    "chg": 2,
+    "dec": 47,
+    "fc": 3
+   }
+  },
+  {
+   "name": "Information services",
+   "group": "Non-manufacturing",
+   "indent": true,
+   "L": {
+    "jun": 52,
+    "jun_fc": 39,
+    "sep": 51,
+    "chg": -1,
+    "dec": 43,
+    "fc": -8
+   },
+   "M": {
+    "jun": 46,
+    "jun_fc": 37,
+    "sep": 39,
+    "chg": -7,
+    "dec": 33,
+    "fc": -6
+   },
+   "S": {
+    "jun": 21,
+    "jun_fc": 19,
+    "sep": 21,
+    "chg": 0,
+    "dec": 17,
+    "fc": -4
+   }
+  },
+  {
+   "name": "Electric & Gas utilities",
+   "group": "Non-manufacturing",
+   "indent": true,
+   "L": {
+    "jun": 2,
+    "jun_fc": 6,
+    "sep": 6,
+    "chg": 4,
+    "dec": 0,
+    "fc": -6
+   },
+   "M": {
+    "jun": 11,
+    "jun_fc": 12,
+    "sep": 12,
+    "chg": 1,
+    "dec": 12,
+    "fc": 0
+   },
+   "S": {
+    "jun": 11,
+    "jun_fc": 3,
+    "sep": 12,
+    "chg": 1,
+    "dec": 4,
+    "fc": -8
+   }
+  },
+  {
+   "name": "Services for businesses",
+   "group": "Non-manufacturing",
+   "indent": true,
+   "L": {
+    "jun": 43,
+    "jun_fc": 39,
+    "sep": 39,
+    "chg": -4,
+    "dec": 39,
+    "fc": 0
+   },
+   "M": {
+    "jun": 38,
+    "jun_fc": 27,
+    "sep": 39,
+    "chg": 1,
+    "dec": 30,
+    "fc": -9
+   },
+   "S": {
+    "jun": 19,
+    "jun_fc": 13,
+    "sep": 19,
+    "chg": 0,
+    "dec": 14,
+    "fc": -5
+   }
+  },
+  {
+   "name": "Services for individuals",
+   "group": "Non-manufacturing",
+   "indent": true,
+   "L": {
+    "jun": 37,
+    "jun_fc": 22,
+    "sep": 34,
+    "chg": -3,
+    "dec": 29,
+    "fc": -5
+   },
+   "M": {
+    "jun": 21,
+    "jun_fc": 16,
+    "sep": 24,
+    "chg": 3,
+    "dec": 20,
+    "fc": -4
+   },
+   "S": {
+    "jun": 12,
+    "jun_fc": 8,
+    "sep": 14,
+    "chg": 2,
+    "dec": 8,
+    "fc": -6
+   }
+  },
+  {
+   "name": "Accommodations, Eating & Drinking services",
+   "group": "Non-manufacturing",
+   "indent": true,
+   "L": {
+    "jun": 46,
+    "jun_fc": 34,
+    "sep": 38,
+    "chg": -8,
+    "dec": 34,
+    "fc": -4
+   },
+   "M": {
+    "jun": 33,
+    "jun_fc": 22,
+    "sep": 36,
+    "chg": 3,
+    "dec": 25,
+    "fc": -11
+   },
+   "S": {
+    "jun": 18,
+    "jun_fc": 7,
+    "sep": 12,
+    "chg": -6,
+    "dec": 18,
+    "fc": 6
+   }
+  },
+  {
+   "name": "All industries",
+   "group": "All",
+   "indent": false,
+   "L": {
+    "jun": 29,
+    "jun_fc": 23,
+    "sep": 30,
+    "chg": 1,
+    "dec": 25,
+    "fc": -5
+   },
+   "M": {
+    "jun": 22,
+    "jun_fc": 13,
+    "sep": 24,
+    "chg": 2,
+    "dec": 18,
+    "fc": -6
+   },
+   "S": {
+    "jun": 13,
+    "jun_fc": 6,
+    "sep": 15,
+    "chg": 2,
+    "dec": 11,
+    "fc": -4
+   }
+  }
+ ],
+ "size_di": [
+  [
+   "Large: Manufacturing",
+   22,
+   24,
+   2,
+   21,
+   -3
+  ],
+  [
+   "Large: Non-manufacturing",
+   37,
+   35,
+   -2,
+   30,
+   -5
+  ],
+  [
+   "Large: All industries",
+   29,
+   30,
+   1,
+   25,
+   -5
+  ],
+  [
+   "Medium: Manufacturing",
+   17,
+   23,
+   6,
+   18,
+   -5
+  ],
+  [
+   "Medium: Non-manufacturing",
+   26,
+   24,
+   -2,
+   19,
+   -5
+  ],
+  [
+   "Medium: All industries",
+   22,
+   24,
+   2,
+   18,
+   -6
+  ],
+  [
+   "Small: Manufacturing",
+   9,
+   14,
+   5,
+   12,
+   -2
+  ],
+  [
+   "Small: Non-manufacturing",
+   15,
+   15,
+   0,
+   10,
+   -5
+  ],
+  [
+   "Small: All industries",
+   13,
+   15,
+   2,
+   11,
+   -4
+  ]
+ ],
+ "plans": {
+  "Capex": [
+   [
+    "Large mfg",
+    10.1,
+    11.6
+   ],
+   [
+    "Large non-mfg",
+    12.3,
+    11.2
+   ],
+   [
+    "Large all",
+    11.5,
+    11.3
+   ],
+   [
+    "Medium mfg",
+    3.6,
+    1.9
+   ],
+   [
+    "Medium non-mfg",
+    7.8,
+    11.4
+   ],
+   [
+    "Medium all",
+    6.0,
+    7.3
+   ],
+   [
+    "Small mfg",
+    2.6,
+    4.0
+   ],
+   [
+    "Small non-mfg",
+    -13.0,
+    -8.4
+   ],
+   [
+    "Small all",
+    -8.3,
+    -4.7
+   ]
+  ],
+  "Sales": [
+   [
+    "Large mfg",
+    4.0,
+    7.6
+   ],
+   [
+    "Large non-mfg",
+    3.5,
+    4.3
+   ],
+   [
+    "Large all",
+    3.7,
+    5.7
+   ],
+   [
+    "Medium mfg",
+    1.6,
+    3.4
+   ],
+   [
+    "Medium non-mfg",
+    3.0,
+    4.4
+   ],
+   [
+    "Medium all",
+    2.6,
+    4.1
+   ],
+   [
+    "Small mfg",
+    1.3,
+    2.8
+   ],
+   [
+    "Small non-mfg",
+    -0.1,
+    0.9
+   ],
+   [
+    "Small all",
+    0.2,
+    1.3
+   ]
+  ],
+  "Current profit": [
+   [
+    "Large mfg",
+    -6.7,
+    13.6
+   ],
+   [
+    "Large non-mfg",
+    -6.3,
+    -4.7
+   ],
+   [
+    "Large all",
+    -6.5,
+    4.3
+   ],
+   [
+    "Medium mfg",
+    -0.4,
+    10.6
+   ],
+   [
+    "Medium non-mfg",
+    -5.1,
+    -2.2
+   ],
+   [
+    "Medium all",
+    -3.6,
+    1.8
+   ],
+   [
+    "Small mfg",
+    -11.1,
+    -3.6
+   ],
+   [
+    "Small non-mfg",
+    -8.8,
+    -6.3
+   ],
+   [
+    "Small all",
+    -9.4,
+    -5.6
+   ]
+  ],
+  "Employment DI (neg = shortage)": [
+   [
+    "Large all",
+    -28,
+    -29
+   ],
+   [
+    "Medium all",
+    -38,
+    -38
+   ],
+   [
+    "Small all",
+    -39,
+    -42
+   ]
+  ]
+ },
+ "summary": {
+  "Business conditions DI": [
+   [
+    "Large manufacturers",
+    22,
+    24
+   ],
+   [
+    "Large non-manufacturers",
+    37,
+    35
+   ],
+   [
+    "Large, all industries",
+    29,
+    30
+   ],
+   [
+    "All enterprises, all industries",
+    18,
+    21
+   ],
+   [
+    "3M-ahead forecast: large mfg",
+    17,
+    21
+   ],
+   [
+    "3M-ahead forecast: large non-mfg",
+    28,
+    30
+   ]
+  ],
+  "Dec forecast vs Sep actual (columns = Sep actual | Dec forecast)": [
+   [
+    "Large manufacturers",
+    24,
+    21
+   ],
+   [
+    "Large non-manufacturers",
+    35,
+    30
+   ],
+   [
+    "All enterprises, all industries",
+    21,
+    15
+   ]
+  ],
+  "Profits, sales & FX (FY2026, % y/y)": [
+   [
+    "Sales, large manufacturers",
+    4.0,
+    7.6
+   ],
+   [
+    "Profit, large manufacturers",
+    -6.7,
+    13.6
+   ],
+   [
+    "Profit, large manufacturers, 2H only",
+    -6.4,
+    -3.1
+   ],
+   [
+    "Profit, large non-manufacturers",
+    -6.3,
+    -4.7
+   ],
+   [
+    "Profit, all enterprises",
+    -6.5,
+    2.2
+   ],
+   [
+    "Assumed USD/JPY, FY2026",
+    152.57,
+    154.23
+   ]
+  ],
+  "Prices, labour, credit": [
+   [
+    "Inflation outlook, 1 yr ahead (%)",
+    2.7,
+    2.6
+   ],
+   [
+    "Inflation outlook, 3 yrs ahead (%)",
+    2.6,
+    2.6
+   ],
+   [
+    "Inflation outlook, 5 yrs ahead (%)",
+    2.6,
+    2.5
+   ],
+   [
+    "Output price outlook, 1 yr (%)",
+    3.7,
+    3.5
+   ],
+   [
+    "Large mfg output-price DI",
+    40,
+    40
+   ],
+   [
+    "Large mfg input-price DI",
+    62,
+    59
+   ],
+   [
+    "Employment DI, all enterprises (neg = shortage)",
+    -37,
+    -38
+   ],
+   [
+    "Employment DI, small enterprises",
+    -39,
+    -42
+   ],
+   [
+    "Loan interest-rate DI (rise minus fall)",
+    61,
+    68
+   ],
+   [
+    "Financial position DI, large (easy minus tight)",
+    12,
+    13
+   ],
+   [
+    "Lending attitude DI, large",
+    13,
+    12
+   ],
+   [
+    "Domestic supply/demand DI, large mfg",
+    -4,
+    -1
+   ]
+  ]
+ }
+}

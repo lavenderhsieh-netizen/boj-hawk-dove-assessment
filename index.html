@@ -272,6 +272,7 @@
   <button class="tab" onclick="showTab('auctions',this)">Auctions &amp; fiscal</button>
   <button class="tab" onclick="showTab('ownership',this)">JGB Ownership &amp; Retail</button>
   <button class="tab" onclick="showTab('property',this)">Property</button>
+  <button class="tab" onclick="showTab('tankan',this)">Tankan</button>
   <button class="tab" onclick="showTab('seasonality',this)">Seasonality</button>
   <button class="tab" onclick="showTab('markets',this)">Markets &amp; bonds</button>
   <button class="tab" onclick="showTab('method',this)">Methodology</button>
@@ -397,6 +398,34 @@
     </div>
   </div>
 
+  <!-- TANKAN -->
+  <div id="tab-tankan" class="panel">
+    <div class="card full">
+      <h2>Tankan <span id="tkStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">BOJ Short-Term Economic Survey of Enterprises. Diffusion index (DI) = % of firms reporting favourable minus % unfavourable. Green = improved / forecast above current, red = worsened / forecast below current, grey = unchanged.</div>
+      <div class="kpis" id="tkKpis" style="margin-top:12px"></div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>What changed: Sep vs Jun</h2>
+      <div id="tkSummary" style="margin-top:8px"></div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>Business conditions DI by sector and firm size</h2>
+      <div class="sub">Sorted by large-firm change within each group. For each size: June actual, Sep actual, change, Dec forecast, and Dec forecast minus Sep actual (the forward-looking read). Large = L, Medium = M, Small = S.</div>
+      <div style="margin-top:8px"><button id="tkSortChg" onclick="tkSort('chg')" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px;background:transparent;color:var(--ink);cursor:pointer">Sort by large change</button> <button id="tkSortLvl" onclick="tkSort('sep')" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px;background:transparent;color:var(--ink);cursor:pointer">Sort by large Sep level</button> <button id="tkSortFc" onclick="tkSort('fc')" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px;background:transparent;color:var(--ink);cursor:pointer">Sort by large Dec forecast gap</button></div>
+      <div style="overflow-x:auto;margin-top:10px" id="tkSectors"></div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>By firm size: business conditions</h2>
+      <div id="tkSize" style="margin-top:8px"></div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>By firm size: FY2026 capex, sales, profit plans and employment</h2>
+      <div class="sub">Capex = fixed investment incl. land, ex-software/R&amp;D. Sep columns are the latest revised FY2026 plans, % y/y.</div>
+      <div id="tkPlans" style="margin-top:8px"></div>
+      <div class="note">Source: BOJ Tankan Summary (Jun and Sep 2026 surveys), <a id="tkSrc" href="#" target="_blank" style="color:var(--accent)">PDF</a>. The sector table is parsed from the PDF by <code>fetch_tankan.py</code>; the other tables are curated from the same PDF and updated by hand each quarter (next survey: Dec 2026, release early Jan 2027).</div>
+    </div>
+  </div>
   <!-- PROPERTY -->
   <div id="tab-property" class="panel">
     <div class="card full">
@@ -5385,6 +5414,70 @@ fetch('./property_data.json?' + Date.now()).then(r => r.json()).then(P => {
     });
   }
 }).catch(e => console.warn('property momentum failed', e));
+
+// ── Tankan tab ──
+let _tk = null, _tkSort = 'chg';
+function tkCell(v, kind, dec) {
+  const f = (x) => dec ? x.toFixed(1) : x;
+  if (kind === 'chg') { const bg = v > 0 ? 'rgba(76,186,122,.20)' : v < 0 ? 'rgba(226,86,74,.22)' : 'rgba(148,163,196,.14)'; return `<td style="background:${bg};font-weight:600;text-align:center">${v > 0 ? '+' : ''}${f(v)}</td>`; }
+  return `<td style="text-align:center">${f(v)}</td>`;
+}
+function tkSort(k) { _tkSort = k; tkRenderSectors(); }
+function tkRenderSectors() {
+  if (!_tk) return;
+  const key = { chg: r => r.L.chg, sep: r => r.L.sep, fc: r => r.L.fc }[_tkSort];
+  let h = '<table style="font-size:12.5px;min-width:980px"><thead><tr><th style="text-align:left">Sector</th>';
+  ['L','M','S'].forEach(k => { h += `<th>${k} Jun</th><th>${k} Sep</th><th>${k} chg</th><th>${k} Dec f\'cst</th><th>${k} f\'cst-Sep</th>`; });
+  h += '</tr></thead><tbody>';
+  const groups = [['Manufacturing','Manufacturing'],['Non-manufacturing','Non-manufacturing']];
+  groups.forEach(([g, label]) => {
+    h += `<tr><td colspan="16" style="background:rgba(148,163,196,.16);font-weight:700">${label}</td></tr>`;
+    const rows = _tk.sectors.filter(r => r.group === g);
+    const head = rows.filter(r => !r.indent), body = rows.filter(r => r.indent && !['Basic materials','Processing'].includes(r.name) || (r.indent === false && false));
+    const tot = rows.filter(r => r.name === g), subs = rows.filter(r => ['Basic materials','Processing'].includes(r.name));
+    const items = rows.filter(r => r.name !== g && !['Basic materials','Processing'].includes(r.name)).sort((a, b) => key(b) - key(a));
+    [...tot, ...items, ...subs].forEach(r => {
+      const bold = (r.name === g || subs.includes(r)) ? 'font-weight:600;' : '';
+      h += `<tr style="${bold}"><td style="text-align:left">${r.name}${r.name === g ? ' (total)' : subs.includes(r) ? ' (group)' : ''}</td>`;
+      ['L','M','S'].forEach(k => { const d = r[k]; h += tkCell(d.jun) + tkCell(d.sep) + tkCell(d.chg, 'chg') + tkCell(d.dec) + tkCell(d.fc, 'chg'); });
+      h += '</tr>';
+    });
+  });
+  const all = _tk.sectors.find(r => r.group === 'All');
+  if (all) { h += '<tr style="font-weight:700;border-top:2px solid var(--line)"><td style="text-align:left">All industries</td>'; ['L','M','S'].forEach(k => { const d = all[k]; h += tkCell(d.jun) + tkCell(d.sep) + tkCell(d.chg, 'chg') + tkCell(d.dec) + tkCell(d.fc, 'chg'); }); h += '</tr>'; }
+  document.getElementById('tkSectors').innerHTML = h + '</tbody></table>';
+  [['tkSortChg','chg'],['tkSortLvl','sep'],['tkSortFc','fc']].forEach(([id, k]) => { const b = document.getElementById(id); if (b) b.style.opacity = k === _tkSort ? 1 : .55; });
+}
+fetch('./tankan_data.json?' + Date.now()).then(r => r.json()).then(T => {
+  _tk = T;
+  document.getElementById('tkStatus').textContent = '· ' + T.meta.survey + ' survey';
+  document.getElementById('tkSrc').href = T.meta.source_url;
+  const all = T.sectors.find(r => r.group === 'All'), mf = T.sectors.find(r => r.name === 'Manufacturing'), nm = T.sectors.find(r => r.name === 'Nonmanufacturing');
+  const kp = (v, l, c, vs) => `<div class="kpi"><div class="v">${v}</div><div class="l">${l}${c == null ? '' : ` <span style="color:${c > 0 ? '#4cba7a' : c < 0 ? 'var(--hawk2)' : 'var(--muted)'}">${c > 0 ? '+' : ''}${c} vs ${vs || 'Jun'}</span>`}</div></div>`;
+  document.getElementById('tkKpis').innerHTML = kp(mf.L.sep, 'Large manufacturers DI', mf.L.chg) + kp(nm.L.sep, 'Large non-manufacturers DI', nm.L.chg) + kp(all.L.sep, 'Large, all industries DI', all.L.chg) +
+    kp(mf.L.dec, 'Dec forecast, large manufacturers', mf.L.fc, 'Sep actual');
+  const dir = (n, up) => n === 0 ? 'rgba(148,163,196,.14)' : (n > 0) === up ? 'rgba(76,186,122,.20)' : 'rgba(226,86,74,.22)';
+  const fmt = (x) => Number.isInteger(x) ? x : x.toFixed(Math.abs(x) >= 100 ? 2 : 1);
+  const tbl = (title, rows, cols, upGood) => {
+    let h = `<table style="font-size:12.5px"><thead><tr><th style="text-align:left">${title}</th>${cols.map(c => `<th>${c}</th>`).join('')}<th>Change</th></tr></thead><tbody>`;
+    rows.forEach(([l, a, b]) => { const d = +(b - a).toFixed(2); h += `<tr><td style="text-align:left">${l}</td><td style="text-align:center">${fmt(a)}</td><td style="text-align:center;font-weight:600">${fmt(b)}</td><td style="text-align:center;font-weight:600;background:${dir(d, upGood)}">${d > 0 ? '+' : ''}${fmt(d)}</td></tr>`; });
+    return h + '</tbody></table>';
+  };
+  let sm = '';
+  Object.entries(T.summary).forEach(([t, rows]) => {
+    const fc = t.startsWith('Dec forecast');
+    const neutral = t.startsWith('Prices');
+    sm += `<div style="margin:14px 0 4px;font-weight:700;color:var(--accent)">${t}</div>` + tbl('Item', rows, fc ? ['Sep actual', 'Dec forecast'] : ['Jun 2026', 'Sep 2026'], true);
+  });
+  document.getElementById('tkSummary').innerHTML = sm + '<div class="note">Prices/labour/credit rows use the same green/red rule (up = green) for readability; for inflation outlook, input prices and loan-rate DI, "up" means pressure, not improvement. Employment DI is negative when firms report shortage, so a more negative number means tighter labour.</div>';
+  let sz = '<table style="font-size:12.5px"><thead><tr><th style="text-align:left">Business conditions DI</th><th>Jun</th><th>Sep</th><th>Chg</th><th>Dec fcst</th><th>Fcst vs Sep</th></tr></thead><tbody>';
+  T.size_di.forEach(([l, j, s, c, d, f]) => { sz += `<tr><td style="text-align:left">${l}</td><td style="text-align:center">${j}</td><td style="text-align:center;font-weight:600">${s}</td>${tkCell(c, 'chg')}<td style="text-align:center">${d}</td>${tkCell(f, 'chg')}</tr>`; });
+  document.getElementById('tkSize').innerHTML = sz + '</tbody></table>';
+  let pl = '';
+  Object.entries(T.plans).forEach(([t, rows]) => { pl += `<div style="margin:14px 0 4px;font-weight:700;color:var(--accent)">${t}${t.startsWith('Employment') ? '' : ', FY2026 plan, % y/y'}</div>` + tbl('Firm size / sector', rows, ['Jun', 'Sep'], !t.startsWith('Employment') ? true : true); });
+  document.getElementById('tkPlans').innerHTML = pl;
+  tkRenderSectors();
+}).catch(e => console.warn('tankan failed', e));
 
 // Retail JGB demand — monthly subscription amounts (MOF, flow-side complement to household holdings above)
 const RETAIL_JGB_COLORS = { floating10: '#d9a441', fixed5: '#5aa0e6', fixed3: '#4cba7a' };
