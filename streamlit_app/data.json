@@ -421,7 +421,7 @@
       "role": "Member",
       "tag": "New — monitoring",
       "lean": "dove",
-      "shift": "Joined Jun 2026 — inaugural tone: cautious/dovish",
+      "shift": "Joined Jun 2026 as a cautious/dovish voice; dissented against the Sep hike, but on 6 Oct backed gradual hikes (objects to a fixed pace, not the direction)",
       "quote": "\"Inflation is not that strong by societal norms.\" / \"Need to watch for both downside risks to growth and upside risks to inflation.\" — Inaugural press conference, Jun 30, 2026",
       "remarks": [
         {
@@ -433,6 +433,11 @@
           "date": "8 Jul 2026",
           "source": "Public Remarks / Speech",
           "comment": "Accommodative monetary conditions exist if the policy rate is below the neutral rate, restrictive if above; noted the neutral rate is not directly observable. Found it difficult to definitively state whether upside risks to prices or downside risks to the economy were greater — a stance considered slightly more dovish than Governor Ueda's June 3 speech. FX movements could affect underlying inflation with both positive and negative effects, but preferred not to comment further in her capacity as a Board member. Did not offer specific views on monetary conditions or economic risks, avoided mentioning exchange rates, and did not express definite views on rate hikes or suggest she was a reflationist."
+        },
+        {
+          "date": "6 Oct 2026",
+          "source": "Kyodo News interview",
+          "comment": "Supports raising rates in stages because financial conditions remain accommodative, and agrees on the need for gradual adjustment — but does not think there should be a pre-set pace of hikes, and did not specify timing, citing concern about weakening personal consumption. Said price risks are skewed somewhat to the upside from rising oil costs linked to the Middle East conflict, and that the BOJ must decide policy independently in a way consistent with the government's proactive fiscal policy. Reads as an objection to pace, not direction, from one of the two September dissenters (with Asada)."
         }
       ]
     }
@@ -581,7 +586,7 @@
       "tenure": "30 Jun 2026 – 29 Jun 2031",
       "dissents": "1 dovish",
       "kind": "none",
-      "record": "Joined end-June 2026 (replaced Nakagawa). Jul 2026: cast her first vote, siding with the 8–1 majority to hold at 1.00%. Sep 2026: dissented against the hike to 1.25% (preferred to hold), citing GDP data showing softer domestic demand — her first dissent.",
+      "record": "Joined end-June 2026 (replaced Nakagawa). Jul 2026: cast her first vote, siding with the 8–1 majority to hold at 1.00%. Sep 2026: dissented against the hike to 1.25% (preferred to hold), citing GDP data showing softer domestic demand — her first dissent. 6 Oct 2026 (Kyodo): backs further hikes in stages with no pre-set pace; sees price risks tilted to the upside on oil.",
       "lean": "Dovish",
       "active": true,
       "remarks": [
@@ -594,6 +599,11 @@
           "date": "8 Jul 2026",
           "source": "Public Remarks / Speech",
           "comment": "Accommodative monetary conditions exist if the policy rate is below the neutral rate, restrictive if above; noted the neutral rate is not directly observable. Found it difficult to definitively state whether upside risks to prices or downside risks to the economy were greater — a stance considered slightly more dovish than Governor Ueda's June 3 speech. FX movements could affect underlying inflation with both positive and negative effects, but preferred not to comment further in her capacity as a Board member. Did not offer specific views on monetary conditions or economic risks, avoided mentioning exchange rates, and did not express definite views on rate hikes or suggest she was a reflationist."
+        },
+        {
+          "date": "6 Oct 2026",
+          "source": "Kyodo News interview",
+          "comment": "Supports raising rates in stages because financial conditions remain accommodative, and agrees on the need for gradual adjustment — but does not think there should be a pre-set pace of hikes, and did not specify timing, citing concern about weakening personal consumption. Said price risks are skewed somewhat to the upside from rising oil costs linked to the Middle East conflict, and that the BOJ must decide policy independently in a way consistent with the government's proactive fiscal policy. Reads as an objection to pace, not direction, from one of the two September dissenters (with Asada)."
         }
       ]
     },
