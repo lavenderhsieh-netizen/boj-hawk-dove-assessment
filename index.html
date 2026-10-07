@@ -883,6 +883,17 @@
       <div class="sub" style="margin-top:10px">Preliminary/unrevised basis: MoF's static PDF isn't updated after revision, so a month can later drift from continuously-revised sell-side sources — seen once (Jan-2026, ~30-35% gap), otherwise consistent.</div>
     </div>
 
+    <div class="card full" style="margin-top:16px">
+      <h2>Japan, outward portfolio investment — emerging markets, by country <span id="emFlowStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">Residents' monthly net purchase of foreign securities in key EM countries — last 8 months, ¥bn, plus 2026 YTD and last-12-month totals. Blue = net buying, red = net selling. <b>All securities (equity + bonds), not sovereign-only</b> — so it is a different series from the sovereign table above, which only covers 12 advanced economies. Classified by issuer country: money routed through Cayman/Luxembourg funds is not counted under the underlying country, so EM exposure is likely understated. Source: BOJ Time-Series Data Search (MoF/BOJ balance of payments, Portfolio Investment Assets by country, net), preliminary basis.</div>
+      <div id="emFlowBtns" style="display:flex;gap:6px;margin-top:12px">
+        <button class="tab active" data-ins="total" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setEmFlowIns('total',this)">All securities</button>
+        <button class="tab" data-ins="equity" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setEmFlowIns('equity',this)">Equity &amp; funds</button>
+        <button class="tab" data-ins="ltdebt" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setEmFlowIns('ltdebt',this)">Long-term bonds</button>
+      </div>
+      <div style="overflow-x:auto;margin-top:12px"><table id="emFlowTable" style="width:100%;border-collapse:collapse;font-size:12.5px"></table></div>
+    </div>
+
     <div style="margin:1.6rem 0 .8rem;border-top:1px solid var(--line);padding-top:1.1rem">
       <h1 style="font-size:1.05rem;color:var(--ink)">Inward — foreign investors buying Japanese assets</h1>
       <div class="sub" style="margin-top:.15rem">Foreign &rarr; Japan (the mirror direction of the group above). Positive = capital inflow to Japan; negative = net selling / repatriation.</div>
@@ -3450,6 +3461,47 @@ fetch('./mof_bop.json?' + Date.now())
   .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
   .then(B => { _bopData=B; renderBop(); })
   .catch(e => { console.warn('mof_bop.json unavailable:', e); });
+
+
+// EM country flows (all securities) — BOJ BP01 series, new card under the sovereign-by-country table
+let _emFlow=null, _emIns='total';
+function setEmFlowIns(k, btn){ _emIns=k;
+  document.querySelectorAll('#emFlowBtns .tab').forEach(b=>b.classList.toggle('active', b===btn));
+  renderEmFlow(); }
+function renderEmFlow(){
+  const D=_emFlow, tbl=document.getElementById('emFlowTable'); if(!D||!tbl) return;
+  const S=D.series[_emIns], n=8, i0=D.months.length-n, mn=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const last=D.months[D.months.length-1], yr=last.slice(0,4);
+  const sum=(a)=>a.reduce((x,v)=>x+(v==null?0:v),0);
+  const cell=(v,strong,scale)=>{
+    if(v==null) return '<td style="padding:.3rem .5rem;text-align:right;color:#5a6580">–</td>';
+    const mag=Math.min(Math.abs(v)/scale,1);
+    const bg=v>=0?`rgba(90,160,230,${0.12+mag*0.32})`:`rgba(226,86,74,${0.12+mag*0.32})`;
+    return `<td style="padding:.3rem .5rem;text-align:right;background:${bg};${strong?'font-weight:600':''}">${v>=0?'+':''}${v.toFixed(0)}</td>`;
+  };
+  let h='<thead><tr><th style="padding:.3rem .5rem;text-align:left;color:#93a1bd;font-weight:600;position:sticky;left:0;background:var(--card,#171f31)">Country</th>';
+  D.months.slice(i0).forEach(t=>{const [y,m]=t.split('-'); h+=`<th style="padding:.3rem .5rem;text-align:right;color:#93a1bd;font-weight:600;white-space:nowrap">${mn[+m]}'${y.slice(2)}</th>`;});
+  h+=`<th style="padding:.3rem .5rem;text-align:right;color:#d9a441;font-weight:600;white-space:nowrap;border-left:1px solid #3a4a6b">${yr} YTD</th><th style="padding:.3rem .5rem;text-align:right;color:#d9a441;font-weight:600;white-space:nowrap">Last 12m</th></tr></thead><tbody>`;
+  let reg=null; const tot=new Array(n).fill(0); let tY=0,t12=0;
+  D.order.forEach(k=>{
+    if(D.regions[k]!==reg){ reg=D.regions[k]; h+=`<tr><td colspan="${n+3}" style="padding:.35rem .5rem;color:#d9a441;font-size:11px;letter-spacing:.04em;text-transform:uppercase;border-top:1px solid #243149">${reg}</td></tr>`; }
+    const v=S[k], w=v.slice(i0);
+    const ytd=sum(D.months.map((m,i)=>m.startsWith(yr)?v[i]:null)), l12=sum(v.slice(-12));
+    w.forEach((x,i)=>{tot[i]+=(x==null?0:x);}); tY+=ytd; t12+=l12;
+    h+=`<tr style="border-top:1px solid #243149"><td style="padding:.3rem .5rem;color:#c7d0e0;white-space:nowrap;position:sticky;left:0;background:var(--card,#171f31)">${D.labels[k]}</td>`;
+    w.forEach(x=>{h+=cell(x,false,100);});
+    h+=cell(ytd,true,500)+cell(l12,true,500);
+    h+='</tr>';
+  });
+  h+=`<tr style="border-top:2px solid #3a4a6b"><td style="padding:.3rem .5rem;color:#eef2f9;font-weight:600;white-space:nowrap;position:sticky;left:0;background:var(--card,#171f31)">Total (these 12)</td>`;
+  tot.forEach(x=>{h+=cell(x,true,300);}); h+=cell(tY,true,1500)+cell(t12,true,1500)+'</tr></tbody>';
+  tbl.innerHTML=h;
+  const el=document.getElementById('emFlowStatus'); if(el) el.textContent='· '+D.instruments[_emIns].toLowerCase()+', net · data to '+D.meta.as_of+' · ¥bn';
+}
+fetch('./boj_em_flows.json?' + Date.now())
+  .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
+  .then(D => { _emFlow=D; renderEmFlow(); })
+  .catch(e => { console.warn('boj_em_flows.json unavailable:', e); });
 
 // Balance of payments overview: current account (SA/NSA, by component) + direct investment balance
 // Window/currency/adjustment toggles — same pattern as _xbWin/_xbCur above.
