@@ -3,7 +3,7 @@
 
 Source: BOJ Time-Series Data Search, DB BP01, "Portfolio Investment Assets / <instrument> /
 <country> / Net" (series BPPI6D{1,2,3}N9{CC}; same MoF/BOJ balance-of-payments statistics, 45
-partner economies, all securities -- NOT sovereign-only). Units: 100 million yen -> output ¥bn.
+partner economies, all securities -- NOT sovereign-only). Units: 100 million yen -> output ¥bn (series) and $mn (series_usd).
 + = Japan net buying. Classified by issuer country (funds domiciled in Cayman/Luxembourg etc. are
 not counted under the underlying country). No API key needed.
 
@@ -39,6 +39,21 @@ def pull(code):
     v = rs[0]["VALUES"]
     return {str(d): x for d, x in zip(v["SURVEY_DATES"], v["VALUES"])}
 
+def usdjpy_monthly():
+    """Monthly USDJPY close from Yahoo ({YYYY-MM: rate}); same convention as fetch_mof_bop.py."""
+    try:
+        j = json.load(urllib.request.urlopen(urllib.request.Request(
+            "https://query1.finance.yahoo.com/v8/finance/chart/JPY=X?interval=1mo&range=7y", headers=UA), timeout=60))
+        res = j["chart"]["result"][0]
+        out = {}
+        for t, c in zip(res["timestamp"], res["indicators"]["quote"][0]["close"]):
+            if c is None: continue
+            d = datetime.datetime.fromtimestamp(t, datetime.UTC)
+            out[f"{d.year}-{d.month:02d}"] = round(float(c), 3)
+        return out
+    except Exception as e:
+        print("usdjpy fetch failed:", e); return {}
+
 def main():
     raw = {}
     for ik, _, _ in INSTR:
@@ -55,6 +70,16 @@ def main():
     for ik, name, _ in INSTR:
         out["series"][name] = {key: [None if raw[(ik, key)].get(m) is None else round(raw[(ik, key)][m] / 10, 1) for m in months]
                                for _, key, _, _ in COUNTRIES}
+    fx = usdjpy_monthly()
+    def rate(tag):
+        if tag in fx: return fx[tag]
+        earlier = [v for k, v in sorted(fx.items()) if k <= tag]
+        return earlier[-1] if earlier else (sorted(fx.values())[len(fx)//2] if fx else None)
+    rates = [rate(m) for m in out["months"]]
+    out["usdjpy"] = rates
+    out["unit_usd"] = "$mn, net purchase (+ = Japan buying); ¥ converted at each month's USD/JPY (Yahoo monthly close)"
+    out["series_usd"] = {nm: {k: [None if (v is None or r is None) else round(v * 1000.0 / r, 1) for v, r in zip(arr, rates)]
+                              for k, arr in sers.items()} for nm, sers in out["series"].items()}
     json.dump(out, open(os.path.join(HERE, "boj_em_flows.json"), "w"), ensure_ascii=False)
     print("wrote boj_em_flows.json, as_of", out["meta"]["as_of"], "months", len(months))
 

@@ -886,10 +886,16 @@
     <div class="card full" style="margin-top:16px">
       <h2>Japan, outward portfolio investment — emerging markets, by country <span id="emFlowStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
       <div class="sub">Residents' monthly net purchase of foreign securities in key EM countries — last 8 months, ¥bn, plus 2026 YTD and last-12-month totals. Blue = net buying, red = net selling. <b>All securities (equity + bonds), not sovereign-only</b> — so it is a different series from the sovereign table above, which only covers 12 advanced economies. Classified by issuer country: money routed through Cayman/Luxembourg funds is not counted under the underlying country, so EM exposure is likely understated. Source: BOJ Time-Series Data Search (MoF/BOJ balance of payments, Portfolio Investment Assets by country, net), preliminary basis.</div>
-      <div id="emFlowBtns" style="display:flex;gap:6px;margin-top:12px">
+      <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:12px">
+      <div id="emFlowBtns" style="display:flex;gap:6px">
         <button class="tab active" data-ins="total" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setEmFlowIns('total',this)">All securities</button>
         <button class="tab" data-ins="equity" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setEmFlowIns('equity',this)">Equity &amp; funds</button>
         <button class="tab" data-ins="ltdebt" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setEmFlowIns('ltdebt',this)">Long-term bonds</button>
+      </div>
+      <div id="emCurBtns" style="display:flex;gap:6px">
+        <button class="tab active" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbCur('jpy',this)">¥ bn</button>
+        <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbCur('usd',this)">$ mn</button>
+      </div>
       </div>
       <div style="overflow-x:auto;margin-top:12px"><table id="emFlowTable" style="width:100%;border-collapse:collapse;font-size:12.5px"></table></div>
     </div>
@@ -3351,9 +3357,9 @@ function setXbWin(win, btn){ _xbWin=win;
   ['banks','trust_bank','trust_pension','life'].forEach(k=>xbStackedChart('cXb_'+k,'xbTitle_'+k, k));
   if (typeof xbStackedChart === 'function') xbStackedChart('cNisaInvTrust', 'nisaInvTrustTitle', 'invtrust'); }
 function setXbCur(cur, btn){ _xbCur=cur;
-  document.querySelectorAll('#xbCurBtns .tab, #nisaXbCurBtns .tab').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll(`#xbCurBtns .tab[onclick="setXbCur('${cur}',this)"], #nisaXbCurBtns .tab[onclick="setXbCur('${cur}',this)"]`).forEach(b=>b.classList.add('active'));
-  renderXb(); xbInChart(); xbWeeklyChart(); renderBop();
+  document.querySelectorAll('#xbCurBtns .tab, #nisaXbCurBtns .tab, #emCurBtns .tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll(`#xbCurBtns .tab[onclick="setXbCur('${cur}',this)"], #nisaXbCurBtns .tab[onclick="setXbCur('${cur}',this)"], #emCurBtns .tab[onclick="setXbCur('${cur}',this)"]`).forEach(b=>b.classList.add('active'));
+  renderXb(); xbInChart(); xbWeeklyChart(); renderBop(); renderEmFlow();
   if (typeof xbStackedChart === 'function') xbStackedChart('cNisaInvTrust', 'nisaInvTrustTitle', 'invtrust');
   if (typeof xbTotalSeasChart === 'function') xbTotalSeasChart('cNisaInvTrustSeasTotal', 'nisaInvTrustSeasTotalTitle', 'invtrust');
   if (typeof xbInstrSeasChart === 'function') xbInstrSeasChart('cNisaInvTrustSeasEquity', 'nisaInvTrustSeasEquityTitle', 'equity', 'invtrust', 'Equity');
@@ -3470,12 +3476,12 @@ function setEmFlowIns(k, btn){ _emIns=k;
   renderEmFlow(); }
 function renderEmFlow(){
   const D=_emFlow, tbl=document.getElementById('emFlowTable'); if(!D||!tbl) return;
-  const S=D.series[_emIns], n=8, i0=D.months.length-n, mn=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const usd=(_xbCur==='usd'&&D.series_usd), S=(usd?D.series_usd:D.series)[_emIns], k_=usd?1000/150:1, n=8, i0=D.months.length-n, mn=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   const last=D.months[D.months.length-1], yr=last.slice(0,4);
   const sum=(a)=>a.reduce((x,v)=>x+(v==null?0:v),0);
   const cell=(v,strong,scale)=>{
     if(v==null) return '<td style="padding:.3rem .5rem;text-align:right;color:#5a6580">–</td>';
-    const mag=Math.min(Math.abs(v)/scale,1);
+    const mag=Math.min(Math.abs(v)/(scale*k_),1);
     const bg=v>=0?`rgba(90,160,230,${0.12+mag*0.32})`:`rgba(226,86,74,${0.12+mag*0.32})`;
     return `<td style="padding:.3rem .5rem;text-align:right;background:${bg};${strong?'font-weight:600':''}">${v>=0?'+':''}${v.toFixed(0)}</td>`;
   };
@@ -3496,7 +3502,7 @@ function renderEmFlow(){
   h+=`<tr style="border-top:2px solid #3a4a6b"><td style="padding:.3rem .5rem;color:#eef2f9;font-weight:600;white-space:nowrap;position:sticky;left:0;background:var(--card,#171f31)">Total (these 12)</td>`;
   tot.forEach(x=>{h+=cell(x,true,300);}); h+=cell(tY,true,1500)+cell(t12,true,1500)+'</tr></tbody>';
   tbl.innerHTML=h;
-  const el=document.getElementById('emFlowStatus'); if(el) el.textContent='· '+D.instruments[_emIns].toLowerCase()+', net · data to '+D.meta.as_of+' · ¥bn';
+  const el=document.getElementById('emFlowStatus'); if(el) el.textContent='· '+D.instruments[_emIns].toLowerCase()+', net · data to '+D.meta.as_of+' · '+(usd?'$mn (¥ converted at each month\'s USD/JPY)':'¥bn');
 }
 fetch('./boj_em_flows.json?' + Date.now())
   .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
