@@ -26,6 +26,7 @@ COUNTRIES = [  # (BOJ code, key, label, region)
     ("VN", "vietnam", "Vietnam", "Emerging Asia"),
     ("KR", "korea", "Korea", "Emerging Asia"),
     ("TW", "taiwan", "Taiwan", "Emerging Asia"),
+    ("EE", "easteurope", "Eastern Europe, Russia etc. (incl. Poland, Hungary, Czech)", "CEEMEA"),
     ("ZA", "southafrica", "South Africa", "CEEMEA"),
     ("SA", "saudi", "Saudi Arabia", "CEEMEA"),
     ("AE", "uae", "UAE", "CEEMEA"),

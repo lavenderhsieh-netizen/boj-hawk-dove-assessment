@@ -3499,7 +3499,7 @@ function renderEmFlow(){
     h+=cell(ytd,true,500)+cell(l12,true,500);
     h+='</tr>';
   });
-  h+=`<tr style="border-top:2px solid #3a4a6b"><td style="padding:.3rem .5rem;color:#eef2f9;font-weight:600;white-space:nowrap;position:sticky;left:0;background:var(--card,#171f31)">Total (these 12)</td>`;
+  h+=`<tr style="border-top:2px solid #3a4a6b"><td style="padding:.3rem .5rem;color:#eef2f9;font-weight:600;white-space:nowrap;position:sticky;left:0;background:var(--card,#171f31)">Total (these ${D.order.length} lines)</td>`;
   tot.forEach(x=>{h+=cell(x,true,300);}); h+=cell(tY,true,1500)+cell(t12,true,1500)+'</tr></tbody>';
   tbl.innerHTML=h;
   const el=document.getElementById('emFlowStatus'); if(el) el.textContent='· '+D.instruments[_emIns].toLowerCase()+', net · data to '+D.meta.as_of+' · '+(usd?'$mn (¥ converted at each month\'s USD/JPY)':'¥bn');
