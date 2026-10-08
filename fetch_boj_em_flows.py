@@ -24,6 +24,8 @@ COUNTRIES = [  # (BOJ code, key, label, region)
     ("TH", "thailand", "Thailand", "Emerging Asia"),
     ("PH", "philippines", "Philippines", "Emerging Asia"),
     ("VN", "vietnam", "Vietnam", "Emerging Asia"),
+    ("KR", "korea", "Korea", "Emerging Asia"),
+    ("TW", "taiwan", "Taiwan", "Emerging Asia"),
     ("ZA", "southafrica", "South Africa", "CEEMEA"),
     ("SA", "saudi", "Saudi Arabia", "CEEMEA"),
     ("AE", "uae", "UAE", "CEEMEA"),
