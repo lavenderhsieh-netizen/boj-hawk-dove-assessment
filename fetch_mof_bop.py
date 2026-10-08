@@ -69,7 +69,11 @@ def to_text(pdf_bytes):
     try:
         out = subprocess.run(["pdftotext", "-layout", path, "-"],
                              capture_output=True, timeout=60)
-        return out.stdout.decode("utf-8", "replace")
+        txt = out.stdout.decode("utf-8", "replace")
+        if "\u3edc" in txt:   # newer MoF PDFs embed ASCII digits as private-glyph codepoints
+            txt = txt.translate({**{0x3edc + d: ord("0") + d for d in range(10)},
+                                 0x3ed8: ord(","), 0x4809: ord("-"), 0x41f7: ord("\uff0d") if False else 0x2015, 0x3ecc: 32})
+        return txt
     finally:
         os.unlink(path)
 
