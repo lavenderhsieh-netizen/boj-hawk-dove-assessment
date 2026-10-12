@@ -551,6 +551,19 @@
         "fixed5": 185,
         "fixed3": 195
       }
+    },
+    {
+      "date": "2026-09",
+      "pub_date": "20261006",
+      "floating10_bn": 345.6,
+      "fixed5_bn": 529.3,
+      "fixed3_bn": 150.3,
+      "total_bn": 1025.2,
+      "series": {
+        "floating10": 198,
+        "fixed5": 186,
+        "fixed3": 196
+      }
     }
   ]
 }
