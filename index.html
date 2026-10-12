@@ -2989,9 +2989,9 @@ fetch('./seasonality_data.json?' + Date.now())
       const cell = v => {
         if (v == null) return `<td style="text-align:right;color:var(--muted)">—</td>`;
         const a = Math.min(1, Math.abs(v) / m);
-        const op = 0.20 + a*0.70;
-        const bg = v > 0 ? `rgba(226,86,74,${op})` : `rgba(90,160,230,${op})`;
-        const fg = op > 0.55 ? '#0d1220' : 'inherit';
+        const op = Math.min(0.85, 0.18 + a*0.67);
+        const bg = v > 0 ? `rgba(255,128,128,${op})` : `rgba(120,190,255,${op})`;
+        const fg = v > 0 ? '#2a1216' : '#0e1f33';
         const fw = op > 0.4 ? 600 : 400;
         return `<td style="text-align:right;background:${bg};color:${fg};font-weight:${fw}">${v>0?'+':''}${v.toFixed(1)}</td>`;
       };
