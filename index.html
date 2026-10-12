@@ -2993,7 +2993,7 @@ fetch('./seasonality_data.json?' + Date.now())
         const mx = (c,k)=>'rgb('+c.map(x=>Math.round(255-(255-x)*k)).join(',')+')';
         const bg = v > 0 ? mx([255,128,128],kk) : mx([120,190,255],kk);
         const fg = v > 0 ? '#2a1216' : '#0e1f33';
-        const fw = op > 0.4 ? 600 : 400;
+        const fw = a > 0.4 ? 600 : 400;
         return `<td style="text-align:right;background:${bg};color:${fg};font-weight:${fw}">${v>0?'+':''}${v.toFixed(1)}</td>`;
       };
       const thead = `<thead><tr><th>Month</th>${cal.years.map(y=>`<th style="text-align:right">${y}</th>`).join('')}
