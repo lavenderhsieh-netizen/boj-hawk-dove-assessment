@@ -275,7 +275,8 @@
   <button class="tab" onclick="showTab('property',this)">Property</button>
   <button class="tab" onclick="showTab('tankan',this)">Tankan</button>
   <button class="tab" onclick="showTab('seasonality',this)">Seasonality</button>
-  <button class="tab" onclick="showTab('markets',this)">Markets &amp; bonds</button>
+  <button class="tab" onclick="showTab('markets',this)">Market</button>
+  <button class="tab" onclick="showTab('inflation',this)">Inflation</button>
   <button class="tab" onclick="showTab('method',this)">Methodology</button>
 </div>
 
@@ -530,23 +531,6 @@
                             </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;align-items:stretch">
       <div class="card" style="margin:0">
-        <h2 style="min-height:44px">BOJ core CPI — excluding institutional factors (yoy %) <span id="inflStatus"></span></h2>
-        <canvas id="cInfl" style="max-height:300px"></canvas>
-        <div class="note" id="inflNote" style="margin-top:8px">Source: BOJ Research. Ex-fresh food, ex-fresh food &amp; energy, ex-food &amp; energy — institutional factors removed (consumption tax changes, free education, 2021 mobile-fee cuts, travel subsidies, energy-cost-relief measures). Spliced across BOJ's published base-year vintages (2025/2020/2015 base) to stay current through each rebasing.</div>
-      </div>
-      <div class="card" style="margin:0">
-        <h2 style="min-height:44px">BOJ underlying inflation — distribution measures (yoy %) <span id="inflDistStatus"></span></h2>
-        <canvas id="cInflDist" style="max-height:300px"></canvas>
-        <div class="note" style="margin-top:8px">Trimmed mean, weighted median, mode of cross-item price-change distribution, from BOJ's <i>Indicators for Core CPI</i>. Source: BOJ Research (cpirev.xlsx).</div>
-      </div>
-    </div>
-    <div class="card" style="margin-top:16px">
-      <h2 style="min-height:44px">BOJ diffusion index — share of items with rising vs. falling prices (%) <span id="inflDiffStatus"></span></h2>
-      <canvas id="cInflDiff" style="max-height:280px"></canvas>
-      <div class="note" id="inflDiffNote" style="margin-top:8px">Source: BOJ Research (cpirev.xlsx). Share of CPI items whose price rose/fell yoy; diffusion index = rising minus falling (% points). Same base-year-vintage splicing as the two CPI cards above.</div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;align-items:stretch">
-      <div class="card" style="margin:0">
         <h2 style="min-height:44px">Output gap (quarterly, %) <span id="gapStatus"></span></h2>
         <canvas id="cOutputGap" style="max-height:300px"></canvas>
         <div class="note" id="gapNote" style="margin-top:8px">Source: BOJ Research (gap.xlsx). Positive = economy above potential; negative = below.</div>
@@ -569,6 +553,27 @@
         <tbody id="sourceStatus"></tbody>
       </table></div>
       <div class="note">Stale = previous fetch succeeded; current fetch failed — last good data is displayed. Missing = no data available.</div>
+    </div>
+  </div>
+
+  <!-- INFLATION -->
+  <div id="tab-inflation" class="panel">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:0;align-items:stretch">
+      <div class="card" style="margin:0">
+        <h2 style="min-height:44px">BOJ core CPI — excluding institutional factors (yoy %) <span id="inflStatus"></span></h2>
+        <canvas id="cInfl" style="max-height:300px"></canvas>
+        <div class="note" id="inflNote" style="margin-top:8px">Source: BOJ Research. Ex-fresh food, ex-fresh food &amp; energy, ex-food &amp; energy — institutional factors removed (consumption tax changes, free education, 2021 mobile-fee cuts, travel subsidies, energy-cost-relief measures). Spliced across BOJ's published base-year vintages (2025/2020/2015 base) to stay current through each rebasing.</div>
+      </div>
+      <div class="card" style="margin:0">
+        <h2 style="min-height:44px">BOJ underlying inflation — distribution measures (yoy %) <span id="inflDistStatus"></span></h2>
+        <canvas id="cInflDist" style="max-height:300px"></canvas>
+        <div class="note" style="margin-top:8px">Trimmed mean, weighted median, mode of cross-item price-change distribution, from BOJ's <i>Indicators for Core CPI</i>. Source: BOJ Research (cpirev.xlsx).</div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h2 style="min-height:44px">BOJ diffusion index — share of items with rising vs. falling prices (%) <span id="inflDiffStatus"></span></h2>
+      <canvas id="cInflDiff" style="max-height:280px"></canvas>
+      <div class="note" id="inflDiffNote" style="margin-top:8px">Source: BOJ Research (cpirev.xlsx). Share of CPI items whose price rose/fell yoy; diffusion index = rising minus falling (% points). Same base-year-vintage splicing as the two CPI cards above.</div>
     </div>
   </div>
 
