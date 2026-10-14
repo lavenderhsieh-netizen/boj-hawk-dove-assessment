@@ -558,6 +558,36 @@
 
   <!-- INFLATION -->
   <div id="tab-inflation" class="panel">
+    <div class="card" style="margin:0 0 16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+        <h2 style="margin:0">Inflation forecast to March 2028 — our path vs BOJ <span style="font-size:12px;color:var(--muted);font-weight:400">(BOJ special-factors-removed basis, yoy %)</span></h2>
+        <div style="display:flex;gap:6px">
+          <button class="tab active" id="fcBtnEx" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="fcSet('ex_fresh',this)">Core (ex fresh food)</button>
+          <button class="tab" id="fcBtnCore" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="fcSet('core',this)">Core-core (ex fresh food &amp; energy)</button>
+        </div>
+      </div>
+      <div style="position:relative;height:360px;margin-top:10px"><canvas id="cFc"></canvas></div>
+      <div class="note" id="fcNote" style="margin-top:8px"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;align-items:stretch">
+      <div class="card" style="margin:0">
+        <h2 id="fcCmpTitle" style="min-height:44px">Fiscal-year averages vs BOJ July 2026 Outlook Report</h2>
+        <div style="overflow-x:auto"><table id="fcCmpTable"></table></div>
+        <div class="note" id="fcCmpNote" style="margin-top:8px"></div>
+      </div>
+      <div class="card" style="margin:0">
+        <h2 style="min-height:44px">How the forecast is calculated</h2>
+        <ol style="margin:0;padding-left:18px;font-size:13px;line-height:1.55;color:var(--text)">
+          <li><b>Base effect (the backbone).</b> Yoy inflation next month = today's yoy + this month's price move &minus; the move in the same month last year. Last year's moves are known, so only "this year's move" is assumed: a normal seasonal move for that month (2016-19 &amp; 2023-25 pattern) plus today's underlying pace.</li>
+          <li><b>Statistical model, months 1&ndash;5.</b> A regularised regression (LASSO) on USD/JPY, import &amp; producer prices, output gap, Tankan &amp; household inflation expectations. Averaged 50/50 with the base-effect path (best in back-tests).</li>
+          <li><b>Months 6&ndash;12:</b> base-effect only (beats the model and "no change"). <b>After month 12:</b> held flat &mdash; no method beats that, so treat 2028 as a placeholder.</li>
+          <li><b>Bands:</b> &plusmn;1 typical miss (RMSE) from replaying forecasts every 3rd month since Jan 2022.</li>
+          <li><b>Hawkish / dovish:</b> shock the drivers (yen &plusmn;10%, import prices &plusmn;10%, PPI &plusmn;3pt, output gap &plusmn;0.5, expectations &plusmn;0.3) through the model's sensitivities. Illustrations, not probabilities.</li>
+          <li><b>Wages:</b> not provable statistically (only 3 years of 5% pay deals), so shown as an explicit overlay: +0.25pt phased in from month 6 (about one-third of the gap between wage-implied ~3% and core-core 2.2%). An assumption, not an estimate.</li>
+        </ol>
+        <div class="note" style="margin-top:8px">Back-test miss (RMSE, pt): core 0.19 at 1m &rarr; 0.64 at 5m &rarr; 1.45 at 12m; core-core 0.17 &rarr; 0.70 &rarr; 1.71. At 12m it is roughly level with "no change".</div>
+      </div>
+    </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:0;align-items:stretch">
       <div class="card" style="margin:0">
         <h2 style="min-height:44px">BOJ core CPI — excluding institutional factors (yoy %) <span id="inflStatus"></span></h2>
@@ -5706,6 +5736,47 @@ fetch('./retail_jgb.json?' + Date.now())
   })
   .catch(e => { console.warn('retail_jgb.json unavailable:', e); });
 
+
+// ── Inflation forecast card ──────────────────────────────────────────────
+let FC=null, fcChart=null, fcKey='ex_fresh';
+function fcSet(k,btn){ fcKey=k; document.getElementById('fcBtnEx').classList.remove('active'); document.getElementById('fcBtnCore').classList.remove('active'); btn.classList.add('active'); fcRender(); }
+function fcRender(){
+  if(!FC) return;
+  const d=FC[fcKey], lab=fcKey==='ex_fresh'?'Core (ex fresh food)':'Core-core (ex fresh food & energy)';
+  const H=d.hist_months.slice(-30), hv=d.hist.slice(-30);
+  const labels=H.concat(d.months), nH=H.length, pad=n=>Array(n).fill(null);
+  const lastH=hv[hv.length-1];
+  const link=arr=>pad(nH-1).concat([lastH],arr);
+  const ds=[
+    {label:'Actual (BOJ basis)',data:hv.concat(pad(d.months.length)),borderColor:'#d9a441',borderWidth:2.4,pointRadius:0,tension:.15,order:1},
+    {label:'Low (-1 RMSE)',data:link(d.low),borderColor:'transparent',backgroundColor:'rgba(217,164,65,0.13)',pointRadius:0,fill:false,order:9},
+    {label:'Band (±1 RMSE)',data:link(d.high),borderColor:'transparent',backgroundColor:'rgba(217,164,65,0.13)',pointRadius:0,fill:'-1',order:9},
+    {label:'Hawkish',data:link(d.hawk),borderColor:'#e2564a',borderWidth:1.4,borderDash:[2,3],pointRadius:0,tension:.15,order:3},
+    {label:'Dovish',data:link(d.dove),borderColor:'#4a90d9',borderWidth:1.4,borderDash:[2,3],pointRadius:0,tension:.15,order:3},
+    {label:'Wage overlay (assumption)',data:link(d.wage),borderColor:'#4cba7a',borderWidth:1.6,borderDash:[8,3,2,3],pointRadius:0,tension:.15,order:2},
+    {label:'Base forecast',data:link(d.base),borderColor:'#d9a441',borderWidth:2.4,borderDash:[5,4],pointRadius:0,tension:.15,order:1},
+  ];
+  if(fcChart) fcChart.destroy();
+  fcChart=new Chart(document.getElementById('cFc'),{type:'line',data:{labels,datasets:ds},options:{
+    maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+    plugins:{datalabels:{display:false},legend:{position:'top',labels:{filter:i=>i.text!=='Low (-1 RMSE)'}},
+      tooltip:{filter:i=>i.dataset.label!=='Low (-1 RMSE)'&&i.parsed.y!=null,callbacks:{label:c=>c.dataset.label+': '+c.parsed.y.toFixed(2)+'%'}}},
+    scales:{x:{ticks:{maxTicksLimit:14,maxRotation:45}},y:{title:{display:true,text:'yoy %'},ticks:{callback:v=>v.toFixed(1)+'%'}}}}});
+  const b=d.basis, firstHeld=b.findIndex(x=>/Held/i.test(x));
+  document.getElementById('fcNote').innerHTML=`${lab}. Solid = actual BOJ special-factors-removed series (latest Aug 2026: ${hv[hv.length-1].toFixed(1)}%); dashed = forecast. Months 1&ndash;5 model + base effect, 6&ndash;12 base effect only, <b>${d.months[firstHeld]} onward held flat (placeholder, not a forecast)</b>. Peak of base path: ${Math.max(...d.base).toFixed(2)}% in ${d.months[d.base.indexOf(Math.max(...d.base))]}. Shaded band = &plusmn;1 back-test RMSE; wide beyond 6 months.`;
+  const f=d.fy, o=d.boj_outlook, g=d.gap;
+  const fx=v=>v==null?'&ndash;':v.toFixed(2), f1=v=>v.toFixed(1);
+  const row=(fy)=>{
+    const a=f[fy], rg=`<span style="color:var(--muted)">[${o.range[fy][0].toFixed(1)}&ndash;${o.range[fy][1].toFixed(1)}]</span>`;
+    if(!a) return `<tr><td>${fy}</td><td colspan="4" style="color:var(--muted)">beyond our horizon (path held flat)</td><td><b>${f1(o[fy])}</b> ${rg}</td><td>&ndash;</td></tr>`;
+    const dd=a.boj_basis_wage-o[fy];
+    return `<tr><td>${fy}</td><td>${fx(a.boj_basis)}</td><td>${fx(a.boj_basis_wage)}</td><td>${fx(a.official_approx)}</td><td>${fx(a.official_approx_wage)}</td><td><b>${f1(o[fy])}</b> ${rg}</td><td style="color:${Math.abs(dd)<0.15?'var(--muted)':(dd>0?'#e2564a':'#4a90d9')}">${dd>0?'+':''}${dd.toFixed(2)}</td></tr>`;
+  };
+  document.getElementById('fcCmpTable').innerHTML=`<thead><tr><th>Fiscal year<br><span style="font-weight:400;color:var(--muted)">(Apr&ndash;Mar)</span></th><th>Ours<br>BOJ basis</th><th>Ours + wage<br>BOJ basis</th><th>Ours<br>official approx.</th><th>Ours + wage<br>official approx.</th><th>BOJ Jul-26 median<br>[majority range]</th><th>Ours+wage (BOJ basis) &minus; BOJ</th></tr></thead><tbody>${row('FY2026')}${row('FY2027')}${row('FY2028')}</tbody>`;
+  document.getElementById('fcCmpTitle').textContent=`${lab}: fiscal-year averages vs BOJ July 2026 Outlook Report`;
+  document.getElementById('fcCmpNote').innerHTML=`<b>Why two bases.</b> BOJ's Outlook forecasts the <i>official</i> CPI, which includes government energy/education subsidies. We forecast the BOJ's <i>special-factors-removed</i> series. "Official approx." subtracts today's gap (${g.toFixed(2)}pt, Aug 2026) from our path and uses actual official prints for Apr&ndash;Aug 2026 &mdash; a rough conversion, since the gap will move when subsidies end. BOJ's previous (Apr-26) medians: FY26 ${f1(o.prev.FY2026)}, FY27 ${f1(o.prev.FY2027)}, FY28 ${f1(o.prev.FY2028)}. Source: BOJ Outlook for Economic Activity and Prices (July 2026), Appendix. Next Outlook Report: 30 Oct 2026.`;
+}
+fetch('./inflation_forecast.json?'+Date.now()).then(r=>r.json()).then(j=>{FC=j; fcRender();}).catch(e=>{document.getElementById('fcNote').textContent='Forecast data unavailable.';});
 </script>
 </body>
 </html>
