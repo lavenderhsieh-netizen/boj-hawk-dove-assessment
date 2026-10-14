@@ -145,6 +145,7 @@
   table.fsaTable th.rowLabel{background:var(--bg);text-align:left}
   table.fsaTable th.grpA{background:var(--accent);color:#241a03}
   table.fsaTable th.grpB{background:#4a90d9}
+  table.fsaTable th.grpC{background:#4cba7a}
   table.fsaTable td{font-size:13px;text-align:center}
   table.fsaTable td.rowLabel{text-align:left;font-weight:600}
   table.fsaTable tr.total td{font-weight:700;background:var(--card2)}
@@ -526,24 +527,7 @@
           </div>
         </div>
       </div>
-      <div class="card">
-        <h2>USD/JPY <span id="fxStatus"></span></h2>
-        <canvas id="cFx" style="max-height:260px"></canvas>
-      </div>
-      <div class="card">
-        <h2>Nikkei 225 <span id="nkStatus"></span></h2>
-        <canvas id="cNk" style="max-height:260px"></canvas>
-      </div>
-      <div class="card">
-        <h2>JGB 10Y yield <span id="jgb10Status"></span></h2>
-        <canvas id="cJgb10" style="max-height:260px"></canvas>
-      </div>
-      <div class="card">
-        <h2>JGB 10Y–30Y spread <span id="jgbSpreadStatus"></span></h2>
-        <canvas id="cJgbSpread" style="max-height:260px"></canvas>
-        <div class="note">30Y minus 10Y JGB yield (%). Wider = more term premium/steeper long end. Source: MOF daily.</div>
-      </div>
-    </div>
+                            </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;align-items:stretch">
       <div class="card" style="margin:0">
         <h2 style="min-height:44px">BOJ core CPI — excluding institutional factors (yoy %) <span id="inflStatus"></span></h2>
@@ -1517,7 +1501,7 @@
       <div class="note"><b>Current rule: direct JGB holdings are NOT NISA-eligible</b> (deposits/govt/corporate bonds excluded from both quotas, per JSDA FAQ). Everything below is proposal-stage: <b>DISCUSSION</b> (Nov 2025 Diet debate) → <b>BILL</b> (DPP opposition bill filed to Upper House 10 Jul 2026, not LDP/government) — realistic track is the FY2027-29 tax-reform cycle given the coalition's Upper House minority. Kodomo NISA (ages 0-17, tsumitate-only, Jan 2027) is separate and already confirmed. Open question: would JGB purchases use the <i>existing</i> ¥3.6mn allowance or a <i>separate</i> one?</div>
     </div>
     <div class="card full">
-      <h2>1. Size and type of assets under NISA program <span class="npill">FSA, Dec-2025</span></h2>
+      <h2>1. Size and type of assets under NISA program <span class="npill">FSA, Dec-2025 balance · Jun-2026 flow</span></h2>
       <div style="overflow-x:auto;margin-top:10px"><table class="fsaTable" id="nisaSizeByTypeTable"></table></div>
       <div class="note" id="nisaSizeByTypeNote"></div>
       <div class="note">The balance column is the mark-to-market value currently held under the new NISA system (since Jan-2024) — the cleanest "what's actually sitting in NISA accounts today" figure. Cumulative flow (old + new NISA, at cost, since 2014) is a bigger, different number — <b>¥71.4tn</b> — because it includes 11 years of old-NISA buying that has since matured or rolled off. See the chart below for that longer flow series.</div>
@@ -2447,30 +2431,6 @@ function renderMarkets(M) {
     document.getElementById('jgbBpNote').innerHTML =
       `vs. <b>1D</b> ${esc(bp.daily?.date ?? '—')} · <b>MTD</b> ${esc(bp.mtd?.date ?? '—')} · <b>QTD</b> ${esc(bp.qtd?.date ?? '—')} · <b>YTD</b> ${esc(bp.ytd?.date ?? '—')}. ` +
       `Red = yields up/cheapened; blue = down/richened. Latest: ${esc(bp.latest_date)}. ${esc(bp.yield_convention || '')}`;
-  }
-
-  // ── USD/JPY ───────────────────────────────────────────────────────────────
-  document.getElementById('fxStatus').innerHTML = staleBadge(src.fx?.status);
-  if (M.fx?.history) sparkLine(document.getElementById('cFx'), M.fx.history, 'rgb(74,144,217)');
-
-  // ── Nikkei ────────────────────────────────────────────────────────────────
-  document.getElementById('nkStatus').innerHTML = staleBadge(src.nikkei?.status);
-  if (M.nikkei?.history) sparkLine(document.getElementById('cNk'), M.nikkei.history, 'rgb(76,186,122)');
-
-  // ── JGB 10Y sparkline ─────────────────────────────────────────────────────
-  if (M.jgb?.history) {
-    const jgb10hist = M.jgb.history.map(p => ({ date: p.date, value: p.y10 }));
-    sparkLine(document.getElementById('cJgb10'), jgb10hist, 'rgb(217,164,65)');
-    document.getElementById('jgb10Status').innerHTML = staleBadge(src.jgb?.status);
-  }
-
-  // ── JGB 10Y–30Y spread sparkline ──────────────────────────────────────────
-  if (M.jgb?.history) {
-    const spreadHist = M.jgb.history
-      .filter(p => p.y10 != null && p.y30 != null)
-      .map(p => ({ date: p.date, value: parseFloat((p.y30 - p.y10).toFixed(4)) }));
-    sparkLine(document.getElementById('cJgbSpread'), spreadHist, 'rgb(180,100,220)');
-    document.getElementById('jgbSpreadStatus').innerHTML = staleBadge(src.jgb?.status);
   }
 
   // ── Inflation ─────────────────────────────────────────────────────────────
@@ -4321,23 +4281,25 @@ fetch('./intervention_data.json?' + Date.now())
   // growth quota + tsumitate quota combined. Manual/static, annual-cadence source —
   // re-check FSA's next confirmed release before reusing. Mirrors japan-nisa-tracker's Overview tab.
   const NISA_SIZE_BY_TYPE=[
-    {type:"Investment trusts",flow_tn:12.60,bal_tn:27.05},
-    {type:"Listed equities",flow_tn:5.64,bal_tn:8.78},
-    {type:"ETF",flow_tn:0.42,bal_tn:0.84},
-    {type:"REIT",flow_tn:0.08,bal_tn:0.11},
+    {type:"Investment trusts",flow_tn:12.60,bal_tn:27.05,h1_tn:8.56},
+    {type:"Listed equities",flow_tn:5.64,bal_tn:8.78,h1_tn:4.76},
+    {type:"ETF",flow_tn:0.42,bal_tn:0.84,h1_tn:0.46},
+    {type:"REIT",flow_tn:0.08,bal_tn:0.11,h1_tn:0.04},
   ];
   function buildNisaSizeByType(){
     const totFlow=NISA_SIZE_BY_TYPE.reduce((s,d)=>s+d.flow_tn,0);
     const totBal=NISA_SIZE_BY_TYPE.reduce((s,d)=>s+d.bal_tn,0);
-    let rows=`<tr><th class="rowLabel">Product type</th><th class="grpA">2025 new flow<br>(¥tn)</th><th class="grpA">% of new flow</th><th class="grpB">Outstanding balance,<br>end-Dec 2025 (¥tn)</th><th class="grpB">% of balance</th></tr>`;
+    const totH1=NISA_SIZE_BY_TYPE.reduce((s,d)=>s+d.h1_tn,0);
+    let rows=`<tr><th class="rowLabel">Product type</th><th class="grpA">2025 new flow<br>(¥tn)</th><th class="grpA">% of new flow</th><th class="grpB">Outstanding balance,<br>end-Dec 2025 (¥tn)</th><th class="grpB">% of balance</th><th class="grpC">H1 2026 new flow<br>(¥tn, to end-Jun)</th><th class="grpC">% of H1 flow</th></tr>`;
     NISA_SIZE_BY_TYPE.forEach(d=>{
-      rows+=`<tr><td class="rowLabel">${d.type}</td><td>${d.flow_tn.toFixed(2)}</td><td>${(d.flow_tn/totFlow*100).toFixed(1)}%</td><td>${d.bal_tn.toFixed(2)}</td><td>${(d.bal_tn/totBal*100).toFixed(1)}%</td></tr>`;
+      rows+=`<tr><td class="rowLabel">${d.type}</td><td>${d.flow_tn.toFixed(2)}</td><td>${(d.flow_tn/totFlow*100).toFixed(1)}%</td><td>${d.bal_tn.toFixed(2)}</td><td>${(d.bal_tn/totBal*100).toFixed(1)}%</td><td>${d.h1_tn.toFixed(2)}</td><td>${(d.h1_tn/totH1*100).toFixed(1)}%</td></tr>`;
     });
-    rows+=`<tr class="total"><td class="rowLabel">Total</td><td>${totFlow.toFixed(2)}</td><td>100%</td><td>${totBal.toFixed(2)}</td><td>100%</td></tr>`;
+    rows+=`<tr class="total"><td class="rowLabel">Total</td><td>${totFlow.toFixed(2)}</td><td>100%</td><td>${totBal.toFixed(2)}</td><td>100%</td><td>${totH1.toFixed(2)}</td><td>100%</td></tr>`;
     document.getElementById("nisaSizeByTypeTable").innerHTML=rows;
     document.getElementById("nisaSizeByTypeNote").innerHTML=
       `Investment trusts are already the biggest bucket at ${(NISA_SIZE_BY_TYPE[0].bal_tn/totBal*100).toFixed(0)}% of the balance and are growing faster than the market-wide average (+10.1% YoY flow vs +7.9% total), gaining share at the expense of ETFs (-11.2% YoY) and, more slowly, listed equities (+4.6% YoY). `+
-      `Source: FSA "NISA口座の利用状況調査" official releases, Dec-2025 vs Dec-2024.`;
+      `Source: FSA "NISA口座の利用状況調査" official releases, Dec-2025 vs Dec-2024. `+
+      `<b>Latest (FSA, 2 Oct 2026, end-Jun 2026):</b> accounts 30.48mn (+8.1% vs end-2025), cumulative buys since 2014 ¥85.2tn, 2026 H1 new buying ¥13.82tn (growth quota ¥10.16tn, tsumitate quota ¥3.66tn). FSA's June release does not include a balance by product, so the balance columns stay at end-Dec 2025.`;
   }
 
   function buildNisaTab(){
