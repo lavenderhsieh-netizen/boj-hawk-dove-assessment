@@ -885,10 +885,29 @@
       <canvas id="cBopOutbound" style="max-height:360px;margin-top:12px"></canvas>
     </div>
     <div class="card full" style="margin-top:16px">
-      <h2>Japan, outward portfolio investment, sovereign bonds — by country <span id="bopOutTableStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
-      <div class="sub">Same series and controls as the chart above, in table form — last 8 months, ¥bn. Blue = net buying, red = net selling; rows are ranked by year-to-date net purchases. "Top N by size" ranks countries by the magnitude of their most recent month's value. Source: MoF Balance of Payments monthly, preliminary basis (see footnote below).</div>
-      <div style="overflow-x:auto;margin-top:12px"><table id="bopOutTable" style="width:100%;border-collapse:collapse;font-size:12.5px"></table></div>
-      <div class="sub" style="margin-top:10px">Preliminary/unrevised basis: MoF's static PDF isn't updated after revision, so a month can later drift from continuously-revised sell-side sources — seen once (Jan-2026, ~30-35% gap), otherwise consistent.</div>
+      <h2>Japan, outward portfolio investment — sovereign bonds, by country <span id="sovFlowStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">Same layout as the developed- and emerging-market tables below, but <b>sovereign bonds only</b> (12 advanced economies + "Others"), in table form of the chart above — last 8 months plus YTD and last-12-month totals. Blue = net buying, red = net selling. Source: MoF Balance of Payments monthly, preliminary basis (a month can later drift from continuously-revised sources — seen once, Jan-2026, ~30-35% gap).</div>
+      <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:12px">
+      <div id="sovFlowBtns" style="display:flex;gap:6px">
+        <button class="tab active" data-basis="outbound_sov" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setBopOutBasis('outbound_sov',this)">Long-term only</button>
+        <button class="tab" data-basis="outbound_sov_total" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setBopOutBasis('outbound_sov_total',this)">Long-term + short-term</button>
+      </div>
+      <div id="sovCurBtns" style="display:flex;gap:6px">
+        <button class="tab active" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbCur('jpy',this)">¥ bn</button>
+        <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbCur('usd',this)">$ mn</button>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span style="font-size:12px;color:var(--muted)">Rank:</span>
+        <select onchange="setFlowRank('sov',this.value)" style="background:var(--card2,#1d2739);color:var(--ink);border:1px solid var(--line);border-radius:7px;padding:4px 8px;font-size:12px">
+          <option value="reg_ytd">By region, then YTD</option>
+          <option value="flat_size">All countries by size (|YTD|)</option>
+          <option value="flat_ytd">All countries by YTD net buying</option>
+          <option value="flat_l12">All countries by last 12m</option>
+          <option value="reg_def">By region, default order</option>
+        </select>
+      </div>
+      </div>
+      <div style="overflow-x:auto;margin-top:12px"><table id="sovFlowTable" style="width:100%;table-layout:fixed;border-collapse:collapse;font-size:12.5px;min-width:900px"></table></div>
     </div>
 
     <div class="card full" style="margin-top:16px">
@@ -915,7 +934,7 @@
         </select>
       </div>
       </div>
-      <div style="overflow-x:auto;margin-top:12px"><table id="dmFlowTable" style="width:100%;border-collapse:collapse;font-size:12.5px"></table></div>
+      <div style="overflow-x:auto;margin-top:12px"><table id="dmFlowTable" style="width:100%;table-layout:fixed;border-collapse:collapse;font-size:12.5px;min-width:900px"></table></div>
     </div>
 
     <div class="card full" style="margin-top:16px">
@@ -942,7 +961,7 @@
         </select>
       </div>
       </div>
-      <div style="overflow-x:auto;margin-top:12px"><table id="emFlowTable" style="width:100%;border-collapse:collapse;font-size:12.5px"></table></div>
+      <div style="overflow-x:auto;margin-top:12px"><table id="emFlowTable" style="width:100%;table-layout:fixed;border-collapse:collapse;font-size:12.5px;min-width:900px"></table></div>
     </div>
 
     <div style="margin:1.6rem 0 .8rem;border-top:1px solid var(--line);padding-top:1.1rem">
@@ -3417,8 +3436,8 @@ function setXbWin(win, btn){ _xbWin=win;
   ['banks','trust_bank','trust_pension','life'].forEach(k=>xbStackedChart('cXb_'+k,'xbTitle_'+k, k));
   if (typeof xbStackedChart === 'function') xbStackedChart('cNisaInvTrust', 'nisaInvTrustTitle', 'invtrust'); }
 function setXbCur(cur, btn){ _xbCur=cur;
-  document.querySelectorAll('#xbCurBtns .tab, #nisaXbCurBtns .tab, #emCurBtns .tab, #dmCurBtns .tab').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll(`#xbCurBtns .tab[onclick="setXbCur('${cur}',this)"], #nisaXbCurBtns .tab[onclick="setXbCur('${cur}',this)"], #emCurBtns .tab[onclick="setXbCur('${cur}',this)"], #dmCurBtns .tab[onclick="setXbCur('${cur}',this)"]`).forEach(b=>b.classList.add('active'));
+  document.querySelectorAll('#xbCurBtns .tab, #nisaXbCurBtns .tab, #emCurBtns .tab, #dmCurBtns .tab, #sovCurBtns .tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll(`#xbCurBtns .tab[onclick="setXbCur('${cur}',this)"], #nisaXbCurBtns .tab[onclick="setXbCur('${cur}',this)"], #emCurBtns .tab[onclick="setXbCur('${cur}',this)"], #dmCurBtns .tab[onclick="setXbCur('${cur}',this)"], #sovCurBtns .tab[onclick="setXbCur('${cur}',this)"]`).forEach(b=>b.classList.add('active'));
   renderXb(); xbInChart(); xbWeeklyChart(); renderBop(); renderEmFlow();
   if (typeof xbStackedChart === 'function') xbStackedChart('cNisaInvTrust', 'nisaInvTrustTitle', 'invtrust');
   if (typeof xbTotalSeasChart === 'function') xbTotalSeasChart('cNisaInvTrustSeasTotal', 'nisaInvTrustSeasTotalTitle', 'invtrust');
@@ -3440,7 +3459,7 @@ const XB_CTRY={china:'#e2564a', us:'#5aa0e6', uk:'#d9a441', germany:'#4cba7a', f
 let _bopOutBasis='outbound_sov', _bopOutTopN=0;
 function setBopOutBasis(basis, btn){
   _bopOutBasis=basis;
-  document.querySelectorAll('#bopOutBasisBtns .tab').forEach(b=>b.classList.toggle('active', b===btn));
+  document.querySelectorAll('[data-basis]').forEach(b=>b.classList.toggle('active', b.dataset.basis===basis));
   renderBop();
 }
 function setBopOutTopN(v){ _bopOutTopN=+v||0; renderBop(); }
@@ -3484,58 +3503,25 @@ function bopChart(cvId, statusId, B, sec, orderOverride){
   });
   const el=document.getElementById(statusId); if(el && B.meta) el.textContent='· data to '+B.meta.as_of;
 }
-function flowHeatBg(v, scale){
-  const a=Math.min(Math.abs(v)/scale,1), k=0.3+a*0.7;
-  const c=v>=0?[120,190,255]:[255,128,128];
+function flowHeatBg(v, ref){
+  const a=Math.pow(Math.min(Math.abs(v)/ref,1),0.75), k=0.14+a*0.5;
+  const c=v>=0?[96,165,250]:[248,113,113];
   return 'rgb('+c.map(x=>Math.round(255-(255-x)*k)).join(',')+')';
 }
-function flowHeatTd(v, scale, strong, extra){
+function flowHeatTd(v, ref, strong, extra){
   if(v==null) return '<td style="padding:.3rem .5rem;text-align:right;color:#5a6580">–</td>';
-  const a=Math.min(Math.abs(v)/scale,1);
-  const fg=v>=0?'#0e1f33':'#2a1216';
-  const fw=(strong||a>0.4)?600:400;
-  return `<td style="padding:.3rem .5rem;text-align:right;background:${flowHeatBg(v,scale)};color:${fg};font-weight:${fw};${extra||''}">${v>=0?'+':''}${v.toFixed(0)}</td>`;
+  return `<td style="padding:.3rem .5rem;text-align:right;background:${flowHeatBg(v,ref)};color:#0f1a2e;font-weight:${strong?600:400};${extra||''}">${v>=0?'+':''}${v.toFixed(0)}</td>`;
 }
-function bopOutTable(B, nMonths, sec, orderOverride){
-  const tbl=document.getElementById('bopOutTable'); if(!tbl||!B[sec]) return;
-  const U=_xbUnit(); const D=B[sec], S=(U.m==='monthly_usd'&&D.series_usd)?D.series_usd:D.series, lab=D.labels;
-  const scale = (U.m==='monthly_usd') ? 25 : 2500;
-  const mn=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-  const i0=Math.max(0, B.months.length-nMonths);
-  const months=B.months.slice(i0);
-  const order = orderOverride || D.order;
-  const yr=B.months[B.months.length-1].slice(0,4);
-  const ytdOf=a=>a.reduce((x,v,i)=>x+(B.months[i].startsWith(yr)&&v!=null?v:0),0);
-  const rows=order.map(k=>({key:k, label:lab[k]||k, vals:S[k].slice(i0), ytd:ytdOf(S[k])}));
-  rows.sort((a,b)=>((a.key==='others')-(b.key==='others'))||(b.ytd-a.ytd));
-  const ytdScale=scale*4;
-  const cell=(v,strong)=>flowHeatTd(v,scale,strong);
-  let html='<thead><tr><th style="padding:.3rem .5rem;text-align:left;color:#93a1bd;font-weight:600;position:sticky;left:0;background:var(--card,#171f31)">Country</th>';
-  months.forEach(t=>{ const [y,m]=t.split('-'); html+=`<th style="padding:.3rem .5rem;text-align:right;color:#93a1bd;font-weight:600;white-space:nowrap">${mn[+m]}'${y.slice(2)}</th>`; });
-  html+=`<th style="padding:.3rem .5rem;text-align:right;color:#d9a441;font-weight:600;white-space:nowrap;border-left:1px solid #3a4a6b">${yr} YTD</th>`;
-  html+='</tr></thead><tbody>';
-  rows.forEach(r=>{
-    html+=`<tr style="border-top:1px solid #243149"><td style="padding:.3rem .5rem;color:#c7d0e0;white-space:nowrap;position:sticky;left:0;background:var(--card,#171f31)">${r.label}</td>`;
-    r.vals.forEach(v=>{ html+=cell(v,false); });
-    html+=flowHeatTd(r.ytd,ytdScale,true,'border-left:1px solid #3a4a6b');
-    html+='</tr>';
-  });
-  const totVals=S.total.slice(i0);
-  html+=`<tr style="border-top:2px solid #3a4a6b"><td style="padding:.3rem .5rem;color:#eef2f9;font-weight:600;white-space:nowrap;position:sticky;left:0;background:var(--card,#171f31)">Total</td>`;
-  totVals.forEach(v=>{ html+=cell(v,true); });
-  html+=flowHeatTd(ytdOf(S.total),ytdScale*2,true,'border-left:1px solid #3a4a6b');
-  html+='</tr></tbody>';
-  tbl.innerHTML=html;
-  const unitLabel=(U.m==='monthly_usd')?'$mn':'¥bn';
-  const basisLabel=(sec==='outbound_sov_total')?'long-term + short-term, net':'long-term, net';
-  const el=document.getElementById('bopOutTableStatus'); if(el && B.meta) el.textContent='· '+basisLabel+' · data to '+B.meta.as_of+' · '+unitLabel;
+function flowRef(vals){
+  const a=vals.filter(x=>x!=null).map(Math.abs).sort((x,y)=>x-y);
+  return a.length?Math.max(a[Math.floor(a.length*0.9)],1):1;
 }
 let _bopData=null;
 function renderBop(){ if(!_bopData) return;
   bopChart('cBopInbound','bopInStatus', _bopData, 'inbound');
   const D=_bopData[_bopOutBasis], order=D?bopOutOrder(D,_bopData.months):null;
   bopChart('cBopOutbound','bopOutStatus', _bopData, _bopOutBasis, order);
-  bopOutTable(_bopData, 8, _bopOutBasis, order); }
+  renderFlow('sov'); }
 fetch('./mof_bop.json?' + Date.now())
   .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
   .then(B => { _bopData=B; renderBop(); })
@@ -3543,23 +3529,31 @@ fetch('./mof_bop.json?' + Date.now())
 
 
 // EM country flows (all securities) — BOJ BP01 series, new card under the sovereign-by-country table
-const _flow={em:{D:null,ins:'total',rank:'reg_ytd'}, dm:{D:null,ins:'total',rank:'reg_ytd'}};
+const _flow={em:{D:null,ins:'total',rank:'reg_ytd'}, dm:{D:null,ins:'total',rank:'reg_ytd'}, sov:{ins:'x',rank:'reg_ytd'}};
+const SOV_REGION={us:'North America',canada:'North America',australia:'Asia-Pacific DM',hongkong:'Asia-Pacific DM',others:'Others'};
+function sovAdapt(){
+  const B=_bopData; if(!B||!B[_bopOutBasis]) return null;
+  const sec=B[_bopOutBasis], order=sec.order.filter(k=>k!=='total');
+  const regions={}; order.forEach(k=>{regions[k]=SOV_REGION[k]||'Europe';});
+  return {months:B.months, order, labels:sec.labels, regions, series:{x:sec.series}, series_usd:{x:sec.series_usd},
+    instruments:{x:_bopOutBasis==='outbound_sov_total'?'sovereign bonds, long-term + short-term':'sovereign bonds, long-term'}, meta:B.meta};
+}
 function setFlowIns(px,k,btn){ _flow[px].ins=k;
   document.querySelectorAll('#'+px+'FlowBtns .tab').forEach(b=>b.classList.toggle('active', b===btn));
   renderFlow(px); }
 function setFlowRank(px,v){ _flow[px].rank=v; renderFlow(px); }
-function renderEmFlow(){ renderFlow('em'); renderFlow('dm'); }
+function renderEmFlow(){ renderFlow('em'); renderFlow('dm'); renderFlow('sov'); }
 function renderFlow(px){
-  const st=_flow[px], D=st.D, tbl=document.getElementById(px+'FlowTable'); if(!D||!tbl) return;
-  const usd=(_xbCur==='usd'&&D.series_usd), S=(usd?D.series_usd:D.series)[st.ins], k_=usd?1000/150:1, n=8, i0=D.months.length-n, mn=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const st=_flow[px], D=(px==='sov'?sovAdapt():st.D), tbl=document.getElementById(px+'FlowTable'); if(!D||!tbl) return;
+  const usd=(_xbCur==='usd'&&D.series_usd), S=(usd?D.series_usd:D.series)[st.ins], n=8, i0=D.months.length-n, mn=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   const last=D.months[D.months.length-1], yr=last.slice(0,4);
   const sum=(a)=>a.reduce((x,v)=>x+(v==null?0:v),0);
   const ytdOfK=k=>sum(D.months.map((m,i)=>m.startsWith(yr)?S[k][i]:null)), l12OfK=k=>sum(S[k].slice(-12));
-  const cell=(v,strong,scale)=>flowHeatTd(v,scale*k_,strong);
-  const th='padding:.3rem .5rem;text-align:right;color:#d9a441;font-weight:600;white-space:nowrap';
-  let h='<thead><tr><th style="padding:.3rem .5rem;text-align:left;color:#93a1bd;font-weight:600;position:sticky;left:0;background:var(--card,#171f31)">Country</th>';
-  D.months.slice(i0).forEach(t=>{const [y,m]=t.split('-'); h+=`<th style="padding:.3rem .5rem;text-align:right;color:#93a1bd;font-weight:600;white-space:nowrap">${mn[+m]}'${y.slice(2)}</th>`;});
-  h+=`<th style="${th};border-left:1px solid #3a4a6b">${yr} YTD</th><th style="${th}">Last 12m</th></tr></thead><tbody>`;
+  const refM=flowRef(D.order.flatMap(k=>S[k].slice(i0))), refY=flowRef(D.order.map(ytdOfK)), refL=flowRef(D.order.map(l12OfK));
+  const thB='padding:.3rem .5rem;text-align:right;white-space:nowrap;font-weight:600';
+  let h='<colgroup><col style="width:230px">'+'<col>'.repeat(n+2)+'</colgroup><thead><tr><th style="padding:.3rem .5rem;text-align:left;color:#93a1bd;font-weight:600;position:sticky;left:0;background:var(--card,#171f31)">Country</th>';
+  D.months.slice(i0).forEach(t=>{const [y,m]=t.split('-'); h+=`<th style="${thB};color:#93a1bd">${mn[+m]}'${y.slice(2)}</th>`;});
+  h+=`<th style="${thB};color:#d9a441;border-left:1px solid #3a4a6b">${yr} YTD</th><th style="${thB};color:#d9a441">Last 12m</th></tr></thead><tbody>`;
   const [mode,key]=st.rank.split('_'), flat=(mode==='flat');
   const keyFn={ytd:ytdOfK, size:k=>Math.abs(ytdOfK(k)), l12:l12OfK}[key];
   let keys=D.order.slice();
@@ -3573,13 +3567,13 @@ function renderFlow(px){
     w.forEach((x,i)=>{tot[i]+=(x==null?0:x);}); tY+=ytd; t12+=l12;
     const lbl=D.labels[k]+(flat?` <span style="color:#7e8aa3;font-size:10.5px">· ${D.regions[k]}</span>`:'');
     h+=`<tr style="border-top:1px solid #243149"><td style="padding:.3rem .5rem;color:#c7d0e0;white-space:nowrap;position:sticky;left:0;background:var(--card,#171f31)">${lbl}</td>`;
-    w.forEach(x=>{h+=cell(x,false,px==='dm'?400:100);});
-    h+=flowHeatTd(ytd,(px==='dm'?2000:500)*k_,true,'border-left:1px solid #3a4a6b')+cell(l12,true,px==='dm'?2000:500);
+    w.forEach(x=>{h+=flowHeatTd(x,refM,false);});
+    h+=flowHeatTd(ytd,refY,true,'border-left:1px solid #3a4a6b')+flowHeatTd(l12,refL,true);
     h+='</tr>';
   });
-  const big=px==='dm'?4:1;
   h+=`<tr style="border-top:2px solid #3a4a6b"><td style="padding:.3rem .5rem;color:#eef2f9;font-weight:600;white-space:nowrap;position:sticky;left:0;background:var(--card,#171f31)">Total (these ${D.order.length} lines)</td>`;
-  tot.forEach(x=>{h+=cell(x,true,300*big);}); h+=flowHeatTd(tY,1500*big*k_,true,'border-left:1px solid #3a4a6b')+cell(t12,true,1500*big)+'</tr></tbody>';
+  const refT=flowRef(tot)*1.2;
+  tot.forEach(x=>{h+=flowHeatTd(x,refT,true);}); h+=flowHeatTd(tY,Math.max(Math.abs(tY),1)*1.6,true,'border-left:1px solid #3a4a6b')+flowHeatTd(t12,Math.max(Math.abs(t12),1)*1.6,true)+'</tr></tbody>';
   tbl.innerHTML=h;
   const el=document.getElementById(px+'FlowStatus'); if(el) el.textContent='· '+D.instruments[st.ins].toLowerCase()+', net · data to '+D.meta.as_of+' · '+(usd?'$mn (¥ converted at each month\'s USD/JPY)':'¥bn');
 }
