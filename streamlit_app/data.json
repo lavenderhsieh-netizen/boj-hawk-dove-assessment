@@ -252,12 +252,12 @@
         {
           "date": "18 Sep 2026",
           "source": "Post-MPM press conference (hike to 1.25%, 7–2)",
-          "comment": "Said the policy phase has changed: with underlying inflation near 2%, the task is now to keep it from overshooting and anchor it at 2%, not to push it up. Expects underlying inflation to accelerate gradually and reach a level consistent with 2% from the latter half of FY2026 through FY2027; wants to see whether it stays at 2% afterwards. Financial conditions remain accommodative. On pace: \"we don't have any pre-set idea in mind such as once every three months\" — to be decided meeting by meeting. Said it is hard to specify the terminal rate."
+          "comment": "Policy phase has changed: with underlying inflation near 2%, the task is now to anchor it at 2%, not push it up. Expects underlying inflation to reach a 2%-consistent level from late FY2026 into FY2027. Financial conditions remain accommodative. On pace: \"we don't have any pre-set idea in mind such as once every three months\" — meeting by meeting; terminal rate hard to specify."
         },
         {
           "date": "6 Oct 2026",
           "source": "Speech, National Securities Convention (Tokyo)",
-          "comment": "First major remarks since the September hike. \"It has become more important than before to ensure underlying inflation becomes anchored around 2%\" so an overshoot does not damage the economy; the BOJ will continue raising rates to adjust the degree of monetary support. \"Financial conditions remain accommodative and continue to underpin economic activity\" even after the hike. Rising raw-material costs are lifting wholesale prices and spreading to consumer prices; long-term inflation expectations keep rising. Named three upside risks to underlying inflation: the war involving Iran, strong AI-related demand and the weak yen. No explicit signal on October versus December timing."
+          "comment": "First major remarks since the September hike. \"It has become more important than before to ensure underlying inflation becomes anchored around 2%\"; BOJ will keep raising rates, with conditions still \"accommodative.\" Upside risks named: the Iran war, strong AI-related demand and the weak yen. No signal on October vs December timing."
         }
       ]
     },
@@ -272,7 +272,7 @@
         {
           "date": "25 Jun 2026",
           "source": "Speech — Meeting with Local Businesses, Hyogo",
-          "comment": "The baseline path is to raise the interest rate by a quarter percentage point at intervals of a few months toward the neutral interest rate level of 2%; the BOJ needs to raise rates every few months and should quicken the pace given stronger inflation risks. No rapid fire hikes are needed now. Need to hike rates to neutral to avoid an overshoot. Should search for the neutral level while hiking rates, but it's hard to pinpoint the level of neutral rate."
+          "comment": "Baseline is a quarter-point hike every few months toward a neutral rate of around 2%, and the pace should quicken given stronger inflation risks. No rapid-fire hikes needed now. Neutral rate is hard to pinpoint, so search for it while hiking."
         },
         {
           "date": "28 Sep 2026",
@@ -297,7 +297,7 @@
         {
           "date": "2 Sep 2026",
           "source": "Speech + press conference, Sapporo",
-          "comment": "Assessed that \"the price stability target has almost been achieved\" and the old deflationary norm has been dispelled, with medium/long-term inflation expectations near 2%. Declared 2026 \"a new phase in which rate hikes will not be carried out at a fixed pace but will instead be conducted in a nimble manner\" — a break from the market's assumed semiannual cadence through 2028. Revealed he proposed a hike to 1.25% at the July MPM. On the neutral rate: Japan's policy rate \"has yet to reach the neutral zone\" (unlike the US/Europe), and the true neutral rate \"could exceed market expectations\" — repeated his \"rainbow\" analogy (visible from afar, vanishes as you approach). Cited PPI +7.2% y/y and warned Japan's usual buffers against 1970s-style second-round oil-shock effects (wage restraint, pass-through restraint) are now weaker than in the past. Framed global AI investment as a structural driver of a 2026 synchronized growth/rate-hike cycle across major central banks."
+          "comment": "Price stability target \"has almost been achieved.\" Rate hikes will be \"conducted in a nimble manner,\" not at a fixed pace — a break from the assumed semiannual cadence. Proposed the hike to 1.25% at the July MPM. Policy rate \"has yet to reach the neutral zone\" and neutral \"could exceed market expectations.\" Warns buffers against oil-shock second-round effects are weaker than in the past."
         },
         {
           "date": "28 Sep 2026",
@@ -332,17 +332,17 @@
         {
           "date": "26 May 2026",
           "source": "Parliament",
-          "comment": "It is important for the BOJ to maintain market trust in controlling inflation by adjusting the degree of monetary easing appropriately. The BOJ will raise rates in response to economic and price developments; timing and pace will depend on the economic impact of the Middle East conflict. Appropriate policy adjustments are key to keeping market confidence amid the recent JGB selloff."
+          "comment": "Maintaining market trust means adjusting the degree of easing appropriately. BOJ will raise rates in response to economic and price developments; timing and pace depend on the Middle East impact. Key to market confidence amid the JGB selloff."
         },
         {
           "date": "19 Jun 2026",
           "source": "Parliament (post-rate hike explanation)",
-          "comment": "Sees a risk that inflation could accelerate beyond the 2% target; pass-through of higher costs in B2B transactions is proceeding at a somewhat faster pace and could eventually spread to broader price increases. Delay in rate hikes might end up weighing on the economy. Higher corporate prices expected to start affecting CPI soon; FX fluctuations more likely to affect prices."
+          "comment": "Sees a risk inflation could overshoot 2%: B2B cost pass-through is speeding up and could spread to broader prices. Delaying hikes might end up weighing on the economy. FX moves more likely to affect prices."
         },
         {
           "date": "27 Aug 2026",
           "source": "Speech + press conference, Saitama",
-          "comment": "Framed the outlook around \"four key factors\": Middle East/oil (down on growth, up on prices), AI-driven demand (up on both), yen depreciation (mixed on growth, up on prices), and still-accommodative financial conditions (up on both). Said Japan is \"entering a phase where we will also need to bear in mind the possibility of underlying inflation exceeding 2 percent,\" with headline CPI expected to move back above 2% in H2 FY2026 as oil/rice effects fade and AI-driven chip and petrochemical cost pass-through builds. Labor market called the tightest \"since the 1980s' bubble economy era.\" No explicit September signal — timing/pace to be judged by weighing baseline likelihood against risks, paying \"greater attention to the upside risk to prices than in the past.\""
+          "comment": "Four key factors: Middle East/oil, AI-driven demand, yen depreciation, still-accommodative financial conditions. \"Entering a phase where we will also need to bear in mind the possibility of underlying inflation exceeding 2 percent.\" Headline CPI back above 2% in H2 FY2026; labour market tightest \"since the 1980s' bubble.\" No September signal; paying \"greater attention to the upside risk to prices than in the past.\""
         }
       ]
     },
@@ -357,12 +357,12 @@
         {
           "date": "16 Jun 2026",
           "source": "BOJ Post-Meeting Press Conference (hosted for hospitalized Governor Ueda)",
-          "comment": "Policymakers will conduct policy so as to avoid falling behind the curve; BOJ is watching not only real interest rates but also overall conditions. Even with the rate hike, financial conditions remain accommodative and the policy rate continues to support the economy. It has become a trend that wages and prices rise together, which is a positive factor for the economy. Yen depreciation is increasingly influencing price trends, making it a crucial part of monetary policy decision-making. There is a substantial range in neutral rate estimates, making it hard to specify in practice; without knowing exactly what the neutral rate is, it is hard to know how much more the BOJ has to raise rates."
+          "comment": "Will avoid falling behind the curve; financial conditions stay accommodative even after the hike. Wages and prices rising together is positive. Yen depreciation increasingly influences prices. Neutral-rate estimates span a wide range, so it is hard to know how much more the BOJ must raise."
         },
         {
           "date": "5 Oct 2026",
           "source": "Opening remarks, ECONDAT 2026 Fall Meeting (AI and big data in monetary policy)",
-          "comment": "Described AI as a significant positive demand shock adding upward pressure to activity and prices, arriving ahead of any productivity gains. Said AI has made financial conditions more accommodative on balance by lifting share prices, even as heavy bond issuance by AI-related companies has pushed long-term yields up — despite the September rate hike. Flagged AI as a possible influence on the neutral rate. Few direct policy clues, but the tone leaned towards vigilance on inflation."
+          "comment": "AI is a positive demand shock arriving ahead of productivity gains. It has made financial conditions more accommodative via share prices, even as heavy AI-related bond issuance pushes long-term yields up. Flagged AI as a possible influence on the neutral rate. Tone leaned towards vigilance on inflation."
         }
       ]
     },
@@ -377,7 +377,7 @@
         {
           "date": "21 May 2026",
           "source": "Speech — Meeting with Local Business Leaders, Fukuoka + Post-Speech Press Briefing",
-          "comment": "Underlying inflation is already around 2%; sees some possibility that underlying inflation may exceed 2% looking ahead given the Middle East situation. It is reasonable for the BOJ to raise the policy interest rate at an appropriate pace to address high inflation while considering trade-offs for the economy. The role of monetary policy in responding to inflation is increasing. Authorities continue to monitor upside risks for prices and downside risks for the economy; sees bigger risks for prices. BOJ will set monetary policy in a manner that ensures it won't fall behind the curve in fighting inflation. Notes that the lower band of the neutral rate for Japan is around 1%."
+          "comment": "Underlying inflation is already around 2% and may exceed it given the Middle East situation. Reasonable to hike at an appropriate pace; sees bigger risks for prices than for the economy. Won't fall behind the curve. Lower band of neutral is around 1%."
         }
       ]
     },
@@ -392,7 +392,7 @@
         {
           "date": "6 Feb 2026",
           "source": "Speech — Meeting with Local Business Leaders",
-          "comment": "BOJ needs to continue raising its benchmark interest rate to complete the process of policy normalization; this would help end the situation where Japan and other countries are pursuing contrasting monetary policy directions. Although underlying inflation remains below 2%, it is on a rising trend. Not particularly desirable if the price trend stays above the 2% target. Does not have any specific pace in mind for when the BOJ should raise rates; will monitor economic data carefully when making policy decisions; the central bank won't hesitate to move its policy rate when convinced by examining economic data."
+          "comment": "BOJ needs to keep raising rates to complete normalisation. Underlying inflation is below 2% but rising. No specific pace in mind; will move when data convince."
         },
         {
           "date": "14 May 2026",
@@ -402,7 +402,7 @@
         {
           "date": "10 Sep 2026",
           "source": "Speech + press conference, Fukui",
-          "comment": "Said underlying inflation (ex-fresh-food, ex-temporary factors) \"remains below 2 percent, [but] is very close to\" target, while headline CPI is temporarily declining on rice-price normalization and government subsidies/tax measures. Gave the most quantitative neutral-rate figure of the three: BOJ's March-2026 natural-rate estimate of -0.9% to +0.5% real implies a nominal neutral range of roughly 1.1%-2.5% — with the policy rate at 1.0%, just below it — and said the Bank \"needs to raise the policy interest rate further, so that it falls solidly within the estimated range of the neutral interest rate.\" Warned that if inflation accelerates there is a risk the Bank \"might inevitably need to implement a rapid policy interest rate hike,\" but avoided Takata's explicit fixed-vs-nimble framing or any specific proposed number. Most granular of the three on Middle East oil mechanics: ~70% of Japan's crude imports passed through the Strait of Hormuz at peak tension; with plastics far more pervasive today, called the potential impact of a crude shortage \"more serious than it was during the oil shocks in the 1970s,\" though supply has held via reserve releases and alternative sourcing."
+          "comment": "Underlying inflation \"remains below 2 percent, [but] is very close.\" Nominal neutral range of roughly 1.1%-2.5% (from the March natural-rate estimate), with the policy rate at 1.0% just below it; the Bank \"needs to raise the policy interest rate further.\" Warned that accelerating inflation could force \"a rapid policy interest rate hike.\" Flagged Hormuz oil exposure (~70% of crude imports at peak)."
         }
       ]
     },
@@ -412,7 +412,7 @@
       "tag": "New dove",
       "lean": "dove",
       "shift": "Sole dissenter at the June 2026 hike (≈ −1.5)",
-      "quote": "Any further hike conditional on the economy's “endogenous strength” — wage- and demand-driven inflation toward the 2% target, with employment weighed alongside prices (Reuters, Jul 8 2026). Jul 7 (Sankei): raising rates could slow the economy. Sole dissenter (7-1) at the June 2026 hike — per the BOJ's official minutes (released 5 Aug 2026): “downside risks to production and employment were greater than upside risks to prices, and it was desirable for the Bank to maintain the guideline for money market operations.”",
+      "quote": "Any further hike conditional on the economy's “endogenous strength” — wage- and demand-driven inflation toward 2%, with employment weighed alongside prices (Reuters, Jul 8 2026). Sole dissenter (7-1) at the June 2026 hike: “downside risks to production and employment were greater than upside risks to prices” (BOJ minutes, 5 Aug 2026).",
       "remarks": [
         {
           "date": "1 Apr 2026",
@@ -422,12 +422,12 @@
         {
           "date": "Jun 2026",
           "source": "June Monetary Policy Meeting — Official Vote",
-          "comment": "Cast the sole dissenting vote (7-1) against the BOJ's rate hike (0.75% → 1.0%). Official minutes text: \"Asada Toichiro dissented, considering that, regarding the impact of the situation in the Middle East, downside risks to production and employment were greater than upside risks to prices, and it was desirable for the Bank to maintain the guideline for money market operations.\""
+          "comment": "Sole dissent (7-1) against the hike from 0.75% to 1.0%: \"downside risks to production and employment were greater than upside risks to prices, and it was desirable for the Bank to maintain the guideline for money market operations.\""
         },
         {
           "date": "5 Aug 2026",
           "source": "June MPM Full Minutes (released Aug 5, 2026)",
-          "comment": "Confirmed by the official minutes (upgrading the earlier, hedged Summary-of-Opinions readout): in the deliberation, the dissenting member warned that if the downside risks to production and employment from the Middle East situation materialized, this could disrupt the wage-price virtuous cycle and, in a worst-case scenario, tip Japan's economy — which appeared to have overcome a prolonged period of deflation — back into deflation."
+          "comment": "Per the official minutes: warned that if Middle East downside risks materialised, they could disrupt the wage-price cycle and, in the worst case, tip Japan back into deflation."
         },
         {
           "date": "7 Jul 2026",
@@ -457,12 +457,12 @@
         {
           "date": "8 Jul 2026",
           "source": "Public Remarks / Speech",
-          "comment": "Accommodative monetary conditions exist if the policy rate is below the neutral rate, restrictive if above; noted the neutral rate is not directly observable. Found it difficult to definitively state whether upside risks to prices or downside risks to the economy were greater — a stance considered slightly more dovish than Governor Ueda's June 3 speech. FX movements could affect underlying inflation with both positive and negative effects, but preferred not to comment further in her capacity as a Board member. Did not offer specific views on monetary conditions or economic risks, avoided mentioning exchange rates, and did not express definite views on rate hikes or suggest she was a reflationist."
+          "comment": "Policy is accommodative if the rate is below neutral, restrictive if above; neutral is not observable. Found it hard to say whether price upside or growth downside risks are greater — slightly more dovish than Ueda's June 3 speech. Avoided views on FX and rate hikes."
         },
         {
           "date": "6 Oct 2026",
           "source": "Kyodo News interview",
-          "comment": "Supports raising rates in stages because financial conditions remain accommodative, and agrees on the need for gradual adjustment — but does not think there should be a pre-set pace of hikes, and did not specify timing, citing concern about weakening personal consumption. Said price risks are skewed somewhat to the upside from rising oil costs linked to the Middle East conflict, and that the BOJ must decide policy independently in a way consistent with the government's proactive fiscal policy. Reads as an objection to pace, not direction, from one of the two September dissenters (with Asada)."
+          "comment": "Supports staged hikes as conditions remain accommodative, but no pre-set pace and no timing signal, citing weak personal consumption. Price risks skewed somewhat to the upside from oil. Reads as an objection to pace, not direction, from one of the two September dissenters."
         }
       ]
     }
