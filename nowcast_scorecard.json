@@ -1,0 +1,65 @@
+{
+ "rows": [
+  {
+   "logged_at": "2026-10-14",
+   "target": "National Sep-2026 (rel ~2026-10-23)",
+   "series": "headline YoY",
+   "forecast": 2.3,
+   "method": "Tokyo bridge b=0.8 less Tokyo water-subsidy 0.25",
+   "actual": null,
+   "error": null,
+   "notes": "band +/-0.2-0.3"
+  },
+  {
+   "logged_at": "2026-10-14",
+   "target": "National Sep-2026 (rel ~2026-10-23)",
+   "series": "ex-fresh YoY",
+   "forecast": 2.3,
+   "method": "Tokyo bridge b=0.8 less Tokyo water-subsidy 0.25",
+   "actual": null,
+   "error": null,
+   "notes": null
+  },
+  {
+   "logged_at": "2026-10-14",
+   "target": "National Sep-2026 (rel ~2026-10-23)",
+   "series": "ex-fresh&energy YoY",
+   "forecast": 2.5,
+   "method": "Tokyo bridge b=0.8 less Tokyo water-subsidy 0.25",
+   "actual": null,
+   "error": null,
+   "notes": null
+  },
+  {
+   "logged_at": "2026-10-14",
+   "target": "Tokyo Oct-2026 (rel ~2026-10-30)",
+   "series": "headline YoY",
+   "forecast": 2.5,
+   "method": "Tokyo Sep YoY + (Oct26 MoM - Oct25 MoM) component bridge",
+   "actual": null,
+   "error": null,
+   "notes": "band +/-0.3"
+  },
+  {
+   "logged_at": "2026-10-14",
+   "target": "Tokyo Oct-2026 (rel ~2026-10-30)",
+   "series": "ex-fresh YoY",
+   "forecast": 2.6,
+   "method": "same",
+   "actual": null,
+   "error": null,
+   "notes": null
+  },
+  {
+   "logged_at": "2026-10-14",
+   "target": "Tokyo Oct-2026 (rel ~2026-10-30)",
+   "series": "ex-fresh&energy YoY",
+   "forecast": 2.7,
+   "method": "same",
+   "actual": null,
+   "error": null,
+   "notes": null
+  }
+ ],
+ "note": "Official Statistics Bureau basis (not BOJ special-factors-removed). Bridge: national YoY = prior-month national YoY + ~0.8 x change in Tokyo YoY; out-of-sample RMSE ~0.15-0.2pt (2020-26). Tokyo forecasts = Sep YoY + (Oct-26 MoM - Oct-25 MoM) with known items swapped in."
+}
