@@ -648,6 +648,12 @@
       <canvas id="cInflDiff" style="max-height:280px"></canvas>
       <div class="note" id="inflDiffNote" style="margin-top:8px">Source: BOJ Research (cpirev.xlsx). Share of CPI items whose price rose/fell yoy; diffusion index = rising minus falling (% points). Same base-year-vintage splicing as the two CPI cards above.</div>
     </div>
+    <div class="card" style="margin:16px 0 0" id="sensCard">
+      <h2 style="margin:0 0 4px">Sensitivity — official studies vs our assumptions <span style="font-size:12px;color:var(--muted);font-weight:400">(+10% yen / +10% oil, effect on CPI in pp)</span></h2>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Compiled from BOJ Outlook Reports (Jan &amp; Apr 2026), BOJ staff research and broker notes, set against the oil/yen rules of thumb used in the Scenario explorer above. Same layout is used on the Korea site (Taiwan and China to follow).</div>
+      <div id="sensBox">Loading…</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:8px"><b>Read-across.</b> Yen: our 0.50pt (ex fresh food) sits between BOJ's Q-JEM year-1 (0.26–0.38) and year-2 (0.60–1.0) responses, so the ramped assumption is reasonable. Oil: BOJ publishes no per-10% rule, and our 0.30pt is 2.5x the only quantified estimate located (Daiwa ~0.12) — worth revisiting; BOJ's own Apr-2026 risk scenario (oil $105 + yen −10% + equities −20%) adds only +0.3pt in FY26 and +0.7pt in FY27 combined. Core-core yen 0.35 is above the VAR peak-yoy (0.1–0.3) and below the Q-JEM cumulative.</div>
+    </div>
     <div class="card" style="margin:16px 0 0" id="nowCard">
       <h2 style="margin:0 0 6px">CPI nowcast scorecard — next-print calls vs actuals <span style="font-size:12px;color:var(--muted);font-weight:400">(official basis, yoy %)</span></h2>
       <div style="overflow-x:auto"><table id="nowTbl"><thead><tr><th>Logged</th><th>Target print</th><th>Series</th><th>Forecast</th><th>Actual</th><th>Error</th></tr></thead><tbody></tbody></table></div>
@@ -5935,6 +5941,9 @@ Promise.all([fetch('./inflation_forecast.json?'+Date.now()).then(r=>r.json()),fe
 const tb=document.querySelector('#nowTbl tbody');tb.innerHTML=j.rows.map(r=>{const e=r.error;const c=e==null?'':(Math.abs(e)<=0.2?'#4cba7a':'var(--hawk2)');
 return `<tr><td>${r.logged_at}</td><td>${r.target}</td><td>${r.series}</td><td>${Number(r.forecast).toFixed(1)}</td><td>${r.actual==null?'pending':Number(r.actual).toFixed(1)}</td><td style="color:${c}">${e==null?'–':(e>0?'+':'')+e.toFixed(2)}</td></tr>`}).join('');
 document.getElementById('nowNote').textContent=j.note}catch(e){console.error('nowcast',e)}})();
+
 </script>
+<script src="./sens_compare.js"></script>
+<script>renderSensCompare('sensBox','japan');</script>
 </body>
 </html>

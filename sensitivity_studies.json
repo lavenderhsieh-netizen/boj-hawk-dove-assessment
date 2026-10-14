@@ -1,0 +1,319 @@
+{
+ "schema": 1,
+ "countries": {
+  "japan": {
+   "label": "Japan",
+   "shock_labels": {
+    "oil": "+10% crude oil",
+    "fx": "+10% yen depreciation (USD/JPY)",
+    "combined": "Combined scenarios"
+   },
+   "measure_labels": {
+    "headline": "CPI ex fresh food",
+    "core": "CPI ex fresh food & energy (core-core)"
+   },
+   "studies": [
+    {
+     "id": "boj-2601-qjem-std",
+     "shock": "fx",
+     "measure": "headline",
+     "kind": "Central bank",
+     "source": "BOJ Outlook Report, Jan 2026, Box 3 (Q-JEM, standard model)",
+     "date": "2026-01",
+     "horizon": "yr1 / yr2 / yr3 (level vs baseline)",
+     "path": [
+      0.26,
+      0.6,
+      0.94
+     ],
+     "approx": true,
+     "note": "Chart B3-6 shows a 5% yen fall: +0.13 / +0.30 / +0.47pt on CPI ex fresh food; scaled linearly x2 to 10% (values read off the chart, +/-0.03).",
+     "url": "https://www.boj.or.jp/en/mopo/outlook/gor2601b.pdf",
+     "low": 0.26,
+     "high": 0.94
+    },
+    {
+     "id": "boj-2601-qjem-struct",
+     "shock": "fx",
+     "measure": "headline",
+     "kind": "Central bank",
+     "source": "BOJ Outlook Report, Jan 2026, Box 3 (Q-JEM, structural-change model — post-2015 higher pass-through)",
+     "date": "2026-01",
+     "horizon": "yr1 / yr2 / yr3 (level vs baseline)",
+     "path": [
+      0.38,
+      1.0,
+      1.6
+     ],
+     "approx": true,
+     "note": "Same chart: 5% shock = +0.19 / +0.50 / +0.80pt; x2 for 10%. BOJ cautions the post-2015 coefficient comes from a short, mostly-weakening-yen sample.",
+     "url": "https://www.boj.or.jp/en/mopo/outlook/gor2601b.pdf",
+     "low": 0.38,
+     "high": 1.6
+    },
+    {
+     "id": "boj-2601-var",
+     "shock": "fx",
+     "measure": "core",
+     "kind": "Central bank",
+     "source": "BOJ Outlook Report, Jan 2026, Box 3 (VAR, CPI ex fresh food & energy; 2001-2025 sample)",
+     "date": "2026-01",
+     "horizon": "yoy peak at 3-4 quarters (2001-21 sample ~0.1 → 2001-25 sample ~0.3)",
+     "path": [
+      0.1,
+      0.3
+     ],
+     "approx": true,
+     "note": "Chart B3-4[1]: 5% depreciation raises the yoy rate by ~0.05 (to 2021) / ~0.15pt (to 2025) at the peak; cumulative level ~0.3pt (2001-25) by 12 quarters; x2 for 10%. Shows pass-through rising in recent years.",
+     "url": "https://www.boj.or.jp/en/mopo/outlook/gor2601b.pdf",
+     "low": 0.1,
+     "high": 0.3
+    },
+    {
+     "id": "boj-2604-risk",
+     "shock": "combined",
+     "measure": "headline",
+     "kind": "Central bank",
+     "source": "BOJ Outlook Report, Apr 2026, Box 3 risk scenario (Q-JEM): Dubai crude ~$105 through end-2026, yen -10%, equities -20%",
+     "date": "2026-04",
+     "horizon": "FY2026 / FY2027 / FY2028 (yoy vs baseline)",
+     "path": [
+      0.3,
+      0.7,
+      0.3
+     ],
+     "unit": "pt yoy",
+     "note": "CPI ex fresh food 3.1 / 3.0 / 2.3% vs baseline 2.8 / 2.3 / 2.0%; cumulatively +1.2pp. Oil, yen and equity effects are NOT separable in the published figures.",
+     "url": "https://www.boj.or.jp/en/mopo/outlook/gor2604b.pdf",
+     "low": 0.3,
+     "high": 0.7
+    },
+    {
+     "id": "boj-wp-threshold",
+     "shock": "fx",
+     "measure": "headline",
+     "kind": "Central bank",
+     "source": "BOJ staff working paper (Sasaki, Yamamoto, Nakajima 2023) nonlinear pass-through — as cited by Daiwa, Apr 2026 (secondary citation)",
+     "date": "2023 / 2026",
+     "horizon": "after ~10-15% yoy threshold",
+     "low": 0.24,
+     "high": 0.37,
+     "approx": true,
+     "note": "~0.024pt per 1% yen move above the threshold (2000-2023 sample), ~0.0365pt per 1% (Daiwa's 2000-2025 update); below the threshold effect is near zero. x10 for a 10% move already beyond the threshold.",
+     "url": "https://www.uk.daiwacm.com/media/293882/10apr26dv.pdf"
+    },
+    {
+     "id": "daiwa-oil",
+     "shock": "oil",
+     "measure": "headline",
+     "kind": "Private / broker",
+     "source": "Daiwa Securities, Mar 2026 (equilibrium price model, 50% firm pass-through)",
+     "date": "2026-03",
+     "horizon": "cumulative",
+     "low": 0.12,
+     "high": 0.12,
+     "approx": true,
+     "note": "Crude +50% lifts CPI ~0.6pt; pro-rated linearly to +10% (~0.12pt). Not a BOJ number.",
+     "url": "https://uk.daiwacm.com/media/292667/2mar26dev.pdf"
+    }
+   ],
+   "qualitative": [
+    "BOJ does not publish a per-10% crude-oil rule of thumb for CPI. Apr 2026 Outlook Box 2 gives the transmission: a +100% crude shock lifts petrochemical basic products ~47% within a month, synthetic resins ~18% in 3-5 months, plastics/rubber ~6% within 6 months, and final goods/services (autos +3.8%, accommodation/eating out +3.1%) within ~12 months; first-round pass-through is ~50% (all industries) / ~25% (manufacturing) smaller than in the 1970s oil crises.",
+    "BOJ Jul 2026 Outlook: oil pass-through is running faster than in 2022 in business-to-business prices and is expected to spread to a wide range of consumer prices; a Jul Box also finds a global-demand shock lifts CPI ex food & energy persistently (+0.6% after 12 quarters per 1 s.d.).",
+    "No official BOJ wage-to-CPI sensitivity was located for this compilation (flagged as a gap)."
+   ],
+   "ours": [
+    {
+     "shock": "oil",
+     "measure": "headline",
+     "low": 0.3,
+     "high": 0.3,
+     "horizon": "ramped over 8m then base-effect fade",
+     "note": "Rule-of-thumb in the Scenario explorer, NOT estimated (our regression finds no stable oil/FX coefficient).",
+     "kind": "Ours",
+     "source": "Our estimate (this dashboard)"
+    },
+    {
+     "shock": "oil",
+     "measure": "core",
+     "low": 0.1,
+     "high": 0.1,
+     "horizon": "ramped over 8m",
+     "note": "Rule-of-thumb.",
+     "kind": "Ours",
+     "source": "Our estimate (this dashboard)"
+    },
+    {
+     "shock": "fx",
+     "measure": "headline",
+     "low": 0.5,
+     "high": 0.5,
+     "horizon": "ramped over 8m",
+     "note": "Rule-of-thumb; sits between BOJ's yr1 (0.26-0.38) and yr2 (0.60-1.0) Q-JEM responses.",
+     "kind": "Ours",
+     "source": "Our estimate (this dashboard)"
+    },
+    {
+     "shock": "fx",
+     "measure": "core",
+     "low": 0.35,
+     "high": 0.35,
+     "horizon": "ramped over 8m",
+     "note": "Rule-of-thumb; above BOJ's VAR peak yoy (~0.1-0.3) and below the Q-JEM cumulative level.",
+     "kind": "Ours",
+     "source": "Our estimate (this dashboard)"
+    }
+   ]
+  },
+  "korea": {
+   "label": "Korea",
+   "shock_labels": {
+    "oil": "+10% crude oil (Dubai/Brent)",
+    "fx": "+10% USD/KRW (weaker won)",
+    "combined": "Combined scenarios"
+   },
+   "measure_labels": {
+    "headline": "Headline CPI",
+    "core": "Core CPI (ex food & energy)"
+   },
+   "studies": [
+    {
+     "id": "bok-2606-core",
+     "shock": "oil",
+     "measure": "core",
+     "kind": "Central bank",
+     "source": "Bank of Korea, 'Price stability target operation review, H1 2026' (17 Jun 2026) — via Seoul Economic Daily",
+     "date": "2026-06",
+     "horizon": "passes into industrial goods & services with ~6m lag; lasts ~1yr",
+     "low": 0.0,
+     "high": 0.1,
+     "note": "Oil +10% raises core inflation by up to 0.1pt; indirect effects explain ~20% of CPI inflation in an oil-decline phase.",
+     "url": "https://www.sedaily.com/article/20056829"
+    },
+    {
+     "id": "kdi-2605-ordinary",
+     "shock": "oil",
+     "measure": "headline",
+     "kind": "Other official",
+     "source": "KDI, 'Impact of recent international oil price increase on consumer prices' (May 2026) — Dubai crude +10%",
+     "date": "2026-05",
+     "horizon": "annual avg effect",
+     "low": 0.11,
+     "high": 0.2,
+     "note": "CPI +0.11pt for an ordinary oil rise vs +0.20pt when the rise comes from shipping/transport uncertainty (Hormuz). Petroleum products +2.0pt vs +2.7pt. Core ~0 vs +0.10pt.",
+     "url": "https://www.kdi.re.kr/research/analysisView?art_no=3776"
+    },
+    {
+     "id": "kdi-2605-core",
+     "shock": "oil",
+     "measure": "core",
+     "kind": "Other official",
+     "source": "KDI (May 2026), same study",
+     "date": "2026-05",
+     "horizon": "annual avg effect",
+     "low": 0.0,
+     "high": 0.1,
+     "note": "Ordinary oil rises barely move core; transport-uncertainty-driven rises add ~0.10pt.",
+     "url": "https://www.kdi.re.kr/research/analysisView?art_no=3776"
+    },
+    {
+     "id": "kdi-2605-scen",
+     "shock": "combined",
+     "measure": "headline",
+     "kind": "Other official",
+     "source": "KDI (May 2026) Hormuz-disruption scenarios",
+     "date": "2026-05",
+     "horizon": "2026 CPI vs no-shock",
+     "low": 1.0,
+     "high": 1.6,
+     "unit": "pt yoy",
+     "note": "Oil shock from transport disruption could add 1.0-1.6pt to 2026 CPI; 2026 baseline contribution +1.2pt, 2027 +0.9pt; prolonged-high-oil case +1.6 / +1.8pt. Fuel-tax cuts and the price ceiling took roughly 1pt off by Apr-May (BOK/KDI).",
+     "url": "https://en.sedaily.com/finance/2026/05/11/hormuz-shock-could-lift-koreas-inflation-by-up-to-16"
+    },
+    {
+     "id": "hri-2605-fx",
+     "shock": "fx",
+     "measure": "headline",
+     "kind": "Private / broker",
+     "source": "Hyundai Research Institute (10 May 2026) — via Edaily",
+     "date": "2026-05",
+     "horizon": "3m / 6m",
+     "path": [
+      0.3,
+      0.5
+     ],
+     "note": "10% won depreciation lifts CPI ~0.3pt within 3 months and ~0.5pt at 6 months via import prices (+8-9% at once); larger in a combined oil+FX shock. Private think-tank, not BOK.",
+     "url": "https://marketin.edaily.co.kr/News/ReadE?newsId=01423526645447608",
+     "low": 0.3,
+     "high": 0.5
+    }
+   ],
+   "qualitative": [
+    "BOK Working Paper 2023-11 (Kim & Kwark): global shocks hit PPI/import prices more than CPI/core; energy tracks the global factor, the exchange rate tracks the country factor. BOK Monthly Bulletin 2022-4: global-factor commodity inflation raises inflation expectations more than block-specific rises.",
+    "BOK did not publish a won-to-CPI rule of thumb in the sources reviewed; BOK's Dec-2025 inflation report said a sustained ~1,470 KRW/USD could keep 2026 headline inflation in the early-to-mid 2% range (qualitative)."
+   ],
+   "ours": [
+    {
+     "shock": "oil",
+     "measure": "headline",
+     "path": [
+      0.26,
+      0.21,
+      0.36
+     ],
+     "horizon": "3m / 6m / 12m (cumulative level)",
+     "note": "Local projections 2008-latest (see Korea site, Inflation tab). 90% band wide; sample pre-dates fuel-tax cuts/price cap.",
+     "low": 0.21,
+     "high": 0.36,
+     "kind": "Ours",
+     "source": "Our estimate (this dashboard)"
+    },
+    {
+     "shock": "oil",
+     "measure": "core",
+     "path": [
+      0.03,
+      0.03,
+      0.08
+     ],
+     "horizon": "3m / 6m / 12m",
+     "note": "Core ex food & energy.",
+     "low": 0.03,
+     "high": 0.08,
+     "kind": "Ours",
+     "source": "Our estimate (this dashboard)"
+    },
+    {
+     "shock": "fx",
+     "measure": "headline",
+     "path": [
+      0.22,
+      0.31,
+      0.38
+     ],
+     "horizon": "3m / 6m / 12m",
+     "note": "Brent and the won are correlated; estimated jointly.",
+     "low": 0.22,
+     "high": 0.38,
+     "kind": "Ours",
+     "source": "Our estimate (this dashboard)"
+    },
+    {
+     "shock": "fx",
+     "measure": "core",
+     "path": [
+      0.21,
+      0.33,
+      0.53
+     ],
+     "horizon": "3m / 6m / 12m",
+     "note": "Core ex food & energy.",
+     "low": 0.21,
+     "high": 0.53,
+     "kind": "Ours",
+     "source": "Our estimate (this dashboard)"
+    }
+   ]
+  }
+ }
+}
