@@ -3589,7 +3589,7 @@ function renderFlow(px){
   const keyFn={ytd:ytdOfK, size:k=>Math.abs(ytdOfK(k)), l12:l12OfK}[key];
   let keys=D.order.slice();
   const regOrder=[]; keys.forEach(k=>{ if(!regOrder.includes(D.regions[k])) regOrder.push(D.regions[k]); });
-  if(flat) keys.sort((a,b)=>keyFn(b)-keyFn(a));
+  if(flat) keys.sort((a,b)=>((a==='others')-(b==='others'))||(keyFn(b)-keyFn(a)));
   else { const rk=[]; regOrder.forEach(r=>{ const g=keys.filter(k=>D.regions[k]===r); if(key==='ytd') g.sort((a,b)=>ytdOfK(b)-ytdOfK(a)); rk.push(...g); }); keys=rk; }
   let reg=null; const tot=new Array(n).fill(0); let tY=0,t12=0;
   keys.forEach(k=>{
