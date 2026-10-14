@@ -3597,7 +3597,7 @@ function renderFlow(px){
     const v=S[k], w=v.slice(i0), ytd=ytdOfK(k), l12=l12OfK(k);
     w.forEach((x,i)=>{tot[i]+=(x==null?0:x);}); tY+=ytd; t12+=l12;
     const lbl=D.labels[k]+(flat?` <span style="color:#7e8aa3;font-size:10.5px">· ${D.regions[k]}</span>`:'');
-    h+=`<tr style="border-top:1px solid #243149"><td style="padding:.3rem .5rem;color:#c7d0e0;white-space:nowrap;position:sticky;left:0;background:var(--card,#171f31)">${lbl}</td>`;
+    h+=`<tr style="border-top:1px solid #243149"><td style="padding:.3rem .5rem;color:#c7d0e0;white-space:normal;line-height:1.25;position:sticky;left:0;background:var(--card,#171f31)">${lbl}</td>`;
     w.forEach(x=>{h+=flowHeatTd(x,refM,false);});
     h+=flowHeatTd(ytd,refY,true,'border-left:1px solid #3a4a6b')+flowHeatTd(l12,refL,true);
     h+='</tr>';
