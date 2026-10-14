@@ -982,7 +982,7 @@
         <select onchange="setStkRank(this.value)" style="background:var(--card2,#1d2739);color:var(--ink);border:1px solid var(--line);border-radius:7px;padding:4px 8px;font-size:12px">
           <option value="s25">End-2025 stock (size)</option>
           <option value="chg">YoY change (amount)</option>
-          <option value="pct">YoY change (%)</option>
+          <option value="pct">YoY change (%, holdings ≥ ¥100bn)</option>
         </select>
         <span style="font-size:12px;color:var(--muted)">Show:</span>
         <select onchange="setStkTop(this.value)" style="background:var(--card2,#1d2739);color:var(--ink);border:1px solid var(--line);border-radius:7px;padding:4px 8px;font-size:12px">
@@ -3630,12 +3630,13 @@ function renderStk(){
   const titles={dm:'Developed markets',em:'Emerging &amp; frontier markets',off:'Offshore / fund centres (cannot be looked through)'};
   let html='';
   ['dm','em','off'].forEach(g=>{
-    const rows=M[g].map(r=>{const a=r.s24*f24/(usd?1000:1), b=r.s25*f25/(usd?1000:1); return {name:r.name,a,b,chg:b-a,pct:r.s24>0?(r.s25/r.s24-1)*100:null,share:r.s25/grand25*100};});
+    const src=(_stk.rank==='pct')?M[g].filter(r=>r.s24>=100):M[g];
+    const rows=src.map(r=>{const a=r.s24*f24, b=r.s25*f25; return {name:r.name,a,b,chg:b-a,pct:r.s24>0?(r.s25/r.s24-1)*100:null,share:r.s25/grand25*100};});
     const key=_stk.rank==='chg'?r=>r.chg:_stk.rank==='pct'?r=>(r.pct==null?-1e9:r.pct):r=>r.b;
     rows.sort((x,y)=>key(y)-key(x));
     const shown=(_stk.top>0&&g!=='off')?rows.slice(0,_stk.top):(g==='off'?rows.slice(0,8):rows);
     const refC=flowRef(shown.map(r=>r.chg)), refP=flowRef(shown.map(r=>r.pct)); 
-    const t=T[g]; const ta=t.s24*f24/(usd?1000:1), tb=t.s25*f25/(usd?1000:1);
+    const t=T[g]; const ta=t.s24*f24, tb=t.s25*f25;
     let h=`<h3 style="font-size:13px;margin:18px 0 6px;color:var(--ink)">${titles[g]} <span style="font-weight:400;color:var(--muted)">· ${rows.length} countries${shown.length<rows.length?', top '+shown.length+' shown':''}</span></h3>`;
     h+='<div style="overflow-x:auto"><table style="width:100%;table-layout:fixed;border-collapse:collapse;font-size:12.5px;min-width:760px"><colgroup><col style="width:44px"><col style="width:230px"><col><col><col><col><col></colgroup><thead><tr>';
     h+=`<th style="${th};text-align:left">#</th><th style="${th};text-align:left">Country</th><th style="${th}">End-2024 (${usd?'$bn':'¥bn'})</th><th style="${th};color:#d9a441">End-2025 (${usd?'$bn':'¥bn'})</th><th style="${th}">YoY change</th><th style="${th}">YoY %</th><th style="${th}">Share of total 2025</th></tr></thead><tbody>`;
