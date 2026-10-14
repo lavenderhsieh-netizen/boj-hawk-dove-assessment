@@ -816,7 +816,7 @@
     </div>
     <div class="card full">
       <h2>Japanese investors' net purchase of foreign equity &amp; bonds — by investor type <span id="xbStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
-      <div class="sub">Residents' monthly net purchase of <b>foreign equity &amp; investment fund shares, long-term bonds, and short-term bonds</b>, stacked by instrument, by investor type — the mirror image of the JSDA JGB-by-player data: same players, but buying abroad instead of at home. The line is the net total across all three instruments. Positive = net buying (yen outflow); negative = net selling / repatriation. Source: MoF International Transactions in Securities (対外証券投資: 株式・投資ファンド持分 / 中長期債 / 短期債), monthly; USD converted at each month's USDJPY.</div>
+      <div class="sub">Monthly net purchase of foreign equity &amp; fund shares, long-term and short-term bonds, by investor type (the mirror of the JSDA JGB-by-player data). Line = net total. Positive = net buying (yen outflow). Source: MoF International Transactions in Securities, monthly; USD at each month's USD/JPY.</div>
       <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:center;margin-top:12px">
         <div id="xbWinBtns" style="display:flex;gap:6px">
           <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setXbWin(12,this)">1Y</button>
@@ -867,7 +867,7 @@
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>Where Japan buys foreign sovereign bonds — by destination <span id="bopOutStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
-      <div class="sub">Residents' monthly net purchase of foreign sovereign bonds (¥bn), stacked by destination country — where the yen outflow is going. The white line is always the whole-market total (all countries, including those hidden by a "Top N" filter below). Source: MoF Balance of Payments monthly (Portfolio Investment Assets, Country Breakdown of Sovereign Bonds), preliminary basis — see footnote below the table for the revision caveat.</div>
+      <div class="sub">Monthly net purchase of foreign sovereign bonds by destination country (¥bn). White line = whole-market total, including countries hidden by "Top N". Source: MoF Balance of Payments, preliminary basis (see table footnote).</div>
       <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:12px">
         <div style="display:flex;gap:6px" id="bopOutBasisBtns">
           <button class="tab active" data-basis="outbound_sov" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setBopOutBasis('outbound_sov',this)">Long-term only</button>
@@ -886,7 +886,7 @@
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>Japan, outward portfolio investment — sovereign bonds, by country <span id="sovFlowStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
-      <div class="sub">Same layout as the developed- and emerging-market tables below, but <b>sovereign bonds only</b> (12 advanced economies + "Others"), in table form of the chart above — last 8 months plus YTD and last-12-month totals. Blue = net buying, red = net selling. Source: MoF Balance of Payments monthly, preliminary basis (a month can later drift from continuously-revised sources — seen once, Jan-2026, ~30-35% gap).</div>
+      <div class="sub"><b>Sovereign bonds only</b> (12 advanced economies + "Others"), table form of the chart above. Blue = net buying, red = net selling. Source: MoF, preliminary basis; months can later be revised (Jan-2026 drifted ~30-35%).</div>
       <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:12px">
       <div id="sovFlowBtns" style="display:flex;gap:6px">
         <button class="tab active" data-basis="outbound_sov" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setBopOutBasis('outbound_sov',this)">Long-term only</button>
@@ -912,7 +912,7 @@
 
     <div class="card full" style="margin-top:16px">
       <h2>Japan, outward portfolio investment — developed markets, by country <span id="dmFlowStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
-      <div class="sub">Same layout for developed markets — residents' monthly net purchase of foreign securities, last 8 months plus YTD and last-12-month totals. Blue = net buying, red = net selling. <b>All securities (equity + bonds)</b>, so it differs from the sovereign-bond-only table above. Classified by issuer country: funds domiciled in Cayman/Luxembourg are not counted under the underlying country (so the US and Europe are likely understated). Source: BOJ Time-Series Data Search, Portfolio Investment Assets by country (net), preliminary basis.</div>
+      <div class="sub"><b>All securities (equity + bonds)</b>, so it differs from the sovereign-only table above. Classified by issuer country: Cayman/Luxembourg funds are not looked through, so the US and Europe are likely understated. Source: BOJ Time-Series Data Search (Portfolio Investment Assets by country, net).</div>
       <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:12px">
       <div id="dmFlowBtns" style="display:flex;gap:6px">
         <button class="tab active" data-ins="total" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setFlowIns('dm','total',this)">All securities</button>
@@ -939,7 +939,7 @@
 
     <div class="card full" style="margin-top:16px">
       <h2>Japan, outward portfolio investment — emerging markets, by country <span id="emFlowStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
-      <div class="sub">Residents' monthly net purchase of foreign securities in key EM countries — last 8 months, ¥bn, plus YTD and last-12-month totals. Blue = net buying, red = net selling. <b>All securities (equity + bonds), not sovereign-only</b>. Classified by issuer country: money routed through Cayman/Luxembourg funds is not counted under the underlying country, so exposure there is likely understated. Source: BOJ Time-Series Data Search (MoF/BOJ balance of payments, Portfolio Investment Assets by country, net), preliminary basis.</div>
+      <div class="sub"><b>All securities (equity + bonds), not sovereign-only</b>. Classified by issuer country: Cayman/Luxembourg funds are not looked through, so EM exposure is likely understated. Source: BOJ Time-Series Data Search (Portfolio Investment Assets by country, net).</div>
       <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:12px">
       <div id="emFlowBtns" style="display:flex;gap:6px">
         <button class="tab active" data-ins="total" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setFlowIns('em','total',this)">All securities</button>
@@ -966,7 +966,7 @@
 
     <div class="card full" style="margin-top:16px">
       <h2>Japan, holdings of foreign securities — stock level, end-2024 vs end-2025 <span id="stkStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
-      <div class="sub">Market value of Japanese investors' holdings (stock, not flow) by issuer country, split into developed and emerging markets and ranked. YoY change includes price and FX moves as well as net buying. Offshore fund centres (Cayman, Luxembourg, Ireland, etc.) are shown separately because the issuer-country basis cannot look through to the underlying assets. DM/EM split is ours (MSCI-style: Hong Kong, Singapore, Israel = DM; Korea, Taiwan, Greece = EM). Source: MoF/BOJ Regional Portfolio Investment Position (Assets), end-2025 release.</div>
+      <div class="sub">Market value of holdings (stock, not flow) by issuer country. YoY change includes price and FX moves, not just net buying. Offshore fund centres are shown separately (no look-through). DM/EM split is ours, MSCI-style (HK, Singapore, Israel = DM; Korea, Taiwan, Greece = EM). Source: MoF/BOJ Regional Portfolio Investment Position, end-2025.</div>
       <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:12px">
       <div id="stkBtns" style="display:flex;gap:6px">
         <button class="tab active" data-m="total" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setStkMeasure('total',this)">Equity + bonds</button>
@@ -1066,20 +1066,20 @@
     <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px">
       <div class="card" style="margin:0">
         <h2>Current account balance — by component <span id="caStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
-        <div class="sub">Goods, services, primary income (investment income earned abroad) and secondary income, stacked. White line = current account balance. Japan's surplus has been carried mainly by primary income (the return on decades of accumulated foreign assets) even as the goods balance has swung negative in recent years. SA/NSA toggle above. Source: MoF, 国際収支総括表, monthly.</div>
+        <div class="sub">Goods, services, primary income and secondary income, stacked. White line = current account balance. The surplus is carried mainly by primary income (returns on foreign assets) as goods turned negative. SA/NSA toggle above. Source: MoF, monthly.</div>
         <canvas id="cCurrentAccount" style="max-height:340px;margin-top:12px"></canvas>
       </div>
       <div class="card" style="margin:0">
         <h2>Direct investment balance — outward vs inward <span id="fdiStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
-        <div class="sub">Outward = Japanese residents' net direct investment abroad (capital outflow, plotted as negative bars); inward = non-residents' net direct investment into Japan (capital inflow, positive bars). White line = net direct investment balance (inward − outward), + = net capital inflow to Japan. Not seasonally adjusted (MoF publishes no SA version of FDI). Distinct from the portfolio/securities flows above — direct investment is FDI (control stakes, M&amp;A, reinvested earnings), not bond/equity portfolio buying. Source: MoF, 対外・対内直接投資総括表, monthly.</div>
+        <div class="sub">Outward = residents' direct investment abroad (negative bars); inward = non-residents' direct investment into Japan (positive bars). White line = net balance (inward − outward). Not seasonally adjusted. This is FDI (control stakes, M&amp;A, reinvested earnings), not portfolio flows. Source: MoF, monthly.</div>
         <canvas id="cDirectInvestment" style="max-height:340px;margin-top:12px"></canvas>
       </div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>Life insurers' currency hedge ratio — why "unhedged" foreign-bond demand is scarcer than it looks</h2>
-      <div class="sub">The other side of the Lifers' foreign-bond appetite (see also their JSDA super-long JGB buying on the Auctions tab): how much of their ¥60-70tn foreign bond book is actually FX-hedged. The hedge ratio (line, right axis) fell from ~60% in FY2021 to ~40% by FY2024-25 as hedging costs stayed elevated — meaning a much bigger share of Lifers' foreign-bond flows now carry raw JPY exposure than a few years ago, one reason unhedged portfolio outflows have had more visible FX impact recently. <span style="color:var(--muted)">(The companion "Banks' hedged UST demand vs. curve spread" chart has been moved to the NISA dashboard, 2026-08-16, temporarily, for review.)</span></div>
+      <div class="sub">How much of Lifers' ¥60-70tn foreign bond book is FX-hedged. The hedge ratio (line, right axis) fell from ~60% in FY2021 to ~40% in FY2024-25 as hedging costs stayed high, so more of their foreign-bond flows now carry raw JPY exposure. <span style="color:var(--muted)">(The companion "Banks' hedged UST demand vs. curve spread" chart has been moved to the NISA dashboard, 2026-08-16, temporarily, for review.)</span></div>
       <div style="height:380px;margin-top:16px"><canvas id="chart-lifer-hedge"></canvas></div>
-      <div class="note" id="liferHedgeNote">Covers 9 major life insurers, general-account basis, estimated by the BOJ from published company accounts (not a BOJ statistical release — BOJ does not publish an exact numeric series for this chart). Values read directly off BOJ's Financial System Report, April 2026, Chart III-2-5 — treat as accurate to roughly ±1-2 percentage points, not exact published figures. Source: <a href="https://www.boj.or.jp/en/research/brp/fsr/fsr260421.htm" target="_blank">BOJ Financial System Report</a>, semi-annual.</div>
+      <div class="note" id="liferHedgeNote">9 major life insurers, general-account basis. Values read off a BOJ Financial System Report chart (Apr 2026, Chart III-2-5), not a published series: accurate to roughly ±1-2 percentage points. Source: <a href="https://www.boj.or.jp/en/research/brp/fsr/fsr260421.htm" target="_blank">BOJ Financial System Report</a>, semi-annual.</div>
     </div>
   </div>
 
