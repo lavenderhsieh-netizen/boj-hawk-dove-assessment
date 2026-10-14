@@ -79,6 +79,10 @@
   #tab-gpif .gpif-ret-tbl tbody tr:hover:not(.gpif-fy){background:rgba(217,164,65,.06)}
   #tab-gpif .gpif-ret-tbl tbody tr.gpif-fy{background:rgba(217,164,65,.10);border-top:1px dotted rgba(217,164,65,.55);border-bottom:1px dotted rgba(217,164,65,.55)}
   #tab-gpif .gpif-ret-tbl tbody tr.gpif-fy td:first-child{font-weight:700;color:var(--accent);letter-spacing:.2px}
+  .sc-ctl{margin-bottom:14px}.sc-ctl label{display:flex;justify-content:space-between;gap:8px;color:var(--ink);font-weight:600}.sc-ctl input[type=range]{width:100%;accent-color:var(--accent);margin-top:4px}.sc-hint{font-size:11px;color:var(--muted);margin-top:2px}
+  .sc-pre{border:1px solid var(--line);border-radius:16px;padding:4px 11px;font-size:12px;background:transparent;color:var(--ink);cursor:pointer}.sc-pre:hover,.sc-pre.on{border-color:var(--accent);color:var(--accent)}
+  .sc-kpi{border:1px solid var(--line);border-radius:8px;padding:8px 12px;min-width:120px}.sc-kpi .l{font-size:11px;color:var(--muted)}.sc-kpi .v{font-size:18px;font-weight:700}
+  @media(max-width:820px){#scGrid{grid-template-columns:1fr!important}}
   .npill{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 9px;border-radius:20px;background:rgba(217,164,65,.16);color:var(--accent)}
   /* forecasts tab */
   #fcTable{table-layout:fixed;width:100%}
@@ -568,6 +572,45 @@
       </div>
       <div style="position:relative;height:360px;margin-top:10px"><canvas id="cFc"></canvas></div>
       <div class="note" id="fcNote" style="margin-top:8px"></div>
+    </div>
+
+    <!-- SCENARIO EXPLORER -->
+    <div class="card" style="margin:0 0 16px" id="scCard">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+        <h2 style="margin:0">Scenario explorer — pick oil, yen, wages and the food-tax cut, see the CPI path <span style="font-size:12px;color:var(--muted);font-weight:400">(yoy %, deviation from a spot-held baseline)</span></h2>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <button class="tab active" id="scBtnEx" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="scSetSeries('ex_fresh')">Core (ex fresh food)</button>
+          <button class="tab" id="scBtnCore" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="scSetSeries('core')">Core-core</button>
+          <span style="width:10px"></span>
+          <button class="tab active" id="scBtnBoj" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="scSetBasis('boj')">BOJ basis (ex tax &amp; subsidies)</button>
+          <button class="tab" id="scBtnOff" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="scSetBasis('off')">Official CPI (approx.)</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px" id="scPresets"></div>
+      <div style="display:grid;grid-template-columns:300px 1fr;gap:18px;margin-top:12px;align-items:start" id="scGrid">
+        <div style="font-size:12.5px;line-height:1.4">
+          <div class="sc-ctl"><label>Oil (Brent) <b id="scOilV"></b></label><input type="range" id="scOil" min="-40" max="40" step="5" value="0" oninput="scUpdate()"><div class="sc-hint" id="scOilH"></div></div>
+          <div class="sc-ctl"><label>Yen (USD/JPY) <b id="scYenV"></b></label><input type="range" id="scYen" min="-15" max="15" step="1" value="0" oninput="scUpdate()"><div class="sc-hint" id="scYenH"></div></div>
+          <div class="sc-ctl"><label>2027 shunto pay rise <b id="scWageV"></b></label><input type="range" id="scWage" min="2" max="7" step="0.5" value="5" oninput="scUpdate()"><div class="sc-hint">5.0% = our headline "+wage" path; 3.0% = no wage overlay (the 2026 round was 5.0%).</div></div>
+          <div class="sc-ctl"><label><input type="checkbox" id="scTax" onchange="scTaxToggle()"> Food consumption tax 8% &rarr; 1% from Apr 2027</label>
+            <div id="scTaxBox" style="display:none;margin-top:6px"><label>Pass-through to shelf prices <b id="scPtV"></b></label><input type="range" id="scPt" min="40" max="100" step="5" value="80" oninput="scUpdate()"><div class="sc-hint">Full-pass-through effect on core CPI: ~&minus;1.2pt (studies: &minus;1.0 to &minus;1.4). Germany 2020 saw ~60%, Portugal 2023 ~100%.</div></div></div>
+          <div class="sc-ctl"><label><input type="checkbox" id="scBand" onchange="scUpdate()"> Show historical forecast-error band (&plusmn;1 RMSE)</label></div>
+          <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="scReset()">Reset</button>
+        </div>
+        <div>
+          <div style="position:relative;height:340px"><canvas id="cSc"></canvas></div>
+          <div id="scKpi" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px"></div>
+        </div>
+      </div>
+      <div class="note" id="scNote" style="margin-top:10px"></div>
+      <h3 style="margin:16px 0 6px;font-size:14px">All presets side by side</h3>
+      <div style="overflow-x:auto"><table id="scTable"></table></div>
+      <div class="note" id="scTableNote" style="margin-top:8px"></div>
+    </div>
+    <div class="card" style="margin:0 0 16px" id="taxCard">
+      <h2 style="margin-top:0">What do studies say about a consumption-tax cut and CPI?</h2>
+      <div style="overflow-x:auto"><table id="taxTable"></table></div>
+      <div class="note" id="taxNote" style="margin-top:8px"></div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;align-items:stretch">
       <div class="card" style="margin:0">
@@ -5776,7 +5819,112 @@ function fcRender(){
   document.getElementById('fcCmpTitle').textContent=`${lab}: fiscal-year averages vs BOJ July 2026 Outlook Report`;
   document.getElementById('fcCmpNote').innerHTML=`<b>Why two bases.</b> BOJ's Outlook forecasts the <i>official</i> CPI, which includes government energy/education subsidies. We forecast the BOJ's <i>special-factors-removed</i> series. "Official approx." subtracts today's gap (${g.toFixed(2)}pt, Aug 2026) from our path and uses actual official prints for Apr&ndash;Aug 2026 &mdash; a rough conversion, since the gap will move when subsidies end. BOJ's previous (Apr-26) medians: FY26 ${f1(o.prev.FY2026)}, FY27 ${f1(o.prev.FY2027)}, FY28 ${f1(o.prev.FY2028)}. Source: BOJ Outlook for Economic Activity and Prices (July 2026), Appendix. Next Outlook Report: 30 Oct 2026.`;
 }
-fetch('./inflation_forecast.json?'+Date.now()).then(r=>r.json()).then(j=>{FC=j; fcRender();}).catch(e=>{document.getElementById('fcNote').textContent='Forecast data unavailable.';});
+
+// ── Inflation scenario explorer ──────────────────────────────────────────
+let SCP=null, scChart=null, scKey='ex_fresh', scBasis='boj';
+const SC_PRESETS=[
+ {n:'Baseline',o:0,y:0,w:5,t:false},
+ {n:'Oil +30%',o:30,y:0,w:5,t:false},
+ {n:'Oil −30%',o:-30,y:0,w:5,t:false},
+ {n:'Yen weaker 10%',o:0,y:10,w:5,t:false},
+ {n:'Yen stronger 10%',o:0,y:-10,w:5,t:false},
+ {n:'Hot wages (6.5%)',o:0,y:0,w:6.5,t:false},
+ {n:'Weak wages (3%)',o:0,y:0,w:3,t:false},
+ {n:'Stagflation: oil +20%, yen weaker 10%',o:20,y:10,w:5,t:false},
+ {n:'Disinflation: oil −30%, yen stronger 10%',o:-30,y:-10,w:3,t:false},
+ {n:'Food tax cut only',o:0,y:0,w:5,t:true}
+];
+function scParams(){return {o:+document.getElementById('scOil').value,y:+document.getElementById('scYen').value,w:+document.getElementById('scWage').value,t:document.getElementById('scTax').checked,pt:+document.getElementById('scPt').value/100};}
+function scRamp(h){const s=SCP.shock_start_h,n=SCP.ramp_months;return h<s?0:Math.min(1,(h-s+1)/n);}
+function scPath(k,P,basis){
+  const d=FC[k], c=SCP.per10pct[k], out=[];
+  const taxIdx=d.months.indexOf(SCP.tax.start);
+  for(let i=0;i<d.months.length;i++){
+    const h=i+1;
+    let v=d.base[i]+(d.wage[i]-d.base[i])*(P.w-SCP.wage.anchor_lo)/(SCP.wage.anchor_hi-SCP.wage.anchor_lo);
+    const yo=scRamp(h)-scRamp(h-12);
+    v+=c.oil*(P.o/10)*yo+c.yen*(P.y/10)*yo;
+    if(basis==='off'){ v-=d.gap; if(P.t&&i>=taxIdx) v-=SCP.tax.full_effect_pp*P.pt; }
+    out.push(v);
+  }
+  return out;
+}
+function scStats(k,P,basis){
+  const d=FC[k], path=scPath(k,P,basis), hist=(basis==='off'?d.hist_official:d.hist).slice(-5);
+  const avg=a=>a.reduce((x,y)=>x+y,0)/a.length;
+  const pk=Math.max(...path), pi=path.indexOf(pk);
+  return {path,peak:pk,peakM:d.months[pi],last:path[path.length-1],fy26:avg(hist.concat(path.slice(0,7))),fy27:avg(path.slice(7,19))};
+}
+function scSetSeries(k){scKey=k;document.getElementById('scBtnEx').classList.toggle('active',k==='ex_fresh');document.getElementById('scBtnCore').classList.toggle('active',k==='core');scUpdate();}
+function scSetBasis(b){scBasis=b;document.getElementById('scBtnBoj').classList.toggle('active',b==='boj');document.getElementById('scBtnOff').classList.toggle('active',b==='off');scUpdate();}
+function scTaxToggle(){const on=document.getElementById('scTax').checked;document.getElementById('scTaxBox').style.display=on?'block':'none';if(on&&scBasis==='boj')scSetBasis('off');else scUpdate();}
+function scApply(i){const p=SC_PRESETS[i];document.getElementById('scOil').value=p.o;document.getElementById('scYen').value=p.y;document.getElementById('scWage').value=p.w;document.getElementById('scTax').checked=p.t;document.getElementById('scTaxBox').style.display=p.t?'block':'none';if(p.t&&scBasis==='boj'){scBasis='off';document.getElementById('scBtnBoj').classList.remove('active');document.getElementById('scBtnOff').classList.add('active');}scUpdate(i);}
+function scReset(){scApply(0);document.getElementById('scPt').value=80;scUpdate(0);}
+function scUpdate(presetIdx){
+  if(!FC||!SCP) return;
+  const P=scParams(), d=FC[scKey], sp=SCP.spot;
+  document.getElementById('scOilV').textContent=(P.o>0?'+':'')+P.o+'%  →  $'+(sp.brent*(1+P.o/100)).toFixed(0);
+  document.getElementById('scYenV').textContent=(P.y>0?'+':'')+P.y+'%  →  ¥'+(sp.usdjpy*(1+P.y/100)).toFixed(0)+(P.y>0?' (yen weaker)':P.y<0?' (yen stronger)':'');
+  document.getElementById('scWageV').textContent=P.w.toFixed(1)+'%';
+  document.getElementById('scPtV').textContent=Math.round(P.pt*100)+'%  (≈ −'+(SCP.tax.full_effect_pp*P.pt).toFixed(2)+'pt)';
+  document.getElementById('scOilH').textContent='vs Brent $'+sp.brent.toFixed(0)+' today. Rule of thumb: each 10% = '+SCP.per10pct[scKey].oil.toFixed(2)+'pt on '+(scKey==='ex_fresh'?'core':'core-core')+' at peak.';
+  document.getElementById('scYenH').textContent='vs ¥'+sp.usdjpy.toFixed(1)+' today. Each 10% weaker yen = +'+SCP.per10pct[scKey].yen.toFixed(2)+'pt at peak.';
+  document.querySelectorAll('.sc-pre').forEach((b,i)=>b.classList.toggle('on',i===presetIdx));
+  const S=scStats(scKey,P,scBasis), B=scStats(scKey,{o:0,y:0,w:5,t:false,pt:.8},scBasis);
+  const H=d.hist_months.slice(-30), hv=(scBasis==='off'?d.hist_official:d.hist).slice(-30);
+  const labels=H.concat(d.months), nH=H.length, pad=n=>Array(n).fill(null), lastH=hv[hv.length-1];
+  const link=a=>pad(nH-1).concat([lastH],a);
+  const col=S.fy27>B.fy27+0.05?'#e2564a':(S.fy27<B.fy27-0.05?'#4a90d9':'#f2f4f8');
+  const ds=[
+   {label:'Actual',data:hv.concat(pad(d.months.length)),borderColor:'#d9a441',borderWidth:2.4,pointRadius:0,tension:.15},
+   {label:'BOJ 2% target',data:labels.map(()=>2),borderColor:'rgba(147,161,189,.6)',borderWidth:1,borderDash:[2,4],pointRadius:0},
+   {label:'Baseline (spot held, wage 5%)',data:link(B.path),borderColor:'#d9a441',borderWidth:1.6,borderDash:[5,4],pointRadius:0,tension:.15},
+   {label:'Your scenario',data:link(S.path),borderColor:col,borderWidth:3,pointRadius:0,tension:.15}
+  ];
+  if(document.getElementById('scBand').checked){
+    ds.splice(0,0,{label:'lo',data:link(S.path.map((v,i)=>v-(d.base[i]-d.low[i]))),borderColor:'transparent',backgroundColor:'rgba(217,164,65,0.13)',pointRadius:0,fill:false},
+                  {label:'Band (±1 RMSE)',data:link(S.path.map((v,i)=>v+(d.high[i]-d.base[i]))),borderColor:'transparent',backgroundColor:'rgba(217,164,65,0.13)',pointRadius:0,fill:'-1'});
+  }
+  if(scChart) scChart.destroy();
+  scChart=new Chart(document.getElementById('cSc'),{type:'line',data:{labels,datasets:ds},options:{maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+    plugins:{datalabels:{display:false},legend:{position:'top',labels:{filter:i=>i.text!=='lo'}},tooltip:{filter:i=>i.dataset.label!=='lo'&&i.parsed.y!=null,callbacks:{label:c=>c.dataset.label+': '+c.parsed.y.toFixed(2)+'%'}}},
+    scales:{x:{ticks:{maxTicksLimit:14,maxRotation:45}},y:{title:{display:true,text:'yoy %'},ticks:{callback:v=>v.toFixed(1)+'%'}}}}});
+  const dl=(a,b)=>{const x=a-b;return `<span style="color:${Math.abs(x)<0.05?'var(--muted)':(x>0?'#e2564a':'#4a90d9')}">${x>0?'+':''}${x.toFixed(2)}</span>`;};
+  const kp=(l,v,sub)=>`<div class="sc-kpi"><div class="l">${l}</div><div class="v">${v}</div><div class="l">${sub}</div></div>`;
+  document.getElementById('scKpi').innerHTML=kp('Peak',S.peak.toFixed(2)+'%',S.peakM+' ('+dl(S.peak,B.peak)+' vs base)')+kp('Mar 2028',S.last.toFixed(2)+'%',dl(S.last,B.last)+' vs base')+kp('FY2026 avg',S.fy26.toFixed(2)+'%',dl(S.fy26,B.fy26)+' vs base')+kp('FY2027 avg',S.fy27.toFixed(2)+'%',dl(S.fy27,B.fy27)+' vs base'+(scBasis==='off'?` · BOJ Jul median ${d.boj_outlook.FY2027.toFixed(1)}%`:''));
+  const lab=scKey==='ex_fresh'?'Core (ex fresh food)':'Core-core';
+  document.getElementById('scNote').innerHTML=`<b>${lab}, ${scBasis==='boj'?'BOJ special-factors-removed basis':'official CPI approx. (BOJ basis minus today\'s '+d.gap.toFixed(2)+'pt gap; actual official prints Apr–Aug)'}.</b> Mechanics: a shock moves the <i>price level</i> gradually over ${SCP.ramp_months} months from Oct 2026; <i>yoy</i> inflation shows it until the same month a year later, then it drops out (base effect) &mdash; so oil/yen effects build, plateau, then fade by early 2028. Wage effect = our existing overlay scaled by (pay rise &minus; 3%)/2, phased in from Feb 2027. Oil/yen sensitivities are <b>rule-of-thumb inputs, not estimates from our regression</b> (the regression finds no stable FX/oil coefficient &mdash; see below): core 0.5pt per 10% yen and 0.3pt per 10% oil as reported from BOJ research; core-core scaled to 0.35/0.10 by us (energy is the direct oil channel). ${scBasis==='boj'?'The BOJ series <b>strips out consumption-tax changes</b>, so the food-tax lever is only visible in the Official view.':''} The shaded band (optional) is the old &plusmn;1 back-test RMSE &mdash; it is wide because it is calibrated on 2022&ndash;23, when oil and the yen drove almost all the misses; those are now explicit levers, so read the scenarios instead of the band.`;
+  scTable(P);
+}
+function scTable(P){
+  const d=FC[scKey], o=d.boj_outlook, rows=SC_PRESETS.map((p,i)=>{
+    const pp={o:p.o,y:p.y,w:p.w,t:p.t,pt:P.pt}, S=scStats(scKey,pp,scBasis);
+    const bj=scBasis==='off'?`${(S.fy27-o.FY2027).toFixed(2)>0?'+':''}${(S.fy27-o.FY2027).toFixed(2)}`:'&ndash;';
+    return `<tr style="cursor:pointer" onclick="scApply(${i})"><td>${p.n}</td><td>${S.peak.toFixed(2)} <span style="color:var(--muted)">${S.peakM}</span></td><td>${S.last.toFixed(2)}</td><td>${S.fy26.toFixed(2)}</td><td>${S.fy27.toFixed(2)}</td><td>${bj}</td></tr>`;
+  }).join('');
+  document.getElementById('scTable').innerHTML=`<thead><tr><th>Scenario (click to load)</th><th>Peak, yoy %</th><th>Mar 2028</th><th>FY2026 avg</th><th>FY2027 avg</th><th>FY27 vs BOJ Jul median (${o.FY2027.toFixed(1)}%)</th></tr></thead><tbody>${rows}</tbody>`;
+  document.getElementById('scTableNote').innerHTML=`Basis follows the toggle above. ${scBasis==='boj'?'The "Food tax cut only" row is unchanged on the BOJ basis by construction &mdash; switch to Official CPI to see it.':'BOJ median is for official CPI; BOJ\'s July Outlook may or may not already include the food-tax cut &mdash; check the Outlook text before reading the gap as a view difference.'} Fiscal year = Apr&ndash;Mar.`;
+}
+const TAX_STUDIES=[
+ ['Itochu Research Institute (2026)','8%&rarr;0% food, 2 yrs','&minus;1.1pt on CPI','Consumption lift only ~&yen;0.4tn (+0.12%); relief skews to higher-income households.'],
+ ['Daiwa Institute of Research (28 Jan 2026)','8%&rarr;0% food, 2 yrs','No CPI figure in the note','Saves ~&yen;88k/household/yr; consumption +&yen;0.5tn, GDP +&yen;0.3tn; fiscal cost ~&yen;4.8tn/yr. Notes necessities have low price elasticity, so the volume response is small.'],
+ ['Private economists, as compiled by press (Jul&ndash;Aug 2026)','8%&rarr;1% food, Apr 2027&ndash;Mar 2028','&minus;1.0 to &minus;1.4pt on core CPI','Assumes the cut reaches shelf prices; warns of a sharp rebound when 8% returns.'],
+ ['The Economy (Jul 2026)','8%&rarr;1% food','&minus;1.3pt full; &minus;0.9pt at 70% pass-through','Retailer system costs and higher input costs may dampen the pass-through.'],
+ ['Independent analyst note (umaki, 2026)','8%&rarr;1% food, CPI-weight arithmetic','&minus;1.38pt headline; &minus;1.18pt core (ex fresh)','Rate reverts to 8% in Apr 2029: about +1.2pt rebound. Single-author estimate, treat as a cross-check.'],
+ ['Think-tank estimate as reported (FinTech Observer)','8%&rarr;0% food','&minus;1.6pt full; &minus;1.1pt at 70%','Uses Germany 2020 as the pass-through guide.'],
+ ['Bundesbank on Germany VAT cut (Jul&ndash;Dec 2020)','19%&rarr;16%, 7%&rarr;5%','~60% pass-through: &minus;1.2pt HICP vs &minus;1.8pt if full','Biggest effect in food and energy, smallest in services.'],
+ ['Gabriel et al., J. Public Economics (Portugal 2023)','Temporary VAT cut on selected foods','~100% pass-through; &minus;0.68pt on impact','Persisted for the policy duration; prices returned to trend after reversal. Salience in a high-inflation year helped.'],
+ ['BOJ on Japan\'s April 2014 hike (5%&rarr;8%)','Opposite direction','About +1.7pt (BOJ estimate)','Near-complete pass-through in food and clothing; the same arithmetic runs in reverse.']
+];
+function taxRender(){
+  document.getElementById('taxTable').innerHTML=`<thead><tr><th>Source</th><th>Policy modelled</th><th>CPI effect</th><th>Notes</th></tr></thead><tbody>${TAX_STUDIES.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td><b>${r[2]}</b></td><td>${r[3]}</td></tr>`).join('')}</tbody>`;
+  document.getElementById('taxNote').innerHTML=`<b>How we use it.</b> Mechanically: price falls 1&minus;1.01/1.08 = 6.5% on food (ex dining-out and alcohol), which is roughly 17&ndash;18% of the core basket, so ~&minus;1.1 to &minus;1.2pt at full pass-through. Our default is &minus;1.2pt &times; 80% pass-through = &minus;0.96pt, held Apr 2027&ndash;Mar 2028 (it reverts in Apr 2029, beyond our horizon). <b>Three things matter for reading it:</b> (1) BOJ's special-factors-removed CPI excludes tax changes, so BOJ underlying inflation does not move &mdash; only official core does; (2) it is a one-off level shift in the year-on-year rate, not lower trend inflation; (3) second-round effects (consumption, expectations) are small in every study. <b>Status:</b> reported as approved in the Cabinet's basic policy with legislation planned for the autumn extraordinary Diet session &mdash; confirm it has passed before treating it as baseline. Sources: Itochu Research Institute; Daiwa Institute of Research; MK; The Economy; Bundesbank via ABN AMRO; Gabriel et al. (J. Public Economics); BOJ via CNBC/SMAM. Press-compiled and analyst figures are secondary; the primary-source estimates are Itochu, Daiwa, Bundesbank and the journal paper.`;
+}
+function scInit(){
+  document.getElementById('scPresets').innerHTML=SC_PRESETS.map((p,i)=>`<button class="sc-pre" onclick="scApply(${i})">${p.n}</button>`).join('');
+  taxRender(); scUpdate(0);
+}
+Promise.all([fetch('./inflation_forecast.json?'+Date.now()).then(r=>r.json()),fetch('./inflation_scenarios.json?'+Date.now()).then(r=>r.json())]).then(([j,sp])=>{FC=j; SCP=sp; fcRender(); scInit();}).catch(e=>{document.getElementById('fcNote').textContent='Forecast data unavailable.';});
 </script>
 </body>
 </html>

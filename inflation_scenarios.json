@@ -1,0 +1,12 @@
+{
+ "as_of": "2026-10-14",
+ "spot": {"brent": 106.06, "usdjpy": 158.29},
+ "shock_start_h": 2,
+ "ramp_months": 8,
+ "per10pct": {
+  "ex_fresh": {"oil": 0.30, "yen": 0.50},
+  "core":     {"oil": 0.10, "yen": 0.35}
+ },
+ "wage": {"anchor_lo": 3.0, "anchor_hi": 5.0, "default": 5.0},
+ "tax": {"start": "2027-04", "full_effect_pp": 1.2, "pass_through": 0.8, "range_pp": [1.0, 1.4]}
+}
