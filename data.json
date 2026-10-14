@@ -216,8 +216,8 @@
       "role": "Governor",
       "tag": "Neutral-to-hawk",
       "lean": "neutral-hawk",
-      "shift": "Patient normalizer → confident normalizer (≈ +0.5 → +1)",
-      "quote": "\"If upside risks to prices outweigh downside risks to economic activity, it would be necessary to thoroughly discuss raising the policy interest rate.\" — Jun 2026",
+      "shift": "Patient normalizer → confident normalizer (≈ +0.5 → +1); Sep–Oct 2026: declares a 'phase change' to anchoring inflation, rejects a pre-set hike pace",
+      "quote": "\"It has become more important than before to ensure underlying inflation becomes anchored around 2%.\" — National Securities Convention, Oct 6, 2026",
       "remarks": [
         {
           "date": "16 Feb 2026",
@@ -248,6 +248,16 @@
           "date": "24 Jun 2026",
           "source": "Speech (post-MPM)",
           "comment": "In a speech, Ueda reiterated that the BOJ sees upside risks to its 2% inflation target and will conduct additional rate hikes \"appropriately,\" reaffirming the bank's tightening bias."
+        },
+        {
+          "date": "18 Sep 2026",
+          "source": "Post-MPM press conference (hike to 1.25%, 7–2)",
+          "comment": "Said the policy phase has changed: with underlying inflation near 2%, the task is now to keep it from overshooting and anchor it at 2%, not to push it up. Expects underlying inflation to accelerate gradually and reach a level consistent with 2% from the latter half of FY2026 through FY2027; wants to see whether it stays at 2% afterwards. Financial conditions remain accommodative. On pace: \"we don't have any pre-set idea in mind such as once every three months\" — to be decided meeting by meeting. Said it is hard to specify the terminal rate."
+        },
+        {
+          "date": "6 Oct 2026",
+          "source": "Speech, National Securities Convention (Tokyo)",
+          "comment": "First major remarks since the September hike. \"It has become more important than before to ensure underlying inflation becomes anchored around 2%\" so an overshoot does not damage the economy; the BOJ will continue raising rates to adjust the degree of monetary support. \"Financial conditions remain accommodative and continue to underpin economic activity\" even after the hike. Rising raw-material costs are lifting wholesale prices and spreading to consumer prices; long-term inflation expectations keep rising. Named three upside risks to underlying inflation: the war involving Iran, strong AI-related demand and the weak yen. No explicit signal on October versus December timing."
         }
       ]
     },
@@ -263,6 +273,11 @@
           "date": "25 Jun 2026",
           "source": "Speech — Meeting with Local Businesses, Hyogo",
           "comment": "The baseline path is to raise the interest rate by a quarter percentage point at intervals of a few months toward the neutral interest rate level of 2%; the BOJ needs to raise rates every few months and should quicken the pace given stronger inflation risks. No rapid fire hikes are needed now. Need to hike rates to neutral to avoid an overshoot. Should search for the neutral level while hiking rates, but it's hard to pinpoint the level of neutral rate."
+        },
+        {
+          "date": "28 Sep 2026",
+          "source": "July MPM minutes (proposals recorded by name)",
+          "comment": "At the July meeting proposed adding to the Outlook Report that underlying CPI inflation is \"broadly in line with the price stability target\" and that medium- to long-term inflation expectations are \"likely to be at around 2%\". Both proposals were rejected, 1–8."
         }
       ]
     },
@@ -283,6 +298,11 @@
           "date": "2 Sep 2026",
           "source": "Speech + press conference, Sapporo",
           "comment": "Assessed that \"the price stability target has almost been achieved\" and the old deflationary norm has been dispelled, with medium/long-term inflation expectations near 2%. Declared 2026 \"a new phase in which rate hikes will not be carried out at a fixed pace but will instead be conducted in a nimble manner\" — a break from the market's assumed semiannual cadence through 2028. Revealed he proposed a hike to 1.25% at the July MPM. On the neutral rate: Japan's policy rate \"has yet to reach the neutral zone\" (unlike the US/Europe), and the true neutral rate \"could exceed market expectations\" — repeated his \"rainbow\" analogy (visible from afar, vanishes as you approach). Cited PPI +7.2% y/y and warned Japan's usual buffers against 1970s-style second-round oil-shock effects (wage restraint, pass-through restraint) are now weaker than in the past. Framed global AI investment as a structural driver of a 2026 synchronized growth/rate-hike cycle across major central banks."
+        },
+        {
+          "date": "28 Sep 2026",
+          "source": "July MPM minutes (proposals recorded by name)",
+          "comment": "His proposal at the July meeting to raise the policy rate from 1.0% to 1.25% was rejected 8–1. Minutes show other members already arguing for a faster pace and that waiting was no longer low-risk; the policy rate was then raised to 1.25% seven weeks later (Sep 18)."
         }
       ]
     },
@@ -338,6 +358,11 @@
           "date": "16 Jun 2026",
           "source": "BOJ Post-Meeting Press Conference (hosted for hospitalized Governor Ueda)",
           "comment": "Policymakers will conduct policy so as to avoid falling behind the curve; BOJ is watching not only real interest rates but also overall conditions. Even with the rate hike, financial conditions remain accommodative and the policy rate continues to support the economy. It has become a trend that wages and prices rise together, which is a positive factor for the economy. Yen depreciation is increasingly influencing price trends, making it a crucial part of monetary policy decision-making. There is a substantial range in neutral rate estimates, making it hard to specify in practice; without knowing exactly what the neutral rate is, it is hard to know how much more the BOJ has to raise rates."
+        },
+        {
+          "date": "5 Oct 2026",
+          "source": "Opening remarks, ECONDAT 2026 Fall Meeting (AI and big data in monetary policy)",
+          "comment": "Described AI as a significant positive demand shock adding upward pressure to activity and prices, arriving ahead of any productivity gains. Said AI has made financial conditions more accommodative on balance by lifting share prices, even as heavy bond issuance by AI-related companies has pushed long-term yields up — despite the September rate hike. Flagged AI as a possible influence on the neutral rate. Few direct policy clues, but the tone leaned towards vigilance on inflation."
         }
       ]
     },
@@ -763,6 +788,21 @@
       "date": "Sep 18, 2026",
       "kind": "hike",
       "text": "Rate raised to 1.25% (7–2), highest since 1995. Ueda declares a policy \"phase change\": with underlying inflation near 2%, the aim shifts from raising inflation to anchoring it, with symmetric upside/downside risk management. Newly-appointed Board members Asada and Sato dissent for hold."
+    },
+    {
+      "date": "Sep 28, 2026",
+      "kind": "event",
+      "text": "July MPM minutes: Takata's proposal to hike to 1.25% rejected 8–1; Tamura's proposals to say underlying inflation is 'broadly in line with' the target and expectations 'around 2%' rejected 1–8. Many members see policy focus shifting from raising inflation to anchoring it at 2%; one says the pace of hikes 'could be faster than the market expects' (market assumed ~6-month intervals); another warns of a 'double shock' if the BOJ falls behind; financial conditions judged accommodative."
+    },
+    {
+      "date": "Oct 1, 2026",
+      "kind": "event",
+      "text": "Summary of Opinions (Sep MPM): board debated further hikes to adjust 'accommodative' financial conditions, watching interest rates, bank lending and asset markets; concern about the weak yen and high crude lifting inflation; at least one view that there is no need to rush."
+    },
+    {
+      "date": "Oct 6, 2026",
+      "kind": "event",
+      "text": "Ueda (National Securities Convention): it is 'more important than before' to anchor underlying inflation around 2%; BOJ will keep raising rates; cites Iran war, AI demand and weak yen as upside risks. Sato (Kyodo interview, Oct 6–7): supports raising rates in stages but opposes a pre-set pace. Market prices only ~25% for an Oct 30 hike, most of a hike by December."
     }
   ],
   "mpm_calendar": [
@@ -860,6 +900,14 @@
       "type": "Tankan",
       "relates": "Oct MPM",
       "notes": "Quarterly enterprise business-sentiment survey; 8:50am JST. Key input into the Oct 29–30 MPM & Outlook Report.",
+      "next": false
+    },
+    {
+      "date": "Oct 15 (Thu)",
+      "event": "Speech — KOEDA Junko (Policy Board)",
+      "type": "Speech",
+      "relates": "—",
+      "notes": "Scheduled speaker per market calendars (Newsquawk); venue and topic to be confirmed from BOJ's scheduled-speeches page.",
       "next": false
     },
     {
