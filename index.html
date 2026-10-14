@@ -404,7 +404,7 @@
   <div id="tab-tankan" class="panel">
     <div class="card full">
       <h2>Tankan <span id="tkStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
-      <div class="sub">BOJ Short-Term Economic Survey of Enterprises. Diffusion index (DI) = % of firms reporting favourable minus % unfavourable. Green = improved / forecast above current, red = worsened / forecast below current, grey = unchanged.</div>
+      <div class="sub">BOJ Short-Term Economic Survey of Enterprises. Diffusion index (DI) = % of firms reporting favourable minus % unfavourable. Red = higher / improved, blue = lower / worsened (same pastel scheme as the Seasonality tab), grey = unchanged.</div>
       <div class="kpis" id="tkKpis" style="margin-top:12px"></div>
     </div>
     <div class="card full" style="margin-top:16px">
@@ -5590,9 +5590,15 @@ fetch('./property_data.json?' + Date.now()).then(r => r.json()).then(P => {
 
 // ── Tankan tab ──
 let _tk = null, _tkSort = 'chg';
+function tkPastel(v, m) {
+  if (!v) return 'rgba(148,163,196,.14)';
+  const k = 0.3 + Math.min(1, Math.abs(v) / (m || 10)) * 0.7;
+  const c = v > 0 ? [255,128,128] : [120,190,255];
+  return 'rgb(' + c.map(x => Math.round(255 - (255 - x) * k)).join(',') + ')';
+}
 function tkCell(v, kind, dec) {
   const f = (x) => dec ? x.toFixed(1) : x;
-  if (kind === 'chg') { const bg = v > 0 ? 'rgba(76,186,122,.20)' : v < 0 ? 'rgba(226,86,74,.22)' : 'rgba(148,163,196,.14)'; return `<td style="background:${bg};font-weight:600;text-align:center">${v > 0 ? '+' : ''}${f(v)}</td>`; }
+  if (kind === 'chg') { const bg = tkPastel(v); return `<td style="background:${bg};color:${v ? (v > 0 ? '#2a1216' : '#0e1f33') : 'inherit'};font-weight:600;text-align:center">${v > 0 ? '+' : ''}${f(v)}</td>`; }
   return `<td style="text-align:center">${f(v)}</td>`;
 }
 function tkSort(k) { _tkSort = k; tkRenderSectors(); }
@@ -5626,14 +5632,14 @@ fetch('./tankan_data.json?' + Date.now()).then(r => r.json()).then(T => {
   document.getElementById('tkStatus').textContent = '· ' + T.meta.survey + ' survey';
   document.getElementById('tkSrc').href = T.meta.source_url;
   const all = T.sectors.find(r => r.group === 'All'), mf = T.sectors.find(r => r.name === 'Manufacturing'), nm = T.sectors.find(r => r.name === 'Nonmanufacturing');
-  const kp = (v, l, c, vs) => `<div class="kpi"><div class="v">${v}</div><div class="l">${l}${c == null ? '' : ` <span style="color:${c > 0 ? '#4cba7a' : c < 0 ? 'var(--hawk2)' : 'var(--muted)'}">${c > 0 ? '+' : ''}${c} vs ${vs || 'Jun'}</span>`}</div></div>`;
+  const kp = (v, l, c, vs) => `<div class="kpi"><div class="v">${v}</div><div class="l">${l}${c == null ? '' : ` <span style="color:${c > 0 ? '#e2564a' : c < 0 ? '#4a90d9' : 'var(--muted)'}">${c > 0 ? '+' : ''}${c} vs ${vs || 'Jun'}</span>`}</div></div>`;
   document.getElementById('tkKpis').innerHTML = kp(mf.L.sep, 'Large manufacturers DI', mf.L.chg) + kp(nm.L.sep, 'Large non-manufacturers DI', nm.L.chg) + kp(all.L.sep, 'Large, all industries DI', all.L.chg) +
     kp(mf.L.dec, 'Dec forecast, large manufacturers', mf.L.fc, 'Sep actual');
-  const dir = (n, up) => n === 0 ? 'rgba(148,163,196,.14)' : (n > 0) === up ? 'rgba(76,186,122,.20)' : 'rgba(226,86,74,.22)';
+  const dir = (n, up) => tkPastel(n);
   const fmt = (x) => Number.isInteger(x) ? x : x.toFixed(Math.abs(x) >= 100 ? 2 : 1);
   const tbl = (title, rows, cols, upGood) => {
     let h = `<table style="font-size:12.5px"><thead><tr><th style="text-align:left">${title}</th>${cols.map(c => `<th>${c}</th>`).join('')}<th>Change</th></tr></thead><tbody>`;
-    rows.forEach(([l, a, b]) => { const d = +(b - a).toFixed(2); h += `<tr><td style="text-align:left">${l}</td><td style="text-align:center">${fmt(a)}</td><td style="text-align:center;font-weight:600">${fmt(b)}</td><td style="text-align:center;font-weight:600;background:${dir(d, upGood)}">${d > 0 ? '+' : ''}${fmt(d)}</td></tr>`; });
+    rows.forEach(([l, a, b]) => { const d = +(b - a).toFixed(2); h += `<tr><td style="text-align:left">${l}</td><td style="text-align:center">${fmt(a)}</td><td style="text-align:center;font-weight:600">${fmt(b)}</td><td style="text-align:center;font-weight:600;background:${dir(d, upGood)};color:${d ? (d > 0 ? '#2a1216' : '#0e1f33') : 'inherit'}">${d > 0 ? '+' : ''}${fmt(d)}</td></tr>`; });
     return h + '</tbody></table>';
   };
   let sm = '';
@@ -5642,7 +5648,7 @@ fetch('./tankan_data.json?' + Date.now()).then(r => r.json()).then(T => {
     const neutral = t.startsWith('Prices');
     sm += `<div style="margin:14px 0 4px;font-weight:700;color:var(--accent)">${t}</div>` + tbl('Item', rows, fc ? ['Sep actual', 'Dec forecast'] : ['Jun 2026', 'Sep 2026'], true);
   });
-  document.getElementById('tkSummary').innerHTML = sm + '<div class="note">Prices/labour/credit rows use the same green/red rule (up = green) for readability; for inflation outlook, input prices and loan-rate DI, "up" means pressure, not improvement. Employment DI is negative when firms report shortage, so a more negative number means tighter labour.</div>';
+  document.getElementById('tkSummary').innerHTML = sm + '<div class="note">Prices/labour/credit rows use the same red/blue rule (up = red) for readability; for inflation outlook, input prices and loan-rate DI, "up" means pressure, not improvement. Employment DI is negative when firms report shortage, so a more negative number means tighter labour.</div>';
   let sz = '<table style="font-size:12.5px"><thead><tr><th style="text-align:left">Business conditions DI</th><th>Jun</th><th>Sep</th><th>Chg</th><th>Dec fcst</th><th>Fcst vs Sep</th></tr></thead><tbody>';
   T.size_di.forEach(([l, j, s, c, d, f]) => { sz += `<tr><td style="text-align:left">${l}</td><td style="text-align:center">${j}</td><td style="text-align:center;font-weight:600">${s}</td>${tkCell(c, 'chg')}<td style="text-align:center">${d}</td>${tkCell(f, 'chg')}</tr>`; });
   document.getElementById('tkSize').innerHTML = sz + '</tbody></table>';
