@@ -886,14 +886,14 @@
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>Japan, outward portfolio investment, sovereign bonds — by country <span id="bopOutTableStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
-      <div class="sub">Same series and controls as the chart above, in table form — last 8 months, ¥bn. Blue = net buying, red = net selling. "Top N by size" ranks countries by the magnitude of their most recent month's value. Source: MoF Balance of Payments monthly, preliminary basis (see footnote below).</div>
+      <div class="sub">Same series and controls as the chart above, in table form — last 8 months, ¥bn. Blue = net buying, red = net selling; rows are ranked by year-to-date net purchases. "Top N by size" ranks countries by the magnitude of their most recent month's value. Source: MoF Balance of Payments monthly, preliminary basis (see footnote below).</div>
       <div style="overflow-x:auto;margin-top:12px"><table id="bopOutTable" style="width:100%;border-collapse:collapse;font-size:12.5px"></table></div>
       <div class="sub" style="margin-top:10px">Preliminary/unrevised basis: MoF's static PDF isn't updated after revision, so a month can later drift from continuously-revised sell-side sources — seen once (Jan-2026, ~30-35% gap), otherwise consistent.</div>
     </div>
 
     <div class="card full" style="margin-top:16px">
       <h2>Japan, outward portfolio investment — emerging markets, by country <span id="emFlowStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
-      <div class="sub">Residents' monthly net purchase of foreign securities in key EM countries — last 8 months, ¥bn, plus 2026 YTD and last-12-month totals. Blue = net buying, red = net selling. <b>All securities (equity + bonds), not sovereign-only</b> — so it is a different series from the sovereign table above, which only covers 12 advanced economies. Classified by issuer country: money routed through Cayman/Luxembourg funds is not counted under the underlying country, so EM exposure is likely understated. Source: BOJ Time-Series Data Search (MoF/BOJ balance of payments, Portfolio Investment Assets by country, net), preliminary basis.</div>
+      <div class="sub">Residents' monthly net purchase of foreign securities in key EM countries — last 8 months, ¥bn, plus YTD and last-12-month totals; countries ranked by YTD within each region. Blue = net buying, red = net selling. <b>All securities (equity + bonds), not sovereign-only</b> — so it is a different series from the sovereign table above, which only covers 12 advanced economies. Classified by issuer country: money routed through Cayman/Luxembourg funds is not counted under the underlying country, so EM exposure is likely understated. Source: BOJ Time-Series Data Search (MoF/BOJ balance of payments, Portfolio Investment Assets by country, net), preliminary basis.</div>
       <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:12px">
       <div id="emFlowBtns" style="display:flex;gap:6px">
         <button class="tab active" data-ins="total" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="setEmFlowIns('total',this)">All securities</button>
@@ -3447,6 +3447,18 @@ function bopChart(cvId, statusId, B, sec, orderOverride){
   });
   const el=document.getElementById(statusId); if(el && B.meta) el.textContent='· data to '+B.meta.as_of;
 }
+function flowHeatBg(v, scale){
+  const a=Math.min(Math.abs(v)/scale,1), k=0.3+a*0.7;
+  const c=v>=0?[120,190,255]:[255,128,128];
+  return 'rgb('+c.map(x=>Math.round(255-(255-x)*k)).join(',')+')';
+}
+function flowHeatTd(v, scale, strong, extra){
+  if(v==null) return '<td style="padding:.3rem .5rem;text-align:right;color:#5a6580">–</td>';
+  const a=Math.min(Math.abs(v)/scale,1);
+  const fg=v>=0?'#0e1f33':'#2a1216';
+  const fw=(strong||a>0.4)?600:400;
+  return `<td style="padding:.3rem .5rem;text-align:right;background:${flowHeatBg(v,scale)};color:${fg};font-weight:${fw};${extra||''}">${v>=0?'+':''}${v.toFixed(0)}</td>`;
+}
 function bopOutTable(B, nMonths, sec, orderOverride){
   const tbl=document.getElementById('bopOutTable'); if(!tbl||!B[sec]) return;
   const U=_xbUnit(); const D=B[sec], S=(U.m==='monthly_usd'&&D.series_usd)?D.series_usd:D.series, lab=D.labels;
@@ -3455,25 +3467,26 @@ function bopOutTable(B, nMonths, sec, orderOverride){
   const i0=Math.max(0, B.months.length-nMonths);
   const months=B.months.slice(i0);
   const order = orderOverride || D.order;
-  const rows=order.map(k=>({key:k, label:lab[k]||k, vals:S[k].slice(i0)}));
-  const cell=(v,strong)=>{
-    if(v==null) return '<td style="padding:.3rem .5rem;text-align:right;color:#5a6580">–</td>';
-    const mag=Math.min(Math.abs(v)/scale,1);
-    const bg = v>=0 ? `rgba(90,160,230,${0.12+mag*0.32})` : `rgba(226,86,74,${0.12+mag*0.32})`;
-    const fw = strong ? 'font-weight:600' : '';
-    return `<td style="padding:.3rem .5rem;text-align:right;background:${bg};${fw}">${v>=0?'+':''}${v.toFixed(0)}</td>`;
-  };
+  const yr=B.months[B.months.length-1].slice(0,4);
+  const ytdOf=a=>a.reduce((x,v,i)=>x+(B.months[i].startsWith(yr)&&v!=null?v:0),0);
+  const rows=order.map(k=>({key:k, label:lab[k]||k, vals:S[k].slice(i0), ytd:ytdOf(S[k])}));
+  rows.sort((a,b)=>((a.key==='others')-(b.key==='others'))||(b.ytd-a.ytd));
+  const ytdScale=scale*4;
+  const cell=(v,strong)=>flowHeatTd(v,scale,strong);
   let html='<thead><tr><th style="padding:.3rem .5rem;text-align:left;color:#93a1bd;font-weight:600;position:sticky;left:0;background:var(--card,#171f31)">Country</th>';
   months.forEach(t=>{ const [y,m]=t.split('-'); html+=`<th style="padding:.3rem .5rem;text-align:right;color:#93a1bd;font-weight:600;white-space:nowrap">${mn[+m]}'${y.slice(2)}</th>`; });
+  html+=`<th style="padding:.3rem .5rem;text-align:right;color:#d9a441;font-weight:600;white-space:nowrap;border-left:1px solid #3a4a6b">${yr} YTD</th>`;
   html+='</tr></thead><tbody>';
   rows.forEach(r=>{
     html+=`<tr style="border-top:1px solid #243149"><td style="padding:.3rem .5rem;color:#c7d0e0;white-space:nowrap;position:sticky;left:0;background:var(--card,#171f31)">${r.label}</td>`;
     r.vals.forEach(v=>{ html+=cell(v,false); });
+    html+=flowHeatTd(r.ytd,ytdScale,true,'border-left:1px solid #3a4a6b');
     html+='</tr>';
   });
   const totVals=S.total.slice(i0);
   html+=`<tr style="border-top:2px solid #3a4a6b"><td style="padding:.3rem .5rem;color:#eef2f9;font-weight:600;white-space:nowrap;position:sticky;left:0;background:var(--card,#171f31)">Total</td>`;
   totVals.forEach(v=>{ html+=cell(v,true); });
+  html+=flowHeatTd(ytdOf(S.total),ytdScale*2,true,'border-left:1px solid #3a4a6b');
   html+='</tr></tbody>';
   tbl.innerHTML=html;
   const unitLabel=(U.m==='monthly_usd')?'$mn':'¥bn';
@@ -3502,17 +3515,15 @@ function renderEmFlow(){
   const usd=(_xbCur==='usd'&&D.series_usd), S=(usd?D.series_usd:D.series)[_emIns], k_=usd?1000/150:1, n=8, i0=D.months.length-n, mn=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   const last=D.months[D.months.length-1], yr=last.slice(0,4);
   const sum=(a)=>a.reduce((x,v)=>x+(v==null?0:v),0);
-  const cell=(v,strong,scale)=>{
-    if(v==null) return '<td style="padding:.3rem .5rem;text-align:right;color:#5a6580">–</td>';
-    const mag=Math.min(Math.abs(v)/(scale*k_),1);
-    const bg=v>=0?`rgba(90,160,230,${0.12+mag*0.32})`:`rgba(226,86,74,${0.12+mag*0.32})`;
-    return `<td style="padding:.3rem .5rem;text-align:right;background:${bg};${strong?'font-weight:600':''}">${v>=0?'+':''}${v.toFixed(0)}</td>`;
-  };
+  const cell=(v,strong,scale)=>flowHeatTd(v,scale*k_,strong);
   let h='<thead><tr><th style="padding:.3rem .5rem;text-align:left;color:#93a1bd;font-weight:600;position:sticky;left:0;background:var(--card,#171f31)">Country</th>';
   D.months.slice(i0).forEach(t=>{const [y,m]=t.split('-'); h+=`<th style="padding:.3rem .5rem;text-align:right;color:#93a1bd;font-weight:600;white-space:nowrap">${mn[+m]}'${y.slice(2)}</th>`;});
   h+=`<th style="padding:.3rem .5rem;text-align:right;color:#d9a441;font-weight:600;white-space:nowrap;border-left:1px solid #3a4a6b">${yr} YTD</th><th style="padding:.3rem .5rem;text-align:right;color:#d9a441;font-weight:600;white-space:nowrap">Last 12m</th></tr></thead><tbody>`;
   let reg=null; const tot=new Array(n).fill(0); let tY=0,t12=0;
-  D.order.forEach(k=>{
+  const ytdOfK=k=>sum(D.months.map((m,i)=>m.startsWith(yr)?S[k][i]:null));
+  const regOrder=[]; D.order.forEach(k=>{ if(!regOrder.includes(D.regions[k])) regOrder.push(D.regions[k]); });
+  const ranked=[]; regOrder.forEach(r=>ranked.push(...D.order.filter(k=>D.regions[k]===r).sort((a,b)=>ytdOfK(b)-ytdOfK(a))));
+  ranked.forEach(k=>{
     if(D.regions[k]!==reg){ reg=D.regions[k]; h+=`<tr><td colspan="${n+3}" style="padding:.35rem .5rem;color:#d9a441;font-size:11px;letter-spacing:.04em;text-transform:uppercase;border-top:1px solid #243149">${reg}</td></tr>`; }
     const v=S[k], w=v.slice(i0);
     const ytd=sum(D.months.map((m,i)=>m.startsWith(yr)?v[i]:null)), l12=sum(v.slice(-12));
