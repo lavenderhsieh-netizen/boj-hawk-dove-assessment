@@ -50,6 +50,8 @@
   .quote-card .qc-periods .qc-p-lbl{font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
   .quote-card .qc-periods .qc-p-val{font-size:.75rem;font-weight:600;margin-top:.1rem}
   canvas{max-height:340px}
+  #jnBtTbl th,#jnBtTbl td,#jnDataTbl th,#jnDataTbl td{padding:8px 12px;text-align:center;border-bottom:1px solid var(--line)}
+  #jnBtTbl th,#jnDataTbl th{color:var(--muted);font-weight:600;font-size:12px}
   #nisaFundFlowChart{max-height:640px}
   .note{font-size:11.5px;color:var(--muted);margin-top:8px;line-height:1.5}
   .funnelRow{display:flex;align-items:stretch;gap:10px;margin:0 auto;max-width:640px}
@@ -281,6 +283,7 @@
   <button class="tab" onclick="showTab('seasonality',this)">Seasonality</button>
   <button class="tab" onclick="showTab('markets',this)">Market</button>
   <button class="tab" onclick="showTab('inflation',this)">Inflation</button>
+  <button class="tab" onclick="showTab('nowcast',this)">Nowcast</button>
   <button class="tab" onclick="showTab('method',this)">Methodology</button>
 </div>
 
@@ -1742,6 +1745,41 @@
   </div>
 
   <!-- METHODOLOGY -->
+  <div id="tab-nowcast" class="panel">
+    <div class="kpis" id="jnKpis"></div>
+    <div class="grid2" style="grid-template-columns:1fr 1fr;margin-bottom:0">
+      <div class="card">
+        <h2 style="margin:0 0 6px">Q3 2026 real GDP nowcast <span style="font-size:12px;color:var(--muted);font-weight:400">(QoQ SA, %)</span></h2>
+        <div style="position:relative;height:300px"><canvas id="jnHist"></canvas></div>
+        <div class="note">Bars: Cabinet Office real GDP growth (QoQ, SA). Gold bar = our Q3 nowcast with a &plusmn;1 standard-error range.</div>
+      </div>
+      <div class="card">
+        <h2 style="margin:0 0 6px">Model-by-model estimates <span style="font-size:12px;color:var(--muted);font-weight:400">(QoQ SA, %)</span></h2>
+        <div style="position:relative;height:300px"><canvas id="jnModels"></canvas></div>
+        <div class="note" id="jnModelNote"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2 style="margin:0 0 6px">September scenario <span style="font-size:12px;color:var(--muted);font-weight:400">(September activity data not yet published)</span></h2>
+      <div class="note" style="margin:0 0 10px">Shift September output (industrial production, services, consumption, machinery orders and hours) versus our projected level. 0% = base case.</div>
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+        <input type="range" id="jnSep" min="-4" max="4" step="0.5" value="0" style="width:260px">
+        <span id="jnSepV" style="font-weight:700;color:var(--accent)">0.0%</span>
+        <span id="jnScen" style="font-size:14px"></span>
+      </div>
+    </div>
+    <div class="card">
+      <h2 style="margin:0 0 6px">Which models work? Backtest <span style="font-size:12px;color:var(--muted);font-weight:400" id="jnBtWin"></span></h2>
+      <div style="overflow-x:auto"><table id="jnBtTbl" style="width:100%;border-collapse:collapse;font-size:13px"><thead><tr><th style="text-align:left">Model</th><th>Avg error (pp)</th><th>Within &plusmn;0.3pp</th><th>Within &plusmn;0.5pp</th><th>Weight in nowcast</th></tr></thead><tbody></tbody></table></div>
+      <div class="note">Each quarter is predicted using only earlier data (expanding window, 2020 excluded), then compared with the published QoQ. Uses today's revised data, not real-time vintages, and assumes all three months of the quarter are known, so the live nowcast (two months of data) will be less accurate. Japanese GDP is noisy: the models beat a simple average-growth guess on average error, but only modestly.</div>
+    </div>
+    <div class="card">
+      <h2 style="margin:0 0 6px">Data status</h2>
+      <div style="overflow-x:auto"><table id="jnDataTbl" style="width:100%;border-collapse:collapse;font-size:13px"><thead><tr><th style="text-align:left">Indicator</th><th>Latest month</th><th>Months projected for Q3</th></tr></thead><tbody></tbody></table></div>
+      <div class="note" id="jnMethod"></div>
+    </div>
+  </div>
+
   <div id="tab-method" class="panel">
     <div class="card">
       <h2>Method &amp; sources</h2>
@@ -1758,6 +1796,7 @@ function showTab(id, btn) {
   document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + id).classList.add('active');
   btn.classList.add('active');
+  if (id === 'nowcast' && window.initJpNowcast) window.initJpNowcast();
   if (id === 'gpif' && typeof initGpifChart === 'function') {
     requestAnimationFrame(() => requestAnimationFrame(initGpifChart));
   }
@@ -5986,6 +6025,42 @@ fetch('./jgb_funds.json?' + Date.now())
   })
   .catch(e => { console.warn('jgb_funds.json unavailable:', e); });
 
+
+(function(){let init=false,N,chM,chH;
+const f=(x,d=1)=>(x>=0?'+':'')+x.toFixed(d);
+const NM={iip:'Industrial production (METI)',tert:'Tertiary industry activity (METI)',mach:'Machinery orders ex-volatile (Cabinet Office)',hours:'Total hours worked (MHLW)',cti:'Consumption trend index, real (Cabinet Office)'};
+function est(shift){const I=Object.assign({},N.inputs);Object.keys(I).forEach(k=>I[k]+=shift/100/3);
+ const preds=N.models.map(m=>m.coef[0]+m.cols.reduce((a,c,i)=>a+m.coef[i+1]*I[c],0));
+ const w=N.models.map(m=>1/(m.oos_rmse*m.oos_rmse)),W=w.reduce((a,b)=>a+b,0);
+ const c=preds.reduce((a,p,i)=>a+p*w[i],0)/W,rm=Math.min(...N.models.map(m=>m.oos_rmse));return{preds,c,rm};}
+const yoy=q=>((1+N.carry.q4/100)*(1+N.carry.q1/100)*(1+N.carry.q2/100)*(1+q/100)-1)*100;
+const ann=q=>((1+q/100)**4-1)*100;
+function kpis(e){const q=e.c;
+ document.getElementById('jnKpis').innerHTML=[['Q3-26 QoQ SA',f(q,1)+'%','central estimate'],['Q3-26 annualised',f(ann(q),1)+'%','how Japan quotes QoQ'],['Q3-26 YoY',f(yoy(q),1)+'%','chained from QoQ'],['QoQ range (±1 s.e.)',f(q-e.rm,1)+' to '+f(q+e.rm,1)+'%','YoY '+f(yoy(q-e.rm),1)+' to '+f(yoy(q+e.rm),1)+'%'],['Q2-26 (published)',f(N.carry.q2,1)+'% QoQ','annualised '+f(ann(N.carry.q2),1)+'%']]
+ .map(a=>`<div class="kpi"><div class="l">${a[0]}</div><div class="v">${a[1]}</div><div class="l">${a[2]}</div></div>`).join('');}
+function update(){const sh=parseFloat(document.getElementById('jnSep').value),e=est(sh);
+ document.getElementById('jnSepV').textContent=f(sh,1)+'%';
+ document.getElementById('jnScen').innerHTML=`Nowcast <b style="color:var(--accent)">${f(e.c,2)}% QoQ SA</b> &middot; <b style="color:var(--accent)">${f(ann(e.c),1)}% annualised</b> &middot; <b style="color:var(--accent)">${f(yoy(e.c),1)}% YoY</b>`;
+ kpis(e);if(chM){chM.data.datasets[0].data=e.preds.concat([e.c]);chM.update();}
+ if(chH){const n=chH.data.datasets[0].data.length-1;chH.data.datasets[0].data[n]=e.c;chH.data.datasets[1].data[n]=[e.c-e.rm,e.c+e.rm];chH.update();}}
+function build(){const e=est(0),labs=N.hist.map(h=>h.q).concat([N.target+'e']);
+ const vals=N.hist.map(h=>h.qoq).concat([e.c]);
+ chH=new Chart(document.getElementById('jnHist'),{type:'bar',data:{labels:labs,datasets:[
+  {label:'QoQ SA %',data:vals,backgroundColor:vals.map((v,i)=>i==vals.length-1?'#d9a441':'#5b7fb5'),grouped:false,order:2},
+  {type:'bar',label:'±1 s.e.',data:vals.map((v,i)=>i==vals.length-1?[v-e.rm,v+e.rm]:null),backgroundColor:'rgba(217,164,65,.25)',borderColor:'#d9a441',borderWidth:1,barPercentage:.3,grouped:false,order:1}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>Array.isArray(c.raw)?'±1 s.e.: '+c.raw.map(v=>v.toFixed(2)).join(' to ')+'%':c.dataset.label+': '+Number(c.raw).toFixed(2)+'%'}}},scales:{y:{title:{display:true,text:'% QoQ'},ticks:{callback:v=>Number(v).toFixed(1)},grid:{color:'rgba(255,255,255,.07)'}},x:{grid:{display:false},ticks:{maxRotation:60}}}}});
+ const short=N.models.map(m=>m.name.replace(/^J\d /,'')).concat(['Combined']);
+ chM=new Chart(document.getElementById('jnModels'),{type:'bar',data:{labels:short,datasets:[{data:e.preds.concat([e.c]),backgroundColor:short.map((s,i)=>i==short.length-1?'#d9a441':'#5b7fb5')}]},
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>Number(c.raw).toFixed(2)+'%'}}},scales:{x:{title:{display:true,text:'% QoQ SA'},ticks:{callback:v=>Number(v).toFixed(1)},grid:{color:'rgba(255,255,255,.07)'}},y:{grid:{display:false}}}}});
+ document.getElementById('jnModelNote').textContent='Out-of-sample RMSE by model: '+N.models.map(m=>m.name.slice(0,2)+' '+m.oos_rmse.toFixed(2)+'pp').join(', ')+'.';
+ const wmap={};N.models.forEach((m,i)=>wmap[m.name]=N.weights[i]);
+ document.getElementById('jnBtWin').textContent='('+N.backtest_window+')';
+ document.querySelector('#jnBtTbl tbody').innerHTML=N.backtest.map(b=>`<tr style="${b.model.startsWith('Bench')?'color:var(--muted)':''}"><td style="text-align:left">${b.model}</td><td>${b.mae.toFixed(2)}</td><td>${b.hit03.toFixed(0)}%</td><td>${b.hit05.toFixed(0)}%</td><td>${wmap[b.model]!=null?(wmap[b.model]*100).toFixed(0)+'%':'–'}</td></tr>`).join('');
+ document.querySelector('#jnDataTbl tbody').innerHTML=Object.keys(NM).map(k=>`<tr><td style="text-align:left">${NM[k]}</td><td>${N.indicator_latest_month[k]}</td><td>${N.projected_months[k].length?N.projected_months[k].join(', '):'none'}</td></tr>`).join('');
+ document.getElementById('jnMethod').innerHTML='<b>Method.</b> Five bridge regressions of real GDP QoQ (SA) on the quarterly change in monthly activity indicators, fitted 2010Q1 onwards excluding 2020, combined with inverse-MSE weights from a recursive out-of-sample test. Months not yet published are projected with an AR(1) on monthly growth. Not included: real exports and the Tankan. YoY = chained product of Q4-25, Q1-26, Q2-26 and the Q3-26 nowcast. First official Q3 GDP release is mid-November. Statistical estimate, not a forecast from the Cabinet Office or BOJ. Data as of '+N.asof+'.';
+ kpis(e);document.getElementById('jnSep').addEventListener('input',update);update();}
+window.initJpNowcast=async function(){if(init)return;init=true;try{N=await (await fetch('./japan_gdp_nowcast.json?_='+Date.now())).json();build();}catch(e){console.error('JP nowcast',e)}};
+})();
 </script>
 </body>
 </html>
