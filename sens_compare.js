@@ -10,12 +10,12 @@ window.renderSensCompare=async function(id,country){
   try{
     const D=await (await fetch('./sensitivity_studies.json?_='+Date.now())).json(); const C=D.countries[country];
     const rows=C.studies.concat(C.ours); let html='';
-    ['oil','fx','combined'].forEach(sh=>{
+    ['oil','fx','admin','combined'].forEach(sh=>{
       const R=rows.filter(r=>r.shock===sh); if(!R.length) return;
       const order={'Central bank':0,'Other official':1,'Private / broker':2,'Ours':3};
       R.sort((a,b)=>(a.measure>b.measure?-1:a.measure<b.measure?1:0)||order[a.kind]-order[b.kind]);
       const max=Math.max(...R.map(r=>r.high),0.1)*1.1;
-      html+=`<h3 style="font-size:.9rem;margin:1rem 0 .3rem;color:${v('--strong','#e8f0ff')}">${C.shock_labels[sh]}${sh==='combined'?'':' — effect on CPI, pp'}</h3>
+      html+=`<h3 style="font-size:.9rem;margin:1rem 0 .3rem;color:${v('--strong','#e8f0ff')}">${C.shock_labels[sh]}${(sh==='combined'||sh==='admin')?'':' — effect on CPI, pp'}</h3>
       <div style="overflow-x:auto"><table style="width:100%;font-size:.76rem;border-collapse:collapse"><thead><tr><th style="text-align:left">Source</th><th>Measure</th><th>Horizon</th><th>Effect</th><th style="width:150px">Range</th></tr></thead><tbody>`+
       R.map(r=>{const c=COL[r.kind]||'#888', l=Math.max(0,r.low)/max*100, w=Math.max(1.2,(r.high-Math.max(0,r.low))/max*100);
         const src=r.url?`<a href="${r.url}" target="_blank" style="color:inherit;text-decoration:underline dotted">${r.source}</a>`:r.source;
