@@ -402,6 +402,17 @@
       <div style="height:340px;margin-top:16px"><canvas id="chart-retail-jgb"></canvas></div>
       <div class="note" id="retailJgbNote">Source: MOF "個人向け国債の応募額" (Retail JGB subscription amount), monthly press release. Amounts are subscriptions (応募額) for that month's offering, not issuance/settlement (issue date is mid-following-month). MOF footnotes that reported figures can be revised; latest publication per month is used.</div>
     </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>Retail JGB funds &mdash; size &amp; monthly flow <span id="jgbFundsStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">The fund-channel complement to MOF's own retail JGBs above: Daiwa's iFreeHOLD hold-to-maturity JGB trusts (JGB2056 ~30y, JGB2045 ~20y, 2-year cycle) plus one long-JGB fund each from Amova and MUFG. Small and young (launched Aug 2025&ndash;Jun 2026), so a product-supply signal rather than a market-moving flow yet.</div>
+      <div class="kpis" id="jgbFundsKpis" style="margin-top:12px"></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;margin-top:16px">
+        <div><div style="font-size:12px;color:var(--muted);margin-bottom:4px">Net assets (&yen;100mn)</div><div style="height:260px"><canvas id="chart-jgb-funds-aum"></canvas></div></div>
+        <div><div style="font-size:12px;color:var(--muted);margin-bottom:4px">Latest 1-month net flow (&yen;100mn)</div><div style="height:260px"><canvas id="chart-jgb-funds-flow"></canvas></div></div>
+      </div>
+      <div style="overflow-x:auto;margin-top:16px"><table id="jgbFundsTable"></table></div>
+      <div class="note" id="jgbFundsNote">Source: Nikkei per-fund pages (nikkei.com/nkd/fund), via <code>fetch_jgb_funds.py</code>. AUM includes price moves, so it is not pure flow; the 1-month flow is Nikkei's own estimate, updated monthly. No source publishes a historical flow series for individual funds, so history builds forward from each run (run monthly after month-end).</div>
+    </div>
   </div>
 
   <!-- TANKAN -->
@@ -5944,6 +5955,37 @@ document.getElementById('nowNote').textContent=j.note}catch(e){console.error('no
 
 </script>
 <script src="./sens_compare.js"></script>
-<script>renderSensCompare('sensBox','japan');</script>
+<script>renderSensCompare('sensBox','japan');
+const JGB_FUND_COLORS = { mufg: '#4a90d9', daiwa: '#e2564a', daiwa45: '#f08c7f', daiwa2y: '#f7c1ba', amova: '#d9a441' };
+fetch('./jgb_funds.json?' + Date.now())
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(D => {
+    const funds = D.funds; if (!funds || !funds.length) return;
+    const lab = f => f.manager + ' ' + (f.name.match(/JGB2056|2045|2年|ウルトラロング|超長期/) || [''])[0].replace('2年','2Y cycle').replace('ウルトラロング','30y').replace('超長期','super-long');
+    document.getElementById('jgbFundsStatus').textContent = '· ' + D.meta.as_of;
+    const dTot = funds.filter(f => f.manager === 'Daiwa');
+    const dAum = dTot.reduce((a,f)=>a+f.aum_100m_jpy,0), dFlow = dTot.reduce((a,f)=>a+f.flow_1m_100m_jpy,0);
+    const allAum = funds.reduce((a,f)=>a+f.aum_100m_jpy,0);
+    document.getElementById('jgbFundsKpis').innerHTML =
+      `<div class="kpi"><div class="v">¥${allAum.toFixed(1)}億</div><div class="l">All 5 funds, net assets</div></div>` +
+      `<div class="kpi"><div class="v">¥${dAum.toFixed(1)}億</div><div class="l">Daiwa (3 funds)</div><div class="d ${dFlow>=0?'up':'down'}">${dFlow>=0?'+':''}¥${dFlow.toFixed(2)}億 1m flow</div></div>`;
+    const tb = document.getElementById('jgbFundsTable');
+    tb.innerHTML = '<tr><th>Manager</th><th>Fund</th><th>AUM (¥100mn)</th><th>1m flow (¥100mn)</th><th>Flow / AUM</th><th>As of</th></tr>' +
+      funds.map(f => { const pct = f.flow_1m_100m_jpy==null?'–':(f.flow_1m_100m_jpy/f.aum_100m_jpy*100).toFixed(1)+'%';
+        return `<tr><td>${f.manager}</td><td style="text-align:left">${f.name}</td><td>${f.aum_100m_jpy.toFixed(2)}</td><td class="${f.flow_1m_100m_jpy>=0?'':'neg'}">${f.flow_1m_100m_jpy==null?'–':f.flow_1m_100m_jpy.toFixed(2)}</td><td>${pct}</td><td>${f.flow_asof||''}</td></tr>`; }).join('');
+    const common = (fmt) => ({ responsive:true, maintainAspectRatio:false, animation:false, indexAxis:'y',
+      plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>fmt(c.parsed.x)}} },
+      scales:{ x:{grid:{color:'rgba(148,163,196,0.12)'},ticks:{color:'#93a1bd'}}, y:{grid:{display:false},ticks:{color:'#c7d0e0',font:{size:11}}} } });
+    const colors = funds.map(f=>JGB_FUND_COLORS[f.key]);
+    new Chart(document.getElementById('chart-jgb-funds-aum'), { type:'bar',
+      data:{ labels:funds.map(lab), datasets:[{ data:funds.map(f=>f.aum_100m_jpy), backgroundColor:colors }] },
+      options: common(v=>`¥${v.toFixed(2)}億`) });
+    new Chart(document.getElementById('chart-jgb-funds-flow'), { type:'bar',
+      data:{ labels:funds.map(lab), datasets:[{ data:funds.map(f=>f.flow_1m_100m_jpy), backgroundColor:colors }] },
+      options: common(v=>`${v>=0?'+':''}¥${v.toFixed(2)}億`) });
+  })
+  .catch(e => { console.warn('jgb_funds.json unavailable:', e); });
+
+</script>
 </body>
 </html>
