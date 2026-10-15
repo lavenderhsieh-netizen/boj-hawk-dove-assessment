@@ -1771,7 +1771,7 @@
     <div class="card">
       <h2 style="margin:0 0 6px">Which models work? Backtest <span style="font-size:12px;color:var(--muted);font-weight:400" id="jnBtWin"></span></h2>
       <div style="overflow-x:auto"><table id="jnBtTbl" style="width:100%;border-collapse:collapse;font-size:13px"><thead><tr><th style="text-align:left">Model</th><th>Avg error (pp)</th><th>Within &plusmn;0.3pp</th><th>Within &plusmn;0.5pp</th><th>Weight in nowcast</th></tr></thead><tbody></tbody></table></div>
-      <div class="note">Each quarter is predicted using only earlier data (expanding window, 2020 excluded), then compared with the published QoQ. Uses today's revised data, not real-time vintages, and assumes all three months of the quarter are known, so the live nowcast (two months of data) will be less accurate. Japanese GDP is noisy: the models beat a simple average-growth guess on average error, but only modestly.</div>
+      <div class="note">Each quarter is predicted using only earlier data (expanding window, 2020 excluded), then compared with the published QoQ. Uses today's revised data, not real-time vintages, and assumes all three months of the quarter are known, so the live nowcast (two months of data) will be less accurate. Japanese GDP is noisy: apart from J1, the models edge out a simple average-growth guess on average error (and clearly on RMSE), but the plain average hits the narrow bands about as often, so treat the nowcast as a rough guide.</div>
     </div>
     <div class="card">
       <h2 style="margin:0 0 6px">Data status</h2>
