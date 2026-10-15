@@ -371,13 +371,18 @@
       "role": "Board Member (from Apr 2025)",
       "tag": "New normalizer",
       "lean": "neutral-hawk",
-      "shift": "Data-driven, leans hawkish from arrival (≈ +1); replaced dove Adachi",
+      "shift": "Data-driven, leans hawkish from arrival (≈ +1); Oct 2026: BOJ 'should not become overly cautious' on hikes, neutral rate 'considerably above 1%'",
       "quote": "\"Underlying inflation is about 2 percent\"; \"the Bank needs to proceed with interest rate normalization... to avoid creating unintended distortions.\" — Niigata, Nov 20, 2025.",
       "remarks": [
         {
           "date": "21 May 2026",
           "source": "Speech — Meeting with Local Business Leaders, Fukuoka + Post-Speech Press Briefing",
           "comment": "Underlying inflation is already around 2% and may exceed it given the Middle East situation. Reasonable to hike at an appropriate pace; sees bigger risks for prices than for the economy. Won't fall behind the curve. Lower band of neutral is around 1%."
+        },
+        {
+          "date": "15 Oct 2026",
+          "source": "Speech — Meeting with Local Leaders, Kumamoto",
+          "comment": "BOJ \"should not become overly cautious about raising the policy interest rate\": upside risks to prices are considerable (yen weakness, geopolitics/oil, strong AI demand) and financial conditions remain accommodative. Underlying inflation is \"becoming anchored at around 2%\" — over 70% of CPI items rising, distribution shifted right. Neutral rate is \"considerably above 1%\" (up from \"lower band around 1%\" in May); a potential-growth-plus-2% estimate points above 2%. Backs the JGB purchase taper (~¥2tn/month from Apr 2027)."
         }
       ]
     },
@@ -565,6 +570,11 @@
           "date": "21 May 2026",
           "source": "Speech — Meeting with Local Business Leaders, Fukuoka + Post-Speech Press Briefing",
           "comment": "Underlying inflation is already around 2%; sees some possibility that underlying inflation may exceed 2% looking ahead given the Middle East situation. It is reasonable for the BOJ to raise the policy interest rate at an appropriate pace to address high inflation while considering trade-offs for the economy. The role of monetary policy in responding to inflation is increasing. Authorities continue to monitor upside risks for prices and downside risks for the economy; sees bigger risks for prices. BOJ will set monetary policy in a manner that ensures it won't fall behind the curve in fighting inflation. Notes that the lower band of the neutral rate for Japan is around 1%."
+        },
+        {
+          "date": "15 Oct 2026",
+          "source": "Speech — Meeting with Local Leaders, Kumamoto",
+          "comment": "BOJ \"should not become overly cautious about raising the policy interest rate\": upside risks to prices are considerable (yen weakness, geopolitics/oil, strong AI demand) and financial conditions remain accommodative. Underlying inflation is \"becoming anchored at around 2%\" — over 70% of CPI items rising, distribution shifted right. Neutral rate is \"considerably above 1%\" (up from \"lower band around 1%\" in May); a potential-growth-plus-2% estimate points above 2%. Backs the JGB purchase taper (~¥2tn/month from Apr 2027)."
         }
       ]
     },
