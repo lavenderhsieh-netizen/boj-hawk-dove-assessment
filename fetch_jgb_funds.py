@@ -66,6 +66,20 @@ FUNDS = [
         "note": "~30yr target-maturity (matures 2056-03-27), NISA growth-quota eligible. Daiwa runs the deepest long-JGB lineup of the three managers (also JGB2045 etc.).",
     },
     {
+        "key": "daiwa45",
+        "manager": "Daiwa",
+        "name": "iFreeHOLD 日本国債2045（3・9月定期分配型）",
+        "fcode": "04311261",
+        "note": "~20yr target-maturity, semiannual payout, NISA growth-quota eligible, set 2026-01-09.",
+    },
+    {
+        "key": "daiwa2y",
+        "manager": "Daiwa",
+        "name": "iFreeHOLD 日本国債2年サイクル（偶数年6月）",
+        "fcode": "04311266",
+        "note": "Rolling ~2yr JGB cycle, pitched against 2yr time deposits, NISA growth-quota eligible, set 2026-06-02 (sold via SBI/Rakuten/Monex).",
+    },
+    {
         "key": "amova",
         "manager": "Amova",
         "name": "Tracers 日本国債ウルトラロング（30年平均）年4回分配型",
