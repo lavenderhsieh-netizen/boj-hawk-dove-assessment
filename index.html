@@ -374,6 +374,17 @@
       <div style="overflow-x:auto;margin-top:8px"><table id="jgbPlanTable2027" style="font-size:12px"></table></div>
       <div class="note">Rows = one month of gross issuance by bucket, ¥tn. "Liquidity enh." = re-opening auctions across 3 remaining-maturity buckets (1-5y/5-11y/11-39y); "CT" = Climate Transition (GX) bonds, 10y+5y combined; 1yTB shown lump-sum in March only. Totals carry ±0.1-0.3tn rounding noise. Source: Nomura "Market issuance" note, citing MOF; FY2027-initial estimate (2026-08-12).</div>
     </div>
+    <div class="card full" style="margin-top:16px" id="fdsCard">
+      <h2>Debt service — interest and rollover, % of GDP <span style="font-size:12px;color:var(--muted);font-weight:400">· our roll-forward of the JGB book vs MOF's own projection</span></h2>
+      <div class="sub">Central government, FY (Apr–Mar). Our estimate re-prices the actual coupon-by-line book as bonds mature, at today's JGB curve (new-issue mix ~2.7%) with a ±100bp parallel shock applied at once; MOF's line is its Feb-2026 post-budget trial (10y assumed 3.0% rising to 3.6%).</div>
+      <div class="kpis" id="fdsKpis" style="margin-top:12px"></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:18px">
+        <div><div style="font-weight:700;font-size:13px">Interest payments, % of GDP</div><div style="overflow-x:auto"><canvas id="fdsInt" width="520" height="300"></canvas></div></div>
+        <div><div style="font-weight:700;font-size:13px">Bonds maturing each year, % of GDP <span style="font-weight:400;color:var(--muted)">(coupon bonds only; T-bills ~19% of GDP roll on top)</span></div><div style="overflow-x:auto"><canvas id="fdsWall" width="520" height="300"></canvas></div></div>
+      </div>
+      <div style="overflow-x:auto;margin-top:12px"><table id="fdsTbl" style="font-size:12px"></table></div>
+      <div class="note" id="fdsNote"></div>
+    </div>
   </div>
 
   <!-- JGB OWNERSHIP & RETAIL DEMAND (split out of Auctions & fiscal, 2026-08-15 — too much info in one tab) -->
@@ -6060,6 +6071,35 @@ function build(){const e=est(0),labs=N.hist.map(h=>h.q).concat([N.target+'e']);
  document.getElementById('jnMethod').innerHTML='<b>Method.</b> Five bridge regressions of real GDP QoQ (SA) on the quarterly change in monthly activity indicators, fitted 2010Q1 onwards excluding 2020, combined with inverse-MSE weights from a recursive out-of-sample test. Months not yet published are projected with an AR(1) on monthly growth. Not included: real exports and the Tankan. YoY = chained product of Q4-25, Q1-26, Q2-26 and the Q3-26 nowcast. First official Q3 GDP release is mid-November. Statistical estimate, not a forecast from the Cabinet Office or BOJ. Data as of '+N.asof+'.';
  kpis(e);document.getElementById('jnSep').addEventListener('input',update);update();}
 window.initJpNowcast=async function(){if(init)return;init=true;try{N=await (await fetch('./japan_gdp_nowcast.json?_='+Date.now())).json();build();}catch(e){console.error('JP nowcast',e)}};
+})();
+</script>
+<script>
+(async function(){
+ try{
+  const D=await (await fetch('./fiscal_debt_service.json?_='+Date.now())).json();
+  const Y=D.years, f1=v=>v.toFixed(1), f2=v=>v.toFixed(2);
+  const cur=D.interest_pct_gdp.curve, mof=D.mof_interest_pct_gdp;
+  const d100=D.interest_tn.plus100[3]-D.interest_tn.curve[3];
+  document.getElementById('fdsKpis').innerHTML=
+   `<div class="kpi"><div class="v">${f1(D.interest_tn.curve[0])}tn</div><div class="l">FY2026 interest (${f2(cur[0])}% of GDP) · MOF budget 13.0tn</div></div>
+    <div class="kpi"><div class="v">${f1(D.interest_tn.curve[3])}tn</div><div class="l">FY2029 interest on today's curve (${f2(cur[3])}% of GDP) · MOF 21.6tn</div></div>
+    <div class="kpi"><div class="v">+${f1(d100)}tn</div><div class="l">FY2029 effect of +100bp (+${f2(D.interest_pct_gdp.plus100[3]-cur[3])}pt of GDP)</div></div>
+    <div class="kpi"><div class="v">1.05% → ${f2(D.meta.new_issue_yield_pct)}%</div><div class="l">Avg coupon on the book vs yield on new issues</div></div>`;
+  const ax={ticks:{color:'#9fb0c8'},grid:{color:'rgba(255,255,255,.07)'}};
+  new Chart(document.getElementById('fdsInt'),{type:'line',data:{labels:Y,datasets:[
+   {label:'-100bp',data:D.interest_pct_gdp.minus100,borderColor:'#6fa8ff',backgroundColor:'#6fa8ff',borderWidth:2,pointRadius:3},
+   {label:'Current curve',data:cur,borderColor:'#d9a441',backgroundColor:'#d9a441',borderWidth:3,pointRadius:4},
+   {label:'+100bp',data:D.interest_pct_gdp.plus100,borderColor:'#e06c6c',backgroundColor:'#e06c6c',borderWidth:2,pointRadius:3},
+   {label:'MOF projection (Feb-26)',data:mof,borderColor:'#c8d8f0',borderDash:[6,4],borderWidth:2,pointRadius:3}]},
+   options:{responsive:false,animation:false,plugins:{legend:{labels:{color:'#c8d8f0',font:{size:11}}},tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.parsed.y.toFixed(2)+'% of GDP'}}},scales:{x:ax,y:{...ax,min:1.5,ticks:{color:'#9fb0c8',callback:v=>v.toFixed(1)+'%'}}}}});
+  const wy=Object.keys(D.maturity_wall_pct_gdp);
+  new Chart(document.getElementById('fdsWall'),{type:'bar',data:{labels:wy.map(y=>'FY'+y),datasets:[{label:'Bonds maturing, % of GDP',data:wy.map(y=>D.maturity_wall_pct_gdp[y]),backgroundColor:'#d9a441'}]},
+   options:{responsive:false,animation:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y.toFixed(1)+'% of GDP (¥'+D.maturity_wall_tn[wy[c.dataIndex]].toFixed(0)+'tn)'}}},scales:{x:ax,y:{...ax,ticks:{color:'#9fb0c8',callback:v=>v+'%'}}}}});
+  const row=(n,a,u)=>`<tr><td style="text-align:left">${n}</td>${a.map(v=>`<td>${v.toFixed(u)}</td>`).join('')}</tr>`;
+  document.getElementById('fdsTbl').innerHTML='<thead><tr><th style="text-align:left">Interest, ¥tn</th>'+Y.map(y=>'<th>'+y+'</th>').join('')+'</tr></thead><tbody>'+
+   row('-100bp',D.interest_tn.minus100,1)+row('Current curve',D.interest_tn.curve,1)+row('+100bp',D.interest_tn.plus100,1)+row('MOF projection',D.mof_interest_tn,1)+row('Nominal GDP (assumed)',D.gdp_tn,0)+'</tbody>';
+  document.getElementById('fdsNote').textContent='Our line is a rough bottom-up roll-forward, not an MOF figure: coupons by line from the JGB book (avg coupon 1.05%, book ¥'+D.meta.book_total_tn.toFixed(0)+'tn incl. ¥'+D.meta.bills_tn.toFixed(0)+'tn bills), maturing bonds refinanced at the '+D.meta.curve_date+' curve, new money per MOF\'s deficit path, bills reprice to ~1.5% within a year, nominal GDP +3% a year from the latest four quarters (¥'+D.meta.gdp_last4q_tn.toFixed(0)+'tn to '+D.meta.gdp_last_quarter+', Cabinet Office). Gross interest, before BOJ remittances back to the Treasury (the BOJ holds about half of JGBs). FY2026 is partly actual. Rebuild with fetch_fiscal_debt_service.py.';
+ }catch(e){console.error('fiscal debt service',e)}
 })();
 </script>
 </body>
