@@ -1,0 +1,104 @@
+{
+ "meta": {
+  "generated": "2026-10-18",
+  "gdp_last4q_tn": 678.5,
+  "gdp_last_quarter": "2026-Q2",
+  "book_total_tn": 1209.6,
+  "bills_tn": 133.0,
+  "avg_coupon_pct": 1.05,
+  "new_issue_yield_pct": 2.66,
+  "curve_date": "2026-10-13",
+  "listed_scale": 1.129,
+  "note": "Rough bottom-up roll-forward of the marketable JGB book at the current curve (+/-100bp parallel shift applied at once). Not an MOF figure."
+ },
+ "years": [
+  "FY2026",
+  "FY2027",
+  "FY2028",
+  "FY2029"
+ ],
+ "gdp_tn": [
+  693.7,
+  714.5,
+  735.9,
+  758.0
+ ],
+ "interest_tn": {
+  "minus100": [
+   12.61,
+   13.79,
+   15.39,
+   16.73
+  ],
+  "curve": [
+   13.69,
+   16.68,
+   19.66,
+   22.21
+  ],
+  "plus100": [
+   14.76,
+   19.57,
+   23.93,
+   27.69
+  ]
+ },
+ "interest_pct_gdp": {
+  "minus100": [
+   1.82,
+   1.93,
+   2.09,
+   2.21
+  ],
+  "curve": [
+   1.97,
+   2.33,
+   2.67,
+   2.93
+  ],
+  "plus100": [
+   2.13,
+   2.74,
+   3.25,
+   3.65
+  ]
+ },
+ "mof_interest_tn": [
+  13.0,
+  15.5,
+  18.5,
+  21.6
+ ],
+ "mof_interest_pct_gdp": [
+  1.87,
+  2.17,
+  2.51,
+  2.85
+ ],
+ "maturity_wall_pct_gdp": {
+  "2027": 16.01,
+  "2028": 13.11,
+  "2029": 9.92,
+  "2030": 11.1,
+  "2031": 7.9,
+  "2032": 7.17,
+  "2033": 7.18,
+  "2034": 7.09,
+  "2035": 7.06
+ },
+ "maturity_wall_tn": {
+  "2026": 53.1,
+  "2027": 114.4,
+  "2028": 96.4,
+  "2029": 75.2,
+  "2030": 84.1,
+  "2031": 59.9,
+  "2032": 54.3,
+  "2033": 54.4,
+  "2034": 53.8,
+  "2035": 53.5
+ },
+ "fy2026_split_pct_gdp": {
+  "interest": 1.97
+ }
+}
