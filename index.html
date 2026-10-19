@@ -636,8 +636,9 @@
   <div id="tab-inflation" class="panel">
     <div class="card" style="margin:0 0 16px">
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-        <h2 style="margin:0">Inflation forecast to March 2028 — our path vs BOJ <span style="font-size:12px;color:var(--muted);font-weight:400">(BOJ special-factors-removed basis, yoy %)</span></h2>
+        <h2 style="margin:0">Inflation forecast to March 2028 — our path vs BOJ <span style="font-size:12px;color:var(--muted);font-weight:400" id="fcBasisTag">(BOJ special-factors-removed basis, yoy %; National CPI = official)</span></h2>
         <div style="display:flex;gap:6px">
+          <button class="tab" id="fcBtnHead" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="fcSet('head',this)">National CPI (all items)</button>
           <button class="tab active" id="fcBtnEx" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="fcSet('ex_fresh',this)">Core (ex fresh food)</button>
           <button class="tab" id="fcBtnCore" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="fcSet('core',this)">Core-core (ex fresh food &amp; energy)</button>
         </div>
@@ -651,6 +652,7 @@
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
         <h2 style="margin:0">Scenario explorer — pick oil, yen, wages and the food-tax cut, see the CPI path <span style="font-size:12px;color:var(--muted);font-weight:400">(yoy %, deviation from a spot-held baseline)</span></h2>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <button class="tab" id="scBtnHead" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="scSetSeries('head')">National CPI</button>
           <button class="tab active" id="scBtnEx" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="scSetSeries('ex_fresh')">Core (ex fresh food)</button>
           <button class="tab" id="scBtnCore" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="scSetSeries('core')">Core-core</button>
           <span style="width:10px"></span>
@@ -5899,16 +5901,16 @@ fetch('./retail_jgb.json?' + Date.now())
 
 // ── Inflation forecast card ──────────────────────────────────────────────
 let FC=null, fcChart=null, fcKey='ex_fresh';
-function fcSet(k,btn){ fcKey=k; document.getElementById('fcBtnEx').classList.remove('active'); document.getElementById('fcBtnCore').classList.remove('active'); btn.classList.add('active'); fcRender(); }
+function fcSet(k,btn){ fcKey=k; ['fcBtnHead','fcBtnEx','fcBtnCore'].forEach(i=>document.getElementById(i).classList.remove('active')); btn.classList.add('active'); fcRender(); }
 function fcRender(){
   if(!FC) return;
-  const d=FC[fcKey], lab=fcKey==='ex_fresh'?'Core (ex fresh food)':'Core-core (ex fresh food & energy)';
+  const d=FC[fcKey], lab=fcKey==='head'?'National CPI (all items)':fcKey==='ex_fresh'?'Core (ex fresh food)':'Core-core (ex fresh food & energy)';
   const H=d.hist_months.slice(-30), hv=d.hist.slice(-30);
   const labels=H.concat(d.months), nH=H.length, pad=n=>Array(n).fill(null);
   const lastH=hv[hv.length-1];
   const link=arr=>pad(nH-1).concat([lastH],arr);
   const ds=[
-    {label:'Actual (BOJ basis)',data:hv.concat(pad(d.months.length)),borderColor:'#d9a441',borderWidth:2.4,pointRadius:0,tension:.15,order:1},
+    {label:fcKey==='head'?'Actual (official CPI)':'Actual (BOJ basis)',data:hv.concat(pad(d.months.length)),borderColor:'#d9a441',borderWidth:2.4,pointRadius:0,tension:.15,order:1},
     {label:'Hawkish',data:link(d.hawk),borderColor:'#e2564a',borderWidth:1.4,borderDash:[2,3],pointRadius:0,tension:.15,order:3},
     {label:'Dovish',data:link(d.dove),borderColor:'#4a90d9',borderWidth:1.4,borderDash:[2,3],pointRadius:0,tension:.15,order:3},
     {label:'Wage overlay (assumption)',data:link(d.wage),borderColor:'#4cba7a',borderWidth:1.6,borderDash:[8,3,2,3],pointRadius:0,tension:.15,order:2},
@@ -5921,8 +5923,14 @@ function fcRender(){
       tooltip:{filter:i=>i.parsed.y!=null,callbacks:{label:c=>c.dataset.label+': '+c.parsed.y.toFixed(2)+'%'}}},
     scales:{x:{ticks:{maxTicksLimit:14,maxRotation:45}},y:{title:{display:true,text:'yoy %'},ticks:{callback:v=>v.toFixed(1)+'%'}}}}});
   const b=d.basis, firstHeld=b.findIndex(x=>/Held/i.test(x));
-  document.getElementById('fcNote').innerHTML=`${lab}. Solid = actual BOJ special-factors-removed series (latest Aug 2026: ${hv[hv.length-1].toFixed(1)}%); dashed = forecast. Months 1&ndash;5 model + base effect, 6&ndash;12 base effect only, <b>${d.months[firstHeld]} onward held flat (placeholder, not a forecast)</b>. Peak of base path: ${Math.max(...d.base).toFixed(2)}% in ${d.months[d.base.indexOf(Math.max(...d.base))]}.`;
+  document.getElementById('fcNote').innerHTML=`${lab}. Solid = actual ${fcKey==='head'?'official CPI':'BOJ special-factors-removed series'} (latest Aug 2026: ${hv[hv.length-1].toFixed(1)}%); dashed = forecast. Months 1&ndash;5 model + base effect, 6&ndash;12 base effect only, <b>${d.months[firstHeld]} onward held flat (placeholder, not a forecast)</b>. Peak of base path: ${Math.max(...d.base).toFixed(2)}% in ${d.months[d.base.indexOf(Math.max(...d.base))]}.`;
   const f=d.fy, o=d.boj_outlook, g=d.gap;
+  if(!o){
+    document.getElementById('fcCmpTitle').textContent=lab+': fiscal-year averages';
+    document.getElementById('fcCmpTable').innerHTML=`<thead><tr><th>Fiscal year<br><span style="font-weight:400;color:var(--muted)">(Apr&ndash;Mar)</span></th><th>Ours</th><th>Ours + wage</th></tr></thead><tbody>${['FY2026','FY2027'].map(y=>`<tr><td>${y}</td><td>${f[y].official_approx.toFixed(2)}</td><td>${f[y].official_approx_wage.toFixed(2)}</td></tr>`).join('')}</tbody>`;
+    document.getElementById('fcCmpNote').innerHTML='<b>Method.</b> National CPI (all items, official) = our official core path (ex fresh food) plus a fresh-food contribution. Fresh food added about +0.14pt over Jun&ndash;Aug and is assumed to fade to zero over 6 months (volatile and mean-reverting; mostly rice and vegetable base effects). BOJ&rsquo;s Outlook Report forecasts CPI ex fresh food, not all items, so there is no BOJ comparison row. Actual = official Statistics Bureau index-based yoy.';
+    return;
+  }
   const fx=v=>v==null?'&ndash;':v.toFixed(2), f1=v=>v.toFixed(1);
   const row=(fy)=>{
     const a=f[fy], rg=`<span style="color:var(--muted)">[${o.range[fy][0].toFixed(1)}&ndash;${o.range[fy][1].toFixed(1)}]</span>`;
@@ -5970,8 +5978,8 @@ function scStats(k,P,basis){
   const pk=Math.max(...path), pi=path.indexOf(pk);
   return {path,peak:pk,peakM:d.months[pi],last:path[path.length-1],fy26:avg(hist.concat(path.slice(0,7))),fy27:avg(path.slice(7,19))};
 }
-function scSetSeries(k){scKey=k;document.getElementById('scBtnEx').classList.toggle('active',k==='ex_fresh');document.getElementById('scBtnCore').classList.toggle('active',k==='core');scUpdate();}
-function scSetBasis(b){scBasis=b;document.getElementById('scBtnBoj').classList.toggle('active',b==='boj');document.getElementById('scBtnOff').classList.toggle('active',b==='off');scUpdate();}
+function scSetSeries(k){scKey=k;document.getElementById('scBtnHead').classList.toggle('active',k==='head');if(k==='head'&&scBasis==='boj'){scBasis='off';document.getElementById('scBtnBoj').classList.remove('active');document.getElementById('scBtnOff').classList.add('active');}document.getElementById('scBtnEx').classList.toggle('active',k==='ex_fresh');document.getElementById('scBtnCore').classList.toggle('active',k==='core');scUpdate();}
+function scSetBasis(b){if(scKey==='head')b='off';scBasis=b;document.getElementById('scBtnBoj').classList.toggle('active',b==='boj');document.getElementById('scBtnOff').classList.toggle('active',b==='off');scUpdate();}
 function scTaxToggle(){const on=document.getElementById('scTax').checked;document.getElementById('scTaxBox').style.display=on?'block':'none';if(on&&scBasis==='boj')scSetBasis('off');else scUpdate();}
 function scApply(i){const p=SC_PRESETS[i];document.getElementById('scOil').value=p.o;document.getElementById('scYen').value=p.y;document.getElementById('scWage').value=p.w;document.getElementById('scTax').checked=p.t;document.getElementById('scTaxBox').style.display=p.t?'block':'none';if(p.t&&scBasis==='boj'){scBasis='off';document.getElementById('scBtnBoj').classList.remove('active');document.getElementById('scBtnOff').classList.add('active');}scUpdate(i);}
 function scReset(){scApply(0);document.getElementById('scPt').value=70;scUpdate(0);}
@@ -5982,7 +5990,7 @@ function scUpdate(presetIdx){
   document.getElementById('scYenV').textContent=(P.y>0?'+':'')+P.y+'%  →  ¥'+(sp.usdjpy*(1+P.y/100)).toFixed(0)+(P.y>0?' (yen weaker)':P.y<0?' (yen stronger)':'');
   document.getElementById('scWageV').textContent=P.w.toFixed(1)+'%';
   document.getElementById('scPtV').textContent=Math.round(P.pt*100)+'%  (≈ −'+(SCP.tax.full_effect_pp*P.pt).toFixed(2)+'pt)';
-  document.getElementById('scOilH').textContent='vs Brent $'+sp.brent.toFixed(0)+' today. Rule of thumb: each 10% = '+SCP.per10pct[scKey].oil.toFixed(2)+'pt on '+(scKey==='ex_fresh'?'core':'core-core')+' at peak.';
+  document.getElementById('scOilH').textContent='vs Brent $'+sp.brent.toFixed(0)+' today. Rule of thumb: each 10% = '+SCP.per10pct[scKey].oil.toFixed(2)+'pt on '+(scKey==='head'?'national CPI':scKey==='ex_fresh'?'core':'core-core')+' at peak.';
   document.getElementById('scYenH').textContent='vs ¥'+sp.usdjpy.toFixed(1)+' today. Each 10% weaker yen = +'+SCP.per10pct[scKey].yen.toFixed(2)+'pt at peak.';
   document.querySelectorAll('.sc-pre').forEach((b,i)=>b.classList.toggle('on',i===presetIdx));
   const S=scStats(scKey,P,scBasis), B=scStats(scKey,{o:0,y:0,w:5,t:false,pt:.8},scBasis);
@@ -6002,18 +6010,18 @@ function scUpdate(presetIdx){
     scales:{x:{ticks:{maxTicksLimit:14,maxRotation:45}},y:{title:{display:true,text:'yoy %'},ticks:{callback:v=>v.toFixed(1)+'%'}}}}});
   const dl=(a,b)=>{const x=a-b;return `<span style="color:${Math.abs(x)<0.05?'var(--muted)':(x>0?'#e2564a':'#4a90d9')}">${x>0?'+':''}${x.toFixed(2)}</span>`;};
   const kp=(l,v,sub)=>`<div class="sc-kpi"><div class="l">${l}</div><div class="v">${v}</div><div class="l">${sub}</div></div>`;
-  document.getElementById('scKpi').innerHTML=kp('Peak',S.peak.toFixed(2)+'%',S.peakM+' ('+dl(S.peak,B.peak)+' vs base)')+kp('Mar 2028',S.last.toFixed(2)+'%',dl(S.last,B.last)+' vs base')+kp('FY2026 avg',S.fy26.toFixed(2)+'%',dl(S.fy26,B.fy26)+' vs base')+kp('FY2027 avg',S.fy27.toFixed(2)+'%',dl(S.fy27,B.fy27)+' vs base'+(scBasis==='off'?` · BOJ Jul median ${d.boj_outlook.FY2027.toFixed(1)}%`:''));
-  const lab=scKey==='ex_fresh'?'Core (ex fresh food)':'Core-core';
+  document.getElementById('scKpi').innerHTML=kp('Peak',S.peak.toFixed(2)+'%',S.peakM+' ('+dl(S.peak,B.peak)+' vs base)')+kp('Mar 2028',S.last.toFixed(2)+'%',dl(S.last,B.last)+' vs base')+kp('FY2026 avg',S.fy26.toFixed(2)+'%',dl(S.fy26,B.fy26)+' vs base')+kp('FY2027 avg',S.fy27.toFixed(2)+'%',dl(S.fy27,B.fy27)+' vs base'+(scBasis==='off'&&d.boj_outlook?` · BOJ Jul median ${d.boj_outlook.FY2027.toFixed(1)}%`:''));
+  const lab=scKey==='head'?'National CPI (all items)':scKey==='ex_fresh'?'Core (ex fresh food)':'Core-core';
   document.getElementById('scNote').innerHTML=`<b>${lab}, ${scBasis==='boj'?'BOJ special-factors-removed basis':'official CPI approx. (BOJ basis minus today\'s '+d.gap.toFixed(2)+'pt gap; actual official prints Apr–Aug)'}.</b> Mechanics: a shock moves the <i>price level</i> gradually over ${SCP.ramp_months} months from Oct 2026; <i>yoy</i> inflation shows it until the same month a year later, then it drops out (base effect) &mdash; so oil/yen effects build, plateau, then fade by early 2028. Wage effect = our existing overlay scaled by (pay rise &minus; 3%)/2, phased in from Feb 2027. Oil/yen sensitivities are <b>rule-of-thumb inputs, not estimates from our regression</b> (the regression finds no stable FX/oil coefficient &mdash; see below): core 0.5pt per 10% yen and 0.3pt per 10% oil as reported from BOJ research; core-core scaled to 0.35/0.10 by us (energy is the direct oil channel). ${scBasis==='boj'?'The BOJ series <b>strips out consumption-tax changes</b>, so the food-tax lever is only visible in the Official view.':''} The shaded band (optional) is the old &plusmn;1 back-test RMSE &mdash; it is wide because it is calibrated on 2022&ndash;23, when oil and the yen drove almost all the misses; those are now explicit levers, so read the scenarios instead of the band.`;
   scTable(P);
 }
 function scTable(P){
   const d=FC[scKey], o=d.boj_outlook, rows=SC_PRESETS.map((p,i)=>{
     const pp={o:p.o,y:p.y,w:p.w,t:p.t,pt:P.pt}, S=scStats(scKey,pp,scBasis);
-    const bj=scBasis==='off'?`${(S.fy27-o.FY2027).toFixed(2)>0?'+':''}${(S.fy27-o.FY2027).toFixed(2)}`:'&ndash;';
-    return `<tr style="cursor:pointer" onclick="scApply(${i})"><td>${p.n}</td><td>${S.peak.toFixed(2)} <span style="color:var(--muted)">${S.peakM}</span></td><td>${S.last.toFixed(2)}</td><td>${S.fy26.toFixed(2)}</td><td>${S.fy27.toFixed(2)}</td><td>${bj}</td></tr>`;
+    const bj=(scBasis==='off'&&o)?`${(S.fy27-o.FY2027).toFixed(2)>0?'+':''}${(S.fy27-o.FY2027).toFixed(2)}`:'&ndash;';
+    return `<tr style="cursor:pointer" onclick="scApply(${i})"><td>${p.n}</td><td>${S.peak.toFixed(2)} <span style="color:var(--muted)">${S.peakM}</span></td><td>${S.last.toFixed(2)}</td><td>${S.fy26.toFixed(2)}</td><td>${S.fy27.toFixed(2)}</td>${o?`<td>${bj}</td>`:''}</tr>`;
   }).join('');
-  document.getElementById('scTable').innerHTML=`<thead><tr><th>Scenario (click to load)</th><th>Peak, yoy %</th><th>Mar 2028</th><th>FY2026 avg</th><th>FY2027 avg</th><th>FY27 vs BOJ Jul median (${o.FY2027.toFixed(1)}%)</th></tr></thead><tbody>${rows}</tbody>`;
+  document.getElementById('scTable').innerHTML=`<thead><tr><th>Scenario (click to load)</th><th>Peak, yoy %</th><th>Mar 2028</th><th>FY2026 avg</th><th>FY2027 avg</th>${o?`<th>FY27 vs BOJ Jul median (${o.FY2027.toFixed(1)}%)</th>`:''}</tr></thead><tbody>${rows}</tbody>`;
   document.getElementById('scTableNote').innerHTML=`Basis follows the toggle above. ${scBasis==='boj'?'The "Food tax cut only" row is unchanged on the BOJ basis by construction &mdash; switch to Official CPI to see it.':'BOJ median is for official CPI; BOJ\'s July Outlook may or may not already include the food-tax cut &mdash; check the Outlook text before reading the gap as a view difference.'} Fiscal year = Apr&ndash;Mar.`;
 }
 const TAX_STUDIES=[
