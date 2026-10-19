@@ -665,7 +665,7 @@
           <div class="sc-ctl"><label>Yen (USD/JPY) <b id="scYenV"></b></label><input type="range" id="scYen" min="-15" max="15" step="1" value="0" oninput="scUpdate()"><div class="sc-hint" id="scYenH"></div></div>
           <div class="sc-ctl"><label>2027 shunto pay rise <b id="scWageV"></b></label><input type="range" id="scWage" min="2" max="7" step="0.5" value="5" oninput="scUpdate()"><div class="sc-hint">5.0% = our headline "+wage" path; 3.0% = no wage overlay (the 2026 round was 5.0%).</div></div>
           <div class="sc-ctl"><label><input type="checkbox" id="scTax" onchange="scTaxToggle()"> Food consumption tax 8% &rarr; 1% from Apr 2027</label>
-            <div id="scTaxBox" style="display:none;margin-top:6px"><label>Pass-through to shelf prices <b id="scPtV"></b></label><input type="range" id="scPt" min="40" max="100" step="5" value="80" oninput="scUpdate()"><div class="sc-hint">Full-pass-through effect on core CPI: ~&minus;1.2pt (studies: &minus;1.0 to &minus;1.4). Germany 2020 saw ~60%, Portugal 2023 ~100%.</div></div></div>
+            <div id="scTaxBox" style="display:none;margin-top:6px"><label>Pass-through to shelf prices <b id="scPtV"></b></label><input type="range" id="scPt" min="40" max="100" step="5" value="70" oninput="scUpdate()"><div class="sc-hint">Full-pass-through effect on core CPI: ~&minus;1.2pt (studies: &minus;1.0 to &minus;1.4). Germany 2020 saw ~60%, Portugal 2023 ~100%.</div></div></div>
           <button class="tab" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px" onclick="scReset()">Reset</button>
         </div>
         <div>
@@ -5959,7 +5959,7 @@ function scPath(k,P,basis){
     let v=d.base[i]+(d.wage[i]-d.base[i])*(P.w-SCP.wage.anchor_lo)/(SCP.wage.anchor_hi-SCP.wage.anchor_lo);
     const yo=scRamp(h)-scRamp(h-12);
     v+=c.oil*(P.o/10)*yo+c.yen*(P.y/10)*yo;
-    if(basis==='off'){ v-=d.gap; if(P.t&&i>=taxIdx) v-=SCP.tax.full_effect_pp*P.pt; }
+    if(basis==='off'){ v-=d.gap; if(P.t&&i>=taxIdx) v-=SCP.tax.full_effect_pp*P.pt*Math.min(1,(i-taxIdx+1)/3); }
     out.push(v);
   }
   return out;
@@ -5974,7 +5974,7 @@ function scSetSeries(k){scKey=k;document.getElementById('scBtnEx').classList.tog
 function scSetBasis(b){scBasis=b;document.getElementById('scBtnBoj').classList.toggle('active',b==='boj');document.getElementById('scBtnOff').classList.toggle('active',b==='off');scUpdate();}
 function scTaxToggle(){const on=document.getElementById('scTax').checked;document.getElementById('scTaxBox').style.display=on?'block':'none';if(on&&scBasis==='boj')scSetBasis('off');else scUpdate();}
 function scApply(i){const p=SC_PRESETS[i];document.getElementById('scOil').value=p.o;document.getElementById('scYen').value=p.y;document.getElementById('scWage').value=p.w;document.getElementById('scTax').checked=p.t;document.getElementById('scTaxBox').style.display=p.t?'block':'none';if(p.t&&scBasis==='boj'){scBasis='off';document.getElementById('scBtnBoj').classList.remove('active');document.getElementById('scBtnOff').classList.add('active');}scUpdate(i);}
-function scReset(){scApply(0);document.getElementById('scPt').value=80;scUpdate(0);}
+function scReset(){scApply(0);document.getElementById('scPt').value=70;scUpdate(0);}
 function scUpdate(presetIdx){
   if(!FC||!SCP) return;
   const P=scParams(), d=FC[scKey], sp=SCP.spot;
@@ -6029,7 +6029,7 @@ const TAX_STUDIES=[
 ];
 function taxRender(){
   document.getElementById('taxTable').innerHTML=`<thead><tr><th>Source</th><th>Policy modelled</th><th>CPI effect</th><th>Notes</th></tr></thead><tbody>${TAX_STUDIES.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td><b>${r[2]}</b></td><td>${r[3]}</td></tr>`).join('')}</tbody>`;
-  document.getElementById('taxNote').innerHTML=`<b>How we use it.</b> Mechanically: price falls 1&minus;1.01/1.08 = 6.5% on food (ex dining-out and alcohol), which is roughly 17&ndash;18% of the core basket, so ~&minus;1.1 to &minus;1.2pt at full pass-through. Our default is &minus;1.2pt &times; 80% pass-through = &minus;0.96pt, held Apr 2027&ndash;Mar 2028 (it reverts in Apr 2029, beyond our horizon). <b>Three things matter for reading it:</b> (1) BOJ's special-factors-removed CPI excludes tax changes, so BOJ underlying inflation does not move &mdash; only official core does; (2) it is a one-off level shift in the year-on-year rate, not lower trend inflation; (3) second-round effects (consumption, expectations) are small in every study. <b>Status:</b> reported as approved in the Cabinet's basic policy with legislation planned for the autumn extraordinary Diet session &mdash; confirm it has passed before treating it as baseline. Sources: Itochu Research Institute; Daiwa Institute of Research; MK; The Economy; Bundesbank via ABN AMRO; Gabriel et al. (J. Public Economics); BOJ via CNBC/SMAM. Press-compiled and analyst figures are secondary; the primary-source estimates are Itochu, Daiwa, Bundesbank and the journal paper.`;
+  document.getElementById('taxNote').innerHTML=`<b>How we use it.</b> Mechanically: price falls 1&minus;1.01/1.08 = 6.5% on food (ex dining-out and alcohol), which is roughly 17&ndash;18% of the core basket, so ~&minus;1.1 to &minus;1.2pt at full pass-through. Our default is &minus;1.2pt &times; 70% pass-through = &minus;0.84pt (midway between Germany's ~60% and The Economy's 70%; retailers pass it on over about 3 months, so the full effect is reached by Jun 2027), held to Mar 2028 (it reverts in Apr 2029, beyond our horizon). <b>Three things matter for reading it:</b> (1) BOJ's special-factors-removed CPI excludes tax changes, so BOJ underlying inflation does not move &mdash; only official core does; (2) it is a one-off level shift in the year-on-year rate, not lower trend inflation; (3) second-round effects (consumption, expectations) are small in every study. <b>Status:</b> reported as approved in the Cabinet's basic policy with legislation planned for the autumn extraordinary Diet session &mdash; confirm it has passed before treating it as baseline. Sources: Itochu Research Institute; Daiwa Institute of Research; MK; The Economy; Bundesbank via ABN AMRO; Gabriel et al. (J. Public Economics); BOJ via CNBC/SMAM. Press-compiled and analyst figures are secondary; the primary-source estimates are Itochu, Daiwa, Bundesbank and the journal paper.`;
 }
 function scInit(){
   document.getElementById('scPresets').innerHTML=SC_PRESETS.map((p,i)=>`<button class="sc-pre" onclick="scApply(${i})">${p.n}</button>`).join('');
