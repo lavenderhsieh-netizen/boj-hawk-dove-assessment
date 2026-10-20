@@ -280,6 +280,7 @@ def main():
     latest_month = None
     players_raw = {}
     tenor_raw = {}
+    failed = []
     for fy, fname in FY_FILES.items():
         path = os.path.join(SRC, fname)
         try:
@@ -290,7 +291,14 @@ def main():
             if cached and fname != "koushasai.xlsx":
                 print(f"FY{fy}: using cached {fname}")
             else:
-                data = get(BASE + fname)
+                try:
+                    data = get(BASE + fname)
+                except Exception as ge:
+                    if cached and os.environ.get("JSDA_USE_LOCAL"):
+                        print(f"FY{fy}: download failed ({ge}); using local {fname}")
+                        data = open(path, "rb").read()
+                    else:
+                        raise
                 if data[:2] != b"PK":
                     print(f"FY{fy}: {fname} not a workbook, skip"); continue
                 open(path, "wb").write(data)
@@ -317,7 +325,11 @@ def main():
             time.sleep(6)
         except Exception as e:
             print(f"FY{fy}: FAILED {fname}: {e}")
+            failed.append(fy)
 
+    if failed:
+        print(f"ABORT: download/parse failed for FY{failed}; leaving existing data files untouched")
+        return
     players = build_players(players_raw) if players_raw else None
     byplayer_tenor = build_tenor(tenor_raw) if tenor_raw else None
 
