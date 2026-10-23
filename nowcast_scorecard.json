@@ -6,9 +6,9 @@
    "series": "headline YoY",
    "forecast": 2.3,
    "method": "Tokyo bridge b=0.8 less Tokyo water-subsidy 0.25",
-   "actual": null,
-   "error": null,
-   "notes": "band +/-0.2-0.3"
+   "actual": 2.1,
+   "error": -0.2,
+   "notes": "band +/-0.2-0.3; official idx 102.228/100.078 = 2.15 (press 2.1 = headline)"
   },
   {
    "logged_at": "2026-10-14",
@@ -16,8 +16,8 @@
    "series": "ex-fresh YoY",
    "forecast": 2.3,
    "method": "Tokyo bridge b=0.8 less Tokyo water-subsidy 0.25",
-   "actual": null,
-   "error": null,
+   "actual": 2.1,
+   "error": -0.2,
    "notes": null
   },
   {
@@ -26,8 +26,8 @@
    "series": "ex-fresh&energy YoY",
    "forecast": 2.5,
    "method": "Tokyo bridge b=0.8 less Tokyo water-subsidy 0.25",
-   "actual": null,
-   "error": null,
+   "actual": 2.4,
+   "error": -0.1,
    "notes": null
   },
   {
