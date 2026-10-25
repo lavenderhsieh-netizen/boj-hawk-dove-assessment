@@ -59,6 +59,36 @@
    "actual": null,
    "error": null,
    "notes": null
+  },
+  {
+   "logged_at": "2026-10-25",
+   "target": "National Oct-2026 (rel ~2026-11-20)",
+   "series": "headline YoY",
+   "forecast": 2.2,
+   "method": "Tokyo Oct fcst bridge b=0.8; Tokyo water-subsidy step stripped (nat pass-through 0.07pt not 0.25)",
+   "actual": null,
+   "error": null,
+   "notes": "band +/-0.25; update after Tokyo Oct (30 Oct)"
+  },
+  {
+   "logged_at": "2026-10-25",
+   "target": "National Oct-2026 (rel ~2026-11-20)",
+   "series": "ex-fresh YoY",
+   "forecast": 2.2,
+   "method": "same b=0.78",
+   "actual": null,
+   "error": null,
+   "notes": null
+  },
+  {
+   "logged_at": "2026-10-25",
+   "target": "National Oct-2026 (rel ~2026-11-20)",
+   "series": "ex-fresh&energy YoY",
+   "forecast": 2.3,
+   "method": "same b=0.72",
+   "actual": null,
+   "error": null,
+   "notes": null
   }
  ],
  "note": "Official Statistics Bureau basis (not BOJ special-factors-removed). Bridge: national YoY = prior-month national YoY + ~0.8 x change in Tokyo YoY; out-of-sample RMSE ~0.15-0.2pt (2020-26). Tokyo forecasts = Sep YoY + (Oct-26 MoM - Oct-25 MoM) with known items swapped in."
