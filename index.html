@@ -2826,7 +2826,10 @@ fetch('./streamlit_app/data.json?' + Date.now())
 
 fetch('./market_data.json?' + Date.now())
   .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
-  .then(M => { renderMarkets(M); })
+  .then(M => { renderMarkets(M);
+    const a = document.getElementById('asof');
+    if (a && M.updated_utc) a.textContent = a.textContent.replace(/^Data as of [^·]*/, `Market data as of ${M.updated_utc.slice(0,10)} · Board & forecast content as of ${a.textContent.match(/Data as of ([^ ·]+)/)?.[1] || '?'} `);
+  })
   .catch(e => {
     console.warn('market_data.json unavailable:', e);
     document.getElementById('mktKpis').innerHTML =
