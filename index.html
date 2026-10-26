@@ -262,7 +262,6 @@
   <h1>Japan Macro Monitoring</h1>
 </div>
 <p class="asof" id="asof"></p>
-<p class="asof" id="staleBadgeTop" style="display:none;cursor:pointer" onclick="showTab('dashboard', document.querySelector('.tabs .tab'))" title="Click to jump to the Data source status table on the Dashboard tab"></p>
 
 <div class="tabs">
   <button class="tab active" onclick="showTab('dashboard',this)">Dashboard</button>
@@ -639,14 +638,6 @@
       <h2 style="min-height:44px">Natural rate of interest (r*) — model estimates (quarterly, %) <span id="natRateStatus"></span></h2>
       <canvas id="cNatRate" style="max-height:360px"></canvas>
       <div class="note" id="natRateNote" style="margin-top:8px">Six model estimates of Japan's <b>natural rate of interest</b>. Shaded band = min–max; BOJ stresses <b>considerable dispersion</b>, so accommodation is a judgment call, not a single r*. Source: <a href="https://www.boj.or.jp/en/research/wps_rev/rev_2026/rev26e04.htm" target="_blank">BOJ Review 2026-E-4</a> (Chart 3), 27 Mar 2026 · <a href="https://www.boj.or.jp/en/research/wps_rev/rev_2026/data/rev26e04b.xlsx" target="_blank">data</a>.</div>
-    </div>
-    <div class="card" style="margin-top:16px">
-      <h2>Data source status</h2>
-      <div style="overflow-x:auto"><table>
-        <thead><tr><th>Source</th><th>Status</th><th>Latest data</th><th>Fetched (UTC)</th><th>Notes</th></tr></thead>
-        <tbody id="sourceStatus"></tbody>
-      </table></div>
-      <div class="note">Stale = previous fetch succeeded; current fetch failed — last good data is displayed. Missing = no data available.</div>
     </div>
   </div>
 
@@ -2823,40 +2814,6 @@ function renderMarkets(M) {
   }
 
   // ── Source status table ───────────────────────────────────────────────────
-  const labels = { jgb: 'MOF JGB yields', fx: 'FRED USD/JPY',
-    nikkei: 'FRED Nikkei 225', us10y: 'FRED US 10Y', call_rate: 'FRED BOJ call rate',
-    inflation: 'BOJ core CPI xlsx', potential_growth: 'BOJ output gap / potential growth', news: 'Google News RSS' };
-  document.getElementById('sourceStatus').innerHTML = Object.entries(src).map(([k, v]) => {
-    const cls = v.status === 'ok' ? 'status-ok' : v.status === 'stale' ? 'status-stale' : 'status-missing';
-    return `<tr>
-      <td>${esc(labels[k] || k)}</td>
-      <td class="${cls}">${esc(v.status)}</td>
-      <td>${esc(v.latest || '—')}</td>
-      <td>${esc((v.fetched_at || '').replace('T', ' ').replace('Z', '') || '—')}</td>
-      <td style="color:var(--muted);font-size:12px">${esc(v.error || '')}</td>
-    </tr>`;
-  }).join('');
-
-  // Top-level stale/missing badge — reviewer's ask: surface feed health without
-  // digging into the buried Data source status table. Counts src entries only
-  // (the ~8 sources this table actually tracks, not every fetch script in the
-  // project — a real, separate gap flagged in AGENTS.md, not fixed here).
-  const badgeEl = document.getElementById('staleBadgeTop');
-  if (badgeEl) {
-    const entries = Object.entries(src);
-    const stale = entries.filter(([, v]) => v.status === 'stale');
-    const missing = entries.filter(([, v]) => v.status === 'missing');
-    if (stale.length || missing.length) {
-      const parts = [];
-      if (missing.length) parts.push(`${missing.length} missing`);
-      if (stale.length) parts.push(`${stale.length} stale`);
-      badgeEl.textContent = `⚠ Data feeds: ${parts.join(', ')} — see Data source status ↓`;
-      badgeEl.style.display = '';
-      badgeEl.style.color = missing.length ? 'var(--hawk2)' : 'var(--accent)';
-    } else {
-      badgeEl.style.display = 'none';
-    }
-  }
 }
 
 // ── Load data ───────────────────────────────────────────────────────────────
