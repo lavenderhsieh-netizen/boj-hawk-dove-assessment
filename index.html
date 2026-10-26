@@ -470,6 +470,10 @@
     <div class="card full" style="margin-top:16px">
       <h2>Retail JGB issuance since 2003 &mdash; by type and rolling 12 months <span id="rjiStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
       <div class="sub" id="rjiSub"></div>
+      <div id="rjiRange" style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+        <span style="font-size:12px;color:var(--muted);align-self:center">Horizon:</span>
+        <button class="tab active" data-y="0">All</button><button class="tab" data-y="10">10Y</button><button class="tab" data-y="5">5Y</button><button class="tab" data-y="3">3Y</button><button class="tab" data-y="1">1Y</button>
+      </div>
       <div style="height:260px;margin-top:10px"><canvas id="rjiBars"></canvas></div>
       <div style="height:260px;margin-top:10px"><canvas id="rjiRoll"></canvas></div>
       <div class="note">Source: Ministry of Finance, 個人向け国債の発行額の推移 (kojin_suii.xls), issue-date basis; quarterly issues to 2010, monthly since. The latest bar is the 15 Oct 2026 issue; the 16 Nov issue's coupons are set but amounts are not out yet. </div>
@@ -5894,10 +5898,10 @@ fetch('./retail_jgb_issuance.json?' + Date.now()).then(r => r.json()).then(D => 
   const peak = R.filter(r => r.month < '2010').reduce((a, b) => b.v > a.v ? b : a);
   document.getElementById('rjiSub').textContent = `Twelve-month retail JGB issuance of ¥${lastR.v.toFixed(2)}tn (to ${lastR.month}) is the highest since the product launched in 2003; the previous peak was ¥${peak.v.toFixed(2)}tn (to ${peak.month}).`;
   const t0 = new Date(I[0].date).getTime(), t1 = new Date(D.meta.last_issue).getTime();
-  const xs = { type: 'linear', min: 2002, max: 2027, grid: { display: false }, ticks: { color: '#93a1bd', stepSize: 2, callback: v => v } };
+  const xs = { type: 'linear', min: 2002, max: 2027, grid: { display: false }, ticks: { color: '#93a1bd', stepSize: 2, callback: v => Number.isInteger(v) ? v : Math.floor(v) + '-' + String(Math.round((v % 1) * 12) + 1).padStart(2, '0') } };
   const yr = s => { const d = new Date(s); return d.getFullYear() + d.getMonth() / 12; };
   const pts = k => I.map(i => ({ x: yr(i.date), y: i[k] }));
-  new Chart(document.getElementById('rjiBars'), { type: 'bar',
+  const cBars = new Chart(document.getElementById('rjiBars'), { type: 'bar',
     data: { datasets: [
       { label: 'Floating 10-year', data: pts('float10'), backgroundColor: '#3aa876', borderWidth: 0, barThickness: 3 },
       { label: 'Fixed 5-year', data: pts('fixed5'), backgroundColor: '#e06b3c', borderWidth: 0, barThickness: 3 },
@@ -5909,7 +5913,7 @@ fetch('./retail_jgb_issuance.json?' + Date.now()).then(r => r.json()).then(D => 
       scales: { x: Object.assign({ stacked: true }, xs), y: { stacked: true, grid: { color: 'rgba(148,163,196,0.12)' }, ticks: { color: '#93a1bd' } } } }, plugins: [ChartDataLabels] });
   const rp = R.map(r => ({ x: +r.month.slice(0, 4) + (+r.month.slice(5) - 1) / 12, y: r.v }));
   const pk = rp[R.indexOf(peak)], lp = rp[rp.length - 1];
-  new Chart(document.getElementById('rjiRoll'), { type: 'line',
+  const cRoll = new Chart(document.getElementById('rjiRoll'), { type: 'line',
     data: { datasets: [{ label: 'Rolling 12-month total (¥tn)', data: rp, borderColor: '#d9a441', borderWidth: 2, pointRadius: 0, tension: 0 },
       { label: 'Highlights', data: [pk, lp], showLine: false, pointRadius: 5, backgroundColor: '#e06b3c', borderColor: '#e06b3c' }] },
     options: { responsive: true, maintainAspectRatio: false, animation: false, parsing: false,
@@ -5919,6 +5923,22 @@ fetch('./retail_jgb_issuance.json?' + Date.now()).then(r => r.json()).then(D => 
           formatter: (v, c) => (c.dataIndex === 0 ? `${peak.v.toFixed(2)}tn 12m to ${peak.month}` : `${lastR.v.toFixed(2)}tn 12m to ${lastR.month}`) },
         tooltip: { callbacks: { label: c => `¥${c.parsed.y.toFixed(2)}tn` } } },
       scales: { x: xs, y: { grid: { color: 'rgba(148,163,196,0.12)' }, ticks: { color: '#93a1bd' }, min: 0 } } }, plugins: [ChartDataLabels] });
+  const lastX = lp.x;
+  const monthsX = I.map(i => ({ x: yr(i.date), t: i.fixed3 + i.fixed5 + i.float10 }));
+  const setRange = yrs => {
+    const lo = yrs ? Math.max(2002, Math.floor((lastX - yrs) * 12) / 12) : 2002;
+    const hi = yrs ? lastX + 0.1 : 2027;
+    [cBars, cRoll].forEach(c => { c.options.scales.x.min = lo; c.options.scales.x.max = hi; c.options.scales.x.ticks.stepSize = yrs && yrs <= 3 ? 0.5 : yrs && yrs <= 5 ? 1 : 2; });
+    const mb = Math.max(...monthsX.filter(m => m.x >= lo).map(m => m.t));
+    cBars.options.scales.y.max = Math.ceil(mb * 10) / 10 * 1.05;
+    const vis = rp.filter(r => r.x >= lo).map(r => r.y);
+    cRoll.options.scales.y.max = Math.ceil(Math.max(...vis) * 1.05);
+    cRoll.options.scales.y.min = yrs && yrs <= 5 ? Math.floor(Math.min(...vis) * 0.9) : 0;
+    cBars.update(); cRoll.update();
+    document.querySelectorAll('#rjiRange button').forEach(b => b.classList.toggle('active', +b.dataset.y === yrs));
+  };
+  document.querySelectorAll('#rjiRange button').forEach(b => b.onclick = () => setRange(+b.dataset.y));
+  setRange(0);
 }).catch(e => console.warn('retail_jgb_issuance.json unavailable:', e));
 
 
