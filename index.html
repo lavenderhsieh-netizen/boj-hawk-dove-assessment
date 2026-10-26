@@ -276,8 +276,8 @@
   <button class="tab" onclick="showTab('intervention',this)">Intervention</button>
   <button class="tab" onclick="showTab('balancesheet',this)" style="display:none" data-hidden="pending-nisa-review-2026-08-10">BOJ Balance Sheet</button>
   <button class="tab" onclick="showTab('calendar',this)">BOJ calendar</button>
-  <button class="tab" onclick="showTab('jgbauction',this)">JGB auctions</button>
-  <button class="tab" onclick="showTab('auctions',this)">Auctions &amp; fiscal</button>
+  <button class="tab" onclick="showTab('jgbauction',this)">Auctions</button>
+  <button class="tab" onclick="showTab('auctions',this)">Fiscal</button>
   <button class="tab" onclick="showTab('ownership',this)">JGB Ownership &amp; Retail</button>
   <button class="tab" onclick="showTab('property',this)">Property</button>
   <button class="tab" onclick="showTab('tankan',this)">Tankan</button>
@@ -401,12 +401,15 @@
   <!-- AUCTIONS & FISCAL -->
   <div id="tab-jgbauction" class="panel">
     <div class="card full" style="margin-bottom:16px">
-      <h2>2026 20-year JGB auctions &mdash; demand, tail and concession <span id="a20Status" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
-      <div class="sub" id="a20Sub"></div>
-      <div style="height:170px;margin-top:10px"><canvas id="a20Btc"></canvas></div>
+      <h2>Auction demand by tenor <span id="aucStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub">Scorecard compares each tenor's latest auction with its own previous 12 auctions (z-score). Green = stronger demand than usual (higher cover, smaller tail, richer vs prior close), red = weaker. Click a row, or use the buttons, to chart a tenor.</div>
+      <div style="overflow-x:auto;margin-top:10px"><table id="aucScore" style="font-size:12.5px"></table></div>
+      <div id="aucTenorBtns" style="margin-top:14px;display:flex;gap:6px;flex-wrap:wrap"></div>
+      <div class="sub" id="aucSub" style="margin-top:8px"></div>
+      <div style="height:170px;margin-top:6px"><canvas id="a20Btc"></canvas></div>
       <div style="height:170px;margin-top:6px"><canvas id="a20Tail"></canvas></div>
       <div style="height:190px;margin-top:6px"><canvas id="a20Stop"></canvas></div>
-      <div class="note">Bid-to-cover = competitive bids &divide; accepted. Tail = average less lowest accepted price (sen per &yen;100). Stop yield minus prior close = highest accepted yield less the previous business day's MOF constant-maturity 20y par yield. &ldquo;new&rdquo; marks a new issue; other months reopen it. Source: MOF auction results and JGB yield curve; all three are our arithmetic. Latest auction highlighted in blue.</div>
+      <div class="note">Bid-to-cover = competitive bids &divide; accepted. Tail = average less lowest accepted price (sen per &yen;100; not available for 40y, which is auctioned on yield). Stop vs prior close = highest accepted yield less the previous business day's MOF constant-maturity yield for that tenor (bp); negative = auction cleared richer than the market. &ldquo;new&rdquo; marks a new issue. Z-scores are vs the tenor's previous 12 auctions, so read them as relative, not absolute. Source: MOF auction results and JGB yield curve; all our arithmetic.</div>
     </div>
   </div>
   <div id="tab-auctions" class="panel">
@@ -5868,28 +5871,60 @@ fetch('./tankan_data.json?' + Date.now()).then(r => r.json()).then(T => {
 // Retail JGB demand — monthly subscription amounts (MOF, flow-side complement to household holdings above)
 const RETAIL_JGB_COLORS = { floating10: '#d9a441', fixed5: '#5aa0e6', fixed3: '#4cba7a' };
 
-fetch('./auction20y.json?' + Date.now()).then(r => r.json()).then(D => {
-  const A = D.auctions; if (!A.length) return;
-  const L = A.map(a => a.month + (a.new ? ' (new)' : '')), last = A.length - 1;
+let _aucCharts = [], _aucD = null;
+const AUC_ORDER = ['2Y', '5Y', '10Y', '20Y', '30Y', '40Y'];
+function aucStats(a) {
+  const n = a.length, l = a[n - 1], prev = a.slice(Math.max(0, n - 13), n - 1);
+  const mean = k => { const v = prev.map(x => x[k]).filter(x => x != null); return v.length ? v.reduce((s, x) => s + x, 0) / v.length : null; };
+  const sd = (k, m) => { const v = prev.map(x => x[k]).filter(x => x != null); return v.length > 2 && m != null ? Math.sqrt(v.reduce((s, x) => s + (x - m) ** 2, 0) / (v.length - 1)) : null; };
+  const o = { l };
+  [['btc', 1], ['tail_sen', -1], ['stop_vs_prior_bp', -1]].forEach(([k, sign]) => {
+    const m = mean(k), s = sd(k, m);
+    o[k] = { avg: m, z: (l[k] != null && m != null && s) ? sign * (l[k] - m) / s : null };
+  });
+  return o;
+}
+function aucColor(z) { return z == null ? '' : z >= 1 ? 'background:rgba(76,186,122,.28)' : z >= 0.4 ? 'background:rgba(76,186,122,.12)' : z <= -1 ? 'background:rgba(224,107,60,.30)' : z <= -0.4 ? 'background:rgba(224,107,60,.13)' : ''; }
+function aucSelect(t) {
+  const A = _aucD.tenors[t].slice(-14), last = A.length - 1;
+  const L = A.map(a => { const d = new Date(a.date); return d.toLocaleString('en', { month: 'short' }) + '-' + String(d.getFullYear()).slice(2) + (a.new ? ' (new)' : ''); });
   const col = A.map((a, i) => i === last ? '#4a90e2' : '#7c879b');
-  document.getElementById('a20Status').textContent = '· latest ' + A[last].date;
+  document.querySelectorAll('#aucTenorBtns button').forEach(b => b.classList.toggle('active', b.dataset.t === t));
+  document.querySelectorAll('#aucScore tr[data-t]').forEach(r => r.style.outline = r.dataset.t === t ? '1px solid #4a90e2' : '');
   const l = A[last];
-  document.getElementById('a20Sub').textContent = `${l.date} (issue #${l.issue}): bid-to-cover ${l.btc}x, tail ${l.tail_sen} sen, stop ${l.stop_vs_prior_bp > 0 ? '+' : ''}${l.stop_vs_prior_bp}bp vs prior close. 2026 bid-to-cover range ${Math.min(...A.map(a=>a.btc))}-${Math.max(...A.map(a=>a.btc))}x.`;
-  const mk = (id, key, title, fmt) => new Chart(document.getElementById(id), {
+  document.getElementById('aucSub').textContent = `${t}: latest ${l.date} (issue #${l.issue}) — bid-to-cover ${l.btc}x, tail ${l.tail_sen == null ? 'n/a' : l.tail_sen + ' sen'}, stop ${l.stop_vs_prior_bp > 0 ? '+' : ''}${l.stop_vs_prior_bp}bp vs prior close. Last ${A.length} auctions shown.`;
+  _aucCharts.forEach(c => c.destroy()); _aucCharts = [];
+  const mk = (id, key, title, fmt) => _aucCharts.push(new Chart(document.getElementById(id), {
     type: 'bar',
     data: { labels: L, datasets: [{ data: A.map(a => a[key]), backgroundColor: col, borderWidth: 0 }] },
-    options: { responsive: true, maintainAspectRatio: false, animation: false,
-      layout: { padding: { top: 14 } },
+    options: { responsive: true, maintainAspectRatio: false, animation: false, layout: { padding: { top: 14 } },
       plugins: { legend: { display: false }, title: { display: true, text: title, align: 'start', color: '#c7d0e0', font: { size: 12 } },
-        tooltip: { callbacks: { label: c => fmt(c.parsed.y) } },
-        datalabels: { display: true, anchor: 'end', align: 'end', color: '#c7d0e0', font: { size: 10 }, formatter: v => fmt(v) } },
-      scales: { x: { grid: { display: false }, ticks: { color: '#93a1bd', display: id === 'a20Stop' } },
+        tooltip: { callbacks: { label: c => c.parsed.y == null ? 'n/a' : fmt(c.parsed.y) } },
+        datalabels: { display: c => c.dataset.data[c.dataIndex] != null, anchor: 'end', align: 'end', color: '#c7d0e0', font: { size: 10 }, formatter: v => fmt(v) } },
+      scales: { x: { grid: { display: false }, ticks: { color: '#93a1bd', display: id === 'a20Stop', maxRotation: 60, autoSkip: false, font: { size: 10 } } },
                 y: { grid: { color: 'rgba(148,163,196,0.12)' }, ticks: { color: '#93a1bd' }, grace: '15%' } } },
-    plugins: [ChartDataLabels] });
+    plugins: [ChartDataLabels] }));
   mk('a20Btc', 'btc', 'Bid-to-cover (times)', v => v.toFixed(2));
   mk('a20Tail', 'tail_sen', 'Tail (sen per ¥100)', v => String(v));
   mk('a20Stop', 'stop_vs_prior_bp', 'Stop yield minus prior close (bp)', v => (v > 0 ? '+' : '') + v.toFixed(1));
-}).catch(e => console.warn('auction20y.json unavailable:', e));
+}
+fetch('./auctions.json?' + Date.now()).then(r => r.json()).then(D => {
+  _aucD = D;
+  const f1 = v => v == null ? '–' : v.toFixed(1), sg = v => v == null ? '–' : (v > 0 ? '+' : '') + v.toFixed(1);
+  let latest = '';
+  document.getElementById('aucScore').innerHTML = '<thead><tr><th>Tenor</th><th>Latest auction</th><th>Bid-to-cover</th><th>12-auc avg</th><th>Tail (sen)</th><th>12-auc avg</th><th>Stop vs prior close (bp)</th><th>12-auc avg</th></tr></thead><tbody>' +
+    AUC_ORDER.filter(t => D.tenors[t]).map(t => {
+      const s = aucStats(D.tenors[t]), l = s.l; if (l.date > latest) latest = l.date;
+      return `<tr data-t="${t}" style="cursor:pointer"><td><b>${t}</b></td><td>${l.date}${l.new ? ' (new)' : ''}</td>
+        <td style="${aucColor(s.btc.z)}"><b>${l.btc.toFixed(2)}x</b></td><td>${s.btc.avg == null ? '–' : s.btc.avg.toFixed(2) + 'x'}</td>
+        <td style="${aucColor(s.tail_sen.z)}"><b>${l.tail_sen == null ? 'n/a' : l.tail_sen}</b></td><td>${f1(s.tail_sen.avg)}</td>
+        <td style="${aucColor(s.stop_vs_prior_bp.z)}"><b>${sg(l.stop_vs_prior_bp)}</b></td><td>${sg(s.stop_vs_prior_bp.avg)}</td></tr>`; }).join('') + '</tbody>';
+  document.getElementById('aucStatus').textContent = '· latest ' + latest;
+  document.getElementById('aucTenorBtns').innerHTML = '<span style="font-size:12px;color:var(--muted);align-self:center">Chart tenor:</span>' + AUC_ORDER.filter(t => D.tenors[t]).map(t => `<button class="tab" data-t="${t}">${t}</button>`).join('');
+  document.querySelectorAll('#aucTenorBtns button').forEach(b => b.onclick = () => aucSelect(b.dataset.t));
+  document.querySelectorAll('#aucScore tr[data-t]').forEach(r => r.onclick = () => aucSelect(r.dataset.t));
+  aucSelect('20Y');
+}).catch(e => console.warn('auctions.json unavailable:', e));
 
 fetch('./retail_jgb_issuance.json?' + Date.now()).then(r => r.json()).then(D => {
   const I = D.issues, R = D.rolling12;
