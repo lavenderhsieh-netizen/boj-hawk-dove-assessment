@@ -399,6 +399,14 @@
 
   <!-- AUCTIONS & FISCAL -->
   <div id="tab-auctions" class="panel">
+    <div class="card full" style="margin-bottom:16px">
+      <h2>2026 20-year JGB auctions &mdash; demand, tail and concession <span id="a20Status" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub" id="a20Sub"></div>
+      <div style="height:170px;margin-top:10px"><canvas id="a20Btc"></canvas></div>
+      <div style="height:170px;margin-top:6px"><canvas id="a20Tail"></canvas></div>
+      <div style="height:190px;margin-top:6px"><canvas id="a20Stop"></canvas></div>
+      <div class="note">Bid-to-cover = competitive bids &divide; accepted. Tail = average less lowest accepted price (sen per &yen;100). Stop yield minus prior close = highest accepted yield less the previous business day's MOF constant-maturity 20y par yield. &ldquo;new&rdquo; marks a new issue; other months reopen it. Source: MOF auction results and JGB yield curve; all three are our arithmetic. Latest auction highlighted in blue.</div>
+    </div>
     <div class="card">
       <h2>MOF JGB auction calendar</h2>
       <div id="auctionSections"></div>
@@ -462,6 +470,13 @@
       <div class="kpis" id="retailJgbKpis" style="margin-top:12px"></div>
       <div style="height:340px;margin-top:16px"><canvas id="chart-retail-jgb"></canvas></div>
       <div class="note" id="retailJgbNote">Source: MOF "個人向け国債の応募額" (Retail JGB subscription amount), monthly press release. Amounts are subscriptions (応募額) for that month's offering, not issuance/settlement (issue date is mid-following-month). MOF footnotes that reported figures can be revised; latest publication per month is used.</div>
+    </div>
+    <div class="card full" style="margin-top:16px">
+      <h2>Retail JGB issuance since 2003 &mdash; by type and rolling 12 months <span id="rjiStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="sub" id="rjiSub"></div>
+      <div style="height:260px;margin-top:10px"><canvas id="rjiBars"></canvas></div>
+      <div style="height:260px;margin-top:10px"><canvas id="rjiRoll"></canvas></div>
+      <div class="note">Source: Ministry of Finance, 個人向け国債の発行額の推移 (kojin_suii.xls), issue-date basis; quarterly issues to 2010, monthly since. The latest bar is the 15 Oct 2026 issue; the 16 Nov issue's coupons are set but amounts are not out yet. Differs from the subscription card above, which is by offering month.</div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>Retail JGB funds &mdash; size &amp; monthly flow <span id="jgbFundsStatus" style="font-size:12px;color:var(--muted);font-weight:400"></span></h2>
@@ -5897,6 +5912,63 @@ fetch('./retail_jgb.json?' + Date.now())
     });
   })
   .catch(e => { console.warn('retail_jgb.json unavailable:', e); });
+
+fetch('./auction20y.json?' + Date.now()).then(r => r.json()).then(D => {
+  const A = D.auctions; if (!A.length) return;
+  const L = A.map(a => a.month + (a.new ? ' (new)' : '')), last = A.length - 1;
+  const col = A.map((a, i) => i === last ? '#4a90e2' : '#7c879b');
+  document.getElementById('a20Status').textContent = '· latest ' + A[last].date;
+  const l = A[last];
+  document.getElementById('a20Sub').textContent = `${l.date} (issue #${l.issue}): bid-to-cover ${l.btc}x, tail ${l.tail_sen} sen, stop ${l.stop_vs_prior_bp > 0 ? '+' : ''}${l.stop_vs_prior_bp}bp vs prior close. 2026 bid-to-cover range ${Math.min(...A.map(a=>a.btc))}-${Math.max(...A.map(a=>a.btc))}x.`;
+  const mk = (id, key, title, fmt) => new Chart(document.getElementById(id), {
+    type: 'bar',
+    data: { labels: L, datasets: [{ data: A.map(a => a[key]), backgroundColor: col, borderWidth: 0 }] },
+    options: { responsive: true, maintainAspectRatio: false, animation: false,
+      layout: { padding: { top: 14 } },
+      plugins: { legend: { display: false }, title: { display: true, text: title, align: 'start', color: '#c7d0e0', font: { size: 12 } },
+        tooltip: { callbacks: { label: c => fmt(c.parsed.y) } },
+        datalabels: { display: true, anchor: 'end', align: 'end', color: '#c7d0e0', font: { size: 10 }, formatter: v => fmt(v) } },
+      scales: { x: { grid: { display: false }, ticks: { color: '#93a1bd', display: id === 'a20Stop' } },
+                y: { grid: { color: 'rgba(148,163,196,0.12)' }, ticks: { color: '#93a1bd' }, grace: '15%' } } },
+    plugins: [ChartDataLabels] });
+  mk('a20Btc', 'btc', 'Bid-to-cover (times)', v => v.toFixed(2));
+  mk('a20Tail', 'tail_sen', 'Tail (sen per ¥100)', v => String(v));
+  mk('a20Stop', 'stop_vs_prior_bp', 'Stop yield minus prior close (bp)', v => (v > 0 ? '+' : '') + v.toFixed(1));
+}).catch(e => console.warn('auction20y.json unavailable:', e));
+
+fetch('./retail_jgb_issuance.json?' + Date.now()).then(r => r.json()).then(D => {
+  const I = D.issues, R = D.rolling12;
+  const lastR = R[R.length - 1];
+  document.getElementById('rjiStatus').textContent = '· to ' + D.meta.last_issue;
+  const peak = R.filter(r => r.month < '2010').reduce((a, b) => b.v > a.v ? b : a);
+  document.getElementById('rjiSub').textContent = `Twelve-month retail JGB issuance of ¥${lastR.v.toFixed(2)}tn (to ${lastR.month}) is the highest since the product launched in 2003; the previous peak was ¥${peak.v.toFixed(2)}tn (to ${peak.month}).`;
+  const t0 = new Date(I[0].date).getTime(), t1 = new Date(D.meta.last_issue).getTime();
+  const xs = { type: 'linear', min: 2002, max: 2027, grid: { display: false }, ticks: { color: '#93a1bd', stepSize: 2, callback: v => v } };
+  const yr = s => { const d = new Date(s); return d.getFullYear() + d.getMonth() / 12; };
+  const pts = k => I.map(i => ({ x: yr(i.date), y: i[k] }));
+  new Chart(document.getElementById('rjiBars'), { type: 'bar',
+    data: { datasets: [
+      { label: 'Floating 10-year', data: pts('float10'), backgroundColor: '#3aa876', borderWidth: 0, barThickness: 3 },
+      { label: 'Fixed 5-year', data: pts('fixed5'), backgroundColor: '#e06b3c', borderWidth: 0, barThickness: 3 },
+      { label: 'Fixed 3-year', data: pts('fixed3'), backgroundColor: '#4a90e2', borderWidth: 0, barThickness: 3 }] },
+    options: { responsive: true, maintainAspectRatio: false, animation: false, parsing: false,
+      plugins: { legend: { position: 'top', align: 'center', labels: { boxWidth: 11, color: '#c7d0e0' } }, datalabels: { display: false },
+        title: { display: true, text: 'Issuance by month and type: quarterly issues to 2010, monthly since (¥tn per issue month)', align: 'start', color: '#c7d0e0', font: { size: 12 } },
+        tooltip: { callbacks: { title: c => { const x = c[0].parsed.x; return Math.floor(x) + '-' + String(Math.round((x % 1) * 12) + 1).padStart(2, '0'); }, label: c => `${c.dataset.label}: ¥${c.parsed.y.toFixed(2)}tn` } } },
+      scales: { x: Object.assign({ stacked: true }, xs), y: { stacked: true, grid: { color: 'rgba(148,163,196,0.12)' }, ticks: { color: '#93a1bd' } } } }, plugins: [ChartDataLabels] });
+  const rp = R.map(r => ({ x: +r.month.slice(0, 4) + (+r.month.slice(5) - 1) / 12, y: r.v }));
+  const pk = rp[R.indexOf(peak)], lp = rp[rp.length - 1];
+  new Chart(document.getElementById('rjiRoll'), { type: 'line',
+    data: { datasets: [{ label: 'Rolling 12-month total (¥tn)', data: rp, borderColor: '#d9a441', borderWidth: 2, pointRadius: 0, tension: 0 },
+      { label: 'Highlights', data: [pk, lp], showLine: false, pointRadius: 5, backgroundColor: '#e06b3c', borderColor: '#e06b3c' }] },
+    options: { responsive: true, maintainAspectRatio: false, animation: false, parsing: false,
+      plugins: { legend: { display: false },
+        title: { display: true, text: 'Rolling 12-month total (¥tn)', align: 'start', color: '#c7d0e0', font: { size: 12 } },
+        datalabels: { display: c => c.datasetIndex === 1, color: '#c7d0e0', align: 'left', anchor: 'end', font: { size: 10 },
+          formatter: (v, c) => (c.dataIndex === 0 ? `${peak.v.toFixed(2)}tn 12m to ${peak.month}` : `${lastR.v.toFixed(2)}tn 12m to ${lastR.month}`) },
+        tooltip: { callbacks: { label: c => `¥${c.parsed.y.toFixed(2)}tn` } } },
+      scales: { x: xs, y: { grid: { color: 'rgba(148,163,196,0.12)' }, ticks: { color: '#93a1bd' }, min: 0 } } }, plugins: [ChartDataLabels] });
+}).catch(e => console.warn('retail_jgb_issuance.json unavailable:', e));
 
 
 // ── Inflation forecast card ──────────────────────────────────────────────
