@@ -1,0 +1,108 @@
+{
+ "meta": {
+  "source": "MOF auction results; MOF constant-maturity 20y yield (prior business day close)",
+  "method": "Cover = competitive bids / accepted; tail = average less lowest accepted price (sen per ¥100); stop vs prior close = highest accepted yield minus prior-day MOF 20y CMT yield (bp)"
+ },
+ "auctions": [
+  {
+   "date": "2026-01-20",
+   "month": "Jan",
+   "issue": 195,
+   "new": false,
+   "btc": 3.19,
+   "tail_sen": 25,
+   "stop_vs_prior_bp": 10.0,
+   "stop": 3.274
+  },
+  {
+   "date": "2026-02-19",
+   "month": "Feb",
+   "issue": 195,
+   "new": false,
+   "btc": 3.08,
+   "tail_sen": 14,
+   "stop_vs_prior_bp": -3.7,
+   "stop": 2.979
+  },
+  {
+   "date": "2026-03-17",
+   "month": "Mar",
+   "issue": 195,
+   "new": false,
+   "btc": 3.25,
+   "tail_sen": 6,
+   "stop_vs_prior_bp": -2.1,
+   "stop": 3.146
+  },
+  {
+   "date": "2026-04-14",
+   "month": "Apr",
+   "issue": 196,
+   "new": true,
+   "btc": 4.82,
+   "tail_sen": 2,
+   "stop_vs_prior_bp": -4.8,
+   "stop": 3.329
+  },
+  {
+   "date": "2026-05-20",
+   "month": "May",
+   "issue": 196,
+   "new": false,
+   "btc": 4.01,
+   "tail_sen": 4,
+   "stop_vs_prior_bp": -0.2,
+   "stop": 3.715
+  },
+  {
+   "date": "2026-06-25",
+   "month": "Jun",
+   "issue": 196,
+   "new": false,
+   "btc": 2.97,
+   "tail_sen": 24,
+   "stop_vs_prior_bp": 1.2,
+   "stop": 3.564
+  },
+  {
+   "date": "2026-07-14",
+   "month": "Jul",
+   "issue": 197,
+   "new": true,
+   "btc": 4.52,
+   "tail_sen": 0,
+   "stop_vs_prior_bp": -7.2,
+   "stop": 3.626
+  },
+  {
+   "date": "2026-08-20",
+   "month": "Aug",
+   "issue": 197,
+   "new": false,
+   "btc": 3.98,
+   "tail_sen": 17,
+   "stop_vs_prior_bp": -6.0,
+   "stop": 3.713
+  },
+  {
+   "date": "2026-09-15",
+   "month": "Sep",
+   "issue": 197,
+   "new": false,
+   "btc": 4.01,
+   "tail_sen": 15,
+   "stop_vs_prior_bp": 6.1,
+   "stop": 3.869
+  },
+  {
+   "date": "2026-10-20",
+   "month": "Oct",
+   "issue": 198,
+   "new": true,
+   "btc": 5.84,
+   "tail_sen": 7,
+   "stop_vs_prior_bp": -4.7,
+   "stop": 3.729
+  }
+ ]
+}
