@@ -1,7 +1,7 @@
 {
  "meta": {
-  "as_of": "2026-08",
-  "generated_at": "2026-09-25T06:36:39+00:00",
+  "as_of": "2026-09",
+  "generated_at": "2026-10-27T06:11:46+00:00",
   "unit": "JPY tn",
   "frequency": "monthly (end-of-month snapshot; BOJ also publishes every-10-days on the acmai page)",
   "source": "BOJ Time-Series Data Search API (DB=BS01, Bank of Japan Accounts); DB=FM05 (JGB amount outstanding) for the BOJ-ownership-share denominator; Cabinet Office ESRI Quarterly Estimates of GDP (nominal, original series) for the assets/GDP denominator",
@@ -185,7 +185,8 @@
   "2026-05",
   "2026-06",
   "2026-07",
-  "2026-08"
+  "2026-08",
+  "2026-09"
  ],
  "assets": {
   "total_assets": [
@@ -364,7 +365,8 @@
    664.363,
    639.551,
    644.296,
-   644.662
+   644.662,
+   625.025
   ],
   "jgs": [
    82.536,
@@ -542,7 +544,8 @@
    533.135,
    518.342,
    519.382,
-   519.928
+   519.928,
+   504.008
   ],
   "jgs_share_of_total_pct": [
    60.29,
@@ -720,7 +723,8 @@
    80.25,
    81.05,
    80.61,
-   80.65
+   80.65,
+   80.64
   ],
   "corporate_bonds": [
    1.681,
@@ -898,7 +902,8 @@
    1.898,
    1.63,
    1.44,
-   1.358
+   1.358,
+   1.07
   ],
   "etf": [
    0.848,
@@ -1076,7 +1081,8 @@
    37.07,
    37.04,
    37.01,
-   36.983
+   36.983,
+   36.956
   ],
   "jreit": [
    0.066,
@@ -1254,7 +1260,8 @@
    0.653,
    0.652,
    0.652,
-   0.651
+   0.651,
+   0.65
   ],
   "loans": [
    40.806,
@@ -1432,7 +1439,8 @@
    77.721,
    68.038,
    71.859,
-   71.858
+   71.858,
+   68.416
   ],
   "fx_assets": [
    6.497,
@@ -1610,7 +1618,8 @@
    11.741,
    11.948,
    12.043,
-   11.966
+   11.966,
+   12.015
   ]
  },
  "liabilities": {
@@ -1790,7 +1799,8 @@
    115.18,
    115.032,
    114.981,
-   114.867
+   114.867,
+   114.247
   ],
   "current_deposits": [
    29.86,
@@ -1968,7 +1978,8 @@
    452.098,
    440.365,
    438.012,
-   424.322
+   424.322,
+   416.595
   ],
   "govt_deposits": [
    1.462,
@@ -2146,7 +2157,8 @@
    5.17,
    2.775,
    7.335,
-   9.255
+   9.255,
+   5.237
   ],
   "repo_liabilities": [
    16.589,
@@ -2324,7 +2336,8 @@
    34.211,
    17.993,
    22.548,
-   37.431
+   37.431,
+   27.664
   ],
   "other_deposits": [
    2.104,
@@ -2502,7 +2515,8 @@
    43.534,
    48.469,
    46.633,
-   43.032
+   43.032,
+   45.263
   ]
  },
  "derived": {
@@ -2682,7 +2696,8 @@
    1.186,
    -14.793,
    1.04,
-   0.546
+   0.546,
+   -15.92
   ],
   "jgs_change_3m_jpy_tn": [
    null,
@@ -2860,7 +2875,8 @@
    -13.545,
    -12.528,
    -12.567,
-   -13.207
+   -13.207,
+   -14.334
   ],
   "jgs_change_6m_jpy_tn": [
    null,
@@ -3038,7 +3054,8 @@
    -26.659,
    -26.053,
    -26.201,
-   -26.752
+   -26.752,
+   -26.862
   ],
   "jgs_change_yoy_jpy_tn": [
    null,
@@ -3216,7 +3233,8 @@
    -47.598,
    -49.17,
    -49.517,
-   -51.721
+   -51.721,
+   -52.75
   ],
   "total_assets_3m_annualised_pct": [
    null,
@@ -3394,7 +3412,8 @@
    -10.88,
    -13.43,
    -10.95,
-   -11.34
+   -11.34,
+   -8.78
   ],
   "total_assets_pct_gdp": [
    26.95,
@@ -3571,6 +3590,7 @@
    97.42,
    97.58,
    93.94,
+   null,
    null,
    null
   ],
@@ -3750,7 +3770,8 @@
    1304.75,
    1292.603,
    1292.678,
-   1283.555
+   1283.555,
+   1268.451
   ],
   "boj_share_of_jgb_outstanding_pct": [
    9.2,
@@ -3928,7 +3949,8 @@
    40.86,
    40.1,
    40.18,
-   40.51
+   40.51,
+   39.73
   ],
   "jgb_redemptions_implied_jpy_tn": [
    null,
@@ -4106,7 +4128,8 @@
    1.312,
    17.316,
    1.299,
-   1.775
+   1.775,
+   18.237
   ],
   "redemptions_note": "Implied, not directly published: gross outright purchases (DB=MD06) minus the month's net change in JGS holdings (DB=BS01). Positive = that much redeemed/matured off the BOJ's book that month. This is an approximation — it also nets out any other reclassifications in the JGS balance-sheet line — but the pattern lines up cleanly with Japan's quarterly JGB redemption calendar (large negative net-change months recur every Mar/Jun/Sep/Dec), which is the strongest check available without BOJ publishing a redemptions series directly."
  },
@@ -4287,7 +4310,8 @@
    2.498,
    2.523,
    2.339,
-   2.321
+   2.321,
+   2.317
   ],
   "tbill_purchases_outright_jpy_tn": [
    0.0,
@@ -4465,21 +4489,22 @@
    0.0,
    0.0,
    0.0,
+   0.0,
    0.0
   ],
   "note": "Gross monthly outright purchases (BOJ Time-Series API, DB=MD06, 'Sources of Changes in Current Account Balances and Market Operations'). Not broken out by maturity bucket — that level of detail is only in BOJ's daily operation-result releases (boj.or.jp/en/statistics/boj/fm/ope/), not this clean time series. This is the cleanest available official read on the pace of the purchase taper."
  },
  "latest": {
-  "month": "2026-08",
-  "total_assets_jpy_tn": 644.662,
-  "jgs_jpy_tn": 519.928,
-  "jgs_share_pct": 80.65,
-  "current_deposits_jpy_tn": 424.322,
-  "boj_share_of_jgb_pct": 40.51,
-  "boj_share_of_jgb_pct_asof": "2026-08",
+  "month": "2026-09",
+  "total_assets_jpy_tn": 625.025,
+  "jgs_jpy_tn": 504.008,
+  "jgs_share_pct": 80.64,
+  "current_deposits_jpy_tn": 416.595,
+  "boj_share_of_jgb_pct": 39.73,
+  "boj_share_of_jgb_pct_asof": "2026-09",
   "assets_pct_gdp": 93.94,
   "assets_pct_gdp_asof": "2026-06",
-  "jgb_purchases_jpy_tn": 2.321,
-  "jgb_purchases_asof": "2026-08"
+  "jgb_purchases_jpy_tn": 2.317,
+  "jgb_purchases_asof": "2026-09"
  }
 }
