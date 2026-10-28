@@ -14,7 +14,7 @@ OUT = "/home/workspace/boj-hawk-dove-assessment/seasonality_data.json"
 
 MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 OUTRIGHT_ORDER = ["2y", "5y", "10y", "20y", "30y", "40y"]
-CURVE_ORDER = ["2s10s", "2s30s", "5s30s", "10s30s", "20s30s"]
+CURVE_ORDER = ["2s5s", "2s10s", "2s30s", "5s30s", "10s30s", "20s30s"]
 
 bt = pd.read_csv(f"{SRC}/result_seasonality_extended_backtest.csv")
 tab = pd.read_csv(f"{SRC}/result_seasonality_extended_tables.csv")
