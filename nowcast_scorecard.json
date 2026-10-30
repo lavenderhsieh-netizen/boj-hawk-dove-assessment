@@ -36,9 +36,9 @@
    "series": "headline YoY",
    "forecast": 2.5,
    "method": "Tokyo Sep YoY + (Oct26 MoM - Oct25 MoM) component bridge",
-   "actual": null,
-   "error": null,
-   "notes": "band +/-0.3"
+   "actual": 2.78,
+   "error": 0.28,
+   "notes": "band +/-0.3; miss from fresh food (8.6% YoY vs 1.7% Sep) and energy swing (+2.2% vs -1.9%)"
   },
   {
    "logged_at": "2026-10-14",
@@ -46,8 +46,8 @@
    "series": "ex-fresh YoY",
    "forecast": 2.6,
    "method": "same",
-   "actual": null,
-   "error": null,
+   "actual": 2.56,
+   "error": -0.04,
    "notes": null
   },
   {
@@ -56,9 +56,9 @@
    "series": "ex-fresh&energy YoY",
    "forecast": 2.7,
    "method": "same",
-   "actual": null,
-   "error": null,
-   "notes": null
+   "actual": 2.57,
+   "error": -0.13,
+   "notes": "below fcst; core-core YoY fell 0.37pt vs Sep"
   },
   {
    "logged_at": "2026-10-25",
@@ -89,6 +89,36 @@
    "actual": null,
    "error": null,
    "notes": null
+  },
+  {
+   "logged_at": "2026-10-30",
+   "target": "National Oct-2026 (rel ~2026-11-20)",
+   "series": "headline YoY",
+   "forecast": 2.4,
+   "method": "Sep nat 2.15 + 0.8 x (Tokyo dYoY +0.09 + 0.26 water strip) - 0.07 water pass-through; fresh food spike in Tokyo",
+   "actual": null,
+   "error": null,
+   "notes": "band +/-0.25; Nov CPI carries full end of elec/gas subsidies"
+  },
+  {
+   "logged_at": "2026-10-30",
+   "target": "National Oct-2026 (rel ~2026-11-20)",
+   "series": "ex-fresh YoY",
+   "forecast": 2.2,
+   "method": "Sep nat 2.15 + 0.78 x (Tokyo dYoY -0.16 + 0.26) - 0.07",
+   "actual": null,
+   "error": null,
+   "notes": "band +/-0.25"
+  },
+  {
+   "logged_at": "2026-10-30",
+   "target": "National Oct-2026 (rel ~2026-11-20)",
+   "series": "ex-fresh&energy YoY",
+   "forecast": 2.2,
+   "method": "Sep nat 2.37 + 0.72 x (Tokyo dYoY -0.37 + 0.26) - 0.07",
+   "actual": null,
+   "error": null,
+   "notes": "band +/-0.25"
   }
  ],
  "note": "Official Statistics Bureau basis (not BOJ special-factors-removed). Bridge: national YoY = prior-month national YoY + ~0.8 x change in Tokyo YoY; out-of-sample RMSE ~0.15-0.2pt (2020-26). Tokyo forecasts = Sep YoY + (Oct-26 MoM - Oct-25 MoM) with known items swapped in."
