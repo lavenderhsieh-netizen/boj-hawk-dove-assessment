@@ -1,7 +1,7 @@
 {
  "meta": {
-  "as_of": "2026-10-17",
-  "generated_at": "2026-10-27T06:12:15Z",
+  "as_of": "2026-10-24",
+  "generated_at": "2026-10-30T00:19:36Z",
   "unit": "JPY tn",
   "sign": "+ = net purchase (capital flow in that direction); − = net sale / repatriation",
   "source": "MoF International Transactions in Securities (Weekly; based on reports from designated major investors) — Portfolio Investment Assets (residents' net purchase of foreign securities) vs Portfolio Investment Liabilities (non-residents' net purchase of Japanese securities), each split into Equity & investment fund shares vs Long-term debt securities",
@@ -297,7 +297,8 @@
   "2026-09-26",
   "2026-10-03",
   "2026-10-10",
-  "2026-10-17"
+  "2026-10-17",
+  "2026-10-24"
  ],
  "week_labels": [
   "3/28–4/3",
@@ -589,7 +590,8 @@
   "9/20–9/26",
   "9/27–10/3",
   "10/4–10/10",
-  "10/11–10/17"
+  "10/11–10/17",
+  "10/18–10/24"
  ],
  "assets_net": [
   0.097,
@@ -881,7 +883,8 @@
   -0.325,
   0.828,
   -1.03,
-  -0.19
+  -0.169,
+  0.431
  ],
  "assets_net_usd": [
   0.88,
@@ -1173,7 +1176,8 @@
   -2.05,
   5.24,
   -6.52,
-  -1.2
+  -1.07,
+  2.75
  ],
  "assets_eq": [
   -0.201,
@@ -1464,8 +1468,9 @@
   0.044,
   0.226,
   1.329,
-  -0.761,
-  0.128
+  -0.76,
+  0.128,
+  0.288
  ],
  "assets_eq_usd": [
   -1.82,
@@ -1757,7 +1762,8 @@
   1.42,
   8.42,
   -4.81,
-  0.81
+  0.81,
+  1.84
  ],
  "assets_ltd": [
   0.376,
@@ -2049,7 +2055,8 @@
   -0.682,
   -0.345,
   -0.34,
-  -0.162
+  -0.161,
+  -0.093
  ],
  "assets_ltd_usd": [
   3.4,
@@ -2341,7 +2348,8 @@
   -4.29,
   -2.18,
   -2.15,
-  -1.02
+  -1.02,
+  -0.59
  ],
  "liab_net": [
   0.013,
@@ -2633,7 +2641,8 @@
   -4.963,
   2.569,
   5.467,
-  -0.848
+  -0.85,
+  0.043
  ],
  "liab_net_usd": [
   0.12,
@@ -2925,7 +2934,8 @@
   -31.25,
   16.27,
   34.59,
-  -5.36
+  -5.37,
+  0.27
  ],
  "liab_eq": [
   0.978,
@@ -3217,7 +3227,8 @@
   -0.354,
   2.2,
   3.546,
-  -0.067
+  -0.068,
+  1.181
  ],
  "liab_eq_usd": [
   8.84,
@@ -3509,7 +3520,8 @@
   -2.23,
   13.93,
   22.43,
-  -0.42
+  -0.43,
+  7.55
  ],
  "liab_ltd": [
   0.569,
@@ -3801,7 +3813,8 @@
   -1.342,
   0.608,
   1.08,
-  1.454
+  1.454,
+  0.043
  ],
  "liab_ltd_usd": [
   5.14,
@@ -4093,6 +4106,7 @@
   -8.45,
   3.85,
   6.83,
-  9.19
+  9.19,
+  0.27
  ]
 }
