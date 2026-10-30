@@ -696,7 +696,7 @@
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;align-items:stretch">
       <div class="card" style="margin:0">
-        <h2 id="fcCmpTitle" style="min-height:44px">Fiscal-year averages vs BOJ July 2026 Outlook Report</h2>
+        <h2 id="fcCmpTitle" style="min-height:44px">Fiscal-year averages vs BOJ October 2026 Outlook Report</h2>
         <div style="overflow-x:auto"><table id="fcCmpTable"></table></div>
         <div class="note" id="fcCmpNote" style="margin-top:8px"></div>
       </div>
@@ -1601,9 +1601,9 @@
             <th colspan="2">Core-core inflation <span style="font-weight:400;color:var(--muted)">(CPI less fresh food &amp; energy)</span></th>
           </tr>
           <tr>
-            <th class="fc-sub">Jul 2026 <span class="fc-hdr">· Δ vs Apr</span></th><th class="fc-sub gcol-end">Apr 2026 <span class="fc-hdr">· Δ vs Jan</span></th>
-            <th class="fc-sub">Jul 2026 <span class="fc-hdr">· Δ vs Apr</span></th><th class="fc-sub gcol-end">Apr 2026 <span class="fc-hdr">· Δ vs Jan</span></th>
-            <th class="fc-sub">Jul 2026 <span class="fc-hdr">· Δ vs Apr</span></th><th class="fc-sub">Apr 2026 <span class="fc-hdr">· Δ vs Jan</span></th>
+            <th class="fc-sub">Oct 2026 <span class="fc-hdr">· Δ vs Jul</span></th><th class="fc-sub gcol-end">Jul 2026 <span class="fc-hdr">· Δ vs Apr</span></th>
+            <th class="fc-sub">Oct 2026 <span class="fc-hdr">· Δ vs Jul</span></th><th class="fc-sub gcol-end">Jul 2026 <span class="fc-hdr">· Δ vs Apr</span></th>
+            <th class="fc-sub">Oct 2026 <span class="fc-hdr">· Δ vs Jul</span></th><th class="fc-sub">Jul 2026 <span class="fc-hdr">· Δ vs Apr</span></th>
           </tr>
         </thead>
         <tbody id="fcBody"></tbody>
@@ -1613,14 +1613,14 @@
     </div>
 
     <div class="card">
-      <h2>Risk-balance assessment — July 2026 vs April 2026</h2>
+      <h2>Risk-balance assessment — October 2026 vs July 2026</h2>
       <div id="fcRiskWrap"></div>
       <div class="note" id="fcForward" style="margin-top:12px"></div>
     </div>
 
     <div class="card">
       <h2>Forecast revision history — median across successive Outlook Reports</h2>
-      <p class="sub">How the Policy Board's median forecast for each fiscal year (FY2026–FY2028) has been revised, report by report (Oct 2024 → Jul 2026). The April 2026 jump in CPI reflects the Middle East crude-oil shock; July trims FY2026 CPI on the government's summer energy subsidies.</p>
+      <p class="sub">How the Policy Board's median forecast for each fiscal year (FY2026–FY2028) has been revised, report by report (Oct 2024 → Oct 2026). The April 2026 jump in CPI reflects the Middle East crude-oil shock; July trimmed FY2026 CPI on summer energy subsidies; October lifts FY2027 core CPI to 2.6% on higher crude.</p>
       <div class="fc-charts">
         <div class="card" style="margin:0">
           <h2 style="font-size:14px">Real GDP (y/y %)</h2>
@@ -1635,7 +1635,7 @@
           <div style="position:relative;height:300px"><canvas id="cFcCore"></canvas></div>
         </div>
       </div>
-      <div class="note" style="margin-top:10px">Markers: ● FY2026 · ▲ FY2027 · ■ FY2028. Values are the medians of the Policy Board members' forecasts. Source: BOJ Outlook Report appendices (Oct 2024 – Jul 2026).</div>
+      <div class="note" style="margin-top:10px">Markers: ● FY2026 · ▲ FY2027 · ■ FY2028. Values are the medians of the Policy Board members' forecasts. Source: BOJ Outlook Report appendices (Oct 2024 – Oct 2026).</div>
     </div>
   </div>
 
@@ -2451,10 +2451,10 @@ function renderForecasts(D) {
   // Two cells per metric: July (median + range + Δ vs Apr) and April (median + range + Δ vs Jan).
   // endDiv adds the vertical divider that separates the growth block from the inflation block.
   const metricCells = (m, endDiv) => {
+    const dOJ = (m.oct == null || m.jul == null) ? null : m.oct - m.jul;
     const dJA = (m.jul == null || m.apr == null) ? null : m.jul - m.apr;
-    const dAJ = (m.apr == null || m.jan == null) ? null : m.apr - m.jan;
-    return `<td class="fc-num fc-jul">${num(m.jul)}<span class="fc-rng">${esc(m.jul_r || '')}</span>${drev(dJA)}</td>` +
-           `<td class="fc-num fc-apr${endDiv ? ' gcol-end' : ''}">${num(m.apr)}<span class="fc-rng">${esc(m.apr_r || '')}</span>${drev(dAJ)}</td>`;
+    return `<td class="fc-num fc-jul">${num(m.oct)}<span class="fc-rng">${esc(m.oct_r || '')}</span>${drev(dOJ)}</td>` +
+           `<td class="fc-num fc-apr${endDiv ? ' gcol-end' : ''}">${num(m.jul)}<span class="fc-rng">${esc(m.jul_r || '')}</span>${drev(dJA)}</td>`;
   };
 
   document.getElementById('fcBody').innerHTML = F.table.map(r => `
@@ -2473,7 +2473,7 @@ function renderForecasts(D) {
     riskCard('Economic activity', r.activity_dir, r.activity) +
     riskCard('Timing of 2% target', 'neu', r.target_timing) + `</div>`;
   document.getElementById('fcRiskWrap').innerHTML =
-    riskGroup('July 2026', F.risk.jul) + riskGroup('April 2026', F.risk.apr);
+    riskGroup('October 2026', F.risk.oct) + riskGroup('July 2026', F.risk.jul);
   document.getElementById('fcForward').textContent = F.risk.forward;
 
   // Revision-history charts: x = report date, one line per fiscal year (Morgan-Stanley style).
@@ -5971,14 +5971,14 @@ function fcRender(){
   }
   const fx=v=>v==null?'&ndash;':v.toFixed(2), f1=v=>v.toFixed(1);
   const row=(fy)=>{
-    const a=f[fy], rg=`<span style="color:var(--muted)">[${o.range[fy][0].toFixed(1)}&ndash;${o.range[fy][1].toFixed(1)}]</span>`;
+    const a=f[fy], rg=(o.range&&o.range[fy])?`<span style="color:var(--muted)">[${o.range[fy][0].toFixed(1)}&ndash;${o.range[fy][1].toFixed(1)}]</span>`:'';
     if(!a) return `<tr><td>${fy}</td><td colspan="4" style="color:var(--muted)">beyond our horizon (path held flat)</td><td><b>${f1(o[fy])}</b> ${rg}</td><td>&ndash;</td></tr>`;
     const dd=a.boj_basis_wage-o[fy];
     return `<tr><td>${fy}</td><td>${fx(a.boj_basis)}</td><td>${fx(a.boj_basis_wage)}</td><td>${fx(a.official_approx)}</td><td>${fx(a.official_approx_wage)}</td><td><b>${f1(o[fy])}</b> ${rg}</td><td style="color:${Math.abs(dd)<0.15?'var(--muted)':(dd>0?'#e2564a':'#4a90d9')}">${dd>0?'+':''}${dd.toFixed(2)}</td></tr>`;
   };
-  document.getElementById('fcCmpTable').innerHTML=`<thead><tr><th>Fiscal year<br><span style="font-weight:400;color:var(--muted)">(Apr&ndash;Mar)</span></th><th>Ours<br>BOJ basis</th><th>Ours + wage<br>BOJ basis</th><th>Ours<br>official approx.</th><th>Ours + wage<br>official approx.</th><th>BOJ Jul-26 median<br>[majority range]</th><th>Ours+wage (BOJ basis) &minus; BOJ</th></tr></thead><tbody>${row('FY2026')}${row('FY2027')}${row('FY2028')}</tbody>`;
-  document.getElementById('fcCmpTitle').textContent=`${lab}: fiscal-year averages vs BOJ July 2026 Outlook Report`;
-  document.getElementById('fcCmpNote').innerHTML=`<b>Why two bases.</b> BOJ's Outlook forecasts the <i>official</i> CPI, which includes government energy/education subsidies. We forecast the BOJ's <i>special-factors-removed</i> series. "Official approx." subtracts today's gap (${g.toFixed(2)}pt, Aug 2026) from our path and uses actual official prints for Apr&ndash;Aug 2026 &mdash; a rough conversion, since the gap will move when subsidies end. BOJ's previous (Apr-26) medians: FY26 ${f1(o.prev.FY2026)}, FY27 ${f1(o.prev.FY2027)}, FY28 ${f1(o.prev.FY2028)}. Source: BOJ Outlook for Economic Activity and Prices (July 2026), Appendix. Next Outlook Report: 30 Oct 2026.`;
+  document.getElementById('fcCmpTable').innerHTML=`<thead><tr><th>Fiscal year<br><span style="font-weight:400;color:var(--muted)">(Apr&ndash;Mar)</span></th><th>Ours<br>BOJ basis</th><th>Ours + wage<br>BOJ basis</th><th>Ours<br>official approx.</th><th>Ours + wage<br>official approx.</th><th>BOJ Oct-26 median</th><th>Ours+wage (BOJ basis) &minus; BOJ</th></tr></thead><tbody>${row('FY2026')}${row('FY2027')}${row('FY2028')}</tbody>`;
+  document.getElementById('fcCmpTitle').textContent=`${lab}: fiscal-year averages vs BOJ October 2026 Outlook Report`;
+  document.getElementById('fcCmpNote').innerHTML=`<b>Why two bases.</b> BOJ's Outlook forecasts the <i>official</i> CPI, which includes government energy/education subsidies. We forecast the BOJ's <i>special-factors-removed</i> series. "Official approx." subtracts today's gap (${g.toFixed(2)}pt, Aug 2026) from our path and uses actual official prints for Apr&ndash;Aug 2026 &mdash; a rough conversion, since the gap will move when subsidies end. BOJ's previous (Jul-26) medians: FY26 ${f1(o.prev.FY2026)}, FY27 ${f1(o.prev.FY2027)}, FY28 ${f1(o.prev.FY2028)}. Source: BOJ Outlook for Economic Activity and Prices (October 2026), Appendix. Our model inputs are as of Aug 2026 and have not been re-run. Next Outlook Report: Jan 2027.`;
 }
 
 // ── Inflation scenario explorer ──────────────────────────────────────────

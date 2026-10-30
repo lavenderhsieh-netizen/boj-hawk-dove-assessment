@@ -1,25 +1,25 @@
 {
-  "as_of": "2026-09-18",
+  "as_of": "2026-10-30",
   "kpis": [
     {
       "value": "1.25%",
-      "label": "Policy rate — hiked to 1.25% on Sep 18, 2026 (7–2 vote); highest since 1995"
+      "label": "Policy rate — held at 1.25% on Oct 30, 2026 (8–1 vote); highest since 1995"
     },
     {
       "value": "5 hikes",
       "label": "Since exit from easing (Mar 2024): Jul '24, Jan '25, Dec '25, Jun '26, Sep '26"
     },
     {
-      "value": "Oct 29–30",
-      "label": "Next MPM (2026) — decision Oct 30; with Outlook Report"
+      "value": "Dec 17–18",
+      "label": "Next MPM (2026) — decision Dec 18; no Outlook Report"
     },
     {
       "value": "Hawkish",
-      "label": "Net board drift: dovish dissenters replaced; doves now accept gradual hikes"
+      "label": "Hold, but Outlook Report now says underlying inflation is at 2%; Takata dissents for 1.50%"
     },
     {
-      "value": "7–2 hike",
-      "label": "Sep 18: newly-appointed doves Asada & Sato dissent for hold; Ueda declares a policy \"phase change\""
+      "value": "8–1 hold",
+      "label": "Oct 30: Takata dissents for a hike to 1.50%; Asada & Sato back the hold; no dovish dissent"
     }
   ],
   "rate_path": {
@@ -523,7 +523,7 @@
       "tenure": "24 Jul 2022 – 23 Jul 2027",
       "dissents": "4 hawkish",
       "kind": "hawk",
-      "record": "Dec 2024: proposed 0.5% · Jun 2025: opposed slowing the JGB taper · Sep & Oct 2025: proposed 0.75% · Jul 2026: voted with the majority to hold (no dissent).",
+      "record": "Dec 2024: proposed 0.5% · Jun 2025: opposed slowing the JGB taper · Sep & Oct 2025: proposed 0.75% · Jul 2026: voted with the majority to hold (no dissent). · Oct 2026: voted with the majority to hold.",
       "lean": "Strong hawk",
       "active": true,
       "remarks": [
@@ -538,9 +538,9 @@
       "member": "TAKATA Hajime",
       "role": "Board Member",
       "tenure": "24 Jul 2022 – 23 Jul 2027",
-      "dissents": "5 hawkish",
+      "dissents": "6 hawkish",
       "kind": "hawk",
-      "record": "Sep & Oct 2025: proposed 0.75% · Jan 2026: proposed 1.0% · Mar 2026: proposed a hike · Jul 2026: dissented at the hold, proposing 1.25% (defeated 8–1). · Sep 2026: speech calls for flexible/nimble hikes, open to consecutive moves.",
+      "record": "Sep & Oct 2025: proposed 0.75% · Jan 2026: proposed 1.0% · Mar 2026: proposed a hike · Jul 2026: dissented at the hold, proposing 1.25% (defeated 8–1). · Sep 2026: speech calls for flexible/nimble hikes, open to consecutive moves. · Oct 2026: dissented at the hold, proposing 1.50% (defeated 8–1).",
       "lean": "Escalating hawk — lone dissenter",
       "active": true,
       "remarks": [
@@ -611,7 +611,7 @@
       "tenure": "1 Apr 2026 – 31 Mar 2031",
       "dissents": "2 dovish",
       "kind": "dove",
-      "record": "Jun 2026: sole dissent against the hike to 1.00% (preferred to hold) · Jul 2026: voted with the majority to hold · Sep 2026: dissented against the hike to 1.25% (preferred to hold), citing GDP data showing softer domestic demand.",
+      "record": "Jun 2026: sole dissent against the hike to 1.00% (preferred to hold) · Jul 2026: voted with the majority to hold · Sep 2026: dissented against the hike to 1.25% (preferred to hold), citing GDP data showing softer domestic demand. · Oct 2026: voted with the majority to hold at 1.25% (no dissent).",
       "lean": "Dovish, reflationist-leaning",
       "active": true
     },
@@ -621,7 +621,7 @@
       "tenure": "30 Jun 2026 – 29 Jun 2031",
       "dissents": "1 dovish",
       "kind": "none",
-      "record": "Joined end-June 2026 (replaced Nakagawa). Jul 2026: cast her first vote, siding with the 8–1 majority to hold at 1.00%. Sep 2026: dissented against the hike to 1.25% (preferred to hold), citing GDP data showing softer domestic demand — her first dissent. 6 Oct 2026 (Kyodo): backs further hikes in stages with no pre-set pace; sees price risks tilted to the upside on oil.",
+      "record": "Joined end-June 2026 (replaced Nakagawa). Jul 2026: cast her first vote, siding with the 8–1 majority to hold at 1.00%. Sep 2026: dissented against the hike to 1.25% (preferred to hold), citing GDP data showing softer domestic demand — her first dissent. 6 Oct 2026 (Kyodo): backs further hikes in stages with no pre-set pace; sees price risks tilted to the upside on oil. · Oct 2026: voted with the majority to hold at 1.25% (no dissent).",
       "lean": "Dovish",
       "active": true,
       "remarks": [
@@ -813,6 +813,11 @@
       "date": "Oct 6, 2026",
       "kind": "event",
       "text": "Ueda (National Securities Convention): it is 'more important than before' to anchor underlying inflation around 2%; BOJ will keep raising rates; cites Iran war, AI demand and weak yen as upside risks. Sato (Kyodo interview, Oct 6–7): supports raising rates in stages but opposes a pre-set pace. Market prices only ~25% for an Oct 30 hike, most of a hike by December."
+    },
+    {
+      "date": "Oct 30, 2026",
+      "kind": "event",
+      "text": "MPM holds at 1.25%, 8–1 (Takata proposes 1.50%; Asada and Sato side with hold, so no dovish dissent). Outlook Report: underlying inflation is now 'at a level generally consistent with 2%' (July: 'approaching 2%'), inflation expectations 'around 2%'; new language that the phase of policy has shifted to preventing an overshoot. FY2027 core CPI raised to 2.6% from 2.4% (Dubai crude assumption ~$105 vs ~$80); FY2026 2.5%, FY2028 2.0% unchanged. Risks to prices skewed up, to activity balanced. Guidance: will keep raising rates, no timing given. ETF disposal pace to double to ~¥860bn/yr (book value) from January, unanimous. Ueda press conference 15:30 JST (not yet reflected)."
     }
   ],
   "mpm_calendar": [
@@ -922,11 +927,11 @@
     },
     {
       "date": "Oct 29–30 (Thu–Fri)",
-      "event": "MPM — decision Oct 30",
+      "event": "MPM — decision Oct 30 (done) · Outlook Report",
       "type": "MPM",
       "relates": "—",
-      "notes": "With Outlook Report (Oct 30).",
-      "next": true
+      "notes": "Held at 1.25%, 8–1 (Takata for 1.50%). Outlook Report: underlying inflation \"at a level generally consistent with 2%\". ETF sales pace doubled from Jan. Summary of Opinions Nov 10; Minutes Dec 23.",
+      "next": false
     },
     {
       "date": "Nov 5 (Thu)",
@@ -958,7 +963,7 @@
       "type": "MPM",
       "relates": "—",
       "notes": "Final meeting of 2026; no Outlook Report.",
-      "next": false
+      "next": true
     },
     {
       "date": "Dec 23 (Wed)",
@@ -1716,8 +1721,8 @@
     }
   ],
   "forecasts": {
-    "as_of": "July 2026 Outlook Report",
-    "decided": "Decided at the MPM held July 30–31, 2026 · policy rate held at 1.00%. Each column shows one Outlook Report's Policy Board median with its revision from the prior report: July vs April, and April vs January.",
+    "as_of": "October 2026 Outlook Report",
+    "decided": "Decided at the MPM held October 29–30, 2026 · policy rate held at 1.25% (8–1). Each column shows one Outlook Report's Policy Board median with its revision from the prior report: October vs July, and July vs April.",
     "table": [
       {
         "fy": "FY2026",
@@ -1726,21 +1731,27 @@
           "apr": 0.5,
           "jan": 1.0,
           "jul_r": "+0.6 to +0.7",
-          "apr_r": "+0.4 to +0.7"
+          "apr_r": "+0.4 to +0.7",
+          "oct": 0.7,
+          "oct_r": ""
         },
         "cpi": {
           "jul": 2.5,
           "apr": 2.8,
           "jan": 1.9,
           "jul_r": "+2.3 to +2.7",
-          "apr_r": "+2.8 to +3.0"
+          "apr_r": "+2.8 to +3.0",
+          "oct": 2.5,
+          "oct_r": ""
         },
         "core": {
           "jul": 2.5,
           "apr": 2.6,
           "jan": 2.2,
           "jul_r": "+2.3 to +2.6",
-          "apr_r": "+2.5 to +2.7"
+          "apr_r": "+2.5 to +2.7",
+          "oct": 2.4,
+          "oct_r": ""
         }
       },
       {
@@ -1750,21 +1761,27 @@
           "apr": 0.7,
           "jan": 0.8,
           "jul_r": "+0.7 to +0.8",
-          "apr_r": "+0.6 to +0.8"
+          "apr_r": "+0.6 to +0.8",
+          "oct": 0.7,
+          "oct_r": ""
         },
         "cpi": {
           "jul": 2.4,
           "apr": 2.3,
           "jan": 2.0,
           "jul_r": "+2.2 to +2.5",
-          "apr_r": "+2.3 to +2.4"
+          "apr_r": "+2.3 to +2.4",
+          "oct": 2.6,
+          "oct_r": ""
         },
         "core": {
           "jul": 2.6,
           "apr": 2.6,
           "jan": 2.1,
           "jul_r": "+2.2 to +2.7",
-          "apr_r": "+2.6 to +2.7"
+          "apr_r": "+2.6 to +2.7",
+          "oct": 2.7,
+          "oct_r": ""
         }
       },
       {
@@ -1774,21 +1791,27 @@
           "apr": 0.8,
           "jan": null,
           "jul_r": "+0.7 to +0.8",
-          "apr_r": "+0.7 to +0.8"
+          "apr_r": "+0.7 to +0.8",
+          "oct": 0.8,
+          "oct_r": ""
         },
         "cpi": {
           "jul": 2.0,
           "apr": 2.0,
           "jan": null,
           "jul_r": "+2.0 to +2.2",
-          "apr_r": "+2.0 to +2.2"
+          "apr_r": "+2.0 to +2.2",
+          "oct": 2.0,
+          "oct_r": ""
         },
         "core": {
           "jul": 2.2,
           "apr": 2.2,
           "jan": null,
           "jul_r": "+2.1 to +2.3",
-          "apr_r": "+2.1 to +2.4"
+          "apr_r": "+2.1 to +2.4",
+          "oct": 2.3,
+          "oct_r": ""
         }
       }
     ],
@@ -1807,10 +1830,17 @@
         "activity_dir": "down",
         "target_timing": "Underlying CPI seen reaching a level generally consistent with the 2% target between H2 FY2026 and FY2027."
       },
-      "forward": "Key shift in July: the Board upgraded economic-activity risks from 'skewed to the downside' (April, on the crude-oil shock) to 'generally balanced', while CPI risks stay skewed to the upside. FY2026 headline CPI was trimmed mainly on the government's summer energy subsidies (electricity/gas); GDP is essentially unchanged. Guidance retained: the Bank 'will continue to raise the policy interest rate' if its outlook is realised, weighing the timing and pace against Middle East, AI-demand and FX risks."
+      "forward": "Key shift in October: no change in risk balance (prices skewed up, activity generally balanced) but the Bank now says underlying inflation IS at 2% rather than approaching it, and describes a 'shift in the phase of monetary policy' toward preventing an overshoot. FY2027 core CPI is raised 0.2pt on higher crude; GDP and FY2028 are essentially unchanged. Guidance retained: will continue to raise the policy rate if the outlook is realised, no timing given. Forecasts exclude the proposed temporary food consumption-tax cut (would lower FY2027 core CPI by ~1.3pt). Oct core-core medians and ranges read from the scanned appendix PDF; ranges not yet entered.",
+      "oct": {
+        "prices": "Skewed to the upside — Middle East supply concerns with crude assumed ~US$105 (July ~US$80), pass-through into consumer prices, global inflation and central-bank hikes since the summer, rising grain prices, a volatile yen; risk that underlying inflation overshoots 2%.",
+        "prices_dir": "up",
+        "activity": "Generally balanced — AI and data-centre demand, higher exports and steady wage gains offset by energy costs and construction costs.",
+        "activity_dir": "bal",
+        "target_timing": "Underlying CPI is now judged to be at a level generally consistent with 2% and expected to stay there (July: reaching it between H2 FY2026 and FY2027)."
+      }
     },
     "note": "y/y % change. Bold figure = Policy Board median (point estimate); the small line is the range of the majority's forecasts. FY2025 is now treated as actual and dropped from the Bank's July appendix. Japanese fiscal years run Apr–Mar.",
-    "source": "Bank of Japan, \"Outlook for Economic Activity and Prices\" (July 2026 and April 2026), Appendix — forecasts of the majority of the Policy Board members.",
+    "source": "Bank of Japan, \"Outlook for Economic Activity and Prices\" (October 2026, July 2026 and April 2026), Appendix — forecasts of the majority of the Policy Board members.",
     "history": {
       "reports": [
         "Oct 2024",
@@ -1820,7 +1850,8 @@
         "Oct 2025",
         "Jan 2026",
         "Apr 2026",
-        "Jul 2026"
+        "Jul 2026",
+        "Oct 2026"
       ],
       "gdp": {
         "FY2025": [
@@ -1831,6 +1862,7 @@
           0.7,
           0.9,
           1.0,
+          null,
           null
         ],
         "FY2026": [
@@ -1841,7 +1873,8 @@
           0.7,
           1.0,
           0.5,
-          0.6
+          0.6,
+          0.7
         ],
         "FY2027": [
           null,
@@ -1851,7 +1884,8 @@
           1.0,
           0.8,
           0.7,
-          0.8
+          0.8,
+          0.7
         ],
         "FY2028": [
           null,
@@ -1860,6 +1894,7 @@
           null,
           null,
           null,
+          0.8,
           0.8,
           0.8
         ]
@@ -1873,6 +1908,7 @@
           2.7,
           2.7,
           2.7,
+          null,
           null
         ],
         "FY2026": [
@@ -1883,6 +1919,7 @@
           1.8,
           1.9,
           2.8,
+          2.5,
           2.5
         ],
         "FY2027": [
@@ -1893,7 +1930,8 @@
           2.0,
           2.0,
           2.3,
-          2.4
+          2.4,
+          2.6
         ],
         "FY2028": [
           null,
@@ -1902,6 +1940,7 @@
           null,
           null,
           null,
+          2.0,
           2.0,
           2.0
         ]
@@ -1915,6 +1954,7 @@
           2.8,
           3.0,
           3.0,
+          null,
           null
         ],
         "FY2026": [
@@ -1925,7 +1965,8 @@
           2.0,
           2.2,
           2.6,
-          2.5
+          2.5,
+          2.4
         ],
         "FY2027": [
           null,
@@ -1935,7 +1976,8 @@
           2.0,
           2.1,
           2.6,
-          2.6
+          2.6,
+          2.7
         ],
         "FY2028": [
           null,
@@ -1945,7 +1987,8 @@
           null,
           null,
           2.2,
-          2.2
+          2.2,
+          2.3
         ]
       }
     }
