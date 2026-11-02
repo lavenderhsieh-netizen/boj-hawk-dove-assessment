@@ -1591,6 +1591,98 @@
         "issue": "2-year",
         "context": ""
       }
+    ],
+    "January 2027": [
+      {
+        "date": "Jan 5 (Tue)",
+        "type": "T-bill",
+        "issue": "Treasury Discount Bills (3-month)",
+        "context": ""
+      },
+      {
+        "date": "Jan 5 (Tue)",
+        "type": "Coupon",
+        "issue": "10-year",
+        "context": ""
+      },
+      {
+        "date": "Jan 7 (Thu)",
+        "type": "T-bill",
+        "issue": "Treasury Discount Bills (6-month)",
+        "context": ""
+      },
+      {
+        "date": "Jan 7 (Thu)",
+        "type": "Coupon",
+        "issue": "30-year",
+        "context": ""
+      },
+      {
+        "date": "Jan 8 (Fri)",
+        "type": "T-bill",
+        "issue": "Treasury Discount Bills (3-month)",
+        "context": ""
+      },
+      {
+        "date": "Jan 13 (Wed)",
+        "type": "Coupon",
+        "issue": "5-year",
+        "context": ""
+      },
+      {
+        "date": "Jan 15 (Fri)",
+        "type": "T-bill",
+        "issue": "Treasury Discount Bills (3-month)",
+        "context": ""
+      },
+      {
+        "date": "Jan 15 (Fri)",
+        "type": "Liquidity",
+        "issue": "Liquidity Enhancement Auction (5–11y remaining)",
+        "context": ""
+      },
+      {
+        "date": "Jan 19 (Tue)",
+        "type": "T-bill",
+        "issue": "Treasury Discount Bills (1-year)",
+        "context": ""
+      },
+      {
+        "date": "Jan 19 (Tue)",
+        "type": "Coupon",
+        "issue": "20-year",
+        "context": ""
+      },
+      {
+        "date": "Jan 21 (Thu)",
+        "type": "T-bill",
+        "issue": "Treasury Discount Bills (3-month)",
+        "context": ""
+      },
+      {
+        "date": "Jan 21 (Thu)",
+        "type": "Liquidity",
+        "issue": "Liquidity Enhancement Auction (1–5y remaining)",
+        "context": ""
+      },
+      {
+        "date": "Jan 26 (Tue)",
+        "type": "Coupon",
+        "issue": "40-year",
+        "context": ""
+      },
+      {
+        "date": "Jan 28 (Thu)",
+        "type": "Coupon",
+        "issue": "2-year",
+        "context": ""
+      },
+      {
+        "date": "Jan 29 (Fri)",
+        "type": "T-bill",
+        "issue": "Treasury Discount Bills (3-month)",
+        "context": ""
+      }
     ]
   },
   "fiscal": [
