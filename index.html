@@ -1240,18 +1240,18 @@
   <!-- GPIF -->
   <div id="tab-gpif" class="panel">
     <div class="card full">
-      <h2>GPIF — Government Pension Investment Fund asset allocation, Q1 FY2026 (end-June 2026)</h2>
-      <div class="sub">The world's largest pension fund (¥320.4tn managed, ~$1.97tn at end-Jun 2026 USD/JPY). Portfolio composition released quarterly; this is the Q1 FY2026 (Apr-Jun 2026) update, published <b>7 Aug 2026</b>. Source: GPIF official quarterly report, <a href="https://www.gpif.go.jp/operation/38371785gpif/2026_1Q_0807_en.pdf" target="_blank" style="color:var(--accent)">gpif.go.jp</a> — figures are preliminary and may be revised in GPIF's Annual Report.</div>
+      <h2>GPIF — Government Pension Investment Fund asset allocation, Q2 FY2026 (end-September 2026)</h2>
+      <div class="sub">The world's largest pension fund (¥314.4tn managed, ~$2.00tn at end-Sep 2026 USD/JPY). Portfolio composition released quarterly; this is the Q2 FY2026 (Jul-Sep 2026) update, published <b>6 Nov 2026</b>. The earlier Q1 FY2026 update was published <b>7 Aug 2026</b>. Source: GPIF official quarterly report, <a href="https://www.gpif.go.jp/operation/6436gyaghliu/2026_2Q_1106_en.pdf" target="_blank" style="color:var(--accent)">gpif.go.jp</a> — figures are preliminary and may be revised in GPIF's Annual Report.</div>
     </div>
     <div class="kpis">
-      <div class="kpi"><div class="v">¥320.4tn <span style="font-size:.6em;color:var(--muted);font-weight:500">(~$1.97tn)</span></div><div class="l">Total portfolio value, end-Jun 2026</div></div>
-      <div class="kpi"><div class="v">+8.20%</div><div class="l">Q1 FY2026 quarterly return (not annualized)</div></div>
-      <div class="kpi"><div class="v">+¥24.09tn <span style="font-size:.6em;color:var(--muted);font-weight:500">(~$148.1bn)</span></div><div class="l">Q1 FY2026 quarterly profit</div></div>
-      <div class="kpi"><div class="v">+4.95%</div><div class="l">Annualized cumulative return since FY2001</div></div>
+      <div class="kpi"><div class="v">¥314.4tn <span style="font-size:.6em;color:var(--muted);font-weight:500">(~$2.00tn)</span></div><div class="l">Total portfolio value, end-Sep 2026</div></div>
+      <div class="kpi"><div class="v"><span class="gpif-down">−1.65%</span> <span style="font-size:.6em;color:var(--muted);font-weight:500">(H1 FY26 +6.42%)</span></div><div class="l">Q2 FY2026 quarterly return (not annualized)</div></div>
+      <div class="kpi"><div class="v"><span class="gpif-down">−¥5.25tn</span> <span style="font-size:.6em;color:var(--muted);font-weight:500">(~$33.4bn)</span></div><div class="l">Q2 FY2026 quarterly loss (H1: +¥18.84tn)</div></div>
+      <div class="kpi"><div class="v">+4.83%</div><div class="l">Annualized cumulative return since FY2001</div></div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>Asset allocation by class — value &amp; % vs. policy target</h2>
-      <div class="sub">Domestic bonds/equities and foreign bonds/equities each carry a 25% policy target weight (GPIF's basic portfolio); deviation limits are the maximum permitted drift from that target before rebalancing. End-March 2026 figures are from GPIF's FY2025 annual summary (released 3 Jul 2026) for quarter-over-quarter comparison.</div>
+      <div class="sub">Domestic bonds/equities and foreign bonds/equities each carry a 25% policy target weight (GPIF's basic portfolio); deviation limits are the maximum permitted drift from that target before rebalancing. End-June 2026 figures are from GPIF's Q1 FY2026 report (7 Aug 2026) for quarter-over-quarter comparison.</div>
       <div style="display:flex;gap:6px;margin-top:10px">
         <button id="gpifCurJpy" onclick="setGpifCur('jpy')" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px;background:var(--ink);color:var(--bg);font-weight:600">¥ bn</button>
         <button id="gpifCurUsd" onclick="setGpifCur('usd')" style="border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-size:12px;background:transparent;color:var(--ink)">$ bn</button>
@@ -1261,8 +1261,8 @@
           <thead>
             <tr style="color:var(--muted);text-align:left">
               <th rowspan="2" style="padding:6px 8px;vertical-align:bottom;border-bottom:1px solid var(--line)">Asset class</th>
-              <th colspan="2" class="gpif-grp" style="padding:6px 8px;text-align:center;border-bottom:1px solid var(--line)">End-March 2026</th>
               <th colspan="2" class="gpif-grp" style="padding:6px 8px;text-align:center;border-bottom:1px solid var(--line)">End-June 2026</th>
+              <th colspan="2" class="gpif-grp" style="padding:6px 8px;text-align:center;border-bottom:1px solid var(--line)">End-September 2026</th>
               <th rowspan="2" class="gpif-grp" style="padding:6px 8px;vertical-align:bottom;border-bottom:1px solid var(--line)">QoQ Δ (pt)</th>
               <th rowspan="2" class="gpif-grp" style="padding:6px 8px;vertical-align:bottom;border-bottom:1px solid var(--line)">Policy target</th>
               <th rowspan="2" class="gpif-grp" style="padding:6px 8px;vertical-align:bottom;border-bottom:1px solid var(--line)">Deviation limit</th>
@@ -1275,43 +1275,43 @@
           <tbody>
             <tr style="border-bottom:1px solid var(--line)">
               <td style="padding:6px 8px">Domestic bonds</td>
-              <td style="padding:6px 8px" class="gpif-val gpif-grp" data-jpy="80,679.1" data-usd="507.2">80,679.1</td><td style="padding:6px 8px">26.91%</td>
               <td style="padding:6px 8px" class="gpif-val gpif-grp" data-jpy="81,997.6" data-usd="504.3">81,997.6</td><td style="padding:6px 8px">25.59%</td>
-              <td style="padding:6px 8px" class="gpif-down gpif-grp">−1.32</td><td style="padding:6px 8px" class="gpif-grp">25%</td><td style="padding:6px 8px" class="gpif-grp">±6%</td>
+              <td style="padding:6px 8px" class="gpif-val gpif-grp" data-jpy="84,713.2" data-usd="539.1">84,713.2</td><td style="padding:6px 8px">26.49%</td>
+              <td style="padding:6px 8px" class="gpif-up gpif-grp">+0.90</td><td style="padding:6px 8px" class="gpif-grp">25%</td><td style="padding:6px 8px" class="gpif-grp">±6%</td>
             </tr>
             <tr style="border-bottom:1px solid var(--line)">
               <td style="padding:6px 8px">Domestic equities</td>
-              <td style="padding:6px 8px" class="gpif-val gpif-grp" data-jpy="71,390.5" data-usd="448.8">71,390.5</td><td style="padding:6px 8px">23.81%</td>
               <td style="padding:6px 8px" class="gpif-val gpif-grp" data-jpy="78,798.0" data-usd="484.6">78,798.0</td><td style="padding:6px 8px">24.60%</td>
-              <td style="padding:6px 8px" class="gpif-up gpif-grp">+0.79</td><td style="padding:6px 8px" class="gpif-grp">25%</td><td style="padding:6px 8px" class="gpif-grp">±6%</td>
+              <td style="padding:6px 8px" class="gpif-val gpif-grp" data-jpy="79,290.2" data-usd="504.6">79,290.2</td><td style="padding:6px 8px">24.80%</td>
+              <td style="padding:6px 8px" class="gpif-up gpif-grp">+0.20</td><td style="padding:6px 8px" class="gpif-grp">25%</td><td style="padding:6px 8px" class="gpif-grp">±6%</td>
             </tr>
             <tr style="border-bottom:1px solid var(--line)">
               <td style="padding:6px 8px">Foreign bonds</td>
-              <td style="padding:6px 8px" class="gpif-val gpif-grp" data-jpy="73,399.0" data-usd="461.4">73,399.0</td><td style="padding:6px 8px">24.48%</td>
               <td style="padding:6px 8px" class="gpif-val gpif-grp" data-jpy="78,432.1" data-usd="482.3">78,432.1</td><td style="padding:6px 8px">24.48%</td>
-              <td style="padding:6px 8px" class="gpif-flat gpif-grp">0.00</td><td style="padding:6px 8px" class="gpif-grp">25%</td><td style="padding:6px 8px" class="gpif-grp">±5%</td>
+              <td style="padding:6px 8px" class="gpif-val gpif-grp" data-jpy="76,900.7" data-usd="489.4">76,900.7</td><td style="padding:6px 8px">24.05%</td>
+              <td style="padding:6px 8px" class="gpif-down gpif-grp">−0.43</td><td style="padding:6px 8px" class="gpif-grp">25%</td><td style="padding:6px 8px" class="gpif-grp">±5%</td>
             </tr>
             <tr style="border-bottom:1px solid var(--line)">
               <td style="padding:6px 8px">Foreign equities</td>
-              <td style="padding:6px 8px" class="gpif-val gpif-grp" data-jpy="74,356.9" data-usd="467.4">74,356.9</td><td style="padding:6px 8px">24.80%</td>
               <td style="padding:6px 8px" class="gpif-val gpif-grp" data-jpy="81,145.4" data-usd="499.0">81,145.4</td><td style="padding:6px 8px">25.33%</td>
-              <td style="padding:6px 8px" class="gpif-up gpif-grp">+0.53</td><td style="padding:6px 8px" class="gpif-grp">25%</td><td style="padding:6px 8px" class="gpif-grp">±6%</td>
+              <td style="padding:6px 8px" class="gpif-val gpif-grp" data-jpy="78,876.1" data-usd="501.9">78,876.1</td><td style="padding:6px 8px">24.67%</td>
+              <td style="padding:6px 8px" class="gpif-down gpif-grp">−0.66</td><td style="padding:6px 8px" class="gpif-grp">25%</td><td style="padding:6px 8px" class="gpif-grp">±6%</td>
             </tr>
             <tr style="font-weight:600">
               <td style="padding:6px 8px">Total</td>
-              <td style="padding:6px 8px" class="gpif-val gpif-grp" data-jpy="299,825.4" data-usd="1,884.7">299,825.4</td><td style="padding:6px 8px">100.00%</td>
               <td style="padding:6px 8px" class="gpif-val gpif-grp" data-jpy="320,373.2" data-usd="1,970.2">320,373.2</td><td style="padding:6px 8px">100.00%</td>
+              <td style="padding:6px 8px" class="gpif-val gpif-grp" data-jpy="319,780.2" data-usd="2,035.0">319,780.2</td><td style="padding:6px 8px">100.00%</td>
               <td style="padding:6px 8px" class="gpif-grp">—</td><td style="padding:6px 8px" class="gpif-grp">100%</td><td style="padding:6px 8px" class="gpif-grp">—</td>
             </tr>
           </tbody>
         </table>
       </div>
       <div class="note" id="gpifFxNote" style="margin-top:8px">Showing ¥bn (original reporting currency).</div>
-      <div class="note" style="margin-top:10px">Deviation limits are per-asset, under GPIF's Fifth Medium-Term Objectives Period policy (effective 1 Apr 2025). GPIF also caps <b>combined</b> bonds and combined equities at ±9% of the 50% target — both comfortably inside (bonds 50.07%, equities 49.93%). Alternative assets are 1.70% of the portfolio, well under the 5% ceiling. Total portfolio value rose ~¥20.5tn QoQ on returns plus rebalancing. Source: GPIF, "Policy Asset Mix for the Fifth Medium-Term Objectives Period."</div>
+      <div class="note" style="margin-top:10px">Deviation limits are per-asset, under GPIF's Fifth Medium-Term Objectives Period policy (effective 1 Apr 2025). GPIF also caps <b>combined</b> bonds and combined equities at ±9% of the 50% target — both comfortably inside (bonds 50.54%, equities 49.46%). Alternative assets are 1.72% of the portfolio, well under the 5% ceiling. Total portfolio value fell ~¥3.4tn QoQ (¥317.8tn → ¥314.4tn per GPIF's return table; allocation-table totals differ slightly because they include the pension special account) as foreign-bond losses outweighed domestic-equity gains. Domestic bonds are back above the 25% target (+1.49pt, inside the ±6% limit). Source: GPIF, "Policy Asset Mix for the Fifth Medium-Term Objectives Period."</div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>Quarterly return by asset class — GPIF's own realized returns</h2>
-      <div class="sub">GPIF's actual portfolio return each quarter (not benchmark index return) for the four asset classes plus total, Q1 FY2024 (Apr-Jun 2024) through Q1 FY2026 (Apr-Jun 2026). Sourced directly from each quarter's official GPIF report and cross-checked against the FY2024/FY2025 annual summaries; domestic-bond figures independently verified against the NOMURA-BPI ex-ABS benchmark each quarter (within ~0.15pt every time).</div>
+      <div class="sub">GPIF's actual portfolio return each quarter (not benchmark index return) for the four asset classes plus total, Q1 FY2024 (Apr-Jun 2024) through Q2 FY2026 (Jul-Sep 2026). Sourced directly from each quarter's official GPIF report and cross-checked against the FY2024/FY2025 annual summaries; domestic-bond figures independently verified against the NOMURA-BPI ex-ABS benchmark each quarter (within ~0.15pt every time).</div>
       <div style="overflow-x:auto;margin-top:12px"><canvas id="gpifReturnChart" width="1040" height="320"></canvas></div>
       <div style="overflow-x:auto;margin-top:16px">
         <table class="gpif-ret-tbl" style="width:100%;border-collapse:collapse;font-size:12.5px">
@@ -1330,14 +1330,15 @@
             <tr><td style="padding:6px 8px">Q4 FY2025 (Jan-Mar 26)</td><td style="padding:6px 8px" class="gpif-down">−1.57%</td><td style="padding:6px 8px" class="gpif-up">+3.60%</td><td style="padding:6px 8px" class="gpif-up">+0.26%</td><td style="padding:6px 8px" class="gpif-down">−1.72%</td><td style="padding:6px 8px;font-weight:600" class="gpif-up">+0.19%</td></tr>
             <tr class="gpif-fy"><td style="padding:6px 8px">FY2025 full year</td><td style="padding:6px 8px" class="gpif-down">−5.11%</td><td style="padding:6px 8px" class="gpif-up">+34.62%</td><td style="padding:6px 8px" class="gpif-up">+12.33%</td><td style="padding:6px 8px" class="gpif-up">+27.16%</td><td style="padding:6px 8px;font-weight:700" class="gpif-up">+16.47%</td></tr>
             <tr><td style="padding:6px 8px">Q1 FY2026 (Apr-Jun 26)</td><td style="padding:6px 8px" class="gpif-down">−1.11%</td><td style="padding:6px 8px" class="gpif-up">+14.48%</td><td style="padding:6px 8px" class="gpif-up">+3.13%</td><td style="padding:6px 8px" class="gpif-up">+16.94%</td><td style="padding:6px 8px;font-weight:600" class="gpif-up">+8.20%</td></tr>
+            <tr><td style="padding:6px 8px">Q2 FY2026 (Jul-Sep 26)</td><td style="padding:6px 8px" class="gpif-down">−1.80%</td><td style="padding:6px 8px" class="gpif-up">+3.71%</td><td style="padding:6px 8px" class="gpif-down">−6.52%</td><td style="padding:6px 8px" class="gpif-down">−1.86%</td><td style="padding:6px 8px;font-weight:600" class="gpif-down">−1.65%</td></tr>
           </tbody>
         </table>
       </div>
-      <div class="note" style="margin-top:10px">Domestic bonds is the only asset class negative every quarter of the last 9, reflecting BOJ's hiking cycle pushing JGB yields up. Foreign equities swung from GPIF's worst quarter (Q4 FY2024, −5.98%) to among its best (FY2025 full year, +27.16%) within a year. Sources: GPIF quarterly "Investment results" reports, cross-validated against annual summaries.</div>
+      <div class="note" style="margin-top:10px">Domestic bonds has been negative in 9 of the last 10 quarters, reflecting BOJ's hiking cycle pushing JGB yields up. Foreign equities swung from GPIF's worst quarter (Q4 FY2024, −5.98%) to among its best (FY2025 full year, +27.16%) within a year. Sources: GPIF quarterly "Investment results" reports, cross-validated against annual summaries.</div>
     </div>
     <div class="card full" style="margin-top:16px">
-      <h2>Long-run allocation vs. policy threshold, FY2013 – Q1 FY2026</h2>
-      <div class="sub">Actual allocation % (solid line) against the policy target (dashed) and permitted deviation band (dotted) in force at each point — GPIF has revised its "basic portfolio" three times over this window: Oct 2014 (shift from a bond-heavy 60/12/11/12 mix toward 35/25/15/25), Apr 2020 (equal-weighted 25/25/25/25 with ±7/±8/±6/±7 bands), and Apr 2025 (same 25/25/25/25 target, tightened to ±6/±6/±5/±6). Fiscal-year-end (31 Mar) points throughout, with the two most recent quarterly points (Q1 FY2025, Q1 FY2026) added for currency. All 13 fiscal years FY2013-FY2025 are covered — no gaps.</div>
+      <h2>Long-run allocation vs. policy threshold, FY2013 – Q2 FY2026</h2>
+      <div class="sub">Actual allocation % (solid line) against the policy target (dashed) and permitted deviation band (dotted) in force at each point — GPIF has revised its "basic portfolio" three times over this window: Oct 2014 (shift from a bond-heavy 60/12/11/12 mix toward 35/25/15/25), Apr 2020 (equal-weighted 25/25/25/25 with ±7/±8/±6/±7 bands), and Apr 2025 (same 25/25/25/25 target, tightened to ±6/±6/±5/±6). Fiscal-year-end (31 Mar) points throughout, with the two most recent quarterly points (Q1 FY2025, Q2 FY2026) added for currency. All 13 fiscal years FY2013-FY2025 are covered — no gaps.</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px">
         <div><h3 style="font-size:14px;margin-bottom:8px">Domestic bonds</h3><div style="overflow-x:auto"><canvas id="gpifDbChart" width="500" height="280"></canvas></div></div>
         <div><h3 style="font-size:14px;margin-bottom:8px">Domestic equities</h3><div style="overflow-x:auto"><canvas id="gpifDeChart" width="500" height="280"></canvas></div></div>
@@ -1349,7 +1350,7 @@
       <div class="note" style="margin-top:12px">Domestic bonds has spent almost this entire 13-year window below its policy target as GPIF reallocated toward equities — undershot the 25% target every year since the 2020 revision. The other three classes have tracked close to target throughout. Sources: GPIF annual reports and quarterly "Investment results" PDFs (gpif.go.jp).</div>
     </div>
     <div class="card full" style="margin-top:16px">
-      <h2>Q1 FY2026 return by asset class — reference index vs. GPIF's realized return</h2>
+      <h2>Q2 FY2026 return by asset class — reference index vs. GPIF's realized return</h2>
       <div class="sub">The benchmark index each asset class is measured against, alongside GPIF's actual realized return from the table above — the gap reflects active positioning, currency hedging (particularly visible in foreign bonds, where GPIF partially hedges vs. the unhedged FTSE WGBI benchmark), fees, and timing.</div>
       <div style="overflow-x:auto;margin-top:12px">
         <table style="width:100%;border-collapse:collapse;font-size:12.5px">
@@ -1357,14 +1358,14 @@
             <th style="padding:6px 8px">Asset class</th><th style="padding:6px 8px">Reference index return</th><th style="padding:6px 8px">Reference index</th><th style="padding:6px 8px">GPIF realized return</th>
           </tr></thead>
           <tbody>
-            <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">Domestic bonds</td><td style="padding:6px 8px">−1.15%</td><td style="padding:6px 8px">NOMURA-BPI ex-ABS</td><td style="padding:6px 8px">−1.11%</td></tr>
-            <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">Domestic equities</td><td style="padding:6px 8px">+14.40%</td><td style="padding:6px 8px">TOPIX (incl. dividends)</td><td style="padding:6px 8px">+14.48%</td></tr>
-            <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">Foreign bonds</td><td style="padding:6px 8px">+3.06%</td><td style="padding:6px 8px">FTSE WGBI (unhedged)</td><td style="padding:6px 8px">+3.13%</td></tr>
-            <tr><td style="padding:6px 8px">Foreign equities</td><td style="padding:6px 8px">+17.56%</td><td style="padding:6px 8px">MSCI ACWI ex-China A (JPY, incl. dividends)</td><td style="padding:6px 8px">+16.94%</td></tr>
+            <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">Domestic bonds</td><td style="padding:6px 8px">−1.85%</td><td style="padding:6px 8px">NOMURA-BPI ex-ABS</td><td style="padding:6px 8px">−1.80%</td></tr>
+            <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">Domestic equities</td><td style="padding:6px 8px">+3.79%</td><td style="padding:6px 8px">TOPIX (incl. dividends)</td><td style="padding:6px 8px">+3.71%</td></tr>
+            <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">Foreign bonds</td><td style="padding:6px 8px">−6.65%</td><td style="padding:6px 8px">FTSE WGBI (unhedged)</td><td style="padding:6px 8px">−6.52%</td></tr>
+            <tr><td style="padding:6px 8px">Foreign equities</td><td style="padding:6px 8px">−1.86%</td><td style="padding:6px 8px">MSCI ACWI (ex-JPY, ex-China A, JPY basis, incl. dividends, after GPIF dividend-tax factors)</td><td style="padding:6px 8px">−1.86%</td></tr>
           </tbody>
         </table>
       </div>
-      <div class="note" style="margin-top:10px">GPIF tracks its own benchmarks closely, as expected for a near-passive mandate — all four classes are within ~0.6pp of their reference index, consistent with fees/timing/light hedging. Source: GPIF Q1 FY2026 quarterly report, page 6, gpif.go.jp.</div>
+      <div class="note" style="margin-top:10px">GPIF tracks its own benchmarks closely, as expected for a near-passive mandate — all four classes are within ~0.1pp of their reference index this quarter. Foreign bonds (−6.52%) drove the loss as US 10Y yields rose from 4.47% to 5.28% and Bund 10Y from 2.86% to 3.59%; the yen strengthened from ¥162.5 to ¥157.1 per USD, trimming yen-value foreign assets. Source: GPIF Q2 FY2026 quarterly report, page 6, gpif.go.jp.</div>
     </div>
     <div class="card full" style="margin-top:16px">
       <h2>Basic Portfolio revision process — governance &amp; approval flow</h2>
@@ -5130,7 +5131,7 @@ function setGpifCur(cur){
   document.getElementById('gpifCurUsd').style.fontWeight = cur === 'usd' ? '600' : '400';
   const note = document.getElementById('gpifFxNote');
   if (note) note.textContent = cur === 'usd'
-    ? '$bn, converted at each period\'s USD/JPY spot close — ¥159.08 (31 Mar 2026), ¥162.61 (30 Jun 2026). GPIF reports/manages in yen; USD figures move with the exchange rate, not just the portfolio.'
+    ? '$bn, converted at each period\'s USD/JPY spot close — ¥162.61 (30 Jun 2026), ¥157.14 (30 Sep 2026). GPIF reports/manages in yen; USD figures move with the exchange rate, not just the portfolio.'
     : '¥bn (GPIF\'s original reporting currency).';
 }
 
@@ -5144,13 +5145,13 @@ function initGpifChart(){
   new Chart(el, {
     type: 'line',
     data: {
-      labels: ['Q1 FY24','Q2 FY24','Q3 FY24','Q4 FY24','Q1 FY25','Q2 FY25','Q3 FY25','Q4 FY25','Q1 FY26'],
+      labels: ['Q1 FY24','Q2 FY24','Q3 FY24','Q4 FY24','Q1 FY25','Q2 FY25','Q3 FY25','Q4 FY25','Q1 FY26','Q2 FY26'],
       datasets: [
-        { label:'Domestic bonds', data:[-2.39,1.42,-1.33,-2.20,-0.19,-1.36,-2.07,-1.57,-1.11], borderColor:'#c9a969', backgroundColor:'#c9a969', borderDash:[5,3], tension:0.25, borderWidth:1.75, pointRadius:2.5 },
-        { label:'Domestic equities', data:[1.75,-4.92,5.55,-3.50,7.48,11.02,8.89,3.60,14.48], borderColor:'#e2564a', backgroundColor:'#e2564a', tension:0.25, borderWidth:2, pointRadius:3 },
-        { label:'Foreign bonds', data:[5.50,-5.51,4.12,-2.01,1.56,2.96,7.14,0.26,3.13], borderColor:'#4a90d9', backgroundColor:'#4a90d9', tension:0.25, borderWidth:2, pointRadius:3 },
-        { label:'Foreign equities', data:[9.96,-5.35,8.96,-5.98,7.44,9.75,9.73,-1.72,16.94], borderColor:'#7fb3e8', backgroundColor:'#7fb3e8', tension:0.25, borderWidth:2, pointRadius:3 },
-        { label:'Total', data:[3.65,-3.57,4.31,-3.41,4.09,5.52,5.84,0.19,8.20], borderColor:'#e8edf7', backgroundColor:'#e8edf7', borderDash:[4,3], tension:0.25, borderWidth:2.5, pointRadius:2 },
+        { label:'Domestic bonds', data:[-2.39,1.42,-1.33,-2.20,-0.19,-1.36,-2.07,-1.57,-1.11,-1.80], borderColor:'#c9a969', backgroundColor:'#c9a969', borderDash:[5,3], tension:0.25, borderWidth:1.75, pointRadius:2.5 },
+        { label:'Domestic equities', data:[1.75,-4.92,5.55,-3.50,7.48,11.02,8.89,3.60,14.48,3.71], borderColor:'#e2564a', backgroundColor:'#e2564a', tension:0.25, borderWidth:2, pointRadius:3 },
+        { label:'Foreign bonds', data:[5.50,-5.51,4.12,-2.01,1.56,2.96,7.14,0.26,3.13,-6.52], borderColor:'#4a90d9', backgroundColor:'#4a90d9', tension:0.25, borderWidth:2, pointRadius:3 },
+        { label:'Foreign equities', data:[9.96,-5.35,8.96,-5.98,7.44,9.75,9.73,-1.72,16.94,-1.86], borderColor:'#7fb3e8', backgroundColor:'#7fb3e8', tension:0.25, borderWidth:2, pointRadius:3 },
+        { label:'Total', data:[3.65,-3.57,4.31,-3.41,4.09,5.52,5.84,0.19,8.20,-1.65], borderColor:'#e8edf7', backgroundColor:'#e8edf7', borderDash:[4,3], tension:0.25, borderWidth:2.5, pointRadius:2 },
       ]
     },
     options: {
@@ -5167,28 +5168,28 @@ function initGpifChart(){
   // not a fiscal-year-end approximation. Policy target/deviation bands switch regime at the
   // correct quarter: pre-Oct-2014 (60/12/11/12), Oct-2014 (35/25/15/25, wider bands),
   // Apr-2020 (25/25/25/25, ±7/±8/±6/±7), Apr-2025 (25/25/25/25, tightened ±6/±6/±5/±6).
-  const allocLabels = ["FY13","FY14 Q1","FY14 Q2","FY14 Q3","FY14","FY15 Q1","FY15 Q2","FY15 Q3","FY15","FY16 Q1","FY16 Q2","FY16 Q3","FY16","FY17 Q1","FY17 Q2","FY17 Q3","FY17","FY18 Q1","FY18 Q2","FY18 Q3","FY18","FY19 Q1","FY19 Q2","FY19 Q3","FY19","FY20 Q1","FY20 Q2","FY20 Q3","FY20","FY21 Q1","FY21 Q2","FY21 Q3","FY21","FY22 Q1","FY22 Q2","FY22 Q3","FY22","FY23 Q1","FY23 Q2","FY23 Q3","FY23","FY24 Q1","FY24 Q2","FY24 Q3","FY24","FY25 Q1","FY25 Q2","FY25 Q3","FY25","FY26 Q1"];
+  const allocLabels = ["FY13","FY14 Q1","FY14 Q2","FY14 Q3","FY14","FY15 Q1","FY15 Q2","FY15 Q3","FY15","FY16 Q1","FY16 Q2","FY16 Q3","FY16","FY17 Q1","FY17 Q2","FY17 Q3","FY17","FY18 Q1","FY18 Q2","FY18 Q3","FY18","FY19 Q1","FY19 Q2","FY19 Q3","FY19","FY20 Q1","FY20 Q2","FY20 Q3","FY20","FY21 Q1","FY21 Q2","FY21 Q3","FY21","FY22 Q1","FY22 Q2","FY22 Q3","FY22","FY23 Q1","FY23 Q2","FY23 Q3","FY23","FY24 Q1","FY24 Q2","FY24 Q3","FY24","FY25 Q1","FY25 Q2","FY25 Q3","FY25","FY26 Q1","FY26 Q2"];
   const allocSeries = {
     gpifDbChart: { name:"Domestic bonds",
-      actual: [55.43, 47.63, 44.66, 43.13, 39.39, 37.95, 38.95, 37.76, 37.55, 39.16, 36.15, 33.26, 31.68, 30.48, 28.5, 27.67, 27.5, 27.14, 25.26, 28.2, 26.3, 26.93, 26.13, 24.87, 23.87, 26.33, 26.61, 23.64, 25.92, 25.39, 26.79, 24.95, 26.33, 25.65, 27.26, 26.07, 26.79, 24.47, 26.56, 25.77, 26.95, 25.85, 26.74, 25.51, 27.64, 26.13, 26.29, 25.29, 26.91, 25.59],
-      target: [60, 60, 60, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25],
-      upper:  [68, 68, 68, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 31, 31, 31, 31, 31],
-      lower:  [52, 52, 52, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19, 19, 19, 19, 19] },
+      actual: [55.43, 47.63, 44.66, 43.13, 39.39, 37.95, 38.95, 37.76, 37.55, 39.16, 36.15, 33.26, 31.68, 30.48, 28.5, 27.67, 27.5, 27.14, 25.26, 28.2, 26.3, 26.93, 26.13, 24.87, 23.87, 26.33, 26.61, 23.64, 25.92, 25.39, 26.79, 24.95, 26.33, 25.65, 27.26, 26.07, 26.79, 24.47, 26.56, 25.77, 26.95, 25.85, 26.74, 25.51, 27.64, 26.13, 26.29, 25.29, 26.91, 25.59, 26.49],
+      target: [60, 60, 60, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25],
+      upper:  [68, 68, 68, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 31, 31, 31, 31, 31, 31],
+      lower:  [52, 52, 52, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19, 19, 19, 19, 19, 19] },
     gpifDeChart: { name:"Domestic equities",
-      actual: [16.47, 17.26, 18.23, 19.8, 22.0, 23.39, 21.35, 23.35, 21.75, 21.06, 21.59, 23.76, 23.28, 24.41, 24.35, 26.05, 25.14, 25.55, 25.65, 23.72, 23.55, 23.5, 23.5, 24.97, 22.87, 24.37, 24.06, 25.28, 24.58, 24.49, 25.03, 24.92, 24.49, 24.53, 23.84, 25.07, 24.49, 25.14, 24.52, 24.66, 24.33, 24.37, 23.98, 24.99, 23.94, 24.28, 24.45, 24.67, 23.81, 24.6],
-      target: [12, 12, 12, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25],
-      upper:  [18, 18, 18, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 31, 31, 31, 31, 31],
-      lower:  [6, 6, 6, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 19, 19, 19, 19, 19] },
+      actual: [16.47, 17.26, 18.23, 19.8, 22.0, 23.39, 21.35, 23.35, 21.75, 21.06, 21.59, 23.76, 23.28, 24.41, 24.35, 26.05, 25.14, 25.55, 25.65, 23.72, 23.55, 23.5, 23.5, 24.97, 22.87, 24.37, 24.06, 25.28, 24.58, 24.49, 25.03, 24.92, 24.49, 24.53, 23.84, 25.07, 24.49, 25.14, 24.52, 24.66, 24.33, 24.37, 23.98, 24.99, 23.94, 24.28, 24.45, 24.67, 23.81, 24.6, 24.8],
+      target: [12, 12, 12, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25],
+      upper:  [18, 18, 18, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 31, 31, 31, 31, 31, 31],
+      lower:  [6, 6, 6, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 19, 19, 19, 19, 19, 19] },
     gpifFbChart: { name:"Foreign bonds",
-      actual: [11.06, 11.06, 12.14, 13.14, 12.63, 13.08, 13.6, 13.5, 13.47, 12.95, 12.51, 13.37, 13.03, 13.53, 14.02, 14.13, 14.77, 15.34, 14.81, 17.41, 16.95, 18.05, 18.43, 19.21, 23.41, 21.81, 23.46, 25.71, 24.61, 24.72, 24.17, 24.46, 24.07, 25.7, 25.04, 24.59, 24.39, 24.29, 24.19, 24.44, 23.86, 24.45, 24.3, 24.58, 24.37, 24.37, 24.16, 24.69, 24.48, 24.48],
-      target: [11, 11, 11, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25],
-      upper:  [16, 16, 16, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30],
-      lower:  [6, 6, 6, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 20, 20, 20, 20, 20] },
+      actual: [11.06, 11.06, 12.14, 13.14, 12.63, 13.08, 13.6, 13.5, 13.47, 12.95, 12.51, 13.37, 13.03, 13.53, 14.02, 14.13, 14.77, 15.34, 14.81, 17.41, 16.95, 18.05, 18.43, 19.21, 23.41, 21.81, 23.46, 25.71, 24.61, 24.72, 24.17, 24.46, 24.07, 25.7, 25.04, 24.59, 24.39, 24.29, 24.19, 24.44, 23.86, 24.45, 24.3, 24.58, 24.37, 24.37, 24.16, 24.69, 24.48, 24.48, 24.05],
+      target: [11, 11, 11, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25],
+      upper:  [16, 16, 16, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 30],
+      lower:  [6, 6, 6, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 20, 20, 20, 20, 20, 20] },
     gpifFeChart: { name:"Foreign equities",
-      actual: [15.59, 15.98, 17.41, 19.64, 20.89, 22.32, 21.64, 22.82, 22.09, 21.31, 21.0, 23.16, 23.12, 23.91, 24.03, 25.08, 23.88, 25.32, 25.7, 24.29, 25.53, 26.43, 25.67, 27.58, 23.9, 27.49, 25.88, 25.36, 24.89, 25.41, 24.01, 25.68, 25.11, 24.12, 23.86, 24.27, 24.32, 26.1, 24.72, 25.14, 24.86, 25.34, 24.98, 24.93, 24.05, 25.22, 25.1, 25.34, 24.8, 25.33],
-      target: [12, 12, 12, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25],
-      upper:  [17, 17, 17, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 31, 31, 31, 31, 31],
-      lower:  [7, 7, 7, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19, 19, 19, 19, 19] },
+      actual: [15.59, 15.98, 17.41, 19.64, 20.89, 22.32, 21.64, 22.82, 22.09, 21.31, 21.0, 23.16, 23.12, 23.91, 24.03, 25.08, 23.88, 25.32, 25.7, 24.29, 25.53, 26.43, 25.67, 27.58, 23.9, 27.49, 25.88, 25.36, 24.89, 25.41, 24.01, 25.68, 25.11, 24.12, 23.86, 24.27, 24.32, 26.1, 24.72, 25.14, 24.86, 25.34, 24.98, 24.93, 24.05, 25.22, 25.1, 25.34, 24.8, 25.33, 24.67],
+      target: [12, 12, 12, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25],
+      upper:  [17, 17, 17, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 31, 31, 31, 31, 31, 31],
+      lower:  [7, 7, 7, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19, 19, 19, 19, 19, 19] },
   };
   Object.entries(allocSeries).forEach(([canvasId, s]) => {
     const c = document.getElementById(canvasId);
